@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Mente del Fénix - Psicoterapia y Coaching con Darío Arrigazzi</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos base consistentes con el área de miembros */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fbf5e2;
+            color: #0c2f5b;
+        }
+        .text-brand-pink { color: #e91e63; }
+        .text-brand-cyan { color: #00bcd4; }
+        .bg-brand-pink { background-color: #e91e63; }
+        .bg-brand-cyan { background-color: #00bcd4; }
+
+        .btn {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: color 0.4s ease-out;
+            border: 2px solid transparent;
+        }
+        .btn-pink { background-color: #e91e63; color: white; }
+        .btn-cyan { background-color: #00bcd4; color: white; }
+        
+        .btn:hover { color: #0c2f5b; }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        .btn-pink:hover::before { border: 2px solid #e91e63; }
+        .btn-cyan:hover::before { border: 2px solid #00bcd4; }
+        
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        /* Estilo para tarjetas de servicio */
+        .service-card {
+            background-color: white;
+            border: 1px solid #e0d9c6;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+        }
+        /* Contact link animation */
+        .contact-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        .contact-link > * {
+            transition: color 0.4s ease;
+        }
+        .contact-link:hover > * { color: #e91e63; }
+        .contact-link.email-link:hover > * { color: #00bcd4; }
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e91e63;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.4s ease-out;
+        }
+        .contact-link.email-link::after { background-color: #00bcd4; }
+        .contact-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .hero-text-shadow {
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        /* Image hover effect */
+        .profile-image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+        }
+        .profile-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .profile-image.default-image {
+            transform: scaleX(-1); /* Flips the image horizontally */
+        }
+        .profile-image-container .hover-image {
+            opacity: 0;
+        }
+        .profile-image-container:hover .hover-image {
+            opacity: 1;
+        }
+        .profile-image-container:hover .default-image {
+            opacity: 0;
+        }
+        .highlight-word {
+            background: linear-gradient(120deg, #00bcd4 0%, #e91e63 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .animated-quote {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.75rem; /* 28px */
+            font-weight: 500; /* Medium weight, not bold */
+            font-style: italic;
+            color: transparent;
+            background-image: linear-gradient(90deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: text-flow 10s linear infinite;
+        }
+        @keyframes text-flow {
+            to {
+                background-position: 200% center;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Main container -->
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Header with Banner -->
+        <header class="p-4 md:p-8">
+             <img src="https://i.imgur.com/F4JacEf.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+        </header>
+
+        <!-- Hero Section -->
+        <section class="text-center pt-8 pb-48 px-4">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-pink">
+                    Despierta tu Potencial. Transforma tu Mente.
+                </h1>
+                <p class="text-2xl md:text-3xl mt-6 max-w-3xl mx-auto font-medium">
+                    Descubre herramientas basadas en Un Curso De Milagros, PNL y Coaching para encontrar la paz, la claridad y llegar a tus objetivos.
+                </p>
+                <div class="mt-10">
+                    <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
+                        Conoce mis Servicios
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Me Section -->
+        <section class="py-20 px-4 bg-white">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                <div class="md:col-span-1">
+                    <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
+                        <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
+                        <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        Mi camino comenzó desde los 10 años, cuando empecé a leer mis primeros libros de desarrollo personal, buscando respuestas en un hogar que a menudo era violento y caótico.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Ya de mayor me encontré con Un Curso de Milagros, un mapa claro para deshacer el miedo, y lo integré junto con otras herramientas prácticas como la PNL y el Coaching, recuperando con ello mi confianza, recuperándome de mis deudas económicas y equilibrando los distintos aspectos de mi vida. Ahora, mi misión es compartir esto contigo, porque entiendo que la teoría a veces es difícil de entender y por sí sola no es suficiente; y la práctica es lo que termina transformando.
+                    </p>
+                    <p class="mt-6 text-center animated-quote">
+                        "En nuestra mente todos tenemos una máquina del tiempo en la que podemos viajar a nuestro pasado y reinterpretarlo, transformando con ello la percepción que teníamos de nosotros mismos y de nuestro pasado, haciendo que automáticamente nuestro presente se transforme."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="servicios" class="py-20 px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">¿Cómo puedo ayudarte?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Membership Card -->
+                    <div class="service-card rounded-lg p-8 text-center flex flex-col">
+                        <h3 class="text-2xl font-bold mb-4">Membresía de Un Curso De Milagros</h3>
+                        <p class="text-gray-700 flex-grow mb-6">
+                            <span class="highlight-word">"El espacio más innovador que actualmente existe en habla hispana"</span> para aprender Un Curso de Milagros. Con una plataforma inteligente diseñada exclusivamente para ayudarte a entender y asistirte en el proceso de aprendizaje del curso, así como mentorías online, una comunidad de apoyo y grabaciones... entre otras cosas.
+                        </p>
+                        <a href="./membresia.html" class="btn btn-pink font-bold py-2 px-6 rounded-lg mt-auto">Más Información</a>
+                    </div>
+
+                    <!-- Psychotherapy Card -->
+                    <div class="service-card rounded-lg p-8 text-center flex flex-col">
+                        <h3 class="text-2xl font-bold mb-4">Psicoterapia 1 a 1</h3>
+                        <p class="text-gray-700 flex-grow mb-4">
+                           Un camino práctico y amoroso para deshacer las ilusiones que te causan dolor. En un espacio seguro, y a través del perdón, exploraremos tus desafíos para recordar la verdad de quién eres y experimentar la paz que siempre ha estado en ti.
+                        </p>
+                        <div class="mb-6">
+                            <p class="text-lg">Precio: 55€</p>
+                            <p class="font-bold text-brand-pink">Precio Miembros: 35€</p>
+                        </div>
+                        <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-cyan font-bold py-2 px-6 rounded-lg mt-auto">Reservar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+             <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
+             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+                <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                    <i class="fas fa-envelope text-2xl"></i>
+                    <span>lamentedelfenix@gmail.com</span>
+                </a>
+                <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link flex items-center gap-2 text-pink-600">
+                    <i class="fab fa-instagram text-2xl"></i>
+                    <span>@darioarrigazzi</span>
+                </a>
+             </div>
+             <div class="text-sm text-gray-500 space-x-4 mt-8">
+                <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
+                <span>&middot;</span>
+                <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
+                <span>&middot;</span>
+                <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             </div>
+             <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Lecciones - UCDM</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fbf5e2;
+            color: #0c2f5b;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .progress-section {
+            position: relative;
+            z-index: 5;
+            padding-bottom: 50px;
+        }
+        .progress-container {
+            position: relative;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            padding-top: 20px;
+        }
+        .progress-bar-bg { background-color: #e0d9c6; }
+        .progress-bar-fg {
+            background-image: linear-gradient(to right, #00bcd4, #e91e63);
+            transition: width 0.5s ease-out;
+        }
+        .progress-markers {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            width: 100%;
+            height: 0;
+        }
+        .marker {
+            position: absolute;
+            top: 0;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border: 2px solid #a0aec0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            pointer-events: all;
+        }
+        .marker.achieved {
+            border-color: #ffd700;
+            background-color: #fffbeb;
+            animation: marker-glow 1.5s infinite ease-in-out;
+        }
+        @keyframes marker-glow {
+            0%, 100% { box-shadow: 0 0 10px 2px rgba(253, 224, 71, 0.7); }
+            50% { box-shadow: 0 0 20px 6px rgba(253, 224, 71, 1); }
+        }
+        .marker .marker-icon {
+            font-size: 12px;
+            color: #a0aec0;
+            transition: color 0.3s ease;
+        }
+        .marker.achieved .marker-icon { color: #daa520; }
+        .marker .tooltip {
+            position: absolute;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0c2f5b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .marker:hover .tooltip { opacity: 1; visibility: visible; }
+        .final-trophy {
+            width: 44px;
+            height: 44px;
+            left: 100%;
+            border-width: 3px;
+        }
+        .final-trophy.achieved { animation: final-trophy-glow 2s infinite ease-in-out; }
+        .final-trophy .marker-icon { font-size: 24px; }
+        @keyframes final-trophy-glow {
+            0%, 100% { box-shadow: 0 0 20px 8px rgba(253, 224, 71, 0.9); }
+            50% { box-shadow: 0 0 40px 15px rgba(253, 224, 71, 1); }
+        }
+        .final-trophy.achieved::before, .final-trophy.achieved::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: conic-gradient(from var(--angle), transparent 0%, transparent 70%, gold 95%, transparent 100%);
+            border-radius: 50%;
+            animation: spotlights 4s linear infinite;
+            z-index: -1;
+        }
+        .final-trophy.achieved::after { animation-delay: -2s; }
+        @keyframes spotlights {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .achievement-text {
+            background: linear-gradient(90deg, #e91e63, #ffd700, #00bcd4, #e91e63);
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: text-glow 4s ease infinite;
+            font-weight: 800;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-top: 2.5rem;
+        }
+        @keyframes text-glow {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.75rem;
+        }
+        .lesson-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            border: 2px solid #e0d9c6;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #0c2f5b;
+            overflow: hidden;  
+        }
+        .lesson-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .lesson-item.completed {
+            background-color: #fff8e1;
+            color: #b8860b;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.5);
+        }
+        .lesson-item .line-through {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 141%; 
+            height: 3px;
+            background: linear-gradient(to right, #00bcd4, #e91e63);
+            transform: translate(-50%, -50%) rotate(-45deg) scaleX(0);
+            transform-origin: center;
+        }
+        .lesson-item.completed .line-through {
+            animation: draw-line 0.6s ease-out forwards;
+        }
+        @keyframes draw-line {
+            from { transform: translate(-50%, -50%) rotate(-45deg) scaleX(0); }
+            to { transform: translate(-50%, -50%) rotate(-45deg) scaleX(1); }
+        }
+        .info-note {
+            background-color: #e6f7ff;
+            border-left: 4px solid #00bcd4;
+            color: #0c2f5b;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: #fffaf0;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .btn-primary {
+            background-color: #e91e63;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover { background-color: #c2185b; }
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover { background-color: #bdbdbd; }
+        .btn-back {
+            background-color: transparent;
+            color: #0c2f5b;
+            border: 2px solid #0c2f5b;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #0c2f5b;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .text-brand-green { color: #00bcd4; }
+        .text-brand-pink { color: #e91e63; }
+        .group-title {
+            border-left: 4px solid #e91e63;
+            padding-left: 1rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-divider {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(12, 47, 91, 0.3), rgba(0, 0, 0, 0));
+        }
+        .contact-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        .contact-link > * { transition: color 0.4s ease; }
+        .contact-link:hover > * { color: #e91e63; }
+        .contact-link.email-link:hover > * { color: #00bcd4; }
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e91e63;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.4s ease-out;
+        }
+        .contact-link.email-link::after { background-color: #00bcd4; }
+        .contact-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="antialiased" style="opacity: 0; visibility: hidden;">
+
+    <audio id="completion-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="lesson-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="modal-close" class="modal-close-btn">&times;</span>
+            <h3 id="modal-lesson-number" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
+            <p id="modal-lesson-phrase" class="text-2xl italic text-brand-green font-bold mb-4"></p>
+            <p id="modal-lesson-explanation" class="text-gray-700 mb-6"></p>
+            <div id="modal-exercise-container" class="mt-6 pt-4 border-t-2 border-dashed border-pink-200">
+                <h4 class="font-bold text-brand-pink">Ejercicio Recomendado:</h4>
+                <p id="modal-lesson-exercise" class="mt-2 text-gray-600"></p>
+            </div>
+            <div class="mt-8 text-center">
+                 <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
+                    Marcar como completada
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="name-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="text-2xl font-bold text-center mb-4">¡Bienvenido/a!</h3>
+            <p class="text-center text-gray-700 mb-6">Por favor, introduce tu nombre para personalizar tu seguimiento y guardar tu progreso en la nube.</p>
+            <div class="flex flex-col gap-4">
+                <input type="text" id="name-input" placeholder="Tu nombre" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400">
+                <button id="name-submit-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">Guardar y Empezar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="confirm-title" class="text-xl font-bold text-center mb-4">Confirmar Acción</h3>
+            <p id="confirm-message" class="text-center text-gray-700 mb-8"></p>
+            <div class="flex justify-center gap-4">
+                <button id="confirm-no-btn" class="btn-secondary font-bold py-2 px-6 rounded-lg">Cancelar</button>
+                <button id="confirm-yes-btn" class="btn-primary font-bold py-2 px-6 rounded-lg">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <header class="mb-12">
+            <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=Banner+Membres%C3%ADa';">
+        </header>
+
+        <div class="text-center mb-12">
+            <a href="./miembros.html" class="btn-back font-semibold py-2 px-5 rounded-lg no-underline inline-block">
+                &larr; Volver al panel de miembros
+            </a>
+        </div>
+
+        <section class="mb-12">
+            <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-2 text-center">Mi Progreso en las Lecciones</h1>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto text-center mb-8">
+                Haz clic en cada lección para leer su contenido y márcala como completada. Tu progreso se guardará automáticamente en la nube.
+            </p>
+            <div class="info-note p-4 rounded-lg mb-8">
+                <p class="font-semibold"><i class="fas fa-info-circle mr-2"></i>Nota importante:</p>
+                <p class="text-sm">Se han omitido las lecciones de repaso momentáneamente, pronto estarán todas disponibles.</p>
+                <p class="text-sm mt-2"><i class="fas fa-gift mr-2 text-pink-500"></i>Al completar todas las lecciones, desbloquearás como premio una <strong>sesión de psicoterapia de UCDM gratuita</strong>.</p>
+            </div>
+            <div class="mb-6 progress-section">
+                <div class="flex justify-between items-center mb-1 text-sm font-bold">
+                    <span id="progress-text">0 / X Completadas</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="w-full progress-bar-bg rounded-full h-4">
+                        <div id="progress-bar" class="progress-bar-fg h-4 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <div id="progress-markers-container" class="progress-markers"></div>
+                </div>
+                <div id="achievement-unlocked" class="text-center hidden">
+                    <p class="achievement-text">
+                        <strong>¡Curso Completado!</strong><br>Desbloqueas una Sesión 1 a 1 de Psicoterapia.
+                    </p>
+                </div>
+            </div>
+            <div id="lesson-groups-container">
+                 <p class="text-center p-8">Conectando con el servidor...</p>
+            </div>
+        </section>
+        
+        <div class="text-center mt-8 flex justify-center gap-4 flex-wrap">
+            <button id="reset-progress-btn" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-lg text-sm">
+                <i class="fas fa-undo mr-2"></i>Reiniciar progreso
+            </button>
+        </div>
+
+        <hr class="my-16 section-divider">
+
+        <section class="text-center">
+            <h4 class="font-bold text-lg mb-2">¿Has encontrado algún error?</h4>
+            <p class="text-gray-600 mb-4">Ayúdame a mejorar la plataforma informando de cualquier fallo que encuentres.</p>
+            <a href="https://forms.gle/wiUcY9EU4k68Z8uv5" target="_blank" class="inline-block bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-cyan-600 transition-colors">
+                <i class="fas fa-bug mr-2"></i>Informar de un error
+            </a>
+        </section>
+
+        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+             <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
+             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                     <i class="fas fa-envelope text-2xl"></i>
+                     <span>lamentedelfenix@gmail.com</span>
+                 </a>
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link flex items-center gap-2 text-pink-600">
+                     <i class="fab fa-instagram text-2xl"></i>
+                     <span>@darioarrigazzi</span>
+                 </a>
+             </div>
+             <div class="text-sm text-gray-500 space-x-4 mt-8">
+                 <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
+                 <span>&middot;</span>
+                 <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
+                 <span>&middot;</span>
+                 <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             </div>
+             <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const groupsContainer = document.getElementById('lesson-groups-container');
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
+            const progressMarkersContainer = document.getElementById('progress-markers-container');
+            const resetBtn = document.getElementById('reset-progress-btn');
+            const userTitle = document.getElementById('user-title');
+            const soundEffect = document.getElementById('completion-sound');
+            const achievementUnlocked = document.getElementById('achievement-unlocked');
+            
+            // --- Modals & Buttons ---
+            const lessonModal = document.getElementById('lesson-modal');
+            const modalCloseBtn = document.getElementById('modal-close');
+            const modalLessonNum = document.getElementById('modal-lesson-number');
+            const modalPhrase = document.getElementById('modal-lesson-phrase');
+            const modalExplanation = document.getElementById('modal-lesson-explanation');
+            const modalExerciseContainer = document.getElementById('modal-exercise-container');
+            const modalExercise = document.getElementById('modal-lesson-exercise');
+            const modalCompleteBtn = document.getElementById('modal-complete-btn');
+
+            const nameModal = document.getElementById('name-modal');
+            const nameInput = document.getElementById('name-input');
+            const nameSubmitBtn = document.getElementById('name-submit-btn');
+
+            const confirmModal = document.getElementById('confirm-modal');
+            const confirmMessage = document.getElementById('confirm-message');
+            const confirmYesBtn = document.getElementById('confirm-yes-btn');
+            const confirmNoBtn = document.getElementById('confirm-no-btn');
+
+            // --- Data and State ---
+            const lessonCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSl750iPtMNNONyMIQiSUPOWT9sukWk8yzrHnNDCE8fruXSeTybk8YPBiDyPvvMh1H1kb8veGokq5B6/pub?gid=1752477896&single=true&output=csv';
+            let allLessonsData = [];
+            let completedLessons = new Set();
+            let currentLessonNumber = null;
+            let audioInitialized = false;
+            let userName = "Estudiante";
+            let confirmCallback = null;
+            let lessonsAreRendered = false;
+            
+            const lessonList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361];
+            const totalLessons = lessonList.length;
+
+            const lessonGroups = [
+                { title: "Anular la manera en que ahora ves", range: [1, 50] },
+                { title: "Consolidar la determinación y el poder de la voluntad", range: [51, 100] },
+                { title: "Alcanzar un nuevo nivel de entendimiento", range: [101, 140] },
+                { title: "Certeza, sinceridad y fe", range: [141, 180] },
+                { title: "Fortalecer el compromiso con la verdad", range: [181, 220] },
+                { title: "El camino de la salvación", range: [221, 260] },
+                { title: "Adquirir una percepción verdadera", range: [261, 365] },
+            ];
+
+            // --- Firebase State ---
+            let db, auth;
+            let progressDocRef;
+            let progressUnsubscribe;
+
+            // --- Firebase Initialization ---
+            async function initializeFirebase() {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEPpSc7FhJqg",
+                    authDomain: "web-miembros-ucdm.firebaseapp.com",
+                    projectId: "web-miembros-ucdm",
+                    storageBucket: "web-miembros-ucdm.appspot.com",
+                    messagingSenderId: "203515685884",
+                    appId: "1:203515685884:web:96a82944170c86171ba079",
+                    measurementId: "G-PWEQZRT39B"
+                };
+
+                try {
+                    const appId = 'ucdm-tracker-app';
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    setLogLevel('error');
+
+                    onAuthStateChanged(auth, user => {
+                        if (user) {
+                            const userId = user.uid;
+                            // Use the user's actual name for the title if available
+                            const userDocRef = doc(db, "users", userId);
+                            onSnapshot(userDocRef, (docSnap) => {
+                                if(docSnap.exists() && docSnap.data().name) {
+                                    userTitle.textContent = `El Progreso de ${docSnap.data().name}`;
+                                }
+                            });
+
+                            progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
+                            
+                            if (progressUnsubscribe) progressUnsubscribe();
+                            
+                            progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
+                                if (docSnap.exists()) {
+                                    const data = docSnap.data();
+                                    userName = data.userName || "Estudiante"; // Fallback
+                                    completedLessons = new Set(data.completed || []);
+                                    closeNameModal();
+                                    updateUI();
+                                } else {
+                                    showNameModal();
+                                }
+                                if (!lessonsAreRendered) {
+                                    fetchAndRenderLessons();
+                                }
+                            });
+                        }
+                    });
+
+                } catch (error) {
+                    console.error("Firebase Init Error:", error);
+                    groupsContainer.innerHTML = `<div class="text-center p-8 bg-red-100 border-l-4 border-red-500 text-red-700"><h3 class="font-bold">Error al Conectar</h3><p>No se pudo conectar con el servidor. Por favor, recarga la página.</p></div>`;
+                }
+            }
+
+            // --- UI Update Functions ---
+            function updateProgress() {
+                const completedCount = completedLessons.size;
+                const percentage = totalLessons > 0 ? (completedCount / totalLessons) * 100 : 0;
+                
+                progressText.textContent = `${completedCount} / ${totalLessons} Completadas`;
+                progressBar.style.width = `${percentage}%`;
+                progressPercent.textContent = `${Math.round(percentage)}%`;
+                
+                const markers = document.querySelectorAll('.marker');
+                markers.forEach(marker => {
+                    const markerPosition = parseFloat(marker.style.left);
+                    marker.classList.toggle('achieved', percentage >= markerPosition);
+                });
+
+                if (percentage >= 100) {
+                    achievementUnlocked.classList.remove('hidden');
+                } else {
+                    achievementUnlocked.classList.add('hidden');
+                }
+            }
+
+            function updateLessonItemsState() {
+                lessonList.forEach(lessonNumber => {
+                    const item = document.querySelector(`.lesson-item[data-lesson='${lessonNumber}']`);
+                    if (item) {
+                        item.classList.toggle('completed', completedLessons.has(lessonNumber));
+                    }
+                });
+            }
+
+            function updateUI() {
+                // The user's name is now set via the user document snapshot
+                updateProgress();
+                updateLessonItemsState();
+            }
+
+            // --- Sound Effect Logic ---
+            function initializeAudio() {
+                if (audioInitialized) return;
+                soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
+                audioInitialized = true;
+            }
+
+            function playCompletionSound() {
+                if (soundEffect) {
+                    soundEffect.currentTime = 0;
+                    soundEffect.play().catch(e => console.error("Error playing sound:", e));
+                }
+            }
+            
+            // --- Modal Logic ---
+            function openLessonModal(lessonNumber) {
+                initializeAudio(); 
+                currentLessonNumber = lessonNumber;
+                const lesson = allLessonsData.find(l => parseInt(l[0]) === lessonNumber);
+                
+                if (!lesson || lesson.length < 3) {
+                    modalLessonNum.textContent = `Error en Lección ${lessonNumber}`;
+                    modalPhrase.textContent = "Datos no encontrados.";
+                    modalExplanation.textContent = "No se pudo cargar el contenido de esta lección. Por favor, inténtalo de nuevo más tarde.";
+                    modalExerciseContainer.style.display = 'none';
+                    modalCompleteBtn.style.display = 'none';
+                } else {
+                    const [num, phrase, explanation, exercise] = lesson;
+                    modalLessonNum.textContent = `Lección ${num}`;
+                    modalPhrase.textContent = `“${phrase}”`;
+                    modalExplanation.textContent = explanation;
+
+                    if (exercise && exercise.trim() !== '') {
+                        modalExercise.textContent = exercise;
+                        modalExerciseContainer.style.display = 'block';
+                    } else {
+                        modalExerciseContainer.style.display = 'none';
+                    }
+                    
+                    modalCompleteBtn.style.display = 'block';
+                    modalCompleteBtn.textContent = completedLessons.has(lessonNumber) ? 'Marcar como pendiente' : 'Marcar como completada';
+                }
+                lessonModal.classList.add('show');
+            }
+
+            function closeLessonModal() { lessonModal.classList.remove('show'); }
+            function showNameModal() { nameModal.classList.add('show'); }
+            function closeNameModal() { nameModal.classList.remove('show'); }
+            function showConfirmation(message, onConfirm) {
+                confirmMessage.textContent = message;
+                confirmCallback = onConfirm;
+                confirmModal.classList.add('show');
+            }
+            function closeConfirmModal() {
+                confirmModal.classList.remove('show');
+                confirmCallback = null;
+            }
+
+            // --- Data Handling ---
+            async function handleMarkComplete() {
+                if (currentLessonNumber === null || !progressDocRef) return;
+                
+                const newCompletedLessons = new Set(completedLessons);
+                if (newCompletedLessons.has(currentLessonNumber)) {
+                    newCompletedLessons.delete(currentLessonNumber);
+                } else {
+                    newCompletedLessons.add(currentLessonNumber);
+                    playCompletionSound();
+                }
+                
+                try {
+                    await updateDoc(progressDocRef, { completed: [...newCompletedLessons] });
+                } catch (error) {
+                    console.error("Error updating progress:", error);
+                }
+                closeLessonModal();
+            }
+
+            async function handleNameSubmit() {
+                const newName = nameInput.value.trim();
+                if (newName && auth.currentUser) {
+                    userName = newName;
+                    try {
+                        const userDocRef = doc(db, "users", auth.currentUser.uid);
+                        await setDoc(userDocRef, { name: newName }, { merge: true });
+                        closeNameModal();
+                        updateUI();
+                    } catch (error) {
+                        console.error("Error saving name:", error);
+                    }
+                }
+            }
+
+            function handleResetProgress() {
+                showConfirmation('¿Estás seguro de que quieres reiniciar todo tu progreso? Esta acción no se puede deshacer.', async () => {
+                    if (progressDocRef) {
+                        try {
+                            await updateDoc(progressDocRef, { completed: [] });
+                        } catch (error) {
+                            console.error("Error resetting progress:", error);
+                        }
+                    }
+                });
+            }
+            
+            function parseCsvRow(row) {
+                const parts = [];
+                let current = '';
+                let inQuotes = false;
+                for (const char of row) {
+                    if (char === '"' && (current.length === 0 || current.slice(-1) !== '\\')) {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        parts.push(current.replace(/\\"/g, '"'));
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                parts.push(current.replace(/\\"/g, '"'));
+                return parts.map(item => item.trim().replace(/^"|"$/g, ''));
+            }
+
+            // --- Rendering Functions ---
+            function renderMarkers() {
+                progressMarkersContainer.innerHTML = '';
+                let accumulatedLessons = 0;
+                lessonGroups.forEach((group, index) => {
+                    const groupLessonCount = lessonList.filter(l => l >= group.range[0] && l <= group.range[1]).length;
+                    if (index < lessonGroups.length - 1) { 
+                        accumulatedLessons += groupLessonCount;
+                        const position = (accumulatedLessons / totalLessons) * 100;
+
+                        const markerWrapper = document.createElement('div');
+                        markerWrapper.className = 'marker';
+                        markerWrapper.style.left = `${position}%`;
+                        markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">Etapa ${index + 1}: ${group.title}</span>`;
+                        progressMarkersContainer.appendChild(markerWrapper);
+                    }
+                });
+                const finalTrophy = document.createElement('div');
+                finalTrophy.className = 'marker final-trophy';
+                finalTrophy.style.left = '100%';
+                
+                finalTrophy.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Premio al completar!</span>`;
+                progressMarkersContainer.appendChild(finalTrophy);
+            }
+
+            function renderGroups() {
+                groupsContainer.innerHTML = '';
+                lessonGroups.forEach(group => {
+                    const groupLessons = lessonList.filter(l => l >= group.range[0] && l <= group.range[1]);
+                    if (groupLessons.length === 0) return;
+
+                    const groupContainer = document.createElement('div');
+                    const title = document.createElement('h3');
+                    title.className = 'text-2xl font-bold group-title';
+                    title.textContent = group.title;
+                    groupContainer.appendChild(title);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'lesson-grid';
+                    
+                    groupLessons.forEach(lessonNumber => {
+                        const lessonItem = document.createElement('div');
+                        lessonItem.className = 'lesson-item';
+                        lessonItem.textContent = lessonNumber;
+                        lessonItem.dataset.lesson = lessonNumber;
+                        lessonItem.innerHTML += '<div class="line-through"></div>';
+                        
+                        if (completedLessons.has(lessonNumber)) {
+                            lessonItem.classList.add('completed');
+                        }
+                        
+                        lessonItem.addEventListener('click', () => openLessonModal(lessonNumber));
+                        grid.appendChild(lessonItem);
+                    });
+                    
+                    groupContainer.appendChild(grid);
+                    groupsContainer.appendChild(groupContainer);
+                });
+                lessonsAreRendered = true;
+            }
+            
+            // --- Initial Load ---
+            function fetchAndRenderLessons() {
+                groupsContainer.innerHTML = '<p class="text-center p-8">Cargando lecciones...</p>';
+                fetch(lessonCsvUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Network response was not ok: ${response.statusText}`);
+                        }
+                        return response.text();
+                    })
+                    .then(csvText => {
+                        allLessonsData = csvText.split(/\r?\n/).filter(row => row.trim() !== '').slice(1).map(row => parseCsvRow(row));
+                        renderGroups();
+                        renderMarkers();
+                        updateUI();
+                    })
+                    .catch(error => {
+                        console.error("Error loading lessons:", error);
+                        groupsContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar las lecciones. Asegúrate de que la hoja de cálculo de Google Sheets está publicada en la web como archivo CSV.</p>`;
+                    });
+            }
+
+            // --- Event Listeners ---
+            modalCloseBtn.addEventListener('click', closeLessonModal);
+            lessonModal.addEventListener('click', (e) => e.target === lessonModal && closeLessonModal());
+            modalCompleteBtn.addEventListener('click', handleMarkComplete);
+
+            nameSubmitBtn.addEventListener('click', handleNameSubmit);
+            nameInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleNameSubmit());
+
+            confirmYesBtn.addEventListener('click', () => {
+                if (confirmCallback) confirmCallback();
+                closeConfirmModal();
+            });
+            confirmNoBtn.addEventListener('click', closeConfirmModal);
+            confirmModal.addEventListener('click', (e) => e.target === confirmModal && closeConfirmModal());
+
+            resetBtn.addEventListener('click', handleResetProgress);
+            
+            // --- Start Application ---
+            initializeFirebase();
+        });
+    </script>
+<script type="module" src="./auth-guard.js"></script>
+</body>
+</html>

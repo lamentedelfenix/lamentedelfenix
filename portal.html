@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirigiendo...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .robot-container { width: 120px; height: 120px; }
+        .robot { animation: float 3s ease-in-out infinite; }
+        .robot-light { animation: blink-light 1.5s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes blink-light { 0%, 100% { fill: #00bcd4; filter: drop-shadow(0 0 5px #00d9ff); } 50% { fill: #ff8fd8; filter: drop-shadow(0 0 25px #ff559d); } }
+        .btn-pink { background-color: #e91e63; color: white; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; }
+        .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .delayed-button { opacity: 0; visibility: hidden; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .delayed-button.show { opacity: 1; visibility: visible; }
+        .loading-dots span { animation: blink-dots 1.4s infinite both; display: inline-block; }
+        .loading-dots span:nth-child(2) { animation-delay: .2s; }
+        .loading-dots span:nth-child(3) { animation-delay: .4s; }
+        @keyframes blink-dots { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+    </style>
+</head>
+<body class="antialiased text-center">
+    <div class="max-w-lg mx-auto p-4">
+        <header class="mb-8"><img src="https://i.imgur.com/F4JacEf.png" alt="Logo de la Membresía" class="w-full h-auto rounded-lg"></header>
+        <div class="flex flex-col items-center justify-center gap-4">
+            <div class="robot-container">
+                 <svg class="robot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="#0c2f5b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="50" y1="18" x2="50" y2="8" /><circle class="robot-light" cx="50" cy="5" r="4" fill="#00bcd4" stroke="none"/><rect x="30" y="18" width="40" height="30" rx="6" fill="#e0e0e0" /><rect x="25" y="28" width="5" height="10" rx="2" fill="#d1d5db"/><rect x="70" y="28" width="5" height="10" rx="2" fill="#d1d5db"/><circle cx="43" cy="33" r="4" fill="#ffffff" stroke-width="2"/><circle cx="57" cy="33" r="4" fill="#ffffff" stroke-width="2"/><rect x="46" y="48" width="8" height="4" fill="#d1d5db"/><rect x="20" y="52" width="60" height="40" rx="8" fill="#ffffff"/><line x1="25" y1="62" x2="75" y2="62" /><line x1="25" y1="72" x2="75" y2="72" /><circle cx="50" cy="80" r="4" fill="#e91e63" stroke-width="2" /></g></svg>
+            </div>
+            <p class="text-xl font-semibold">Preparando tu sesión<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></p>
+        </div>
+        <p class="mt-4 text-gray-600 mb-8">¡Todo listo para empezar a explorar!</p>
+        <button id="access-button" class="delayed-button inline-block btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">Acceder ahora a la Plataforma</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accessButton = document.getElementById('access-button');
+            const notebookUrl = 'https://notebooklm.google.com/notebook/a89fe70a-c464-41ad-93f6-23e27aac8f64?authuser=1';
+            setTimeout(() => { accessButton.classList.add('show'); }, 3000);
+            accessButton.addEventListener('click', () => { window.open(notebookUrl, '_top'); });
+        });
+    </script>
+</body>
+</html>

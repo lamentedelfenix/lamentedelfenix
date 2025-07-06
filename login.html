@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso de Miembros - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fbf5e2;
+            color: #0c2f5b;
+        }
+        .form-container {
+            background-color: white;
+            border: 1px solid #e0d9c6;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .form-input {
+            border: 2px solid #e0d9c6;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #00bcd4;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+        }
+        .btn-submit {
+            background-color: #e91e63;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-submit:hover {
+            background-color: #c2185b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .error-message {
+            background-color: #ffcdd2;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md">
+        <header class="mb-8 text-center">
+            <a href="./index.html"><img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg"></a>
+        </header>
+
+        <div id="auth-form-container" class="form-container p-8 rounded-lg">
+            <h2 id="form-title" class="text-2xl font-bold text-center mb-6">Crear Cuenta</h2>
+            
+            <div id="error-box" class="error-message p-3 rounded-md mb-6 hidden"></div>
+
+            <form id="auth-form">
+                <div class="mb-4">
+                    <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
+                    <input type="email" id="email" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block font-semibold mb-1">Contraseña</label>
+                    <input type="password" id="password" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <div class="mb-6" id="confirm-password-container">
+                    <label for="confirm-password" class="block font-semibold mb-1">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-password" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <button type="submit" id="submit-btn" class="btn-submit w-full font-bold py-3 rounded-lg">
+                    Registrarse
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-gray-600 mt-6">
+                <span id="prompt-text">¿Ya tienes una cuenta?</span>
+                <button id="toggle-form-btn" class="font-bold text-pink-600 hover:underline">Inicia sesión</button>
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEPpSc7FhJqg",
+            authDomain: "web-miembros-ucdm.firebaseapp.com",
+            projectId: "web-miembros-ucdm",
+            storageBucket: "web-miembros-ucdm.appspot.com",
+            messagingSenderId: "203515685884",
+            appId: "1:203515685884:web:96a82944170c86171ba079",
+            measurementId: "G-PWEQZRT39B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const formContainer = document.getElementById('auth-form-container');
+        const formTitle = document.getElementById('form-title');
+        const authForm = document.getElementById('auth-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordContainer = document.getElementById('confirm-password-container');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const submitBtn = document.getElementById('submit-btn');
+        const toggleFormBtn = document.getElementById('toggle-form-btn');
+        const promptText = document.getElementById('prompt-text');
+        const errorBox = document.getElementById('error-box');
+
+        let isLoginMode = false; // Start in "Sign Up" mode by default
+
+        // Redirect if already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = './miembros.html'; // Redirect to members area
+            }
+        });
+
+        function toggleMode() {
+            isLoginMode = !isLoginMode;
+            errorBox.classList.add('hidden');
+            authForm.reset(); // Clear form fields
+            if (isLoginMode) {
+                formTitle.textContent = 'Iniciar Sesión';
+                submitBtn.textContent = 'Iniciar Sesión';
+                promptText.textContent = '¿Aún no tienes cuenta?';
+                toggleFormBtn.textContent = 'Regístrate aquí';
+                confirmPasswordContainer.classList.add('hidden');
+                confirmPasswordInput.required = false;
+            } else {
+                formTitle.textContent = 'Crear Cuenta';
+                submitBtn.textContent = 'Registrarse';
+                promptText.textContent = '¿Ya tienes una cuenta?';
+                toggleFormBtn.textContent = 'Inicia sesión';
+                confirmPasswordContainer.classList.remove('hidden');
+                confirmPasswordInput.required = true;
+            }
+        }
+
+        function showAuthError(errorCode) {
+            let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
+            switch (errorCode) {
+                case 'auth/wrong-password':
+                    message = 'La contraseña es incorrecta. Por favor, inténtalo de nuevo.';
+                    break;
+                case 'auth/user-not-found':
+                    message = 'No se ha encontrado ninguna cuenta con este correo electrónico.';
+                    break;
+                case 'auth/email-already-in-use':
+                    message = 'Este correo electrónico ya está registrado. Por favor, inicia sesión.';
+                    break;
+                case 'auth/weak-password':
+                    message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
+                    break;
+                case 'auth/invalid-email':
+                    message = 'El formato del correo electrónico no es válido.';
+                    break;
+                case 'auth/password-mismatch':
+                    message = 'Las contraseñas no coinciden.';
+                    break;
+            }
+            errorBox.textContent = message;
+            errorBox.classList.remove('hidden');
+        }
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            errorBox.classList.add('hidden');
+
+            try {
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    const confirmPassword = confirmPasswordInput.value;
+                    if (password !== confirmPassword) {
+                        showAuthError('auth/password-mismatch');
+                        return;
+                    }
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    const userDocRef = doc(db, "users", user.uid);
+                    await setDoc(userDocRef, {
+                        email: user.email,
+                        createdAt: new Date()
+                    });
+                }
+                // onAuthStateChanged will handle the redirect
+            } catch (error) {
+                showAuthError(error.code);
+                console.error("Authentication error:", error);
+            }
+        });
+
+        toggleFormBtn.addEventListener('click', toggleMode);
+
+    </script>
+</body>
+</html>
