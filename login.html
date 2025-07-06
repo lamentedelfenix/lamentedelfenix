@@ -183,27 +183,28 @@
             errorBox.classList.remove('hidden');
         }
 
-        // --- NUEVA FUNCIÓN PARA ENVIAR EL EMAIL ---
+        // --- FUNCIÓN DE ENVÍO DE EMAIL CON DEPURACIÓN ---
         async function sendRegistrationEmail(name, email) {
-            // URL del script de Google ya insertada
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwtUUvYhG6RMqcUZzhO4IHcDgNUpx_SLDlytigMOBEttA7Zy-CZFft23x67Jy1eNb1o7w/exec"; 
             
+            console.log("Paso 1: Intentando enviar email a:", email); // Log de depuración 1
+            
             try {
-                await fetch(scriptUrl, {
+                const response = await fetch(scriptUrl, {
                     method: 'POST',
-                    mode: 'no-cors', // Importante para evitar errores de CORS
+                    mode: 'no-cors', 
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        type: 'user_registration', // Un identificador para tu script
+                        type: 'user_registration',
                         name: name,
                         email: email
                     })
                 });
+                console.log("Paso 2: Llamada a fetch completada. El script debería haberse ejecutado."); // Log de depuración 2
             } catch (error) {
-                // No mostramos el error al usuario, pero lo registramos en la consola
-                console.error('Error al enviar el email de registro:', error);
+                console.error('Paso 2 - ERROR: La llamada fetch ha fallado.', error); // Log de depuración 3
             }
         }
 
@@ -233,8 +234,7 @@
                         createdAt: new Date()
                     });
 
-                    // --- LLAMADA A LA NUEVA FUNCIÓN ---
-                    // Después de registrar al usuario, enviamos el email.
+                    // Llamada a la función de envío de email
                     await sendRegistrationEmail(name, email);
                 }
             } catch (error) {
