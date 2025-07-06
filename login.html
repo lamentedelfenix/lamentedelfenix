@@ -90,8 +90,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+        
         const firebaseConfig = {
             apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
             authDomain: "web-miembros-ucdm.firebaseapp.com",
@@ -104,7 +103,6 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         const nameContainer = document.getElementById('name-container');
         const nameInput = document.getElementById('name');
@@ -165,15 +163,20 @@
             errorBox.classList.remove('hidden');
         }
 
-        function sendRegistrationEmail(name, email) {
+        function triggerServerSideActions(uid, name, email) {
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwtUUvYhG6RMqcUZzhO4IHcDgNUpx_SLDlytigMOBEttA7Zy-CZFft23x67Jy1eNb1o7w/exec"; 
             fetch(scriptUrl, {
                 method: 'POST',
                 mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'user_registration', name: name, email: email })
+                body: JSON.stringify({ 
+                    type: 'user_registration', 
+                    uid: uid,
+                    name: name, 
+                    email: email 
+                })
             }).catch(error => {
-                console.error('Error al iniciar la solicitud de envío de email:', error);
+                console.error('Error al iniciar la solicitud de acciones de servidor:', error);
             });
         }
 
@@ -194,19 +197,14 @@
                         showAuthError('auth/password-mismatch');
                         return;
                     }
+                    // 1. Crear el usuario en Authentication
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
                     
-                    // --- CAMBIO CLAVE: LÍNEAS TEMPORALMENTE DESACTIVADAS ---
-                    // const userDocRef = doc(db, "users", user.uid);
-                    // await setDoc(userDocRef, {
-                    //     name: name,
-                    //     email: user.email,
-                    //     createdAt: serverTimestamp()
-                    // });
+                    // 2. Disparar las acciones en segundo plano (guardar en BD y enviar email)
+                    triggerServerSideActions(user.uid, name, email);
 
-                    sendRegistrationEmail(name, email);
-
+                    // 3. Redirigir inmediatamente
                     window.location.href = './miembros.html';
                 }
             } catch (error) {
