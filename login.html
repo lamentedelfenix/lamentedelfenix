@@ -165,18 +165,20 @@
             errorBox.classList.remove('hidden');
         }
 
-        async function sendRegistrationEmail(name, email) {
+        // CAMBIO 1: Eliminamos 'async' porque es una función de "disparar y olvidar"
+        function sendRegistrationEmail(name, email) {
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwtUUvYhG6RMqcUZzhO4IHcDgNUpx_SLDlytigMOBEttA7Zy-CZFft23x67Jy1eNb1o7w/exec"; 
-            try {
-                await fetch(scriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'user_registration', name: name, email: email })
-                });
-            } catch (error) {
-                console.error('Error al intentar enviar el email de registro:', error);
-            }
+            
+            // No usamos 'await' aquí
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'user_registration', name: name, email: email })
+            }).catch(error => {
+                // Aunque no esperamos la respuesta, sí podemos capturar si la petición falla al iniciarse
+                console.error('Error al iniciar la solicitud de envío de email:', error);
+            });
         }
 
         authForm.addEventListener('submit', async (e) => {
@@ -206,7 +208,8 @@
                         createdAt: new Date()
                     });
 
-                    await sendRegistrationEmail(name, email);
+                    // CAMBIO 2: Eliminamos 'await' para no bloquear la redirección
+                    sendRegistrationEmail(name, email);
 
                     window.location.href = './miembros.html';
                 }
