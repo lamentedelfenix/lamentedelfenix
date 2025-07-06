@@ -90,7 +90,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // CAMBIO 1: Importar serverTimestamp
         import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -198,13 +197,13 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
                     
-                    const userDocRef = doc(db, "users", user.uid);
-                    // CAMBIO 2: Usar serverTimestamp() en lugar de new Date()
-                    await setDoc(userDocRef, {
-                        name: name,
-                        email: user.email,
-                        createdAt: serverTimestamp()
-                    });
+                    // --- CAMBIO CLAVE: LÍNEAS TEMPORALMENTE DESACTIVADAS ---
+                    // const userDocRef = doc(db, "users", user.uid);
+                    // await setDoc(userDocRef, {
+                    //     name: name,
+                    //     email: user.email,
+                    //     createdAt: serverTimestamp()
+                    // });
 
                     sendRegistrationEmail(name, email);
 
