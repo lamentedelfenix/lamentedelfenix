@@ -90,7 +90,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // CAMBIO 1: Importar serverTimestamp
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
@@ -165,18 +166,14 @@
             errorBox.classList.remove('hidden');
         }
 
-        // CAMBIO 1: Eliminamos 'async' porque es una función de "disparar y olvidar"
         function sendRegistrationEmail(name, email) {
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwtUUvYhG6RMqcUZzhO4IHcDgNUpx_SLDlytigMOBEttA7Zy-CZFft23x67Jy1eNb1o7w/exec"; 
-            
-            // No usamos 'await' aquí
             fetch(scriptUrl, {
                 method: 'POST',
                 mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ type: 'user_registration', name: name, email: email })
             }).catch(error => {
-                // Aunque no esperamos la respuesta, sí podemos capturar si la petición falla al iniciarse
                 console.error('Error al iniciar la solicitud de envío de email:', error);
             });
         }
@@ -202,13 +199,13 @@
                     const user = userCredential.user;
                     
                     const userDocRef = doc(db, "users", user.uid);
+                    // CAMBIO 2: Usar serverTimestamp() en lugar de new Date()
                     await setDoc(userDocRef, {
                         name: name,
                         email: user.email,
-                        createdAt: new Date()
+                        createdAt: serverTimestamp()
                     });
 
-                    // CAMBIO 2: Eliminamos 'await' para no bloquear la redirección
                     sendRegistrationEmail(name, email);
 
                     window.location.href = './miembros.html';
