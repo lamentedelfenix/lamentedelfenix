@@ -286,7 +286,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
@@ -300,22 +299,16 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         const welcomeTitle = document.getElementById('welcome-title');
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDocRef = doc(db, "users", user.uid);
-                try {
-                    const docSnap = await getDoc(userDocRef);
-                    if (docSnap.exists() && docSnap.data().name) {
-                        welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${docSnap.data().name}</span>`;
-                    } else {
-                        welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
-                    }
-                } catch (error) {
-                    console.error("Error al obtener el nombre del usuario:", error);
+                // CAMBIO CLAVE: Lee el nombre directamente del perfil de autenticación.
+                if (user.displayName) {
+                    welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.displayName}</span>`;
+                } else {
+                    // Si no hay nombre en el perfil (poco probable), muestra el email.
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
             }
@@ -392,12 +385,42 @@
 ```
 
 ---
-### Pasos Finales
+### 2. Personalizar los Emails de Firebase
 
-1.  **Reemplaza** el contenido de tus archivos `login.html` y `miembros.html` con estos dos bloques de código.
-2.  **Sube** los dos archivos actualizados a GitHub.
-3.  **Espera** a que Cloudflare despliegue la nueva versión.
-4.  **Borra** el usuario de prueba de Firebase Authentication y de la base de datos Firestore para hacer una prueba limpia.
-5.  **Regístrate** de nuevo en una ventana de incógnito.
+Tu segunda pregunta es excelente. Sí, puedes y debes personalizar los emails que Firebase envía (como el de restablecer contraseña) para que estén en español y con tu marca.
 
-Ahora, el flujo debería ser: te registras, se te redirige inmediatamente al área de miembros, y el saludo ya debería mostrar tu nombre. El email de confirmación llegará unos segundos despu
+He creado una guía paso a paso para que puedas hacerlo fácilmente.
+
+
+## Cómo Personalizar los Emails de Firebase
+
+Firebase te permite cambiar el idioma, el contenido y el remitente de los correos electrónicos automáticos que envía a tus usuarios. Sigue estos pasos:
+
+### Paso 1: Ve a la Sección de Plantillas
+
+1.  Abre tu proyecto en la [**Consola de Firebase**](https://console.firebase.google.com/).
+2.  En el menú de la izquierda, ve a **Compilación > Authentication**.
+3.  Haz clic en la pestaña **"Templates"** (Plantillas).
+
+### Paso 2: Selecciona la Plantilla a Editar
+
+Verás una lista de los diferentes tipos de email que Firebase puede enviar. Para tu caso, el más importante es:
+* **Restablecimiento de contraseña** (Password Reset)
+
+Haz clic en el icono del lápiz (✏️) al lado de la plantilla que quieres editar.
+
+### Paso 3: Personaliza el Contenido
+
+Se abrirá un editor donde puedes modificar:
+
+1.  **Idioma:** Arriba del todo, asegúrate de que el idioma esté configurado en **Español (es)**.
+2.  **Asunto (Subject):** Cambia el asunto por algo más personal, como `Restablece tu contraseña en La Mente del Fénix`.
+3.  **Cuerpo del Mensaje:** Edita el texto del email. Puedes usar variables como `%DISPLAY_NAME%` para el nombre del usuario y `%APP_NAME%` para el nombre de tu web.
+4.  **Nombre del Remitente:** En la parte superior, verás un campo para el "Nombre del remitente". Escribe `La Mente del Fénix` o `Darío Arrigazzi`.
+5.  **Correo de respuesta:** Asegúrate de que el "Correo electrónico de respuesta" sea tu email de contacto (`lamentedelfenix@gmail.com`).
+
+### Paso 4: Guarda los Cambios
+
+Cuando estés satisfecho con los cambios, haz clic en el botón **"Guardar"**.
+
+A partir de ese momento, todos los emails de restablecimiento de contraseña que se envíen a tus usuarios estarán en español y con tu texto personaliza
