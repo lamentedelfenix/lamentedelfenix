@@ -44,6 +44,11 @@
             color: #c62828;
             border-left: 4px solid #c62828;
         }
+        .success-message {
+            background-color: #d1f2eb;
+            color: #0d6e5a;
+            border-left: 4px solid #10b981;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -56,40 +61,45 @@
         <div id="auth-form-container" class="form-container p-8 rounded-lg">
             <h2 id="form-title" class="text-2xl font-bold text-center mb-6">Crear Cuenta</h2>
             
-            <div id="error-box" class="error-message p-3 rounded-md mb-6 hidden"></div>
+            <div id="message-box" class="p-3 rounded-md mb-6 hidden"></div>
 
             <form id="auth-form">
                 <div class="mb-4" id="name-container">
                     <label for="name" class="block font-semibold mb-1">Nombre</label>
-                    <input type="text" id="name" class="form-input w-full p-2 rounded-md" required>
+                    <input type="text" id="name" class="form-input w-full p-2 rounded-md">
                 </div>
                 <div class="mb-4">
                     <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
                     <input type="email" id="email" class="form-input w-full p-2 rounded-md" required>
                 </div>
-                <div class="mb-6">
+                <div class="mb-6" id="password-container">
                     <label for="password" class="block font-semibold mb-1">Contraseña</label>
-                    <input type="password" id="password" class="form-input w-full p-2 rounded-md" required>
+                    <input type="password" id="password" class="form-input w-full p-2 rounded-md">
                 </div>
                 <div class="mb-6" id="confirm-password-container">
                     <label for="confirm-password" class="block font-semibold mb-1">Confirmar Contraseña</label>
-                    <input type="password" id="confirm-password" class="form-input w-full p-2 rounded-md" required>
+                    <input type="password" id="confirm-password" class="form-input w-full p-2 rounded-md">
                 </div>
                 <button type="submit" id="submit-btn" class="btn-submit w-full font-bold py-3 rounded-lg">
                     Registrarse
                 </button>
             </form>
 
-            <p class="text-center text-sm text-gray-600 mt-6">
-                <span id="prompt-text">¿Ya tienes una cuenta?</span>
-                <button id="toggle-form-btn" class="font-bold text-pink-600 hover:underline">Inicia sesión</button>
-            </p>
+            <div class="text-center text-sm text-gray-600 mt-6">
+                <p id="prompt-text-container">
+                    <span id="prompt-text">¿Ya tienes una cuenta?</span>
+                    <button id="toggle-form-btn" class="font-bold text-pink-600 hover:underline">Inicia sesión</button>
+                </p>
+                <p id="forgot-password-container" class="hidden">
+                    <button id="forgot-password-btn" class="font-bold text-gray-500 hover:underline">¿Has olvidado tu contraseña?</button>
+                </p>
+            </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
@@ -106,6 +116,7 @@
 
         const nameContainer = document.getElementById('name-container');
         const nameInput = document.getElementById('name');
+        const passwordContainer = document.getElementById('password-container');
         const formTitle = document.getElementById('form-title');
         const authForm = document.getElementById('auth-form');
         const emailInput = document.getElementById('email');
@@ -114,53 +125,75 @@
         const confirmPasswordInput = document.getElementById('confirm-password');
         const submitBtn = document.getElementById('submit-btn');
         const toggleFormBtn = document.getElementById('toggle-form-btn');
+        const promptTextContainer = document.getElementById('prompt-text-container');
         const promptText = document.getElementById('prompt-text');
-        const errorBox = document.getElementById('error-box');
+        const forgotPasswordContainer = document.getElementById('forgot-password-container');
+        const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+        const messageBox = document.getElementById('message-box');
 
-        let isLoginMode = false;
-        
-        function toggleMode() {
-            isLoginMode = !isLoginMode;
-            errorBox.classList.add('hidden');
-            authForm.reset(); 
-            if (isLoginMode) {
+        let currentMode = 'register';
+
+        function setMode(mode) {
+            currentMode = mode;
+            messageBox.classList.add('hidden');
+            authForm.reset();
+
+            nameInput.required = (mode === 'register');
+            passwordInput.required = (mode !== 'reset');
+            confirmPasswordInput.required = (mode === 'register');
+
+            nameContainer.style.display = (mode === 'register') ? 'block' : 'none';
+            passwordContainer.style.display = (mode !== 'reset') ? 'block' : 'none';
+            confirmPasswordContainer.style.display = (mode === 'register') ? 'block' : 'none';
+            forgotPasswordContainer.style.display = (mode === 'login') ? 'block' : 'none';
+
+            if (mode === 'login') {
                 formTitle.textContent = 'Iniciar Sesión';
                 submitBtn.textContent = 'Iniciar Sesión';
                 promptText.textContent = '¿Aún no tienes cuenta?';
                 toggleFormBtn.textContent = 'Regístrate aquí';
-                confirmPasswordContainer.classList.add('hidden');
-                confirmPasswordInput.required = false;
-                nameContainer.classList.add('hidden');
-                nameInput.required = false;
-            } else {
+            } else if (mode === 'register') {
                 formTitle.textContent = 'Crear Cuenta';
                 submitBtn.textContent = 'Registrarse';
                 promptText.textContent = '¿Ya tienes una cuenta?';
                 toggleFormBtn.textContent = 'Inicia sesión';
-                confirmPasswordContainer.classList.remove('hidden');
-                confirmPasswordInput.required = true;
-                nameContainer.classList.remove('hidden');
-                nameInput.required = true;
+            } else if (mode === 'reset') {
+                formTitle.textContent = 'Restablecer Contraseña';
+                submitBtn.textContent = 'Enviar enlace';
+                promptText.textContent = '¿Recuerdas tu contraseña?';
+                toggleFormBtn.textContent = 'Inicia sesión';
             }
         }
         
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('mode') === 'login') {
-            toggleMode();
+            setMode('login');
+        } else {
+            setMode('register');
+        }
+
+        function showMessage(text, type = 'error') {
+            messageBox.textContent = text;
+            messageBox.className = 'p-3 rounded-md mb-6'; 
+            if (type === 'error') {
+                messageBox.classList.add('error-message');
+            } else {
+                messageBox.classList.add('success-message');
+            }
+            messageBox.classList.remove('hidden');
         }
 
         function showAuthError(errorCode) {
             let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
             switch (errorCode) {
-                case 'auth/wrong-password': message = 'La contraseña es incorrecta. Por favor, inténtalo de nuevo.'; break;
+                case 'auth/wrong-password': message = 'La contraseña es incorrecta.'; break;
                 case 'auth/user-not-found': message = 'No se ha encontrado ninguna cuenta con este correo electrónico.'; break;
                 case 'auth/email-already-in-use': message = 'Este correo electrónico ya está registrado. Por favor, inicia sesión.'; break;
                 case 'auth/weak-password': message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.'; break;
                 case 'auth/invalid-email': message = 'El formato del correo electrónico no es válido.'; break;
                 case 'auth/password-mismatch': message = 'Las contraseñas no coinciden.'; break;
             }
-            errorBox.textContent = message;
-            errorBox.classList.remove('hidden');
+            showMessage(message, 'error');
         }
 
         function triggerServerSideActions(uid, name, email) {
@@ -169,15 +202,8 @@
                 method: 'POST',
                 mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    type: 'user_registration', 
-                    uid: uid,
-                    name: name, 
-                    email: email 
-                })
-            }).catch(error => {
-                console.error('Error al iniciar la solicitud de acciones de servidor:', error);
-            });
+                body: JSON.stringify({ type: 'user_registration', uid: uid, name: name, email: email })
+            }).catch(error => console.error('Error al iniciar la solicitud de acciones de servidor:', error));
         }
 
         authForm.addEventListener('submit', async (e) => {
@@ -185,27 +211,25 @@
             const email = emailInput.value;
             const password = passwordInput.value;
             const name = nameInput.value;
-            errorBox.classList.add('hidden');
+            messageBox.classList.add('hidden');
 
             try {
-                if (isLoginMode) {
+                if (currentMode === 'login') {
                     await signInWithEmailAndPassword(auth, email, password);
                     window.location.href = './miembros.html';
-                } else {
+                } else if (currentMode === 'register') {
                     const confirmPassword = confirmPasswordInput.value;
                     if (password !== confirmPassword) {
                         showAuthError('auth/password-mismatch');
                         return;
                     }
-                    // 1. Crear el usuario en Authentication
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
-                    
-                    // 2. Disparar las acciones en segundo plano (guardar en BD y enviar email)
                     triggerServerSideActions(user.uid, name, email);
-
-                    // 3. Redirigir inmediatamente
                     window.location.href = './miembros.html';
+                } else if (currentMode === 'reset') {
+                    await sendPasswordResetEmail(auth, email);
+                    showMessage('¡Hecho! Revisa tu correo electrónico para ver el enlace y restablecer tu contraseña.', 'success');
                 }
             } catch (error) {
                 showAuthError(error.code);
@@ -213,9 +237,16 @@
             }
         });
 
-        toggleFormBtn.addEventListener('click', toggleMode);
+        toggleFormBtn.addEventListener('click', () => {
+            if (currentMode === 'login' || currentMode === 'reset') {
+                setMode('register');
+            } else {
+                setMode('login');
+            }
+        });
+
+        forgotPasswordBtn.addEventListener('click', () => setMode('reset'));
 
     </script>
 </body>
 </html>
-

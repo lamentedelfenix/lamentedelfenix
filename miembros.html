@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Miembros - La Mente del Fénix</title>
-    <!-- Tailwind CSS for styling -->
+    <!-- Los estilos y enlaces CSS no cambian -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Estilos consistentes con la web pública */
+        /* Estilos CSS (sin cambios) */
         body{
             font-family: 'Montserrat', sans-serif;
             background-color: #fbf5e2;
             color: #0c2f5b;
-            transition: opacity 0.3s ease-in-out; /* Added for smooth fade-in */
+            transition: opacity 0.3s ease-in-out;
         }
         .card {
             background-color: #ffffff;
@@ -56,9 +55,7 @@
         .btn-cyan { background-color: #00bcd4; color: white; }
         .btn-whatsapp { background-color: #25D366; color: white; }
         .btn-telegram { background-color: #0088cc; color: white; }
-        
         .btn:hover { filter: brightness(110%); }
-        
         .btn-pink::before, .btn-cyan::before {
             content: '';
             position: absolute;
@@ -74,10 +71,8 @@
         }
         .btn-pink:hover { color: #e91e63; }
         .btn-cyan:hover { color: #00bcd4; }
-
         .btn-pink:hover::before { border: 2px solid #e91e63; transform: scaleX(1); transform-origin: left; }
         .btn-cyan:hover::before { border: 2px solid #00bcd4; transform: scaleX(1); transform-origin: left; }
-        
         .text-brand-green { color: #00bcd4; }
         .text-brand-pink { color: #e91e63; }
         .youtube-container {
@@ -101,7 +96,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shine { 0%, 100% { filter: drop-shadow(0 0 0px gold); } 50% { filter: drop-shadow(0 0 20px gold); } }
         .initially-hidden { opacity: 0; }
-        
         #bookmark-tooltip {
             position: fixed;
             bottom: 2rem;
@@ -129,7 +123,6 @@
             0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #facc15); }
             50% { transform: scale(1.2); filter: drop-shadow(0 0 8px #fde047); }
         }
-        /* Accordion styles */
         .accordion-toggle {
             transition: background-color 0.3s ease;
         }
@@ -145,7 +138,6 @@
         .accordion-toggle i.fa-chevron-down {
             transition: transform 0.3s ease;
         }
-        /* Section Divider - Groove with Softer Glow Effect */
         .section-divider {
             border: 0;
             height: 6px;
@@ -153,9 +145,8 @@
             border-radius: 6px;
             border-top: 2px solid rgba(0, 0, 0, 0.25);
             border-bottom: 2px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 25px 0px rgba(255, 255, 255, 0.7); /* Increased blur radius */
+            box-shadow: 0 10px 25px 0px rgba(255, 255, 255, 0.7);
         }
-        /* Contact Link Animation */
         .contact-link {
             position: relative;
             transition: color 0.3s ease-out;
@@ -182,40 +173,34 @@
         .contact-link:hover > * {
             color: #00bcd4 !important;
         }
-
     </style>
 </head>
-<!-- PASO 1: Añadir el estilo para ocultar la página temporalmente -->
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
 
     <div class="max-w-4xl mx-auto p-4 md:p-8">
         <header class="mb-16 flex justify-between items-center">
             <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full max-w-lg h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
-            <!-- Botón para cerrar sesión -->
             <button onclick="handleLogout()" class="ml-4 btn btn-pink font-bold py-2 px-4 rounded-lg text-sm flex-shrink-0">
                 <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
             </button>
         </header>
 
         <section class="text-center mb-32 md:mb-40">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4">Bienvenido/a, <span id="user-email" class="text-brand-pink"></span></h1>
+            <h1 id="welcome-title" class="text-5xl md:text-6xl font-bold mb-4">Bienvenido/a...</h1>
             <p class="text-lg text-gray-700 max-w-2xl mx-auto">
                 Este es nuestro centro de operaciones. ¡Guarda esta página en tus favoritos!
                 <button id="bookmark-btn" class="ml-2 text-yellow-400 text-xl"><i class="fas fa-star"></i></button>
             </p>
         </section>
         
-        <!-- Calendar Section -->
+        <!-- El resto del HTML no cambia -->
         <section>
             <h2 class="text-3xl font-bold mb-6 text-center">🗓️ Calendario de Mentorías</h2>
             <div class="card rounded-lg overflow-hidden p-0" style="max-height: 400px;">
                  <iframe src="https://calendar.google.com/calendar/embed?height=400&wkst=1&ctz=Europe%2FMadrid&showPrint=0&src=MDhiYzQxOGMzMTA0Y2VhYTdkODhlNjI2YWVkODQyZTU5OGM5MDViZDA3YjkzYTMzNGFkNTM1M2ZiYWJhOWE4M0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23c0ca33&mode=AGENDA" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
             </div>
         </section>
-
         <hr class="my-28 section-divider">
-
-        <!-- Daily Lesson Section -->
         <section>
             <h2 class="text-3xl font-bold mb-6 text-center">📚 Lección del Día</h2>
             <div id="daily-lesson-container" class="card message-card p-6 rounded-lg text-center">
@@ -226,10 +211,7 @@
                 <button id="new-lesson-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">Mostrar otra lección</button>
             </div>
         </section>
-
         <hr class="my-28 section-divider">
-
-        <!-- Main Access Link -->
         <section>
              <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramienta de Estudio</h2>
              <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center">
@@ -238,10 +220,7 @@
                  <div class="inline-block btn btn-cyan font-bold py-2 px-4 rounded-lg">Cómo Empezar</div>
             </a>
         </section>
-
         <hr class="my-28 section-divider">
-
-        <!-- Accordion Sections -->
         <div class="space-y-4">
             <!-- Accordion 1: Comunidad -->
             <div>
@@ -286,8 +265,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Contact Section -->
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
              <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
@@ -301,17 +278,51 @@
                  </a>
              </div>
         </footer>
-
     </div>
-    
-    <!-- Bookmark Tooltip -->
     <div id="bookmark-tooltip">
         Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Ctrl</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
+            authDomain: "web-miembros-ucdm.firebaseapp.com",
+            projectId: "web-miembros-ucdm",
+            storageBucket: "web-miembros-ucdm.appspot.com",
+            messagingSenderId: "203515685884",
+            appId: "1:203515685884:web:96a82944170c86171ba079",
+            measurementId: "G-PWEQZRT39B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const welcomeTitle = document.getElementById('welcome-title');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(db, "users", user.uid);
+                try {
+                    const docSnap = await getDoc(userDocRef);
+                    if (docSnap.exists() && docSnap.data().name) {
+                        welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${docSnap.data().name}</span>`;
+                    } else {
+                        welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
+                    }
+                } catch (error) {
+                    console.error("Error al obtener el nombre del usuario:", error);
+                    welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
+                }
+            }
+        });
+
+        // El resto del script de miembros.html (lección del día, etc.) no cambia
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Existing variables and functions ---
             let allLessons = [];
             const lessonContainer = document.getElementById('daily-lesson-container');
             const newLessonBtn = document.getElementById('new-lesson-btn');
@@ -347,7 +358,6 @@
                 }, 3000);
             });
 
-            // --- REVISED Accordion Logic ---
             const accordions = document.querySelectorAll('.accordion-toggle');
             accordions.forEach(accordion => {
                 accordion.addEventListener('click', () => {
@@ -355,7 +365,6 @@
                     const icon = accordion.querySelector('i.fa-chevron-down');
                     const isActive = accordion.classList.contains('active');
 
-                    // Close all other accordions
                     accordions.forEach(otherAccordion => {
                         if (otherAccordion !== accordion) {
                             otherAccordion.classList.remove('active');
@@ -364,7 +373,6 @@
                         }
                     });
 
-                    // Toggle the clicked accordion
                     if (isActive) {
                         accordion.classList.remove('active');
                         content.style.maxHeight = null;
@@ -378,7 +386,18 @@
             });
         });
     </script>
-<!-- PASO 2: Añadir el script del guardián al final -->
 <script type="module" src="./auth-guard.js"></script>
 </body>
 </html>
+```
+
+---
+### Pasos Finales
+
+1.  **Reemplaza** el contenido de tus archivos `login.html` y `miembros.html` con estos dos bloques de código.
+2.  **Sube** los dos archivos actualizados a GitHub.
+3.  **Espera** a que Cloudflare despliegue la nueva versión.
+4.  **Borra** el usuario de prueba de Firebase Authentication y de la base de datos Firestore para hacer una prueba limpia.
+5.  **Regístrate** de nuevo en una ventana de incógnito.
+
+Ahora, el flujo debería ser: te registras, se te redirige inmediatamente al área de miembros, y el saludo ya debería mostrar tu nombre. El email de confirmación llegará unos segundos despu
