@@ -19,7 +19,7 @@ const auth = getAuth(app);
 window.handleLogout = function() {
     signOut(auth).then(() => {
         console.log('Usuario ha cerrado sesión');
-        window.location.href = './login.html';
+        window.location.href = './login.html?mode=login';
     }).catch((error) => {
         console.error('Error al cerrar sesión', error);
     });

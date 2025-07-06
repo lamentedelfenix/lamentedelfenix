@@ -116,6 +116,11 @@
 
         let isLoginMode = false; // Start in "Sign Up" mode by default
 
+        // Comprobar si la URL indica que se debe mostrar el modo de login
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'login') {
+        toggleMode(); // Llama a la función que cambia al modo de inicio de sesión
+            }
         // Redirect if already logged in
         onAuthStateChanged(auth, (user) => {
             if (user) {
