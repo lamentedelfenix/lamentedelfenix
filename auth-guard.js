@@ -3,14 +3,14 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 
 // Esta configuración DEBE ser la misma que la de tu página de login.html
 const firebaseConfig = {
-    apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEPpSc7FhJqg",
-    authDomain: "web-miembros-ucdm.firebaseapp.com",
-    projectId: "web-miembros-ucdm",
-    storageBucket: "web-miembros-ucdm.appspot.com",
-    messagingSenderId: "203515685884",
-    appId: "1:203515685884:web:96a82944170c86171ba079",
-    measurementId: "G-PWEQZRT39B"
-};
+            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
+            authDomain: "web-miembros-ucdm.firebaseapp.com",
+            projectId: "web-miembros-ucdm",
+            storageBucket: "web-miembros-ucdm.appspot.com",
+            messagingSenderId: "203515685884",
+            appId: "1:203515685884:web:96a82944170c86171ba079",
+            measurementId: "G-PWEQZRT39B"
+        };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
