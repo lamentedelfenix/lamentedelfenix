@@ -59,6 +59,10 @@
             <div id="error-box" class="error-message p-3 rounded-md mb-6 hidden"></div>
 
             <form id="auth-form">
+                <div class="mb-4" id="name-container">
+                    <label for="name" class="block font-semibold mb-1">Nombre</label>
+                    <input type="text" id="name" class="form-input w-full p-2 rounded-md" required>
+                </div>
                 <div class="mb-4">
                     <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
                     <input type="email" id="email" class="form-input w-full p-2 rounded-md" required>
@@ -102,7 +106,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const formContainer = document.getElementById('auth-form-container');
+        const nameContainer = document.getElementById('name-container');
+        const nameInput = document.getElementById('name');
         const formTitle = document.getElementById('form-title');
         const authForm = document.getElementById('auth-form');
         const emailInput = document.getElementById('email');
@@ -114,24 +119,12 @@
         const promptText = document.getElementById('prompt-text');
         const errorBox = document.getElementById('error-box');
 
-        let isLoginMode = false; // Start in "Sign Up" mode by default
-
-        // Comprobar si la URL indica que se debe mostrar el modo de login
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('mode') === 'login') {
-        toggleMode(); // Llama a la función que cambia al modo de inicio de sesión
-            }
-        // Redirect if already logged in
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = './miembros.html'; // Redirect to members area
-            }
-        });
-
+        let isLoginMode = false;
+        
         function toggleMode() {
             isLoginMode = !isLoginMode;
             errorBox.classList.add('hidden');
-            authForm.reset(); // Clear form fields
+            authForm.reset(); 
             if (isLoginMode) {
                 formTitle.textContent = 'Iniciar Sesión';
                 submitBtn.textContent = 'Iniciar Sesión';
@@ -139,6 +132,8 @@
                 toggleFormBtn.textContent = 'Regístrate aquí';
                 confirmPasswordContainer.classList.add('hidden');
                 confirmPasswordInput.required = false;
+                nameContainer.classList.add('hidden');
+                nameInput.required = false;
             } else {
                 formTitle.textContent = 'Crear Cuenta';
                 submitBtn.textContent = 'Registrarse';
@@ -146,8 +141,21 @@
                 toggleFormBtn.textContent = 'Inicia sesión';
                 confirmPasswordContainer.classList.remove('hidden');
                 confirmPasswordInput.required = true;
+                nameContainer.classList.remove('hidden');
+                nameInput.required = true;
             }
         }
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'login') {
+            toggleMode();
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = './miembros.html';
+            }
+        });
 
         function showAuthError(errorCode) {
             let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
@@ -175,10 +183,35 @@
             errorBox.classList.remove('hidden');
         }
 
+        // --- NUEVA FUNCIÓN PARA ENVIAR EL EMAIL ---
+        async function sendRegistrationEmail(name, email) {
+            // URL del script de Google ya insertada
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbwtUUvYhG6RMqcUZzhO4IHcDgNUpx_SLDlytigMOBEttA7Zy-CZFft23x67Jy1eNb1o7w/exec"; 
+            
+            try {
+                await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // Importante para evitar errores de CORS
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: 'user_registration', // Un identificador para tu script
+                        name: name,
+                        email: email
+                    })
+                });
+            } catch (error) {
+                // No mostramos el error al usuario, pero lo registramos en la consola
+                console.error('Error al enviar el email de registro:', error);
+            }
+        }
+
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = emailInput.value;
             const password = passwordInput.value;
+            const name = nameInput.value;
             errorBox.classList.add('hidden');
 
             try {
@@ -192,13 +225,18 @@
                     }
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
+                    
                     const userDocRef = doc(db, "users", user.uid);
                     await setDoc(userDocRef, {
+                        name: name,
                         email: user.email,
                         createdAt: new Date()
                     });
+
+                    // --- LLAMADA A LA NUEVA FUNCIÓN ---
+                    // Después de registrar al usuario, enviamos el email.
+                    await sendRegistrationEmail(name, email);
                 }
-                // onAuthStateChanged will handle the redirect
             } catch (error) {
                 showAuthError(error.code);
                 console.error("Authentication error:", error);
@@ -210,3 +248,4 @@
     </script>
 </body>
 </html>
+
