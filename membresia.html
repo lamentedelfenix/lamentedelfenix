@@ -53,7 +53,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        /* New Icon Animations (on-scroll) */
         .feature-item { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .feature-item.is-visible { opacity: 1; transform: translateY(0); }
         .feature-item.is-visible .feature-icon { animation: icon-glow 1.5s ease-out; }
@@ -64,7 +63,6 @@
             100% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1); }
         }
 
-        /* Pricing Toggle */
         .pricing-toggle { display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; }
         .toggle-label { font-weight: 600; transition: color 0.4s ease; }
         .toggle-switch { width: 60px; height: 34px; position: relative; display: inline-block; margin: 0 1rem; }
@@ -111,6 +109,34 @@
             justify-content: center;
             font-size: 1.5rem;
             margin: 0 auto;
+        }
+
+        .contact-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        .contact-link > * {
+            transition: color 0.4s ease;
+        }
+        .contact-link:hover > * { color: #e91e63; }
+        .contact-link.email-link:hover > * { color: #00bcd4; }
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e91e63;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.4s ease-out;
+        }
+        .contact-link.email-link::after { background-color: #00bcd4; }
+        .contact-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
     </style>
 </head>
@@ -219,19 +245,22 @@
                 <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que encontrarás dentro...</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="text-center">
-                        <img src="https://i.imgur.com/xrTind4.png" alt="Mapa Conceptual de UCDM" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <img id="mapa-conceptual-img" 
+                             src="https://i.imgur.com/xrTind4.png" 
+                             alt="Mapa Conceptual de UCDM" 
+                             class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
                         <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/4k5747N.png" alt="Chat con IA" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <img src="https://i.imgur.com/4k5747N.png" alt="Chat con IA" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
                         <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que te aclarará cualquier duda</p>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/dnEevQz.png" alt="Lección del Día" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <img src="https://i.imgur.com/dnEevQz.png" alt="Lección del Día" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
                         <p class="mt-2 font-semibold">Lección del <span class="highlight-word">Día</span></p>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/EzAcFys.png" alt="Seguimiento de Lecciones" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer hover:scale-105 transition-transform">
+                        <img src="https://i.imgur.com/EzAcFys.png" alt="Seguimiento de Lecciones" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
                         <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
                     </div>
                 </div>
@@ -262,6 +291,7 @@
                     <span class="text-5xl font-extrabold">300€</span>
                     <span class="text-gray-500">/ año</span>
                     <p class="text-sm font-semibold">(Equivale a 25€/mes)</p>
+                    <p class="mt-2 font-bold text-green-600">¡Ahorras 120€ al año!</p>
                     <p class="mt-2 font-bold text-yellow-600"><i class="fas fa-star mr-1"></i>¡Incluye 2 sesiones 1 a 1 gratis!</p>
                 </div>
                 
@@ -279,7 +309,7 @@
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
              <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
-                <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                <a href="mailto:lamentedelfenix@gmail.com" class="contact-link email-link flex items-center gap-2 text-gray-700">
                     <i class="fas fa-envelope text-2xl"></i>
                     <span>lamentedelfenix@gmail.com</span>
                 </a>
@@ -288,22 +318,35 @@
                     <span>@darioarrigazzi</span>
                 </a>
              </div>
-             <p class="text-sm text-gray-500 mt-8">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
+             <div class="text-sm text-gray-500 space-x-4 mt-8">
+                <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a>
+                <span>&middot;</span>
+                <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
+                <span>&middot;</span>
+                <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
+                <span>&middot;</span>
+                <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             </div>
+             <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Lightbox functionality with Panzoom
+            // --- Lógica de Lightbox y Panzoom ---
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const closeLightboxBtn = document.getElementById('close-lightbox');
+            // --- CORRECCIÓN: El selector ahora usa la clase correcta '.zoomable-image' ---
             const zoomableImages = document.querySelectorAll('.zoomable-image');
             let panzoomInstance = null;
 
             zoomableImages.forEach(image => {
                 image.addEventListener('click', () => {
-                    lightboxImg.src = image.src;
+                    // Si la imagen es el GIF, usamos su versión GIF para el zoom, si no, la normal
+                    const imageSource = image.id === 'mapa-conceptual-img' ? 'https://i.imgur.com/DiOIB3w.gif' : image.src;
+                    lightboxImg.src = imageSource;
+                    
                     lightbox.classList.add('show');
                     if (panzoomInstance) {
                         panzoomInstance.destroy();
@@ -326,7 +369,7 @@
             lightbox.addEventListener('click', (e) => {
                 if (e.target === lightbox) closeLightbox();
             });
-            // Allow zoom with mouse wheel
+            
             if (lightboxImg) {
                 lightbox.addEventListener('wheel', function (event) {
                     if (!panzoomInstance) return;
@@ -335,20 +378,37 @@
                 });
             }
 
-            // On-scroll animations for features
+            // --- Lógica de animaciones al hacer scroll ---
             const featureItems = document.querySelectorAll('.feature-item');
-            const observer = new IntersectionObserver((entries) => {
+            const featureObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
+                        featureObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.5 });
 
-            featureItems.forEach(item => observer.observe(item));
+            featureItems.forEach(item => featureObserver.observe(item));
             
-            // Pricing Toggle
+            // --- Lógica para activar el GIF al ser visible ---
+            const mapaConceptualImg = document.getElementById('mapa-conceptual-img');
+            const gifObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Cambia la fuente a GIF
+                        entry.target.src = 'https://i.imgur.com/DiOIB3w.gif';
+                        // Deja de observar para que no se reinicie
+                        gifObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.7 }); // Se activa cuando el 70% del GIF es visible
+
+            if (mapaConceptualImg) {
+                gifObserver.observe(mapaConceptualImg);
+            }
+
+            // --- Lógica del selector de precios ---
             const toggle = document.getElementById('pricing-toggle-checkbox');
             const monthlyPrice = document.getElementById('monthly-price');
             const annualPrice = document.getElementById('annual-price');
