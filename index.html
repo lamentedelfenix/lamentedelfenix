@@ -13,6 +13,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Estilos base consistentes con el área de miembros */
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #fbf5e2;
@@ -100,7 +101,6 @@
         .profile-image-container {
             position: relative;
             width: 100%;
-            padding-top: 100%; /* 1:1 Aspect Ratio */
         }
         .profile-image {
             position: absolute;
@@ -129,6 +129,11 @@
             -webkit-text-fill-color: transparent;
             font-weight: 800;
         }
+        @keyframes text-flow {
+            to {
+                background-position: 200% center;
+            }
+        }
         .animated-quote {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.25rem; /* 20px */
@@ -142,9 +147,34 @@
             background-clip: text;
             animation: text-flow 10s linear infinite;
         }
-        @keyframes text-flow {
-            to {
-                background-position: 200% center;
+        /* Estilo para el nuevo botón de login vistoso */
+        .animated-login-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
+            background-size: 300% auto;
+            /* Añadida animación de resplandor */
+            animation: text-flow 8s linear infinite, pulsating-glow 4s infinite ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .animated-login-button:hover {
+            transform: scale(1.05);
+        }
+        /* Keyframes para el resplandor rosado */
+        @keyframes pulsating-glow {
+            0% {
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 0px rgba(233, 30, 99, 0.2);
+            }
+            50% {
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 5px rgba(233, 30, 99, 0.6);
+            }
+            100% {
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 0px rgba(233, 30, 99, 0.2);
             }
         }
     </style>
@@ -154,82 +184,102 @@
     <!-- Main container -->
     <div class="max-w-6xl mx-auto">
 
-        <!-- Header with Banner -->
-        <header class="p-4 md:p-8">
-             <img src="https://i.imgur.com/F4JacEf.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
-        </header>
+        <!-- MODIFICACIÓN: Cabecera eliminada -->
 
-        <!-- Hero Section -->
-        <section class="text-center pt-8 pb-48 px-4">
-            <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-pink">
-                    Despierta tu Potencial. Transforma tu Mente.
-                </h1>
-                <p class="text-2xl md:text-3xl mt-6 max-w-3xl mx-auto font-medium">
-                    Descubre herramientas basadas en Un Curso De Milagros, PNL y Coaching para encontrar la paz, la claridad y llegar a tus objetivos.
-                </p>
-                <div class="mt-10">
-                    <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
-                        Conoce mis Servicios
+        <main>
+            <!-- Hero Section -->
+            <section class="text-center px-4 pt-8 md:pt-12 pb-16">
+                
+                <!-- MODIFICACIÓN: Banner insertado aquí como una imagen normal -->
+                <div class="mb-8">
+                    <img src="https://i.imgur.com/F4JacEf.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-pink">
+                        Despierta tu Potencial. Transforma tu Mente.
+                    </h1>
+                    <p class="text-2xl md:text-3xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
+                        Descubre herramientas basadas en Un Curso De Milagros, PNL y Coaching para encontrar la paz, la claridad y llegar a tus objetivos.
+                    </p>
+                    <div class="mt-10 flex flex-col items-center gap-4">
+                        <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
+                            Conoce mis Servicios
+                        </a>
+                        <a href="#login-section" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300 border-b-2 border-dotted border-gray-400 hover:border-brand-pink pb-1">
+                            <i class="fas fa-key text-xs"></i>
+                            <span>¿Ya eres miembro? Accede desde aquí</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        
+            <!-- About Me Section -->
+            <section class="py-20 px-4 bg-white">
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                    <div class="md:col-span-1">
+                        <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
+                            <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
+                            <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Mi camino comenzó desde los 10 años, cuando empecé a leer mis primeros libros de desarrollo personal, buscando respuestas en un hogar que a menudo era violento y caótico.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Ya de mayor me encontré con Un Curso de Milagros, un mapa claro para deshacer el miedo, y lo integré junto con otras herramientas prácticas como la PNL y el Coaching, recuperando con ello mi confianza, recuperándome de mis deudas económicas y equilibrando los distintos aspectos de mi vida. Ahora, mi misión es compartir esto contigo, porque entiendo que la teoría a veces es difícil de entender y por sí sola no es suficiente; y la práctica es lo que termina transformando.
+                        </p>
+                        <p class="mt-12 md:mt-6 text-center animated-quote">
+                            "En nuestra mente todos tenemos una máquina del tiempo en la que podemos viajar a nuestro pasado y reinterpretarlo, transformando con ello la percepción que teníamos de nosotros mismos y de nuestro pasado, haciendo que automáticamente nuestro presente se transforme."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="servicios" class="py-20 px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-12">¿Cómo puedo ayudarte?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Membership Card -->
+                        <div class="service-card rounded-lg p-8 text-center flex flex-col">
+                            <h3 class="text-2xl font-bold mb-4">Membresía de Un Curso De Milagros</h3>
+                            <p class="text-gray-700 flex-grow mb-6">
+                                <span class="highlight-word">"Uno de los espacios mas innovadores que actualmente existen en habla hispana"</span> para aprender Un Curso de Milagros. Con una plataforma inteligente diseñada exclusivamente para ayudarte a entender y asistirte en el proceso de aprendizaje del curso, así como mentorías online, una comunidad de apoyo y grabaciones... entre otras cosas.
+                            </p>
+                            <a href="./membresia.html" class="btn btn-pink font-bold py-2 px-6 rounded-lg mt-auto">Más Información</a>
+                        </div>
+
+                        <!-- Psychotherapy Card -->
+                        <div class="service-card rounded-lg p-8 text-center flex flex-col">
+                            <h3 class="text-2xl font-bold mb-4">Psicoterapia 1 a 1</h3>
+                            <p class="text-gray-700 flex-grow mb-4">
+                               Un camino práctico y amoroso para deshacer las ilusiones que te causan dolor. En un espacio seguro, y a través del perdón, exploraremos tus desafíos para recordar la verdad de quién eres y experimentar la paz que siempre ha estado en ti.
+                            </p>
+                            <div class="mb-6">
+                                <p class="text-lg">Precio: 55€</p>
+                                <p class="font-bold text-brand-pink">Precio Miembros: 35€</p>
+                            </div>
+                            <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-cyan font-bold py-2 px-6 rounded-lg mt-auto">Reservar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Section -->
+            <section id="login-section" class="py-20 text-center px-4">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6">Acceso para Miembros</h2>
+                    <p class="text-gray-700 mb-8">Si ya formas parte de La Mente del Fénix, puedes acceder a todo el contenido desde aquí.</p>
+                    <a href="./login.html" class="animated-login-button">
+                        Ya soy Miembro. Entrar
                     </a>
                 </div>
-            </div>
-        </section>
-        
-        <!-- About Me Section -->
-        <section class="py-20 px-4 bg-white">
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-                <div class="md:col-span-1">
-                    <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
-                        <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
-                        <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
-                    </div>
-                </div>
-                <div class="md:col-span-2">
-                    <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
-                    <p class="text-gray-700 mb-4 leading-relaxed">
-                        Mi camino comenzó desde los 10 años, cuando empecé a leer mis primeros libros de desarrollo personal, buscando respuestas en un hogar que a menudo era violento y caótico.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed">
-                        Ya de mayor me encontré con Un Curso de Milagros, un mapa claro para deshacer el miedo, y lo integré junto con otras herramientas prácticas como la PNL y el Coaching, recuperando con ello mi confianza, recuperándome de mis deudas económicas y equilibrando los distintos aspectos de mi vida. Ahora, mi misión es compartir esto contigo, porque entiendo que la teoría a veces es difícil de entender y por sí sola no es suficiente; y la práctica es lo que termina transformando.
-                    </p>
-                    <p class="mt-6 text-center animated-quote">
-                        "En nuestra mente todos tenemos una máquina del tiempo en la que podemos viajar a nuestro pasado y reinterpretarlo, transformando con ello la percepción que teníamos de nosotros mismos y de nuestro pasado, haciendo que automáticamente nuestro presente se transforme."
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="servicios" class="py-20 px-4">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-12">¿Cómo puedo ayudarte?</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- Membership Card -->
-                    <div class="service-card rounded-lg p-8 text-center flex flex-col">
-                        <h3 class="text-2xl font-bold mb-4">Membresía de Un Curso De Milagros</h3>
-                        <p class="text-gray-700 flex-grow mb-6">
-                            <span class="highlight-word">"El espacio más innovador que actualmente existe en habla hispana"</span> para aprender Un Curso de Milagros. Con una plataforma inteligente diseñada exclusivamente para ayudarte a entender y asistirte en el proceso de aprendizaje del curso, así como mentorías online, una comunidad de apoyo y grabaciones... entre otras cosas.
-                        </p>
-                        <a href="./membresia.html" class="btn btn-pink font-bold py-2 px-6 rounded-lg mt-auto">Más Información</a>
-                    </div>
-
-                    <!-- Psychotherapy Card -->
-                    <div class="service-card rounded-lg p-8 text-center flex flex-col">
-                        <h3 class="text-2xl font-bold mb-4">Psicoterapia 1 a 1</h3>
-                        <p class="text-gray-700 flex-grow mb-4">
-                           Un camino práctico y amoroso para deshacer las ilusiones que te causan dolor. En un espacio seguro, y a través del perdón, exploraremos tus desafíos para recordar la verdad de quién eres y experimentar la paz que siempre ha estado en ti.
-                        </p>
-                        <div class="mb-6">
-                            <p class="text-lg">Precio: 55€</p>
-                            <p class="font-bold text-brand-pink">Precio Miembros: 35€</p>
-                        </div>
-                        <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-cyan font-bold py-2 px-6 rounded-lg mt-auto">Reservar Sesión</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </main>
 
         <!-- Footer -->
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
@@ -245,6 +295,8 @@
                 </a>
              </div>
              <div class="text-sm text-gray-500 space-x-4 mt-8">
+                <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a>
+                <span>&middot;</span>
                 <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
                 <span>&middot;</span>
                 <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
