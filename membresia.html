@@ -156,6 +156,14 @@
              <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
         </header>
 
+        <!-- MODIFICACIÓN: Botón para volver a la página principal -->
+        <section class="px-4 md:px-8 -mt-4 mb-12">
+            <a href="./index.html" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver a la página principal</span>
+            </a>
+        </section>
+
         <!-- Hero Section -->
         <section class="text-center pt-8 pb-16 px-4">
             <p class="text-lg md:text-xl max-w-3xl mx-auto">El único espacio con <span class="animated-highlight">tecnología inteligente innovadora</span> para dejar de sentirte perdido/a con Un Curso de Milagros y empezar a implementarlo en tu vida.</p>
@@ -337,7 +345,6 @@
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const closeLightboxBtn = document.getElementById('close-lightbox');
-            // --- CORRECCIÓN: El selector ahora usa la clase correcta '.zoomable-image' ---
             const zoomableImages = document.querySelectorAll('.zoomable-image');
             let panzoomInstance = null;
 
