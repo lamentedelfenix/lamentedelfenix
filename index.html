@@ -158,64 +158,59 @@
             color: white;
             background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
             background-size: 300% auto;
-            /* Añadida animación de resplandor */
-            animation: text-flow 8s linear infinite, pulsating-glow 4s infinite ease-in-out;
+            animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .animated-login-button:hover {
             transform: scale(1.05);
         }
-        /* Keyframes para el resplandor rosado */
-        @keyframes pulsating-glow {
+        /* Keyframes para el resplandor alterno */
+        @keyframes pulsating-glow-alternating {
             0% {
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 0px rgba(233, 30, 99, 0.2);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); /* Resplandor Rosa */
             }
             50% {
-                box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 5px rgba(233, 30, 99, 0.6);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 7px rgba(0, 188, 212, 0.7); /* Resplandor Cian */
             }
             100% {
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 0px rgba(233, 30, 99, 0.2);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); /* Resplandor Rosa */
             }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="p-4">
 
-    <!-- Main container -->
     <div class="max-w-6xl mx-auto">
 
-        <!-- MODIFICACIÓN: Cabecera eliminada -->
+        <header class="text-center mb-8">
+            <img src="https://i.imgur.com/B0IHYVP.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+        </header>
 
         <main>
             <!-- Hero Section -->
-            <section class="text-center px-4 pt-8 md:pt-12 pb-16">
-                
-                <!-- MODIFICACIÓN: Banner insertado aquí como una imagen normal -->
-                <div class="mb-8">
-                    <img src="https://i.imgur.com/F4JacEf.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
-                </div>
-
+            <section class="text-center px-4 pb-16">
                 <div class="max-w-4xl mx-auto">
-                    <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-pink">
+                    <h1 class="text-3xl md:text-5xl font-extrabold">
                         Despierta tu Potencial. Transforma tu Mente.
                     </h1>
-                    <p class="text-2xl md:text-3xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
+                    <p class="text-xl md:text-3xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
                         Descubre herramientas basadas en Un Curso De Milagros, PNL y Coaching para encontrar la paz, la claridad y llegar a tus objetivos.
                     </p>
                     <div class="mt-10 flex flex-col items-center gap-4">
                         <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
                             Conoce mis Servicios
                         </a>
-                        <a href="#login-section" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300 border-b-2 border-dotted border-gray-400 hover:border-brand-pink pb-1">
-                            <i class="fas fa-key text-xs"></i>
-                            <span>¿Ya eres miembro? Accede desde aquí</span>
+                        <!-- MODIFICACIÓN: Enlace apunta a la sección de login -->
+                        <a href="#login-section" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300 border-b-2 border-dotted border-gray-400 hover:border-brand-pink pb-1 whitespace-nowrap">
+                            <i class="fas fa-key text-base"></i>
+                            <span>¿Ya eres miembro? Acceder Aquí</span>
                         </a>
                     </div>
                 </div>
             </section>
         
             <!-- About Me Section -->
-            <section class="py-20 px-4 bg-white">
+            <section class="py-20 bg-white px-4">
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
                     <div class="md:col-span-1">
                         <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
@@ -274,6 +269,7 @@
                 <div class="max-w-2xl mx-auto">
                     <h2 class="text-3xl font-bold mb-6">Acceso para Miembros</h2>
                     <p class="text-gray-700 mb-8">Si ya formas parte de La Mente del Fénix, puedes acceder a todo el contenido desde aquí.</p>
+                    <!-- MODIFICACIÓN: Enlace apunta a la página de login -->
                     <a href="./login.html" class="animated-login-button">
                         Ya soy Miembro. Entrar
                     </a>
