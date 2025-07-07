@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; }
+        .form-container { background-color: white; border: 1px solid #e0d9c6; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .form-input { border: 2px solid #e0d9c6; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .form-input:focus { outline: none; border-color: #00bcd4; box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); }
+        .btn-submit { background-color: #e91e63; color: white; transition: all 0.3s ease; }
+        .btn-submit:hover { background-color: #c2185b; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .error-message { background-color: #ffcdd2; color: #c62828; border-left: 4px solid #c62828; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md">
+        <header class="mb-8 text-center">
+            <a href="./index.html"><img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg"></a>
+        </header>
+
+        <div class="form-container p-8 rounded-lg">
+            <h2 class="text-2xl font-bold text-center mb-6">Completa tu Registro</h2>
+            
+            <div id="message-box" class="p-3 rounded-md mb-6 hidden"></div>
+
+            <form id="register-form">
+                <div class="mb-4">
+                    <label for="name" class="block font-semibold mb-1">Nombre</label>
+                    <input type="text" id="name" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
+                    <input type="email" id="email" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block font-semibold mb-1">Crea una Contraseña</label>
+                    <input type="password" id="password" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <div class="mb-6">
+                    <label for="confirm-password" class="block font-semibold mb-1">Confirmar Contraseña</label>
+                    <input type="password" id="confirm-password" class="form-input w-full p-2 rounded-md" required>
+                </div>
+                <button type="submit" class="btn-submit w-full font-bold py-3 rounded-lg">
+                    Crear mi Cuenta
+                </button>
+            </form>
+            <div class="text-center text-sm text-gray-600 mt-6">
+                <p>¿Ya tienes una cuenta? <a href="./login.html" class="font-bold text-pink-600 hover:underline">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
+            authDomain: "web-miembros-ucdm.firebaseapp.com",
+            projectId: "web-miembros-ucdm",
+            storageBucket: "web-miembros-ucdm.appspot.com",
+            messagingSenderId: "203515685884",
+            appId: "1:203515685884:web:96a82944170c86171ba079",
+            measurementId: "G-PWEQZRT39B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const registerForm = document.getElementById('register-form');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const messageBox = document.getElementById('message-box');
+
+        function showMessage(text, type = 'error') {
+            messageBox.textContent = text;
+            messageBox.className = 'p-3 rounded-md mb-6'; 
+            if (type === 'error') {
+                messageBox.classList.add('error-message');
+            }
+            messageBox.classList.remove('hidden');
+        }
+
+        function showAuthError(errorCode) {
+            let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
+            switch (errorCode) {
+                case 'auth/email-already-in-use': message = 'Este correo electrónico ya está registrado. Por favor, inicia sesión.'; break;
+                case 'auth/weak-password': message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.'; break;
+                case 'auth/invalid-email': message = 'El formato del correo electrónico no es válido.'; break;
+                case 'auth/password-mismatch': message = 'Las contraseñas no coinciden.'; break;
+            }
+            showMessage(message, 'error');
+        }
+        
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = nameInput.value;
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            messageBox.classList.add('hidden');
+
+            if (password !== confirmPassword) {
+                showAuthError('auth/password-mismatch');
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Aquí podrías añadir lógica adicional como guardar el nombre en la base de datos
+                window.location.href = './miembros.html';
+            } catch (error) {
+                showAuthError(error.code);
+                console.error("Error de registro:", error);
+            }
+        });
+    </script>
+</body>
+</html>
