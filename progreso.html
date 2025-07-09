@@ -612,12 +612,11 @@
                                     const data = docSnap.data();
                                     userName = data.userName || "Estudiante";
                                     completedLessons = new Set(data.completed || []);
+                                    closeNameModal(); // Close modal if data exists
                                     updateUI();
                                 } else {
-                                    // Only show name modal if lessons are already rendered to avoid layout shifts
-                                    if (lessonsAreRendered) {
-                                        showNameModal();
-                                    }
+                                    // Don't depend on lesson rendering to show the modal
+                                    showNameModal();
                                 }
                             });
                         }
@@ -822,7 +821,8 @@
                         setDoc(userDocRef, { name: newName }, { merge: true }),
                         setDoc(progressDocRef, { userName: newName, completed: [] })
                     ]);
-                    // The onSnapshot listener will update the UI, but we close the modal here.
+                    // The onSnapshot listener will update the UI, but we close the modal here
+                    // to ensure it disappears immediately for the user.
                     closeNameModal(); 
                 } catch (error) {
                     console.error("Error saving initial data:", error);
@@ -937,7 +937,6 @@
                 updateUI(); // Call updateUI once lessons are rendered
             }
             
-            // OPTIMIZATION: Fetch lessons immediately on page load.
             function fetchAndRenderLessons() {
                 groupsContainer.innerHTML = '<p class="text-center p-8">Cargando lecciones...</p>';
                 fetch(lessonCsvUrl)
