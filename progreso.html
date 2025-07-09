@@ -270,6 +270,10 @@
             transition: background-color 0.3s ease;
         }
         .btn-primary:hover { background-color: #c2185b; }
+        .btn-primary:disabled {
+            background-color: #f8bbd0;
+            cursor: not-allowed;
+        }
         .btn-secondary {
             background-color: #e0e0e0;
             color: #333;
@@ -610,11 +614,13 @@
                                     completedLessons = new Set(data.completed || []);
                                     updateUI();
                                 } else {
-                                    showNameModal();
+                                    // Only show name modal if lessons are already rendered to avoid layout shifts
+                                    if (lessonsAreRendered) {
+                                        showNameModal();
+                                    }
                                 }
                             });
                         }
-                        // The lessons will be rendered once fetched, regardless of auth state.
                     });
 
                 } catch (error) {
@@ -653,7 +659,6 @@
                 }, 4000);
             }
 
-            // --- UI Update Functions ---
             function updateProgress() {
                 const completedCount = completedLessons.size;
                 const percentage = totalLessons > 0 ? (completedCount / totalLessons) * 100 : 0;
@@ -801,23 +806,30 @@
                 closeLessonModal();
             }
 
-            // OPTIMIZATION & BUG FIX: Create initial progress doc on name submit.
+            // BUG FIX: Explicitly close modal after saving and handle loading state.
             async function handleNameSubmit() {
                 const newName = nameInput.value.trim();
-                if (newName && auth.currentUser && progressDocRef) {
-                    userName = newName;
-                    const userId = auth.currentUser.uid;
-                    const userDocRef = doc(db, "users", userId);
-                    try {
-                        // Create both user name and initial progress doc at the same time
-                        await Promise.all([
-                            setDoc(userDocRef, { name: newName }, { merge: true }),
-                            setDoc(progressDocRef, { userName: newName, completed: [] })
-                        ]);
-                        // The onSnapshot listener will automatically close the modal.
-                    } catch (error) {
-                        console.error("Error saving initial data:", error);
-                    }
+                if (!newName || !auth.currentUser || !progressDocRef) return;
+
+                nameSubmitBtn.disabled = true;
+                nameSubmitBtn.textContent = 'Guardando...';
+
+                userName = newName;
+                const userId = auth.currentUser.uid;
+                const userDocRef = doc(db, "users", userId);
+                try {
+                    await Promise.all([
+                        setDoc(userDocRef, { name: newName }, { merge: true }),
+                        setDoc(progressDocRef, { userName: newName, completed: [] })
+                    ]);
+                    // The onSnapshot listener will update the UI, but we close the modal here.
+                    closeNameModal(); 
+                } catch (error) {
+                    console.error("Error saving initial data:", error);
+                    alert("No se pudo guardar tu nombre. Por favor, inténtalo de nuevo.");
+                } finally {
+                    nameSubmitBtn.disabled = false;
+                    nameSubmitBtn.textContent = 'Guardar y Empezar';
                 }
             }
 
