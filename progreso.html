@@ -326,7 +326,6 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-        /* --- ADDED: Achievement Toast Notification --- */
         #achievement-toast {
             position: fixed;
             bottom: -100px;
@@ -358,7 +357,6 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- ADDED: Achievement Toast HTML -->
     <div id="achievement-toast">
         <i id="toast-icon" class="fas fa-medal toast-icon"></i>
         <div>
@@ -610,20 +608,13 @@
                                     const data = docSnap.data();
                                     userName = data.userName || "Estudiante";
                                     completedLessons = new Set(data.completed || []);
-                                    closeNameModal();
                                     updateUI();
                                 } else {
                                     showNameModal();
                                 }
-                                if (!lessonsAreRendered) {
-                                    fetchAndRenderLessons();
-                                }
                             });
-                        } else {
-                            if (!lessonsAreRendered) {
-                                fetchAndRenderLessons();
-                            }
                         }
+                        // The lessons will be rendered once fetched, regardless of auth state.
                     });
 
                 } catch (error) {
@@ -651,7 +642,6 @@
                 }
             }
 
-            // ADDED: Function to show achievement toast
             function showAchievementToast(title, message, isFinal) {
                 clearTimeout(toastTimeout);
                 toastTitle.textContent = title;
@@ -673,7 +663,7 @@
                 progressPercent.textContent = `${Math.round(percentage)}%`;
                 
                 const oldAchievedMarkers = new Set(achievedMarkers);
-                achievedMarkers.clear();
+                const newAchievedMarkers = new Set();
 
                 let animationDelay = 0;
                 const markers = document.querySelectorAll('.marker');
@@ -685,7 +675,7 @@
                     marker.classList.toggle('achieved', isAchieved);
 
                     if (isAchieved) {
-                        achievedMarkers.add(marker.id);
+                        newAchievedMarkers.add(marker.id);
                         if (!oldAchievedMarkers.has(marker.id)) {
                             const isFinalTrophy = marker.classList.contains('final-trophy');
                             const particleCount = isFinalTrophy ? 100 : 30;
@@ -704,6 +694,8 @@
                         }
                     }
                 });
+                
+                achievedMarkers = newAchievedMarkers;
 
                 if (percentage < 100) {
                     achievementUnlocked.classList.add('hidden');
@@ -720,11 +712,11 @@
             }
 
             function updateUI() {
+                if (!lessonsAreRendered) return;
                 updateProgress();
                 updateLessonItemsState();
             }
 
-            // --- Sound Effect Logic ---
             function initializeAudio() {
                 if (audioInitialized) return;
                 soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
@@ -738,7 +730,6 @@
                 }
             }
             
-            // --- Modal Logic ---
             function openLessonModal(lessonNumber) {
                 initializeAudio(); 
                 currentLessonNumber = lessonNumber;
@@ -747,7 +738,7 @@
                 if (!lesson || lesson.length < 3) {
                     modalLessonNum.textContent = `Error en Lección ${lessonNumber}`;
                     modalPhrase.textContent = "Datos no encontrados.";
-                    modalExplanation.textContent = "No se pudo cargar el contenido de esta lección. Por favor, inténtalo de nuevo más tarde.";
+                    modalExplanation.textContent = "No se pudo cargar el contenido de esta lección.";
                     modalExerciseContainer.style.display = 'none';
                     modalCompleteBtn.style.display = 'none';
                 } else {
@@ -755,14 +746,12 @@
                     modalLessonNum.textContent = `Lección ${num}`;
                     modalPhrase.textContent = `“${phrase}”`;
                     modalExplanation.textContent = explanation;
-
                     if (exercise && exercise.trim() !== '') {
                         modalExercise.textContent = exercise;
                         modalExerciseContainer.style.display = 'block';
                     } else {
                         modalExerciseContainer.style.display = 'none';
                     }
-                    
                     modalCompleteBtn.style.display = 'block';
                     modalCompleteBtn.textContent = completedLessons.has(lessonNumber) ? 'Marcar como pendiente' : 'Marcar como completada';
                 }
@@ -787,7 +776,6 @@
                 confirmCallback = null;
             }
 
-            // --- Data Handling ---
             async function handleMarkComplete() {
                 if (currentLessonNumber === null) return;
                 
@@ -813,17 +801,22 @@
                 closeLessonModal();
             }
 
+            // OPTIMIZATION & BUG FIX: Create initial progress doc on name submit.
             async function handleNameSubmit() {
                 const newName = nameInput.value.trim();
-                if (newName && auth.currentUser) {
+                if (newName && auth.currentUser && progressDocRef) {
                     userName = newName;
+                    const userId = auth.currentUser.uid;
+                    const userDocRef = doc(db, "users", userId);
                     try {
-                        const userDocRef = doc(db, "users", auth.currentUser.uid);
-                        await setDoc(userDocRef, { name: newName }, { merge: true });
-                        closeNameModal();
-                        updateUI();
+                        // Create both user name and initial progress doc at the same time
+                        await Promise.all([
+                            setDoc(userDocRef, { name: newName }, { merge: true }),
+                            setDoc(progressDocRef, { userName: newName, completed: [] })
+                        ]);
+                        // The onSnapshot listener will automatically close the modal.
                     } catch (error) {
-                        console.error("Error saving name:", error);
+                        console.error("Error saving initial data:", error);
                     }
                 }
             }
@@ -882,7 +875,6 @@
                 return parts.map(item => item.trim().replace(/^"|"$/g, ''));
             }
 
-            // --- Rendering Functions ---
             function renderMarkers() {
                 progressMarkersContainer.innerHTML = '';
                 let accumulatedLessons = 0;
@@ -891,7 +883,6 @@
                     if (index < lessonGroups.length - 1) { 
                         accumulatedLessons += groupLessonCount;
                         const position = (accumulatedLessons / totalLessons) * 100;
-
                         const markerWrapper = document.createElement('div');
                         markerWrapper.className = 'marker';
                         markerWrapper.style.left = `${position}%`;
@@ -902,7 +893,6 @@
                 const finalTrophy = document.createElement('div');
                 finalTrophy.className = 'marker final-trophy';
                 finalTrophy.style.left = '100%';
-                
                 finalTrophy.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Premio al completar!</span>`;
                 progressMarkersContainer.appendChild(finalTrophy);
             }
@@ -912,52 +902,41 @@
                 lessonGroups.forEach(group => {
                     const groupLessons = lessonList.filter(l => l >= group.range[0] && l <= group.range[1]);
                     if (groupLessons.length === 0) return;
-
                     const groupContainer = document.createElement('div');
                     const title = document.createElement('h3');
                     title.className = 'text-2xl font-bold group-title';
                     title.textContent = group.title;
                     groupContainer.appendChild(title);
-
                     const grid = document.createElement('div');
                     grid.className = 'lesson-grid';
-                    
                     groupLessons.forEach(lessonNumber => {
                         const lessonItem = document.createElement('div');
                         lessonItem.className = 'lesson-item';
                         lessonItem.textContent = lessonNumber;
                         lessonItem.dataset.lesson = lessonNumber;
                         lessonItem.innerHTML += '<div class="line-through"></div>';
-                        
-                        if (completedLessons.has(lessonNumber)) {
-                            lessonItem.classList.add('completed');
-                        }
-                        
                         lessonItem.addEventListener('click', () => openLessonModal(lessonNumber));
                         grid.appendChild(lessonItem);
                     });
-                    
                     groupContainer.appendChild(grid);
                     groupsContainer.appendChild(groupContainer);
                 });
                 lessonsAreRendered = true;
+                updateUI(); // Call updateUI once lessons are rendered
             }
             
-            // --- Initial Load ---
+            // OPTIMIZATION: Fetch lessons immediately on page load.
             function fetchAndRenderLessons() {
                 groupsContainer.innerHTML = '<p class="text-center p-8">Cargando lecciones...</p>';
                 fetch(lessonCsvUrl)
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Network response was not ok: ${response.statusText}`);
-                        }
+                        if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
                         return response.text();
                     })
                     .then(csvText => {
                         allLessonsData = csvText.split(/\r?\n/).filter(row => row.trim() !== '').slice(1).map(row => parseCsvRow(row));
                         renderGroups();
                         renderMarkers();
-                        updateUI();
                     })
                     .catch(error => {
                         console.error("Error loading lessons:", error);
@@ -969,21 +948,19 @@
             modalCloseBtn.addEventListener('click', closeLessonModal);
             lessonModal.addEventListener('click', (e) => e.target === lessonModal && closeLessonModal());
             modalCompleteBtn.addEventListener('click', handleMarkComplete);
-
             nameSubmitBtn.addEventListener('click', handleNameSubmit);
             nameInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleNameSubmit());
-
             confirmYesBtn.addEventListener('click', () => {
                 if (confirmCallback) confirmCallback();
                 closeConfirmModal();
             });
             confirmNoBtn.addEventListener('click', closeConfirmModal);
             confirmModal.addEventListener('click', (e) => e.target === confirmModal && closeConfirmModal());
-
             resetBtn.addEventListener('click', handleResetProgress);
             testCompleteAllBtn.addEventListener('click', handleCompleteAllForTest);
             
             // --- Start Application ---
+            fetchAndRenderLessons(); // Start fetching lessons immediately
             initializeFirebase();
         });
     </script>
