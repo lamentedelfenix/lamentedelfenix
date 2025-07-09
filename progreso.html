@@ -503,7 +503,7 @@
         import { getFirestore, doc, onSnapshot, setDoc, updateDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- FIX: Make body visible on load ---
+            // --- Make body visible on load ---
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
 
@@ -612,12 +612,14 @@
                                     const data = docSnap.data();
                                     userName = data.userName || "Estudiante";
                                     completedLessons = new Set(data.completed || []);
-                                    closeNameModal(); // Close modal if data exists
+                                    closeNameModal();
                                     updateUI();
                                 } else {
-                                    // Don't depend on lesson rendering to show the modal
                                     showNameModal();
                                 }
+                            }, (error) => {
+                                console.error("Error en el listener de progreso:", error);
+                                groupsContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar tu progreso. Es posible que las reglas de seguridad de la base de datos no estén configuradas correctamente.</p>`;
                             });
                         }
                     });
@@ -805,7 +807,6 @@
                 closeLessonModal();
             }
 
-            // BUG FIX: Explicitly close modal after saving and handle loading state.
             async function handleNameSubmit() {
                 const newName = nameInput.value.trim();
                 if (!newName || !auth.currentUser || !progressDocRef) return;
@@ -821,8 +822,6 @@
                         setDoc(userDocRef, { name: newName }, { merge: true }),
                         setDoc(progressDocRef, { userName: newName, completed: [] })
                     ]);
-                    // The onSnapshot listener will update the UI, but we close the modal here
-                    // to ensure it disappears immediately for the user.
                     closeNameModal(); 
                 } catch (error) {
                     console.error("Error saving initial data:", error);
