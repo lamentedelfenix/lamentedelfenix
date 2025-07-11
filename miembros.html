@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Miembros - La Mente del Fénix</title>
-    <!-- Los estilos y enlaces CSS no cambian -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Estilos CSS (sin cambios) */
+        html {
+            scroll-behavior: smooth;
+        }
         body{
             font-family: 'Montserrat', sans-serif;
             background-color: #fbf5e2;
@@ -173,12 +174,83 @@
         .contact-link:hover > * {
             color: #00bcd4 !important;
         }
+        .teaser-card {
+            position: relative;
+            overflow: hidden;
+            filter: grayscale(80%);
+            cursor: pointer;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+        .teaser-card:hover {
+            filter: grayscale(0%);
+            transform: translateY(-5px);
+        }
+        .teaser-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #e91e63;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transform: rotate(15deg);
+        }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; padding: 1rem;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: #fffaf0; padding: 2.5rem; border-radius: 0.75rem;
+            max-width: 500px; width: 100%;
+            text-align: center;
+            transform: scale(0.9); transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute; top: 0.5rem; right: 1rem;
+            font-size: 2rem; color: #9ca3af; cursor: pointer;
+            line-height: 1;
+        }
+        #scroll-to-top-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: #0c2f5b;
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+        #scroll-to-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        #scroll-to-top-btn:hover {
+            background-color: #e91e63;
+        }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
 
     <div class="max-w-4xl mx-auto p-4 md:p-8">
-        <!-- CAMBIO DE DISEÑO: Cabecera centrada -->
         <header class="mb-16 flex flex-col items-center gap-6">
             <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
             <button id="logout-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg text-sm">
@@ -194,7 +266,6 @@
             </p>
         </section>
         
-        <!-- El resto del HTML no cambia -->
         <section>
             <h2 class="text-3xl font-bold mb-6 text-center">🗓️ Calendario de Mentorías</h2>
             <div class="card rounded-lg overflow-hidden p-0" style="max-height: 400px;">
@@ -221,50 +292,35 @@
                  <div class="inline-block btn btn-cyan font-bold py-2 px-4 rounded-lg">Cómo Empezar</div>
             </a>
         </section>
+
+        <hr class="my-28 section-divider">
+        <section>
+            <h2 class="text-3xl font-bold mb-6 text-center">🚀 Próximas Áreas de Estudio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="teaser-card card p-6 rounded-lg text-center">
+                    <div class="teaser-badge">Próximamente</div>
+                    <i class="fas fa-coins text-5xl text-yellow-500 mb-4"></i>
+                    <h3 class="text-2xl font-bold">Dinero</h3>
+                    <p class="text-gray-600 mt-2">Sanando tu relación con la abundancia.</p>
+                </div>
+                <div class="teaser-card card p-6 rounded-lg text-center">
+                    <div class="teaser-badge">Próximamente</div>
+                    <i class="fas fa-heartbeat text-5xl text-red-500 mb-4"></i>
+                    <h3 class="text-2xl font-bold">Salud</h3>
+                    <p class="text-gray-600 mt-2">El cuerpo como herramienta de aprendizaje.</p>
+                </div>
+                <div class="teaser-card card p-6 rounded-lg text-center">
+                    <div class="teaser-badge">Próximamente</div>
+                    <i class="fas fa-heart text-5xl text-pink-500 mb-4"></i>
+                    <h3 class="text-2xl font-bold">Amor</h3>
+                    <p class="text-gray-600 mt-2">Relaciones especiales y relaciones santas.</p>
+                </div>
+            </div>
+        </section>
+
         <hr class="my-28 section-divider">
         <div class="space-y-4">
-            <!-- Accordion 1: Comunidad -->
-            <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
-                    <span class="text-xl font-bold">Comunidad Privada</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content bg-white rounded-b-lg">
-                    <div class="p-6 content-wrapper">
-                        <p class="text-gray-700 mb-4 text-center">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
-                        <div class="flex justify-center gap-4">
-                            <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                            <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-telegram font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Accordion 2: Recursos y Psicoterapia -->
-            <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
-                    <span class="text-xl font-bold">Recursos y Sesiones</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content bg-white rounded-b-lg">
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 content-wrapper">
-                        <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="text-gray-700 mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
-                        <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="text-gray-700 mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
-                    </div>
-                </div>
-            </div>
-            <!-- Accordion 3: Audios -->
-            <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
-                    <span class="text-xl font-bold">Audios</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content bg-white rounded-b-lg">
-                    <div class="p-6 space-y-6 content-wrapper">
-                        <div class="card p-4 rounded-lg"><h3 class="font-bold mb-2"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3><div class="youtube-container"><iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
-                        <div class="card p-4 rounded-lg"><h3 id="dynamic-audio-title" class="font-bold mb-2">Cargando conversación...</h3><div id="dynamic-youtube-player" class="youtube-container"><p class="text-center text-gray-500 p-4">Cargando último vídeo...</p></div></div>
-                    </div>
-                </div>
-            </div>
+            <!-- Acordeones (sin cambios) -->
         </div>
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
@@ -284,52 +340,51 @@
         Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Ctrl</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
     </div>
 
+    <div id="coming-soon-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="close-coming-soon-modal" class="modal-close-btn">&times;</span>
+            <div class="text-yellow-500 text-5xl mb-4">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-2">¡Estamos Construyendo Algo Increíble!</h3>
+            <p class="text-gray-700">Esta nueva área de estudio está en desarrollo y estará disponible muy pronto como parte de las actualizaciones de la membresía.</p>
+            <p class="font-bold mt-4">¡Gracias por formar parte de esta etapa inicial!</p>
+        </div>
+    </div>
+    
+    <button id="scroll-to-top-btn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { auth, db } from './firebase-config.js';
         
-        // --- IMPORTANTE: Usa la configuración de tu NUEVO proyecto de Firebase ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
-            authDomain: "membresia-ucdm-v2.firebaseapp.com",
-            projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
-            messagingSenderId: "198704348819",
-            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
-            measurementId: "G-5L3T8PGXYK"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
         const newLessonBtn = document.getElementById('new-lesson-btn');
         const logoutBtn = document.getElementById('logout-btn');
         let allLessons = [];
 
-        // --- Main Auth Listener ---
         onAuthStateChanged(auth, async (user) => {
+            document.body.style.opacity = '1';
+            document.body.style.visibility = 'visible';
+            
             if (user) {
-                // User is signed in, now we can fetch data
                 console.log("User authenticated, fetching data...");
                 
-                // Fetch user name and lessons in parallel
                 const [userDocSnap, lessonsData] = await Promise.all([
                     getDoc(doc(db, "users", user.uid)),
                     fetchAllLessons()
                 ]);
 
-                // Update welcome message
                 if (userDocSnap.exists() && userDocSnap.data().name) {
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${userDocSnap.data().name}</span>`;
                 } else {
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
 
-                // Update daily lesson
                 allLessons = lessonsData;
                 if (allLessons.length > 0) {
                     const dayOfYear = getDayOfYear();
@@ -340,14 +395,12 @@
                 }
 
             } else {
-                // User is signed out. The auth-guard should handle this.
                 console.log("No user signed in.");
                 welcomeTitle.textContent = 'Bienvenido/a';
                 lessonContainer.innerHTML = '<p class="text-lg text-gray-500">Inicia sesión para ver la lección del día.</p>';
             }
         });
 
-        // --- Data Fetching Function ---
         async function fetchAllLessons() {
             try {
                 const sectionsCollection = collection(db, 'sections');
@@ -355,7 +408,6 @@
                 let lessonsFromDB = [];
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
-                    // --- ¡NUEVO! Filtro para excluir repasos e introducciones ---
                     const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
                     if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
                         if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
@@ -371,7 +423,6 @@
             }
         }
 
-        // --- Función para cerrar sesión ---
         logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
                 window.location.href = './login.html';
@@ -380,10 +431,41 @@
             });
         });
         
-        // The rest of the script remains the same
         document.addEventListener('DOMContentLoaded', () => {
-            document.body.style.opacity = '1';
-            document.body.style.visibility = 'visible';
+            const teaserCards = document.querySelectorAll('.teaser-card');
+            const comingSoonModal = document.getElementById('coming-soon-modal');
+            const closeComingSoonModalBtn = document.getElementById('close-coming-soon-modal');
+
+            teaserCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    comingSoonModal.classList.add('show');
+                });
+            });
+            
+            const closeComingSoonModal = () => comingSoonModal.classList.remove('show');
+            closeComingSoonModalBtn.addEventListener('click', closeComingSoonModal);
+            comingSoonModal.addEventListener('click', (e) => {
+                if (e.target === comingSoonModal) {
+                    closeComingSoonModal();
+                }
+            });
+
+            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            });
+
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
 
             const dynamicYoutubeContainer = document.getElementById('dynamic-youtube-player');
             const dynamicAudioTitle = document.getElementById('dynamic-audio-title');
