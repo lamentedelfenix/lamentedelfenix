@@ -296,8 +296,6 @@
                     const sectionData = doc.data();
                     const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
 
-                    // --- CAMBIO CLAVE: Filtro para excluir repasos ---
-                    // Si el título NO incluye "repaso", procesa las lecciones.
                     if (!titleLower.includes('repaso')) {
                         if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
                             const formattedLessons = sectionData.lessons.map(l => [
@@ -318,8 +316,12 @@
             }
         }
 
+        // --- CAMBIO CLAVE: Redirección al cerrar sesión ---
         logoutBtn.addEventListener('click', () => {
-            signOut(auth).catch((error) => {
+            signOut(auth).then(() => {
+                // Al cerrar sesión correctamente, redirige a la página de login
+                window.location.href = './login.html';
+            }).catch((error) => {
                 console.error('Error al cerrar sesión:', error);
             });
         });
