@@ -71,7 +71,7 @@
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
 
-    <div class="max-w-4xl mx-auto p-4 md:p-8">
+    <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
         <header class="mb-16 flex flex-col items-center gap-6">
             <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
             <button id="logout-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg text-sm">
@@ -196,6 +196,13 @@
              </div>
         </footer>
     </div>
+
+    <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
+        <h1 class="text-3xl font-bold text-red-600">Acceso Denegado</h1>
+        <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
+        <p class="mt-2 text-gray-600">Este mensaje se muestra porque la vista previa no puede redirigir a la página de login.</p>
+    </div>
+
     <div id="bookmark-tooltip">
         Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Ctrl</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
     </div>
@@ -217,12 +224,10 @@
     </button>
 
     <script type="module">
-        // --- CAMBIO CLAVE: El código de configuración de Firebase se ha integrado aquí ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Tu configuración web del proyecto de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -233,13 +238,12 @@
             measurementId: "G-5L3T8PGXYK"
         };
 
-        // Inicializa Firebase y obtén las instancias de los servicios
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        // --- FIN DEL CÓDIGO INTEGRADO ---
-
         
+        const mainContent = document.getElementById('main-content');
+        const authMessage = document.getElementById('auth-message');
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
         const newLessonBtn = document.getElementById('new-lesson-btn');
@@ -251,7 +255,9 @@
             document.body.style.visibility = 'visible';
             
             if (user) {
-                console.log("User authenticated, fetching data...");
+                mainContent.style.display = 'block';
+                authMessage.style.display = 'none';
+                console.log("User authenticated, fetching data for user:", user.uid);
                 
                 const [userDocSnap, lessonsData] = await Promise.all([
                     getDoc(doc(db, "users", user.uid)),
@@ -270,12 +276,19 @@
                     const lessonIndex = (dayOfYear - 1) % allLessons.length;
                     displayLesson(allLessons[lessonIndex]);
                 } else {
-                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones.</p>';
+                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones. Revisa la consola para más detalles.</p>';
                 }
 
             } else {
-                // Si no hay usuario, redirigir a la página de login
-                window.location.href = './login.html';
+                console.log("No user is signed in. Showing auth message.");
+                mainContent.style.display = 'none';
+                authMessage.style.display = 'block';
+                // La redirección se comenta para evitar errores en la vista previa
+                // try {
+                //     window.location.href = './login.html';
+                // } catch (e) {
+                //     console.error("Redirect failed (expected in preview):", e.message);
+                // }
             }
         });
 
@@ -284,8 +297,15 @@
                 const sectionsCollection = collection(db, 'sections');
                 const querySnapshot = await getDocs(sectionsCollection);
                 let lessonsFromDB = [];
+                
+                // --- AÑADIDO PARA DEPURACIÓN ---
+                console.log(`Encontrados ${querySnapshot.size} documentos en la colección 'sections'.`);
+
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
+                    // --- AÑADIDO PARA DEPURACIÓN ---
+                    console.log("Procesando documento:", doc.id, "con datos:", sectionData);
+
                     const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
 
                     if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
@@ -297,21 +317,25 @@
                                 l.exercise || ''
                             ]);
                             lessonsFromDB.push(...formattedLessons);
+                        } else {
+                            // --- AÑADIDO PARA DEPURACIÓN ---
+                            console.log(`Documento '${doc.id}' omitido por filtro de título.`);
                         }
+                    } else {
+                        // --- AÑADIDO PARA DEPURACIÓN ---
+                        console.log(`Documento '${doc.id}' omitido porque no tiene un array 'lessons'.`);
                     }
                 });
-                console.log(`Se han cargado ${lessonsFromDB.length} lecciones correctamente.`);
+                console.log(`Se han cargado ${lessonsFromDB.length} lecciones correctamente después de filtrar.`);
                 return lessonsFromDB;
             } catch (error) {
-                console.error("Error al obtener las lecciones desde Firestore:", error);
+                console.error("Error crítico al obtener las lecciones desde Firestore:", error);
                 return []; 
             }
         }
 
         logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => {
-                window.location.href = './login.html';
-            }).catch((error) => {
+            signOut(auth).catch((error) => {
                 console.error('Error al cerrar sesión:', error);
             });
         });
