@@ -200,7 +200,6 @@
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
         <h1 class="text-3xl font-bold text-red-600">Acceso Denegado</h1>
         <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
-        <p class="mt-2 text-gray-600">Este mensaje se muestra porque la vista previa no puede redirigir a la página de login.</p>
     </div>
 
     <div id="bookmark-tooltip">
@@ -257,7 +256,6 @@
             if (user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
-                console.log("User authenticated, fetching data for user:", user.uid);
                 
                 const [userDocSnap, lessonsData] = await Promise.all([
                     getDoc(doc(db, "users", user.uid)),
@@ -276,19 +274,12 @@
                     const lessonIndex = (dayOfYear - 1) % allLessons.length;
                     displayLesson(allLessons[lessonIndex]);
                 } else {
-                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones. Revisa la consola para más detalles.</p>';
+                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones.</p>';
                 }
 
             } else {
-                console.log("No user is signed in. Showing auth message.");
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
-                // La redirección se comenta para evitar errores en la vista previa
-                // try {
-                //     window.location.href = './login.html';
-                // } catch (e) {
-                //     console.error("Redirect failed (expected in preview):", e.message);
-                // }
             }
         });
 
@@ -298,35 +289,22 @@
                 const querySnapshot = await getDocs(sectionsCollection);
                 let lessonsFromDB = [];
                 
-                // --- AÑADIDO PARA DEPURACIÓN ---
-                console.log(`Encontrados ${querySnapshot.size} documentos en la colección 'sections'.`);
-
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
-                    // --- AÑADIDO PARA DEPURACIÓN ---
-                    console.log("Procesando documento:", doc.id, "con datos:", sectionData);
 
-                    const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
-
+                    // --- CAMBIO CLAVE: Se ha eliminado el filtro por título ---
+                    // Ahora procesará todos los documentos que tengan un array 'lessons'.
                     if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
-                        if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
-                            const formattedLessons = sectionData.lessons.map(l => [
-                                l.number || 'N/A',
-                                l.title || 'Sin título',
-                                l.explanation || '',
-                                l.exercise || ''
-                            ]);
-                            lessonsFromDB.push(...formattedLessons);
-                        } else {
-                            // --- AÑADIDO PARA DEPURACIÓN ---
-                            console.log(`Documento '${doc.id}' omitido por filtro de título.`);
-                        }
-                    } else {
-                        // --- AÑADIDO PARA DEPURACIÓN ---
-                        console.log(`Documento '${doc.id}' omitido porque no tiene un array 'lessons'.`);
+                        const formattedLessons = sectionData.lessons.map(l => [
+                            l.number || 'N/A',
+                            l.title || 'Sin título',
+                            l.explanation || '',
+                            l.exercise || ''
+                        ]);
+                        lessonsFromDB.push(...formattedLessons);
                     }
                 });
-                console.log(`Se han cargado ${lessonsFromDB.length} lecciones correctamente después de filtrar.`);
+                console.log(`Se han cargado un total de ${lessonsFromDB.length} lecciones.`);
                 return lessonsFromDB;
             } catch (error) {
                 console.error("Error crítico al obtener las lecciones desde Firestore:", error);
