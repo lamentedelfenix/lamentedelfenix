@@ -178,9 +178,10 @@
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
 
     <div class="max-w-4xl mx-auto p-4 md:p-8">
-        <header class="mb-16 flex justify-between items-center">
-            <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full max-w-lg h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
-            <button onclick="handleLogout()" class="ml-4 btn btn-pink font-bold py-2 px-4 rounded-lg text-sm flex-shrink-0">
+        <!-- CAMBIO DE DISEÑO: Cabecera centrada -->
+        <header class="mb-16 flex flex-col items-center gap-6">
+            <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
+            <button id="logout-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg text-sm">
                 <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
             </button>
         </header>
@@ -233,7 +234,7 @@
                         <p class="text-gray-700 mb-4 text-center">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
                         <div class="flex justify-center gap-4">
                             <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                            <a href="https.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-telegram font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+                            <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-telegram font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
                         </div>
                     </div>
                 </div>
@@ -285,41 +286,105 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
+        // --- IMPORTANTE: Usa la configuración de tu NUEVO proyecto de Firebase ---
         const firebaseConfig = {
-            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
-            authDomain: "web-miembros-ucdm.firebaseapp.com",
-            projectId: "web-miembros-ucdm",
-            storageBucket: "web-miembros-ucdm.appspot.com",
-            messagingSenderId: "203515685884",
-            appId: "1:203515685884:web:96a82944170c86171ba079",
-            measurementId: "G-PWEQZRT39B"
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         const welcomeTitle = document.getElementById('welcome-title');
+        const lessonContainer = document.getElementById('daily-lesson-container');
+        const newLessonBtn = document.getElementById('new-lesson-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        let allLessons = [];
 
+        // --- Main Auth Listener ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // CAMBIO CLAVE: Lee el nombre directamente del perfil de autenticación.
-                if (user.displayName) {
-                    welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.displayName}</span>`;
+                // User is signed in, now we can fetch data
+                console.log("User authenticated, fetching data...");
+                
+                // Fetch user name and lessons in parallel
+                const [userDocSnap, lessonsData] = await Promise.all([
+                    getDoc(doc(db, "users", user.uid)),
+                    fetchAllLessons()
+                ]);
+
+                // Update welcome message
+                if (userDocSnap.exists() && userDocSnap.data().name) {
+                    welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${userDocSnap.data().name}</span>`;
                 } else {
-                    // Si no hay nombre en el perfil (poco probable), muestra el email.
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
+
+                // Update daily lesson
+                allLessons = lessonsData;
+                if (allLessons.length > 0) {
+                    const dayOfYear = getDayOfYear();
+                    const lessonIndex = (dayOfYear - 1) % allLessons.length;
+                    displayLesson(allLessons[lessonIndex]);
+                } else {
+                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones.</p>';
+                }
+
+            } else {
+                // User is signed out. The auth-guard should handle this.
+                console.log("No user signed in.");
+                welcomeTitle.textContent = 'Bienvenido/a';
+                lessonContainer.innerHTML = '<p class="text-lg text-gray-500">Inicia sesión para ver la lección del día.</p>';
             }
         });
 
-        // El resto del script de miembros.html (lección del día, etc.) no cambia
+        // --- Data Fetching Function ---
+        async function fetchAllLessons() {
+            try {
+                const sectionsCollection = collection(db, 'sections');
+                const querySnapshot = await getDocs(sectionsCollection);
+                let lessonsFromDB = [];
+                querySnapshot.forEach((doc) => {
+                    const sectionData = doc.data();
+                    // --- ¡NUEVO! Filtro para excluir repasos e introducciones ---
+                    const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
+                    if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
+                        if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
+                            const formattedLessons = sectionData.lessons.map(l => [l.number, l.title, l.explanation, l.exercise]);
+                            lessonsFromDB.push(...formattedLessons);
+                        }
+                    }
+                });
+                return lessonsFromDB;
+            } catch (error) {
+                console.error("Error fetching lessons from Firestore:", error);
+                return []; 
+            }
+        }
+
+        // --- Función para cerrar sesión ---
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = './login.html';
+            }).catch((error) => {
+                console.error('Error al cerrar sesión:', error);
+            });
+        });
+        
+        // The rest of the script remains the same
         document.addEventListener('DOMContentLoaded', () => {
-            let allLessons = [];
-            const lessonContainer = document.getElementById('daily-lesson-container');
-            const newLessonBtn = document.getElementById('new-lesson-btn');
-            const dailyLessonCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSl750iPtMNNONyMIQiSUPOWT9sukWk8yzrHnNDCE8fruXSeTybk8YPBiDyPvvMh1H1kb8veGokq5B6/pub?gid=1752477896&single=true&output=csv';
+            document.body.style.opacity = '1';
+            document.body.style.visibility = 'visible';
+
             const dynamicYoutubeContainer = document.getElementById('dynamic-youtube-player');
             const dynamicAudioTitle = document.getElementById('dynamic-audio-title');
             const audioPlaylistCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRmZK4KXp4kSpX6Q0VqVshkj_2L46CDfcped6i-PzqFBOHVMc1_aTAIouCB900HLCDtUcR_gH7FKYk4/pub?gid=0&single=true&output=csv'; 
@@ -328,11 +393,15 @@
             function parseCsvRow(row) { const delimiter = row.includes(';') ? ';' : ','; const parts = []; let current = ''; let inQuotes = false; for (const char of row) { if (char === '"' && (row.indexOf(char) === 0 || row[row.indexOf(char)-1] !== '\\')) inQuotes = !inQuotes; else if (char === delimiter && !inQuotes) { parts.push(current); current = ''; } else { current += char; } } parts.push(current); return parts.map(item => item.trim().replace(/^"|"$/g, '')); }
             if (audioPlaylistCsvUrl) { fetch(audioPlaylistCsvUrl).then(response => response.ok ? response.text() : Promise.reject('Audio list not found')).then(data => { const rows = data.split(/\r?\n/).filter(row => row.trim() !== ''); if (rows.length > 1) { const lastRow = rows[rows.length - 1]; const [title, link] = parseCsvRow(lastRow); const videoId = getYouTubeID(link); if (title && videoId) { dynamicAudioTitle.innerHTML = `<span class="text-brand-pink font-extrabold">CONVERSACIONES:</span> ${title}`; dynamicYoutubeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`; } } }).catch(error => { console.error('Error fetching YouTube playlist:', error); dynamicYoutubeContainer.innerHTML = '<p class="text-center text-red-500 p-4">No se pudo cargar el último vídeo.</p>'; }); }
             const startAnimation = (elements) => { let delay = 0; elements.forEach(el => { (function(currentEl) { setTimeout(() => { currentEl.classList.add('fade-in-animate'); currentEl.classList.remove('initially-hidden'); if (currentEl.id === 'lesson-phrase') { currentEl.querySelector('strong').classList.add('shine-animate'); } }, delay); })(el); delay += 600; }); };
-            function displayLesson(lesson) { if (!lesson) return; const [lessonNum, phrase, explanation, exercise] = lesson; if (phrase && explanation) { lessonContainer.innerHTML = ''; const h4 = document.createElement('h4'); h4.id = 'lesson-number'; h4.className = 'text-sm font-bold tracking-widest uppercase initially-hidden'; h4.textContent = `Lección ${lessonNum}`; const p1 = document.createElement('p'); p1.id = 'lesson-phrase'; p1.className = 'text-xl italic mt-2 initially-hidden'; const strongEl = document.createElement('strong'); strongEl.className = 'text-brand-green font-bold'; strongEl.textContent = `“${phrase}”`; p1.appendChild(strongEl); const p2 = document.createElement('p'); p2.id = 'lesson-explanation'; p2.className = 'text-lg mt-4 initially-hidden'; p2.textContent = explanation; lessonContainer.appendChild(h4); lessonContainer.appendChild(p1); lessonContainer.appendChild(p2); const animatedElements = [h4, p1, p2]; if (exercise && exercise.trim() !== '') { const exerciseBox = document.createElement('div'); exerciseBox.id = 'lesson-exercise-box'; exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed border-pink-200 w-full initially-hidden'; const h5 = document.createElement('h5'); h5.className = 'font-bold text-brand-pink'; h5.textContent = 'Ejercicio Recomendado:'; const p3 = document.createElement('p'); p3.className = 'mt-2 text-gray-700'; p3.textContent = exercise; exerciseBox.appendChild(h5); exerciseBox.appendChild(p3); lessonContainer.appendChild(exerciseBox); animatedElements.push(exerciseBox); } startAnimation(animatedElements); } }
-            function showRandomLesson() { if (allLessons.length === 0) return; const randomIndex = Math.floor(Math.random() * allLessons.length); displayLesson(allLessons[randomIndex]); }
-            function getDayOfYear() { const now = new Date(); const start = new Date(now.getFullYear(), 0, 0); const diff = now - start; const oneDay = 1000 * 60 * 60 * 24; return Math.floor(diff / oneDay); }
-            fetch(dailyLessonCsvUrl).then(response => response.ok ? response.text() : Promise.reject('Network response was not ok')).then(data => { allLessons = data.split(/\r?\n/).filter(row => row.trim() !== '').slice(1).map(row => parseCsvRow(row)); const observer = new IntersectionObserver((entries, observerInstance) => { entries.forEach(entry => { if (entry.isIntersecting) { if (allLessons.length > 0) { const dayOfYear = getDayOfYear(); const lessonIndex = (dayOfYear - 1) % allLessons.length; displayLesson(allLessons[lessonIndex]); } observerInstance.unobserve(entry.target); } }); }, { threshold: 0.1 }); observer.observe(lessonContainer); }).catch(error => { console.error('Error fetching the daily lesson:', error); lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudo cargar la lección del día. Por favor, inténtalo de nuevo más tarde.</p>'; });
-            newLessonBtn.addEventListener('click', showRandomLesson);
+            window.displayLesson = function(lesson) { if (!lesson) return; const [lessonNum, phrase, explanation, exercise] = lesson; if (phrase && explanation) { lessonContainer.innerHTML = ''; const h4 = document.createElement('h4'); h4.id = 'lesson-number'; h4.className = 'text-sm font-bold tracking-widest uppercase initially-hidden'; h4.textContent = `Lección ${lessonNum}`; const p1 = document.createElement('p'); p1.id = 'lesson-phrase'; p1.className = 'text-xl italic mt-2 initially-hidden'; const strongEl = document.createElement('strong'); strongEl.className = 'text-brand-green font-bold'; strongEl.textContent = `“${phrase}”`; p1.appendChild(strongEl); const p2 = document.createElement('p'); p2.id = 'lesson-explanation'; p2.className = 'text-lg mt-4 initially-hidden'; p2.textContent = explanation; lessonContainer.appendChild(h4); lessonContainer.appendChild(p1); lessonContainer.appendChild(p2); const animatedElements = [h4, p1, p2]; if (exercise && exercise.trim() !== '') { const exerciseBox = document.createElement('div'); exerciseBox.id = 'lesson-exercise-box'; exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed border-pink-200 w-full initially-hidden'; const h5 = document.createElement('h5'); h5.className = 'font-bold text-brand-pink'; h5.textContent = 'Ejercicio Recomendado:'; const p3 = document.createElement('p'); p3.className = 'mt-2 text-gray-700'; p3.textContent = exercise; exerciseBox.appendChild(h5); exerciseBox.appendChild(p3); lessonContainer.appendChild(exerciseBox); animatedElements.push(exerciseBox); } startAnimation(animatedElements); } }
+            window.getDayOfYear = function() { const now = new Date(); const start = new Date(now.getFullYear(), 0, 0); const diff = now - start; const oneDay = 1000 * 60 * 60 * 24; return Math.floor(diff / oneDay); }
+            
+            newLessonBtn.addEventListener('click', () => {
+                if (allLessons.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * allLessons.length);
+                    displayLesson(allLessons[randomIndex]);
+                }
+            });
 
             const bookmarkBtn = document.getElementById('bookmark-btn');
             const bookmarkTooltip = document.getElementById('bookmark-tooltip');
