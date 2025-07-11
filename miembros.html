@@ -294,18 +294,23 @@
                 
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
+                    const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
 
-                    if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
-                        const formattedLessons = sectionData.lessons.map(l => [
-                            l.number || 'N/A',
-                            l.title || 'Sin título',
-                            l.explanation || '',
-                            l.exercise || ''
-                        ]);
-                        lessonsFromDB.push(...formattedLessons);
+                    // --- CAMBIO CLAVE: Filtro para excluir repasos ---
+                    // Si el título NO incluye "repaso", procesa las lecciones.
+                    if (!titleLower.includes('repaso')) {
+                        if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
+                            const formattedLessons = sectionData.lessons.map(l => [
+                                l.number || 'N/A',
+                                l.title || 'Sin título',
+                                l.explanation || '',
+                                l.exercise || ''
+                            ]);
+                            lessonsFromDB.push(...formattedLessons);
+                        }
                     }
                 });
-                console.log(`Se han cargado un total de ${lessonsFromDB.length} lecciones.`);
+                console.log(`Se han cargado un total de ${lessonsFromDB.length} lecciones (repasos excluidos).`);
                 return lessonsFromDB;
             } catch (error) {
                 console.error("Error crítico al obtener las lecciones desde Firestore:", error);
