@@ -217,9 +217,28 @@
     </button>
 
     <script type="module">
-        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { auth, db } from './firebase-config.js';
+        // --- CAMBIO CLAVE: El código de configuración de Firebase se ha integrado aquí ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Tu configuración web del proyecto de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
+        };
+
+        // Inicializa Firebase y obtén las instancias de los servicios
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        // --- FIN DEL CÓDIGO INTEGRADO ---
+
         
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
@@ -260,9 +279,6 @@
             }
         });
 
-        // --- FUNCIÓN CORREGIDA ---
-        // Esta función ahora comprueba de forma segura si el campo 'lessons' existe
-        // en cada documento antes de intentar procesarlo.
         async function fetchAllLessons() {
             try {
                 const sectionsCollection = collection(db, 'sections');
@@ -272,13 +288,11 @@
                     const sectionData = doc.data();
                     const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
 
-                    // CAMBIO CLAVE: Comprobar si 'lessons' existe y es un array
                     if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
-                        // Se mantienen los filtros que ya tenías
                         if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
                             const formattedLessons = sectionData.lessons.map(l => [
-                                l.number || 'N/A', // Valor por defecto si falta el número
-                                l.title || 'Sin título', // Valor por defecto si falta el título
+                                l.number || 'N/A',
+                                l.title || 'Sin título',
                                 l.explanation || '',
                                 l.exercise || ''
                             ]);
@@ -286,12 +300,10 @@
                         }
                     }
                 });
-                // Mensaje para depuración: puedes verlo en la consola del navegador
                 console.log(`Se han cargado ${lessonsFromDB.length} lecciones correctamente.`);
                 return lessonsFromDB;
             } catch (error) {
                 console.error("Error al obtener las lecciones desde Firestore:", error);
-                // Si ocurre un error, devuelve un array vacío para evitar que la página se rompa
                 return []; 
             }
         }
@@ -403,7 +415,5 @@
             });
         });
     </script>
-<!-- ELIMINADO: Ya no necesitamos este script aquí, la lógica de autenticación está en el script principal -->
-<!-- <script type="module" src="./auth-guard.js"></script> -->
 </body>
 </html>
