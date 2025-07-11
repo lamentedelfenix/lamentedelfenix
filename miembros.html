@@ -198,8 +198,11 @@
     </div>
 
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-        <h1 class="text-3xl font-bold text-red-600">Acceso Denegado</h1>
+        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
         <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
+        <a href="./login.html" class="mt-8 inline-block btn btn-pink font-bold py-3 px-6 rounded-lg">
+            Ir a Iniciar Sesión
+        </a>
     </div>
 
     <div id="bookmark-tooltip">
@@ -292,8 +295,6 @@
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
 
-                    // --- CAMBIO CLAVE: Se ha eliminado el filtro por título ---
-                    // Ahora procesará todos los documentos que tengan un array 'lessons'.
                     if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
                         const formattedLessons = sectionData.lessons.map(l => [
                             l.number || 'N/A',
