@@ -255,12 +255,14 @@
                 }
 
             } else {
-                // If no user, redirect to login page (this logic is now centralized in auth-guard)
-                // This part of the code will likely not be reached, but it's good practice.
+                // Si no hay usuario, redirigir a la página de login
                 window.location.href = './login.html';
             }
         });
 
+        // --- FUNCIÓN CORREGIDA ---
+        // Esta función ahora comprueba de forma segura si el campo 'lessons' existe
+        // en cada documento antes de intentar procesarlo.
         async function fetchAllLessons() {
             try {
                 const sectionsCollection = collection(db, 'sections');
@@ -269,16 +271,27 @@
                 querySnapshot.forEach((doc) => {
                     const sectionData = doc.data();
                     const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
-                    if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
-                        if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
-                            const formattedLessons = sectionData.lessons.map(l => [l.number, l.title, l.explanation, l.exercise]);
+
+                    // CAMBIO CLAVE: Comprobar si 'lessons' existe y es un array
+                    if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
+                        // Se mantienen los filtros que ya tenías
+                        if (!titleLower.includes('repaso') && !titleLower.includes('introducción')) {
+                            const formattedLessons = sectionData.lessons.map(l => [
+                                l.number || 'N/A', // Valor por defecto si falta el número
+                                l.title || 'Sin título', // Valor por defecto si falta el título
+                                l.explanation || '',
+                                l.exercise || ''
+                            ]);
                             lessonsFromDB.push(...formattedLessons);
                         }
                     }
                 });
+                // Mensaje para depuración: puedes verlo en la consola del navegador
+                console.log(`Se han cargado ${lessonsFromDB.length} lecciones correctamente.`);
                 return lessonsFromDB;
             } catch (error) {
-                console.error("Error fetching lessons from Firestore:", error);
+                console.error("Error al obtener las lecciones desde Firestore:", error);
+                // Si ocurre un error, devuelve un array vacío para evitar que la página se rompa
                 return []; 
             }
         }
@@ -390,7 +403,7 @@
             });
         });
     </script>
-<!-- ELIMINADO: Ya no necesitamos este script aquí -->
+<!-- ELIMINADO: Ya no necesitamos este script aquí, la lógica de autenticación está en el script principal -->
 <!-- <script type="module" src="./auth-guard.js"></script> -->
 </body>
 </html>
