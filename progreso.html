@@ -18,7 +18,7 @@
             background-color: #fbf5e2;
             color: #0c2f5b;
             transition: opacity 0.5s ease-in-out;
-            overflow-x: hidden; /* Prevent horizontal scroll from fireworks */
+            overflow-x: hidden;
         }
         .progress-section {
             position: relative;
@@ -35,6 +35,115 @@
         .progress-bar-fg {
             background-image: linear-gradient(to right, #00bcd4, #e91e63);
             transition: width 0.5s ease-out;
+        }
+        .progress-markers {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            width: 100%;
+            height: 0;
+        }
+        .marker {
+            position: absolute;
+            top: 0;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border: 2px solid #a0aec0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            pointer-events: all;
+        }
+        .marker.achieved {
+            border-color: #ffd700;
+            background-color: #fffbeb;
+            animation: marker-glow 1.5s infinite ease-in-out;
+        }
+        @keyframes marker-glow {
+            0%, 100% { box-shadow: 0 0 10px 2px rgba(253, 224, 71, 0.7); }
+            50% { box-shadow: 0 0 20px 6px rgba(253, 224, 71, 1); }
+        }
+        .marker .marker-icon {
+            font-size: 12px;
+            color: #a0aec0;
+            transition: color 0.3s ease;
+        }
+        .marker.achieved .marker-icon { color: #daa520; }
+        .marker .tooltip {
+            position: absolute;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0c2f5b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .marker:hover .tooltip { opacity: 1; visibility: visible; }
+        .final-trophy {
+            width: 44px;
+            height: 44px;
+            left: 100%;
+            border-width: 3px;
+        }
+        .final-trophy.achieved { animation: final-trophy-glow 2s infinite ease-in-out; }
+        .final-trophy .marker-icon { font-size: 24px; }
+        @keyframes final-trophy-glow {
+            0%, 100% { box-shadow: 0 0 20px 8px rgba(253, 224, 71, 0.9); }
+            50% { box-shadow: 0 0 40px 15px rgba(253, 224, 71, 1); }
+        }
+        #fireworks-container {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .firework-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: firework-burst 1.2s ease-out forwards;
+        }
+        @keyframes firework-burst {
+            0% { opacity: 1; transform: scale(0.3) translate(0, 0); }
+            100% { opacity: 0; transform: scale(1) var(--transform-end); }
+        }
+        .achievement-text {
+            background: linear-gradient(90deg, #e91e63, #ffd700, #00bcd4, #e91e63);
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: text-glow 4s ease infinite;
+            font-weight: 800;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-top: 2.5rem;
+        }
+        @keyframes text-glow {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
         }
         .lesson-grid {
             display: grid;
@@ -84,78 +193,32 @@
             from { transform: translate(-50%, -50%) rotate(-45deg) scaleX(0); }
             to { transform: translate(-50%, -50%) rotate(-45deg) scaleX(1); }
         }
-        .info-note {
-            background-color: #e6f7ff;
-            border-left: 4px solid #00bcd4;
-            color: #0c2f5b;
-        }
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 1rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center;
+            justify-content: center; z-index: 1000; padding: 1rem;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
         }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-content {
-            background-color: #fffaf0;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            position: relative;
+            background-color: #fffaf0; padding: 2rem; border-radius: 0.75rem;
+            max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;
+            transform: scale(0.9); transition: transform 0.3s ease; position: relative;
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            color: #9ca3af;
-            cursor: pointer;
-            line-height: 1;
+            position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
+            color: #9ca3af; cursor: pointer; line-height: 1;
         }
-        .btn-primary {
-            background-color: #e91e63;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
+        .btn-primary { background-color: #e91e63; color: white; transition: background-color 0.3s ease; }
         .btn-primary:hover { background-color: #c2185b; }
-        .btn-primary:disabled {
-            background-color: #f8bbd0;
-            cursor: not-allowed;
-        }
-        .btn-secondary {
-            background-color: #e0e0e0;
-            color: #333;
-            transition: background-color 0.3s ease;
-        }
+        .btn-secondary { background-color: #e0e0e0; color: #333; transition: background-color 0.3s ease; }
         .btn-secondary:hover { background-color: #bdbdbd; }
         .btn-back {
-            background-color: transparent;
-            color: #0c2f5b;
-            border: 2px solid #0c2f5b;
+            background-color: transparent; color: #0c2f5b; border: 2px solid #0c2f5b;
             transition: all 0.3s ease;
         }
-        .btn-back:hover {
-            background-color: #0c2f5b;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
+        .btn-back:hover { background-color: #0c2f5b; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); }
         .text-brand-green { color: #00bcd4; }
         .text-brand-pink { color: #e91e63; }
         .group-title {
@@ -164,6 +227,15 @@
             margin-top: 3rem;
             margin-bottom: 1.5rem;
         }
+        #achievement-toast {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background-color: #0c2f5b; color: white; padding: 1rem 1.5rem;
+            border-radius: 0.75rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 2000; display: flex; align-items: center; gap: 1rem;
+            transition: bottom 0.5s ease-in-out;
+        }
+        #achievement-toast.show { bottom: 20px; }
+        #achievement-toast .toast-icon { font-size: 1.75rem; color: #ffd700; }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
@@ -171,6 +243,14 @@
     <audio id="completion-sound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
     </audio>
+
+    <div id="achievement-toast">
+        <i id="toast-icon" class="fas fa-medal toast-icon"></i>
+        <div>
+            <h4 id="toast-title" class="font-bold"></h4>
+            <p id="toast-message" class="text-sm"></p>
+        </div>
+    </div>
 
     <div id="lesson-modal" class="modal-overlay">
         <div class="modal-content">
@@ -186,17 +266,6 @@
                  <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
                     Marcar como completada
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="name-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 class="text-2xl font-bold text-center mb-4">¡Bienvenido/a!</h3>
-            <p class="text-center text-gray-700 mb-6">Por favor, introduce tu nombre para personalizar tu seguimiento y guardar tu progreso en la nube.</p>
-            <div class="flex flex-col gap-4">
-                <input type="text" id="name-input" placeholder="Tu nombre" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400">
-                <button id="name-submit-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">Guardar y Empezar</button>
             </div>
         </div>
     </div>
@@ -231,6 +300,7 @@
                 </p>
                 
                 <div class="mb-6 progress-section">
+                    <div id="fireworks-container"></div>
                     <div class="flex justify-between items-center mb-1 text-sm font-bold">
                         <span id="progress-text">0 / 0 Completadas</span>
                         <span id="progress-percent">0%</span>
@@ -239,6 +309,12 @@
                         <div class="w-full progress-bar-bg rounded-full h-4">
                             <div id="progress-bar" class="progress-bar-fg h-4 rounded-full" style="width: 0%"></div>
                         </div>
+                        <div id="progress-markers-container" class="progress-markers"></div>
+                    </div>
+                     <div id="achievement-unlocked" class="text-center hidden">
+                        <p class="achievement-text">
+                            <strong>¡Curso Completado!</strong><br>Desbloqueas una Sesión 1 a 1 de Psicoterapia.
+                        </p>
                     </div>
                 </div>
                 <div id="lesson-groups-container">
@@ -265,7 +341,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
@@ -287,9 +363,16 @@
         const progressText = document.getElementById('progress-text');
         const progressBar = document.getElementById('progress-bar');
         const progressPercent = document.getElementById('progress-percent');
+        const progressMarkersContainer = document.getElementById('progress-markers-container');
         const resetBtn = document.getElementById('reset-progress-btn');
         const userTitle = document.getElementById('user-title');
         const soundEffect = document.getElementById('completion-sound');
+        const achievementUnlocked = document.getElementById('achievement-unlocked');
+        const fireworksContainer = document.getElementById('fireworks-container');
+        const achievementToast = document.getElementById('achievement-toast');
+        const toastIcon = document.getElementById('toast-icon');
+        const toastTitle = document.getElementById('toast-title');
+        const toastMessage = document.getElementById('toast-message');
         
         const lessonModal = document.getElementById('lesson-modal');
         const modalCloseBtn = document.getElementById('modal-close');
@@ -299,10 +382,6 @@
         const modalExerciseContainer = document.getElementById('modal-exercise-container');
         const modalExercise = document.getElementById('modal-lesson-exercise');
         const modalCompleteBtn = document.getElementById('modal-complete-btn');
-
-        const nameModal = document.getElementById('name-modal');
-        const nameInput = document.getElementById('name-input');
-        const nameSubmitBtn = document.getElementById('name-submit-btn');
 
         const confirmModal = document.getElementById('confirm-modal');
         const confirmTitle = document.getElementById('confirm-title');
@@ -316,13 +395,13 @@
         let currentLessonId = null;
         let audioInitialized = false;
         let confirmCallback = null;
+        let achievedMarkers = new Set();
+        let toastTimeout;
         
         let progressDocRef;
         let progressUnsubscribe;
 
-        // --- Data Structure Setup ---
         function setupCourseStructure() {
-            // --- CAMBIO CLAVE: Se han insertado los datos completos del CSV ---
             const rawData = `Nº de Lección/Ejercicio,Título/Frase del día,Explicación,Ejercicio
 Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
 1,"Nada de lo que veo en esta habitación [en esta calle, desde esta ventana, en este lugar] significa nada.","Ahora mira lentamente a tu alrededor, y aplica esta idea de una manera muy específica a todo lo que veas:","Esa mesa no significa nada. Esa silla no significa nada. Esta mano no significa nada. Este pie no significa nada. Esta pluma no significa nada."
@@ -372,22 +451,35 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
 45,"Dios es la Mente con la que pienso.","Esta idea es la que finalmente te permitirá identificarte con la Mente de Dios.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios es la Mente con la que pienso acerca de ______”."
 46,"Dios es el Amor en el que perdono.","Dios no perdona porque nunca ha condenado.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Dios es el Amor en el que perdono a este/a ______”."
 47,"Dios es la fortaleza en la que confío.","Si confías en tu propia fortaleza, tienes todas las razones para sentirte aprensivo, ansioso y temeroso.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios es la fortaleza en la que confío acerca de ______”."
+48,"No hay nada que temer.","La idea de hoy simplemente afirma un hecho.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No hay nada que temer en relación con ______”."
+49,"La Voz de Dios me habla durante todo el día.","Es muy posible escuchar la Voz de Dios durante todo el día sin interrumpir para nada tus actividades normales.","Con los ojos cerrados, repite la idea de hoy para tus adentros. Luego escucha atentamente, pero sin tensión, por uno o dos minutos."
+50,"El Amor de Dios es mi sustento.","He aquí la respuesta a todo problema que se te presente, hoy, mañana y a lo largo del tiempo.","Con los ojos cerrados, repite la idea de hoy para tus adentros. Luego, por un breve intervalo, explora tu mente en busca de pensamientos de carencia en cualquier forma."
+Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso.",,
+51,"(1) Nada de lo que veo significa nada. (2) Le he dado a todo lo que veo todo el significado que tiene para mí. (3) No entiendo nada de lo que veo. (4) Estos pensamientos no significan nada. (5) Nunca estoy disgustado por la razón que creo.","Repasa las primeras cinco ideas, una en cada sesión de práctica, dedicando dos minutos a cada una.","Lee la idea y los comentarios que la siguen. Luego cierra los ojos y simplemente repite la idea para tus adentros una vez más, lentamente."
+52,"(6) Estoy disgustado porque veo algo que no está ahí. (7) Sólo veo el pasado. (8) Mi mente está absorbida con pensamientos del pasado. (9) No veo nada tal como es ahora. (10) Mis pensamientos no significan nada.","Repasa las ideas 6-10 de la misma manera que las anteriores.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+53,"(11) Mis pensamientos sin significado me están mostrando un mundo sin significado. (12) Estoy disgustado porque veo un mundo que no tiene significado. (13) Un mundo sin significado engendra temor. (14) Dios no creó un mundo sin significado. (15) Mis pensamientos son imágenes que yo mismo he fabricado.","Repasa las ideas 11-15.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+54,"(16) No tengo pensamientos neutros. (17) No veo cosas neutras. (18) No soy el único que experimenta los efectos de mi manera de ver. (19) No soy el único que experimenta los efectos de mis pensamientos. (20) Estoy decidido a ver.","Repasa las ideas 16-20.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+55,"(21) Estoy decidido a ver las cosas de otra manera. (22) Lo que veo es una forma de venganza. (23) Puedo escaparme de este mundo que veo renunciando a los pensamientos de ataque. (24) No percibo lo que más me conviene. (25) No sé cuál es el propósito de nada.","Repasa las ideas 21-25.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+56,"(26) Mis pensamientos de ataque atacan mi invulnerabilidad. (27) Por encima de todo quiero ver. (28) Por encima de todo quiero ver las cosas de otra manera. (29) Dios está en todo lo que veo. (30) Dios está en todo lo que veo porque Dios está en mi mente.","Repasa las ideas 26-30.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+57,"(31) No soy víctima del mundo que veo. (32) He inventado el mundo que veo. (33) Hay otra manera de ver el mundo. (34) Podría ver paz en lugar de esto. (35) Mi mente es parte de la de Dios. Soy muy santo.","Repasa las ideas 31-35.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+58,"(36) Mi santidad envuelve todo lo que veo. (37) Mi santidad bendice al mundo. (38) No hay nada que mi santidad no pueda hacer. (39) Mi santidad es mi salvación. (40) Soy bendito por ser un Hijo de Dios.","Repasa las ideas 36-40.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+59,"(41) Dios va conmigo dondequiera que yo voy. (42) Dios es mi fortaleza. La visión es Su don. (43) Dios es mi Fuente. No puedo ver separado de Él. (44) Dios es la luz en la que veo. (45) Dios es la Mente con la que pienso.","Repasa las ideas 41-45.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
+60,"(46) Dios es el Amor en el que perdono. (47) Dios es la fortaleza en la que confío. (48) No hay nada que temer. (49) La Voz de Dios me habla durante todo el día. (50) El Amor de Dios es mi sustento.","Repasa las ideas 46-50.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
 `;
-
+            
+            // --- CAMBIO CLAVE: Lógica robusta para procesar el CSV ---
             const allRows = rawData.split('\n').filter(row => row.trim() !== '').slice(1);
             let currentGroup = null;
 
             allRows.forEach(row => {
                 const [id, title, explanation, exercise] = parseCsvRow(row);
-                
-                // --- CAMBIO CLAVE: Comprobación para evitar errores ---
-                if (!id) return;
+                if (!id || !title) return; // Salta filas vacías o malformadas
 
-                const isGroupTitle = isNaN(parseInt(id, 10));
+                const isGroupTitle = isNaN(parseInt(id.trim(), 10));
                 
                 const lessonData = {
-                    id: (id || '').trim(),
-                    title: (title || '').trim(),
+                    id: id.trim(),
+                    title: title.trim(),
                     explanation: (explanation || '').trim(),
                     exercise: (exercise || '').trim(),
                     type: isGroupTitle ? 'group_title' : 'lesson'
@@ -449,10 +541,33 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
                 groupContainer.appendChild(grid);
                 groupsContainer.appendChild(groupContainer);
             });
+            renderMarkers();
             updateUI();
         }
+        
+        function renderMarkers() {
+            progressMarkersContainer.innerHTML = '';
+            let accumulatedLessons = 0;
+            const totalItems = allLessonsMap.size;
 
-        // --- Auth & Firestore Logic ---
+            courseStructure.forEach((group, index) => {
+                const groupItemCount = group.lessons.length;
+                if (index < courseStructure.length -1) {
+                    accumulatedLessons += groupItemCount;
+                    const position = (accumulatedLessons / totalItems) * 100;
+                    const markerWrapper = document.createElement('div');
+                    markerWrapper.className = 'marker';
+                    markerWrapper.style.left = `${position}%`;
+                    markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">${group.title}</span>`;
+                    progressMarkersContainer.appendChild(markerWrapper);
+                }
+            });
+            const finalTrophy = document.createElement('div');
+            finalTrophy.className = 'marker final-trophy';
+            finalTrophy.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Premio al completar!</span>`;
+            progressMarkersContainer.appendChild(finalTrophy);
+        }
+
         onAuthStateChanged(auth, user => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
@@ -463,25 +578,27 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
                 
                 const userId = user.uid;
                 const userDocRef = doc(db, "users", userId);
-                onSnapshot(userDocRef, (docSnap) => {
-                    if(docSnap.exists() && docSnap.data().name) {
-                        userTitle.textContent = `El Progreso de ${docSnap.data().name}`;
+                
+                // --- CAMBIO CLAVE: Lógica para no pedir el nombre ---
+                const appId = 'ucdm-tracker-app-v2';
+                progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
+
+                getDoc(userDocRef).then(userSnap => {
+                    if (userSnap.exists() && userSnap.data().name) {
+                        userTitle.textContent = `El Progreso de ${userSnap.data().name}`;
                     }
                 });
 
-                const appId = 'ucdm-tracker-app-v2'; // Using a new ID for the new structure
-                progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
-                
                 if (progressUnsubscribe) progressUnsubscribe();
                 
                 progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         completedLessons = new Set(data.completed || []);
-                        closeNameModal();
                         updateUI();
                     } else {
-                        showNameModal();
+                        // Si no existe el progreso, lo crea vacío sin pedir nombre
+                        setDoc(progressDocRef, { completed: [] });
                     }
                 }, (error) => {
                     console.error("Error en el listener de progreso:", error);
@@ -494,7 +611,6 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
             }
         });
 
-        // --- UI Update & Interaction Logic ---
         function updateUI() {
             updateProgress();
             updateLessonItemsState();
@@ -508,6 +624,42 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
             progressText.textContent = `${completedCount} / ${totalLessonCount} Completadas`;
             progressBar.style.width = `${percentage}%`;
             progressPercent.textContent = `${Math.round(percentage)}%`;
+
+            const oldAchievedMarkers = new Set(achievedMarkers);
+            const newAchievedMarkers = new Set();
+            let animationDelay = 0;
+            const markers = document.querySelectorAll('.marker');
+            markers.forEach((marker, index) => {
+                marker.id = marker.id || `marker-${index}`;
+                const markerPosition = parseFloat(marker.style.left);
+                const isAchieved = percentage >= markerPosition;
+                
+                marker.classList.toggle('achieved', isAchieved);
+
+                if (isAchieved) {
+                    newAchievedMarkers.add(marker.id);
+                    if (!oldAchievedMarkers.has(marker.id)) {
+                        const isFinalTrophy = marker.classList.contains('final-trophy');
+                        const particleCount = isFinalTrophy ? 100 : 30;
+                        const group = courseStructure[index] || { title: '¡Has completado todas las lecciones!' };
+                        const stageTitle = isFinalTrophy ? '¡Curso Completado!' : `¡Etapa Superada!`;
+                        
+                        setTimeout(() => {
+                            triggerFireworks(marker.style.left, particleCount);
+                            showAchievementToast(stageTitle, group.title, isFinalTrophy);
+                            if (isFinalTrophy) {
+                                achievementUnlocked.classList.remove('hidden');
+                            }
+                        }, animationDelay);
+                        
+                        animationDelay += 700;
+                    }
+                }
+            });
+            achievedMarkers = newAchievedMarkers;
+            if (percentage < 100) {
+                achievementUnlocked.classList.add('hidden');
+            }
         }
 
         function updateLessonItemsState() {
@@ -563,30 +715,6 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
             closeLessonModal();
         }
 
-        async function handleNameSubmit() {
-            const newName = nameInput.value.trim();
-            if (!newName || !auth.currentUser || !progressDocRef) return;
-
-            nameSubmitBtn.disabled = true;
-            nameSubmitBtn.textContent = 'Guardando...';
-
-            const userId = auth.currentUser.uid;
-            const userDocRef = doc(db, "users", userId);
-            try {
-                await Promise.all([
-                    setDoc(userDocRef, { name: newName }, { merge: true }),
-                    setDoc(progressDocRef, { userName: newName, completed: [] })
-                ]);
-                closeNameModal(); 
-            } catch (error) {
-                console.error("Error saving initial data:", error);
-                alert("No se pudo guardar tu nombre. Por favor, inténtalo de nuevo.");
-            } finally {
-                nameSubmitBtn.disabled = false;
-                nameSubmitBtn.textContent = 'Guardar y Empezar';
-            }
-        }
-
         function handleResetProgress() {
             showConfirmation('¿Estás seguro de que quieres reiniciar todo tu progreso? Esta acción no se puede deshacer.', async () => {
                 if (progressDocRef) {
@@ -598,6 +726,36 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
                     }
                 }
             });
+        }
+
+        function triggerFireworks(position, particleCount) {
+            const colors = ['#ffd700', '#ffc0cb', '#ffffff', '#00bcd4', '#e91e63'];
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('firework-particle');
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * (particleCount > 50 ? 180 : 80) + 40;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                particle.style.setProperty('--transform-end', `translate(${x}px, ${y}px)`);
+                particle.style.left = position;
+                particle.style.top = '0';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                fireworksContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        function showAchievementToast(title, message, isFinal) {
+            clearTimeout(toastTimeout);
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            toastIcon.className = `fas ${isFinal ? 'fa-trophy' : 'fa-medal'} toast-icon`;
+            achievementToast.classList.add('show');
+            toastTimeout = setTimeout(() => {
+                achievementToast.classList.remove('show');
+            }, 4000);
         }
 
         function initializeAudio() {
@@ -614,8 +772,6 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
         }
 
         function closeLessonModal() { lessonModal.classList.remove('show'); }
-        function showNameModal() { nameModal.classList.add('show'); }
-        function closeNameModal() { nameModal.classList.remove('show'); }
         
         function showConfirmation(message, onConfirm) {
             confirmMessage.textContent = message;
@@ -628,12 +784,9 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
             confirmCallback = null;
         }
 
-        // --- Event Listeners ---
         modalCloseBtn.addEventListener('click', closeLessonModal);
         lessonModal.addEventListener('click', (e) => e.target === lessonModal && closeLessonModal());
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
-        nameSubmitBtn.addEventListener('click', handleNameSubmit);
-        nameInput.addEventListener('keyup', (e) => e.key === 'Enter' && handleNameSubmit());
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeConfirmModal();
@@ -641,7 +794,6 @@ Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
         confirmNoBtn.addEventListener('click', closeConfirmModal);
         resetBtn.addEventListener('click', handleResetProgress);
         
-        // --- Start Application ---
         setupCourseStructure();
     </script>
 </body>
