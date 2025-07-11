@@ -15,6 +15,7 @@
         .form-input:focus { outline: none; border-color: #00bcd4; box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); }
         .btn-submit { background-color: #e91e63; color: white; transition: all 0.3s ease; }
         .btn-submit:hover { background-color: #c2185b; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-submit:disabled { background-color: #f8bbd0; cursor: not-allowed; }
         .error-message { background-color: #ffcdd2; color: #c62828; border-left: 4px solid #c62828; }
     </style>
 </head>
@@ -47,7 +48,7 @@
                     <label for="confirm-password" class="block font-semibold mb-1">Confirmar Contraseña</label>
                     <input type="password" id="confirm-password" class="form-input w-full p-2 rounded-md" required>
                 </div>
-                <button type="submit" class="btn-submit w-full font-bold py-3 rounded-lg">
+                <button type="submit" id="submit-button" class="btn-submit w-full font-bold py-3 rounded-lg">
                     Crear mi Cuenta
                 </button>
             </form>
@@ -58,28 +59,35 @@
     </div>
 
     <script type="module">
+        // Importaciones de Firebase (Auth y Firestore)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
+        // --- IMPORTANTE: Usa la configuración de tu NUEVO proyecto de Firebase ---
         const firebaseConfig = {
-            apiKey: "AIzaSyC5RaMnG4Qr0jQWkACovPIdEpPSc7FhJqg",
-            authDomain: "web-miembros-ucdm.firebaseapp.com",
-            projectId: "web-miembros-ucdm",
-            storageBucket: "web-miembros-ucdm.appspot.com",
-            messagingSenderId: "203515685884",
-            appId: "1:203515685884:web:96a82944170c86171ba079",
-            measurementId: "G-PWEQZRT39B"
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
         };
 
+        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app); // Inicializar Firestore
 
+        // Elementos del DOM
         const registerForm = document.getElementById('register-form');
         const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirm-password');
         const messageBox = document.getElementById('message-box');
+        const submitButton = document.getElementById('submit-button');
 
         function showMessage(text, type = 'error') {
             messageBox.textContent = text;
@@ -103,7 +111,7 @@
         
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = nameInput.value;
+            const name = nameInput.value.trim();
             const email = emailInput.value;
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
@@ -113,16 +121,42 @@
                 showAuthError('auth/password-mismatch');
                 return;
             }
+            if (!name) {
+                showMessage('Por favor, introduce tu nombre.', 'error');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creando cuenta...';
 
             try {
+                // Paso 1: Crear el usuario en Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                // Aquí podrías añadir lógica adicional como guardar el nombre en la base de datos
+                const user = userCredential.user;
+
+                // --- ¡NUEVO! Paso 2: Guardar el nombre del usuario en Firestore ---
+                // Creamos una referencia a un nuevo documento en la colección 'users'
+                // El ID del documento será el mismo que el ID de autenticación del usuario (user.uid)
+                const userDocRef = doc(db, "users", user.uid);
+                
+                // Guardamos el nombre en ese documento
+                await setDoc(userDocRef, {
+                    name: name,
+                    email: email, // Opcional: también guardamos el email
+                    createdAt: new Date() // Opcional: guardamos la fecha de creación
+                });
+
+                // Paso 3: Redirigir al panel de miembros
                 window.location.href = './miembros.html';
+
             } catch (error) {
                 showAuthError(error.code);
                 console.error("Error de registro:", error);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Crear mi Cuenta';
             }
         });
     </script>
 </body>
 </html>
+
