@@ -257,7 +257,7 @@
             <span id="modal-close" class="modal-close-btn">&times;</span>
             <h3 id="modal-lesson-number" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
             <p id="modal-lesson-phrase" class="text-2xl italic text-brand-green font-bold mb-4"></p>
-            <p id="modal-lesson-explanation" class="text-gray-700 mb-6"></p>
+            <p id="modal-lesson-explanation" class="text-gray-700 mb-6 whitespace-pre-wrap"></p>
             <div id="modal-exercise-container" class="mt-6 pt-4 border-t-2 border-dashed border-pink-200">
                 <h4 class="font-bold text-brand-pink">Ejercicio Recomendado:</h4>
                 <p id="modal-lesson-exercise" class="mt-2 text-gray-600"></p>
@@ -333,30 +333,35 @@
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
         <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
         <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
-        <a href="./login.html" class="mt-8 inline-block btn btn-pink font-bold py-3 px-6 rounded-lg">
+        <a href="./login.html" class="mt-8 inline-block btn-primary font-bold py-3 px-6 rounded-lg">
             Ir a Iniciar Sesión
         </a>
     </div>
 
     <script type="module">
+        // --- IMPORTS DE FIREBASE ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // --- CAMBIO CLAVE: Se añaden las funciones necesarias para consultar una colección ---
+        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- CONFIGURACIÓN DE FIREBASE (sin cambios) ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
             projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
+            storageBucket: "membresia-ucdm-v2.appspot.com", // Corregido a .appspot.com
             messagingSenderId: "198704348819",
             appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
             measurementId: "G-5L3T8PGXYK"
         };
 
+        // --- INICIALIZACIÓN DE FIREBASE (sin cambios) ---
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
         
+        // --- SELECTORES DEL DOM (sin cambios) ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const groupsContainer = document.getElementById('lesson-groups-container');
@@ -389,6 +394,7 @@
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
 
+        // --- VARIABLES GLOBALES (sin cambios) ---
         let courseStructure = [];
         let allLessonsMap = new Map();
         let completedLessons = new Set();
@@ -401,127 +407,64 @@
         let progressDocRef;
         let progressUnsubscribe;
 
-        function setupCourseStructure() {
-            const rawData = `Nº de Lección/Ejercicio,Título/Frase del día,Explicación,Ejercicio
-Introducción,"La manera en que ahora ves, tendrá que ser anulada",,
-1,"Nada de lo que veo en esta habitación [en esta calle, desde esta ventana, en este lugar] significa nada.","Ahora mira lentamente a tu alrededor, y aplica esta idea de una manera muy específica a todo lo que veas:","Esa mesa no significa nada. Esa silla no significa nada. Esta mano no significa nada. Este pie no significa nada. Esta pluma no significa nada."
-2,"Le he dado a todo lo que veo en esta habitación [en esta calle, desde esta ventana, en este lugar] todo el significado que tiene para mí.","Los ejercicios deben hacerse con los ojos abiertos.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Le he dado a este/a ______ todo el significado que tiene para mí”."
-3,"No entiendo nada de lo que veo en esta habitación [en esta calle, desde esta ventana, en este lugar].","Esta idea, al igual que la anterior, debe aplicarse a todo lo que veas indiscriminadamente.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No entiendo este/a ______”."
-4,"Estos pensamientos no significan nada. Son como las cosas que veo en esta habitación [en esta calle, desde esta ventana, en este lugar].","A diferencia de los ejercicios anteriores, éstos no se hacen con los ojos abiertos.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Este pensamiento acerca de ______ no significa nada”."
-5,"Nunca estoy disgustado por la razón que creo.","Esta idea, al igual que la anterior, puede aplicarse a cualquier persona, situación o acontecimiento que creas que te está causando dolor.","Aplica la idea a cualquier cosa que creas que te está causando dolor, usando el nombre de la persona, situación o acontecimiento en cuestión y diciendo: “Nunca estoy disgustado por la razón que creo”."
-6,"Estoy disgustado porque veo algo que no está ahí.","Esta idea es muy similar a la anterior, y puede aplicarse a cualquier persona, situación o acontecimiento que creas que te está causando dolor.","Aplica la idea a cualquier cosa que creas que te está causando dolor, usando el nombre de la persona, situación o acontecimiento en cuestión y diciendo: “Estoy disgustado porque veo algo que no está ahí”."
-7,"Sólo veo el pasado.","Esta idea es particularmente difícil de creer al principio, pero es la razón fundamental de todas las anteriores.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Sólo veo el pasado en este/a ______”."
-8,"Mi mente está absorbida con pensamientos del pasado.","Esta idea es, por supuesto, la razón de que veas únicamente el pasado.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi mente está absorbida con pensamientos del pasado acerca de ______”."
-9,"No veo nada tal como es ahora.","Esta idea es la consecuencia lógica de las dos anteriores.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No veo este/a ______ tal como es ahora”."
-10,"Mis pensamientos no significan nada.","Esta idea es aplicable a todos los pensamientos de los que eres o te vuelves consciente durante las sesiones de práctica.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento acerca de ______ no significa nada”."
-11,"Mis pensamientos sin significado me están mostrando un mundo sin significado.","Esta idea es la primera que está relacionada con una de las fases principales del proceso de corrección: el reconocimiento de la causa y el efecto.","Aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento acerca de ______ me está mostrando un mundo sin significado”."
-12,"Estoy disgustado porque veo un mundo que no tiene significado.","Esta idea es la continuación de la anterior.","Aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Estoy disgustado porque veo un mundo que no tiene significado”."
-13,"Un mundo sin significado engendra temor.","Esta idea es realmente una variación de la anterior.","Aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Un mundo sin significado engendra temor”."
-14,"Dios no creó un mundo sin significado.","Esta idea es nuestro primer intento de aprender a negar lo que es falso y a aceptar lo que es verdadero.","Aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios no creó un mundo sin significado”."
-15,"Mis pensamientos son imágenes que yo mismo he fabricado.","Esta idea es el primer paso para aprender a ver.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento acerca de ______ es una imagen que yo mismo he fabricado”."
-16,"No tengo pensamientos neutros.","Esta idea es un paso inicial en el proceso de desvanecer la creencia de que tus pensamientos no tienen ningún efecto.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento acerca de ______ no es un pensamiento neutro”."
-17,"No veo cosas neutras.","Esta idea es otro paso en el proceso de identificar causa y efecto tal como realmente operan en el mundo.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No veo un/a ______ neutro/a”."
-18,"No soy el único que experimenta los efectos de mi manera de ver.","Esta idea es un paso más en el proceso de aprender que tus pensamientos tienen poder.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No soy el único que experimenta los efectos de mi manera de ver este/a ______”."
-19,"No soy el único que experimenta los efectos de mis pensamientos.","Esta idea es la que te permitirá finalmente entender que no hay separación.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “No soy el único que experimenta los efectos de mi pensamiento acerca de ______”."
-20,"Estoy decidido a ver.","Esta idea es una declaración de tu voluntad de cambiar.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Estoy decidido a ver este/a ______”."
-21,"Estoy decidido a ver las cosas de otra manera.","Esta idea es, obviamente, una continuación y ampliación de la anterior.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Estoy decidido a ver este/a ______ de otra manera”."
-22,"Lo que veo es una forma de venganza.","Esta idea describe con gran precisión lo que realmente ves.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Veo una forma de venganza en este/a ______”."
-23,"Puedo escaparme de este mundo que veo renunciando a los pensamientos de ataque.","Esta idea contiene la única vía de escape del miedo que jamás tendrá éxito.","Con los ojos cerrados, aplica la idea a cualquier pensamiento de ataque que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Puedo escaparme de este mundo que veo renunciando a los pensamientos de ataque acerca de ______”."
-24,"No percibo lo que más me conviene.","Esta idea es el trampolín para la inversión del pensamiento.","Aplica la idea a cualquier situación en la que te encuentres, usando el nombre de la situación en cuestión y manteniendo tu mente en ella mientras dices: “No percibo lo que más me conviene en esta situación”."
-25,"No sé cuál es el propósito de nada.","Esta idea es una extensión de la anterior.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No sé cuál es el propósito de este/a ______”."
-26,"Mis pensamientos de ataque atacan mi invulnerabilidad.","Esta idea te ayudará a entender que el ataque es autodestrucción.","Con los ojos cerrados, aplica la idea a cualquier pensamiento de ataque que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento de ataque acerca de ______ ataca mi invulnerabilidad”."
-27,"Por encima de todo quiero ver.","Esta idea expresa algo más fuerte que una simple resolución.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Por encima de todo quiero ver este/a ______”."
-28,"Por encima de todo quiero ver las cosas de otra manera.","Esta idea es una continuación de la anterior.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Por encima de todo quiero ver este/a ______ de otra manera”."
-29,"Dios está en todo lo que veo.","Esta idea explica por qué puedes ver propósito en todo.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Dios está en este/a ______”."
-30,"Dios está en todo lo que veo porque Dios está en mi mente.","Esta idea es el trampolín a la visión.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios está en mi pensamiento acerca de ______”."
-31,"No soy víctima del mundo que veo.","Esta idea es la introducción a tu declaración de liberación.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No soy víctima de este/a ______”."
-32,"He inventado el mundo que veo.","Esta idea es la continuación de la anterior.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “He inventado mi pensamiento acerca de ______”."
-33,"Hay otra manera de ver el mundo.","Esta idea es un intento de reconocer que puedes cambiar tu percepción del mundo tanto en su aspecto externo como interno.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Hay otra manera de ver este/a ______”."
-34,"Podría ver paz en lugar de esto.","Esta idea comienza a describir las condiciones que prevalecen en la otra manera de ver.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Podría ver paz en este/a ______”."
-35,"Mi mente es parte de la de Dios. Soy muy santo.","Esta idea no describe la manera en que te ves a ti mismo ahora.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi pensamiento acerca de ______ es parte de la mente de Dios. Soy muy santo”."
-36,"Mi santidad envuelve todo lo que veo.","Esta idea extiende la idea de ayer desde el perceptor a lo percibido.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Mi santidad envuelve este/a ______”."
-37,"Mi santidad bendice al mundo.","Esta idea contiene los primeros destellos de tu verdadera función en el mundo, o en otras palabras, la razón por la que estás aquí.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Mi santidad bendice este/a ______”."
-38,"No hay nada que mi santidad no pueda hacer.","Tu santidad invierte todas las leyes del mundo.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “No hay nada que mi santidad no pueda hacer en mi pensamiento acerca de ______”."
-39,"Mi santidad es mi salvación.","Si la culpa es el infierno, ¿cuál es su opuesto?","Aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Mi santidad es mi salvación de mi pensamiento acerca de ______”."
-40,"Soy bendito por ser un Hijo de Dios.","Esta idea es una afirmación de tu derecho a la santidad.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Soy bendito por ser un Hijo de Dios en este/a ______”."
-41,"Dios va conmigo dondequiera que yo voy.","Esta idea te ayudará a sentir la certeza de que no estás solo.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios va conmigo en mi pensamiento acerca de ______”."
-42,"Dios es mi fortaleza. La visión es Su don.","Esta idea combina dos pensamientos muy poderosos.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Dios es mi fortaleza. La visión de este/a ______ es Su don”."
-43,"Dios es mi Fuente. No puedo ver separado de Él.","La percepción no es un atributo de Dios.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios es mi Fuente. No puedo pensar acerca de ______ separado de Él”."
-44,"Dios es la luz en la que veo.","Esta idea es la inversión de 'veo en la oscuridad'.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Dios es la luz en la que veo este/a ______”."
-45,"Dios es la Mente con la que pienso.","Esta idea es la que finalmente te permitirá identificarte con la Mente de Dios.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios es la Mente con la que pienso acerca de ______”."
-46,"Dios es el Amor en el que perdono.","Dios no perdona porque nunca ha condenado.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “Dios es el Amor en el que perdono a este/a ______”."
-47,"Dios es la fortaleza en la que confío.","Si confías en tu propia fortaleza, tienes todas las razones para sentirte aprensivo, ansioso y temeroso.","Con los ojos cerrados, aplica la idea a cualquier pensamiento que se te ocurra, usando el nombre del pensamiento en cuestión y manteniendo tu mente en él mientras dices: “Dios es la fortaleza en la que confío acerca de ______”."
-48,"No hay nada que temer.","La idea de hoy simplemente afirma un hecho.","Aplica la idea a cualquier cosa que veas, usando el nombre del objeto en cuestión y manteniendo la mirada en él mientras dices: “No hay nada que temer en relación con ______”."
-49,"La Voz de Dios me habla durante todo el día.","Es muy posible escuchar la Voz de Dios durante todo el día sin interrumpir para nada tus actividades normales.","Con los ojos cerrados, repite la idea de hoy para tus adentros. Luego escucha atentamente, pero sin tensión, por uno o dos minutos."
-50,"El Amor de Dios es mi sustento.","He aquí la respuesta a todo problema que se te presente, hoy, mañana y a lo largo del tiempo.","Con los ojos cerrados, repite la idea de hoy para tus adentros. Luego, por un breve intervalo, explora tu mente en busca de pensamientos de carencia en cualquier forma."
-Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso.",,
-51,"(1) Nada de lo que veo significa nada. (2) Le he dado a todo lo que veo todo el significado que tiene para mí. (3) No entiendo nada de lo que veo. (4) Estos pensamientos no significan nada. (5) Nunca estoy disgustado por la razón que creo.","Repasa las primeras cinco ideas, una en cada sesión de práctica, dedicando dos minutos a cada una.","Lee la idea y los comentarios que la siguen. Luego cierra los ojos y simplemente repite la idea para tus adentros una vez más, lentamente."
-52,"(6) Estoy disgustado porque veo algo que no está ahí. (7) Sólo veo el pasado. (8) Mi mente está absorbida con pensamientos del pasado. (9) No veo nada tal como es ahora. (10) Mis pensamientos no significan nada.","Repasa las ideas 6-10 de la misma manera que las anteriores.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-53,"(11) Mis pensamientos sin significado me están mostrando un mundo sin significado. (12) Estoy disgustado porque veo un mundo que no tiene significado. (13) Un mundo sin significado engendra temor. (14) Dios no creó un mundo sin significado. (15) Mis pensamientos son imágenes que yo mismo he fabricado.","Repasa las ideas 11-15.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-54,"(16) No tengo pensamientos neutros. (17) No veo cosas neutras. (18) No soy el único que experimenta los efectos de mi manera de ver. (19) No soy el único que experimenta los efectos de mis pensamientos. (20) Estoy decidido a ver.","Repasa las ideas 16-20.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-55,"(21) Estoy decidido a ver las cosas de otra manera. (22) Lo que veo es una forma de venganza. (23) Puedo escaparme de este mundo que veo renunciando a los pensamientos de ataque. (24) No percibo lo que más me conviene. (25) No sé cuál es el propósito de nada.","Repasa las ideas 21-25.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-56,"(26) Mis pensamientos de ataque atacan mi invulnerabilidad. (27) Por encima de todo quiero ver. (28) Por encima de todo quiero ver las cosas de otra manera. (29) Dios está en todo lo que veo. (30) Dios está en todo lo que veo porque Dios está en mi mente.","Repasa las ideas 26-30.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-57,"(31) No soy víctima del mundo que veo. (32) He inventado el mundo que veo. (33) Hay otra manera de ver el mundo. (34) Podría ver paz en lugar de esto. (35) Mi mente es parte de la de Dios. Soy muy santo.","Repasa las ideas 31-35.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-58,"(36) Mi santidad envuelve todo lo que veo. (37) Mi santidad bendice al mundo. (38) No hay nada que mi santidad no pueda hacer. (39) Mi santidad es mi salvación. (40) Soy bendito por ser un Hijo de Dios.","Repasa las ideas 36-40.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-59,"(41) Dios va conmigo dondequiera que yo voy. (42) Dios es mi fortaleza. La visión es Su don. (43) Dios es mi Fuente. No puedo ver separado de Él. (44) Dios es la luz en la que veo. (45) Dios es la Mente con la que pienso.","Repasa las ideas 41-45.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-60,"(46) Dios es el Amor en el que perdono. (47) Dios es la fortaleza en la que confío. (48) No hay nada que temer. (49) La Voz de Dios me habla durante todo el día. (50) El Amor de Dios es mi sustento.","Repasa las ideas 46-50.","Lee la idea y los comentarios. Luego cierra los ojos y repite la idea para tus adentros."
-`;
-            
-            // --- CAMBIO CLAVE: Lógica robusta para procesar el CSV ---
-            const allRows = rawData.split('\n').filter(row => row.trim() !== '').slice(1);
-            let currentGroup = null;
+        // --- CAMBIO CLAVE: Nueva función para cargar el curso desde Firestore ---
+        async function fetchAndSetupCourse() {
+            groupsContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
+            try {
+                // 1. Crear una consulta a la colección 'UCDM_lessons' ordenada por el campo 'order'
+                const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
+                const querySnapshot = await getDocs(lessonsQuery);
 
-            allRows.forEach(row => {
-                const [id, title, explanation, exercise] = parseCsvRow(row);
-                if (!id || !title) return; // Salta filas vacías o malformadas
-
-                const isGroupTitle = isNaN(parseInt(id.trim(), 10));
+                let currentGroup = null;
                 
-                const lessonData = {
-                    id: id.trim(),
-                    title: title.trim(),
-                    explanation: (explanation || '').trim(),
-                    exercise: (exercise || '').trim(),
-                    type: isGroupTitle ? 'group_title' : 'lesson'
-                };
+                // 2. Iterar sobre los documentos obtenidos de Firestore
+                querySnapshot.forEach(doc => {
+                    const lessonData = doc.data();
+                    
+                    // Asignamos el ID del documento para referencias futuras
+                    lessonData.docId = doc.id; 
+                    
+                    // Guardamos la lección en un mapa para acceso rápido
+                    // El ID de la lección para el progreso será su número
+                    if (lessonData.number) {
+                        allLessonsMap.set(String(lessonData.number), lessonData);
+                    }
 
-                allLessonsMap.set(lessonData.id, lessonData);
+                    // 3. Agrupar lecciones bajo sus títulos de sección (igual que la lógica anterior)
+                    if (lessonData.type === 'section_intro') {
+                         if (currentGroup) {
+                            courseStructure.push(currentGroup);
+                         }
+                         currentGroup = {
+                            title: lessonData.title,
+                            lessons: []
+                         };
+                    } else if (lessonData.type === 'lesson' && currentGroup) {
+                        currentGroup.lessons.push(lessonData);
+                    }
+                });
 
-                if (isGroupTitle) {
-                    currentGroup = {
-                        title: lessonData.title,
-                        lessons: []
-                    };
+                // Añadir el último grupo a la estructura
+                if (currentGroup) {
                     courseStructure.push(currentGroup);
-                } else if (currentGroup) {
-                    currentGroup.lessons.push(lessonData);
                 }
-            });
-            renderCourse();
-        }
+                
+                // 4. Renderizar el curso en la página
+                renderCourse();
 
-        function parseCsvRow(row) {
-            const parts = [];
-            let current = '';
-            let inQuotes = false;
-            for (const char of row) {
-                if (char === '"' && (current.length === 0 || current.slice(-1) !== '\\')) {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    parts.push(current.replace(/\\"/g, '"'));
-                    current = '';
-                } else {
-                    current += char;
-                }
+            } catch (error) {
+                console.error("Error al cargar el curso desde Firestore:", error);
+                groupsContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar la estructura del curso. Por favor, recarga la página.</p>`;
             }
-            parts.push(current.replace(/\\"/g, '"'));
-            return parts.map(item => item.trim().replace(/^"|"$/g, ''));
         }
 
         function renderCourse() {
             groupsContainer.innerHTML = '';
+            const totalLessonCount = Array.from(allLessonsMap.values()).filter(l => l.type === 'lesson').length;
+
             courseStructure.forEach(group => {
                 const groupContainer = document.createElement('div');
+                
                 const titleEl = document.createElement('h3');
                 titleEl.className = 'text-2xl font-bold group-title';
                 titleEl.textContent = group.title;
@@ -532,29 +475,31 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                 group.lessons.forEach(lesson => {
                     const lessonItem = document.createElement('div');
                     lessonItem.className = 'lesson-item';
-                    lessonItem.textContent = lesson.id;
-                    lessonItem.dataset.id = lesson.id;
+                    lessonItem.textContent = String(lesson.number);
+                    lessonItem.dataset.id = String(lesson.number);
                     lessonItem.innerHTML += '<div class="line-through"></div>';
-                    lessonItem.addEventListener('click', () => openLessonModal(lesson.id));
+                    lessonItem.addEventListener('click', () => openLessonModal(String(lesson.number)));
                     grid.appendChild(lessonItem);
                 });
                 groupContainer.appendChild(grid);
                 groupsContainer.appendChild(groupContainer);
             });
-            renderMarkers();
+            renderMarkers(totalLessonCount);
             updateUI();
         }
         
-        function renderMarkers() {
+        function renderMarkers(totalLessonCount) {
             progressMarkersContainer.innerHTML = '';
-            let accumulatedLessons = 0;
-            const totalItems = allLessonsMap.size;
+            if (totalLessonCount === 0) return;
 
+            let accumulatedLessons = 0;
+            
             courseStructure.forEach((group, index) => {
-                const groupItemCount = group.lessons.length;
-                if (index < courseStructure.length -1) {
-                    accumulatedLessons += groupItemCount;
-                    const position = (accumulatedLessons / totalItems) * 100;
+                const groupLessonCount = group.lessons.length;
+                if (index < courseStructure.length - 1 && groupLessonCount > 0) {
+                    accumulatedLessons += groupLessonCount;
+                    const position = (accumulatedLessons / totalLessonCount) * 100;
+                    
                     const markerWrapper = document.createElement('div');
                     markerWrapper.className = 'marker';
                     markerWrapper.style.left = `${position}%`;
@@ -562,6 +507,7 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                     progressMarkersContainer.appendChild(markerWrapper);
                 }
             });
+
             const finalTrophy = document.createElement('div');
             finalTrophy.className = 'marker final-trophy';
             finalTrophy.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Premio al completar!</span>`;
@@ -579,13 +525,14 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                 const userId = user.uid;
                 const userDocRef = doc(db, "users", userId);
                 
-                // --- CAMBIO CLAVE: Lógica para no pedir el nombre ---
                 const appId = 'ucdm-tracker-app-v2';
                 progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
 
                 getDoc(userDocRef).then(userSnap => {
                     if (userSnap.exists() && userSnap.data().name) {
                         userTitle.textContent = `El Progreso de ${userSnap.data().name}`;
+                    } else {
+                        userTitle.textContent = `Mi Progreso en las Lecciones`;
                     }
                 });
 
@@ -597,12 +544,10 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                         completedLessons = new Set(data.completed || []);
                         updateUI();
                     } else {
-                        // Si no existe el progreso, lo crea vacío sin pedir nombre
                         setDoc(progressDocRef, { completed: [] });
                     }
                 }, (error) => {
                     console.error("Error en el listener de progreso:", error);
-                    groupsContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar tu progreso.</p>`;
                 });
 
             } else {
@@ -617,9 +562,11 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
         }
 
         function updateProgress() {
-            const totalLessonCount = allLessonsMap.size;
+            const totalLessonCount = Array.from(allLessonsMap.values()).filter(l => l.type === 'lesson').length;
+            if (totalLessonCount === 0) return;
+
             const completedCount = completedLessons.size;
-            const percentage = totalLessonCount > 0 ? (completedCount / totalLessonCount) * 100 : 0;
+            const percentage = (completedCount / totalLessonCount) * 100;
             
             progressText.textContent = `${completedCount} / ${totalLessonCount} Completadas`;
             progressBar.style.width = `${percentage}%`;
@@ -632,8 +579,10 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
             markers.forEach((marker, index) => {
                 marker.id = marker.id || `marker-${index}`;
                 const markerPosition = parseFloat(marker.style.left);
-                const isAchieved = percentage >= markerPosition;
                 
+                if (isNaN(markerPosition)) return;
+                
+                const isAchieved = percentage >= markerPosition;
                 marker.classList.toggle('achieved', isAchieved);
 
                 if (isAchieved) {
@@ -647,15 +596,29 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                         setTimeout(() => {
                             triggerFireworks(marker.style.left, particleCount);
                             showAchievementToast(stageTitle, group.title, isFinalTrophy);
-                            if (isFinalTrophy) {
-                                achievementUnlocked.classList.remove('hidden');
-                            }
                         }, animationDelay);
                         
                         animationDelay += 700;
                     }
                 }
             });
+
+            const finalTrophy = document.querySelector('.final-trophy');
+            if (finalTrophy) {
+                const isFinalAchieved = percentage >= 100;
+                finalTrophy.classList.toggle('achieved', isFinalAchieved);
+                if (isFinalAchieved) {
+                    newAchievedMarkers.add(finalTrophy.id);
+                    if (!oldAchievedMarkers.has(finalTrophy.id)) {
+                        setTimeout(() => {
+                            triggerFireworks('100%', 100);
+                            showAchievementToast('¡Curso Completado!', '¡Has completado todas las lecciones!', true);
+                            achievementUnlocked.classList.remove('hidden');
+                        }, animationDelay);
+                    }
+                }
+            }
+
             achievedMarkers = newAchievedMarkers;
             if (percentage < 100) {
                 achievementUnlocked.classList.add('hidden');
@@ -663,11 +626,8 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
         }
 
         function updateLessonItemsState() {
-            allLessonsMap.forEach(lesson => {
-                const item = document.querySelector(`.lesson-item[data-id='${lesson.id}']`);
-                if (item) {
-                    item.classList.toggle('completed', completedLessons.has(lesson.id));
-                }
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                 item.classList.toggle('completed', completedLessons.has(item.dataset.id));
             });
         }
         
@@ -677,17 +637,13 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
             const lesson = allLessonsMap.get(lessonId);
             
             if (!lesson) return;
-
-            modalLessonNum.textContent = lesson.type === 'lesson' ? `Lección ${lesson.id}` : 'Introducción';
-            modalPhrase.textContent = `“${lesson.title}”`;
-            modalExplanation.textContent = lesson.explanation;
             
-            if (lesson.exercise && lesson.exercise.trim() !== '') {
-                modalExercise.textContent = lesson.exercise;
-                modalExerciseContainer.style.display = 'block';
-            } else {
-                modalExerciseContainer.style.display = 'none';
-            }
+            modalLessonNum.textContent = lesson.is_review ? `Lección ${lesson.number} (Repaso)` : `Lección ${lesson.number}`;
+            modalPhrase.textContent = `“${lesson.title}”`;
+            const mainContent = lesson.text || lesson.content || "Contenido no disponible.";
+            modalExplanation.textContent = mainContent;
+            
+            modalExerciseContainer.style.display = 'none';
             
             modalCompleteBtn.textContent = completedLessons.has(lessonId) ? 'Marcar como pendiente' : 'Marcar como completada';
             lessonModal.classList.add('show');
@@ -720,14 +676,16 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
                 if (progressDocRef) {
                     try {
                         await updateDoc(progressDocRef, { completed: [] });
+                        achievedMarkers.clear(); 
+                        document.querySelectorAll('.marker').forEach(m => m.classList.remove('achieved'));
+                        achievementUnlocked.classList.add('hidden');
                     } catch (error) {
                         console.error("Error resetting progress:", error);
-                        showConfirmation(`Hubo un error al reiniciar: ${error.message}`, null);
                     }
                 }
             });
         }
-
+        
         function triggerFireworks(position, particleCount) {
             const colors = ['#ffd700', '#ffc0cb', '#ffffff', '#00bcd4', '#e91e63'];
             for (let i = 0; i < particleCount; i++) {
@@ -794,7 +752,8 @@ Introducción al Primer Repaso,"Hoy comenzaremos una serie de sesiones de repaso
         confirmNoBtn.addEventListener('click', closeConfirmModal);
         resetBtn.addEventListener('click', handleResetProgress);
         
-        setupCourseStructure();
+        // --- CAMBIO CLAVE: Llamar a la nueva función asíncrona ---
+        fetchAndSetupCourse();
     </script>
 </body>
 </html>
