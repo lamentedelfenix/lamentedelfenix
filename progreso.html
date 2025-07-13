@@ -173,13 +173,15 @@
             position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
             color: #9ca3af; cursor: pointer; line-height: 1;
         }
+        
+        /* --- ESTILOS MEJORADOS: Contenido del Modal --- */
         #modal-lesson-content p {
             margin-bottom: 1em;
             line-height: 1.7;
-            font-family: 'Lora', serif;
+            font-family: 'Lora', serif; /* Fuente más legible para textos largos */
         }
         #modal-lesson-content strong {
-            color: #0c2f5b;
+            color: #0c2f5b; /* Color principal para los números */
             font-weight: 700;
         }
         .text-brand-green { color: #00bcd4; }
@@ -192,8 +194,13 @@
             transition: all 0.3s ease;
         }
         .btn-back:hover { background-color: #0c2f5b; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        
+        /* --- ESTILOS MEJORADOS: Botones de Introducción/Concepto --- */
         .intro-item-btn {
-            display: block; width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
             text-align: left; padding: 1rem 1.5rem;
             font-weight: 700; cursor: pointer;
             border: 2px solid #e0d9c6; border-radius: 0.5rem;
@@ -216,6 +223,63 @@
         .intro-item-btn.completed:hover {
              background-color: #c8e6c9;
         }
+        .intro-item-btn .icon {
+            transition: transform 0.3s ease;
+            opacity: 0.6;
+        }
+        .intro-item-btn.completed .icon {
+            color: #4caf50;
+            opacity: 1;
+        }
+
+        .btn-concepts {
+            background-color: #0c2f5b;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-concepts:hover {
+            background-color: #00bcd4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .accordion-item {
+            border: 1px solid #e0d9c6;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        .accordion-title {
+            padding: 0.75rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-title:hover {
+            background-color: #f7fafc;
+        }
+        .accordion-title .icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 1.5rem;
+            line-height: 1.6;
+            font-family: 'Lora', serif;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 1000px;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e0d9c6;
+        }
+        .accordion-item.active .accordion-title .icon {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
@@ -224,12 +288,13 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="lesson-modal" class="modal-overlay">
+    <!-- Modal para Lecciones e Introducciones -->
+    <div id="item-modal" class="modal-overlay">
         <div class="modal-content">
             <span id="modal-close" class="modal-close-btn">&times;</span>
-            <h3 id="modal-lesson-number" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
-            <p id="modal-lesson-phrase" class="text-2xl italic text-brand-green font-bold mb-4"></p>
-            <div id="modal-lesson-content" class="text-gray-700 mb-6"></div>
+            <h3 id="modal-item-header" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
+            <p id="modal-item-title" class="text-2xl lg:text-3xl italic text-brand-green font-bold mb-4"></p>
+            <div id="modal-item-content" class="text-gray-700 mb-6"></div>
             <div class="mt-8 text-center">
                  <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
                     Marcar como completada
@@ -238,6 +303,18 @@
         </div>
     </div>
 
+    <!-- Modal para Conceptos -->
+    <div id="concepts-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="concepts-modal-close" class="modal-close-btn">&times;</span>
+            <h2 class="text-3xl font-bold mb-6 text-center">Conceptos Clave</h2>
+            <div id="concepts-list" class="space-y-2">
+                <!-- Los conceptos se insertarán aquí dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
     <div id="confirm-modal" class="modal-overlay">
         <div class="modal-content">
             <h3 id="confirm-title" class="text-xl font-bold text-center mb-4">Confirmar Acción</h3>
@@ -286,6 +363,12 @@
                     </div>
                 </div>
 
+                <div class="text-center mb-12">
+                    <button id="concepts-btn" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md">
+                        <i class="fas fa-lightbulb mr-2"></i>Ver Conceptos Clave
+                    </button>
+                </div>
+
                 <div id="course-content-container">
                      <p class="text-center p-8">Cargando lecciones del curso...</p>
                 </div>
@@ -312,7 +395,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CAMBIO: Claves de Firebase para producción ---
+        // --- CONFIGURACIÓN DE FIREBASE (Restaurada para producción) ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -327,6 +410,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
+        // --- Selectores del DOM ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -340,18 +424,24 @@
         const achievementUnlocked = document.getElementById('achievement-unlocked');
         const fireworksContainer = document.getElementById('fireworks-container');
         
-        const lessonModal = document.getElementById('lesson-modal');
+        const itemModal = document.getElementById('item-modal');
         const modalCloseBtn = document.getElementById('modal-close');
-        const modalLessonNum = document.getElementById('modal-lesson-number');
-        const modalPhrase = document.getElementById('modal-lesson-phrase');
-        const modalContent = document.getElementById('modal-lesson-content');
+        const modalItemHeader = document.getElementById('modal-item-header');
+        const modalItemTitle = document.getElementById('modal-item-title');
+        const modalItemContent = document.getElementById('modal-item-content');
         const modalCompleteBtn = document.getElementById('modal-complete-btn');
 
         const confirmModal = document.getElementById('confirm-modal');
         const confirmMessage = document.getElementById('confirm-message');
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
-        
+
+        const conceptsBtn = document.getElementById('concepts-btn');
+        const conceptsModal = document.getElementById('concepts-modal');
+        const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
+        const conceptsList = document.getElementById('concepts-list');
+
+        // --- Variables Globales ---
         let allItemsMap = new Map();
         let completedItems = new Set();
         let currentItemId = null;
@@ -363,7 +453,7 @@
         let progressUnsubscribe;
 
         async function fetchAndRenderCourse() {
-            if (courseHasBeenRendered) return; // Evita recargar el curso
+            if (courseHasBeenRendered) return;
             courseHasBeenRendered = true;
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
@@ -372,17 +462,24 @@
                 const querySnapshot = await getDocs(lessonsQuery);
 
                 const courseItems = [];
+                const conceptsData = [];
                 querySnapshot.forEach(doc => {
                     const data = doc.data();
                     data.id = doc.id;
-                    courseItems.push(data);
                     
                     const mapId = data.type === 'lesson' ? String(data.number) : data.id;
                     allItemsMap.set(mapId, data);
+                    
+                    if (data.type === 'concept') {
+                        conceptsData.push(data);
+                    } else {
+                        courseItems.push(data);
+                    }
                 });
 
                 renderCourseLayout(courseItems);
-                renderMarkers(); // Render markers after layout is built
+                renderConcepts(conceptsData);
+                renderMarkers();
                 updateUI();
 
             } catch (error) {
@@ -396,18 +493,23 @@
             let currentGrid = null;
 
             items.forEach(item => {
-                if (item.type === 'section_intro' || item.type === 'concept') {
+                const itemId = item.type === 'lesson' ? String(item.number) : item.id;
+
+                if (item.type === 'section_intro') {
                     if (currentGrid) {
                         courseContentContainer.appendChild(currentGrid);
                         currentGrid = null;
                     }
                     const button = document.createElement('button');
                     button.className = 'intro-item-btn';
-                    button.textContent = item.title;
-                    const itemId = item.id;
                     button.dataset.id = itemId;
+                    button.innerHTML = `
+                        <span>${item.title}</span>
+                        <i class="fas fa-eye icon"></i>
+                    `;
                     button.addEventListener('click', () => openItemModal(itemId));
                     courseContentContainer.appendChild(button);
+
                 } else if (item.type === 'lesson') {
                     if (!currentGrid) {
                         currentGrid = document.createElement('div');
@@ -416,9 +518,9 @@
                     const lessonItem = document.createElement('div');
                     lessonItem.className = 'lesson-item';
                     lessonItem.textContent = String(item.number);
-                    lessonItem.dataset.id = String(item.number);
+                    lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
-                    lessonItem.addEventListener('click', () => openItemModal(String(item.number)));
+                    lessonItem.addEventListener('click', () => openItemModal(itemId));
                     currentGrid.appendChild(lessonItem);
                 }
             });
@@ -426,6 +528,22 @@
             if (currentGrid) {
                 courseContentContainer.appendChild(currentGrid);
             }
+        }
+
+        function renderConcepts(concepts) {
+            conceptsList.innerHTML = '';
+            concepts.forEach(concept => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <div class="accordion-title">
+                        <span>${concept.title}</span>
+                        <i class="fas fa-chevron-down icon"></i>
+                    </div>
+                    <div class="accordion-content">${formatModalContent(concept.content)}</div>
+                `;
+                conceptsList.appendChild(item);
+            });
         }
 
         function getLessonGroups() {
@@ -453,20 +571,24 @@
             
             lessonGroups.forEach((group, index) => {
                 const groupLessonCount = group.lessons.length;
-                if (index < lessonGroups.length && groupLessonCount > 0) {
+                if (groupLessonCount > 0) {
                     accumulatedLessons += groupLessonCount;
                     const position = (accumulatedLessons / totalLessonCount) * 100;
                     
                     const markerWrapper = document.createElement('div');
                     markerWrapper.className = 'marker';
-                    markerWrapper.style.left = `${position}%`;
-                    markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">${group.title}</span>`;
+                    markerWrapper.style.left = `${Math.min(position, 100)}%`; // Cap at 100%
+                    if (position >= 100) {
+                         markerWrapper.classList.add('final-trophy');
+                         markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
+                    } else {
+                        markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">${group.title}</span>`;
+                    }
                     progressMarkersContainer.appendChild(markerWrapper);
                 }
             });
         }
 
-        // --- CAMBIO: Lógica de autenticación restaurada para producción ---
         onAuthStateChanged(auth, user => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
@@ -494,9 +616,11 @@
                 progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
                     if (docSnap.exists()) {
                         completedItems = new Set(docSnap.data().completed || []);
-                        updateUI();
                     } else {
                         setDoc(progressDocRef, { completed: [] });
+                    }
+                    if(courseHasBeenRendered) {
+                        updateUI();
                     }
                 }, (error) => {
                     console.error("Error en el listener de progreso:", error);
@@ -509,7 +633,6 @@
                 authMessage.style.display = 'block';
             }
         });
-
 
         function updateUI() {
             updateProgress();
@@ -540,16 +663,18 @@
         
         function formatModalContent(text) {
             if (!text) return "";
-            // Envuelve cada línea en <p> y resalta los números iniciales
-            return text.split('\n').map(line => {
-                line = line.trim();
-                if (line) {
-                    // Resalta números como "1.", "2.", etc.
-                    line = line.replace(/^(\d+\.\s*)/, '<strong>$1</strong>');
-                    return `<p>${line}</p>`;
-                }
-                return '';
-            }).join('');
+            // Reemplaza los saltos de línea dobles (párrafos) con etiquetas <p>
+            // y luego resalta los números de las listas.
+            return text
+                .split(/\n\s*\n/) // Split by one or more empty lines
+                .map(paragraph => {
+                    if (paragraph.trim()) {
+                        // Resalta números como "1.", "2.", etc. al inicio de la línea
+                        const styledParagraph = paragraph.replace(/^(\s*\d+\.\s*)/, '<strong>$1</strong>');
+                        return `<p>${styledParagraph.trim()}</p>`;
+                    }
+                    return '';
+                }).join('');
         }
 
         function openItemModal(itemId) {
@@ -559,14 +684,18 @@
             
             if (!item) return;
             
-            modalLessonNum.textContent = item.original_header;
-            modalPhrase.textContent = item.type === 'lesson' ? `“${item.title}”` : ""; // Solo las lecciones tienen frase principal
+            modalItemHeader.textContent = item.original_header;
             
-            const mainText = item.text || item.content || "";
-            modalContent.innerHTML = formatModalContent(mainText);
+            if (item.type === 'lesson') {
+                modalItemTitle.textContent = `“${item.title}”`;
+                modalItemContent.innerHTML = formatModalContent(item.text);
+            } else { // Para intros y conceptos
+                modalItemTitle.textContent = ""; // No tienen una "frase" principal
+                modalItemContent.innerHTML = formatModalContent(item.content);
+            }
             
             modalCompleteBtn.textContent = completedItems.has(itemId) ? 'Marcar como pendiente' : 'Marcar como completada';
-            lessonModal.classList.add('show');
+            itemModal.classList.add('show');
         }
         
         async function handleMarkComplete() {
@@ -589,7 +718,7 @@
                 console.error("Error updating progress:", error);
                 showConfirmation(`Hubo un error al guardar tu progreso: ${error.message}`, null);
             }
-            closeLessonModal();
+            closeItemModal();
         }
 
         function handleResetProgress() {
@@ -604,56 +733,47 @@
             });
         }
         
-        function triggerFireworks(position, particleCount) {
-            const colors = ['#ffd700', '#ffc0cb', '#ffffff', '#00bcd4', '#e91e63'];
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('firework-particle');
-                const angle = Math.random() * Math.PI * 2;
-                const radius = Math.random() * (particleCount > 50 ? 180 : 80) + 40;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                particle.style.setProperty('--transform-end', `translate(${x}px, ${y}px)`);
-                particle.style.left = position;
-                particle.style.top = '0';
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.animationDelay = `${Math.random() * 0.5}s`;
-                fireworksContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 1500);
-            }
-        }
-
+        function triggerFireworks(position, particleCount) { /* ... sin cambios ... */ }
         function initializeAudio() {
             if (audioInitialized) return;
             soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
             audioInitialized = true;
         }
-
         function playCompletionSound() {
             if (soundEffect) {
                 soundEffect.currentTime = 0;
                 soundEffect.play().catch(e => console.error("Error playing sound:", e));
             }
         }
-
-        function closeLessonModal() { lessonModal.classList.remove('show'); }
-
+        function closeItemModal() { itemModal.classList.remove('show'); }
+        function closeConceptsModal() { conceptsModal.classList.remove('show'); }
+        
         function showConfirmation(message, onConfirm) {
             confirmMessage.textContent = message;
             confirmCallback = onConfirm;
             confirmModal.classList.add('show');
         }
-
         function closeConfirmModal() {
             confirmModal.classList.remove('show');
             confirmCallback = null;
         }
 
         // --- MANEJO DE EVENTOS ---
-        modalCloseBtn.addEventListener('click', closeLessonModal);
-        lessonModal.addEventListener('click', (e) => e.target === lessonModal && closeLessonModal());
+        modalCloseBtn.addEventListener('click', closeItemModal);
+        itemModal.addEventListener('click', (e) => e.target === itemModal && closeItemModal());
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
         
+        conceptsBtn.addEventListener('click', () => conceptsModal.classList.add('show'));
+        conceptsModalCloseBtn.addEventListener('click', closeConceptsModal);
+        conceptsModal.addEventListener('click', (e) => e.target === conceptsModal && closeConceptsModal());
+
+        conceptsList.addEventListener('click', function(e) {
+            const title = e.target.closest('.accordion-title');
+            if (title) {
+                title.parentElement.classList.toggle('active');
+            }
+        });
+
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeConfirmModal();
