@@ -210,6 +210,9 @@
             position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
             color: #9ca3af; cursor: pointer; line-height: 1;
         }
+        .whitespace-pre-wrap {
+            white-space: pre-wrap;
+        }
         .btn-primary { background-color: #e91e63; color: white; transition: background-color 0.3s ease; }
         .btn-primary:hover { background-color: #c2185b; }
         .btn-secondary { background-color: #e0e0e0; color: #333; transition: background-color 0.3s ease; }
@@ -236,6 +239,55 @@
         }
         #achievement-toast.show { bottom: 20px; }
         #achievement-toast .toast-icon { font-size: 1.75rem; color: #ffd700; }
+        
+        /* --- NUEVOS ESTILOS: Acordeón para Introducciones --- */
+        .accordion-item {
+            border: 2px solid #e0d9c6;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        .accordion-title {
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-title:hover {
+            background-color: #fff8e1;
+        }
+        .accordion-title .icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 1.5rem;
+            line-height: 1.6;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 1000px; /* Suficientemente grande para el contenido */
+            padding: 1rem 1.5rem;
+            border-top: 2px solid #e0d9c6;
+        }
+        .accordion-item.active .accordion-title .icon {
+            transform: rotate(180deg);
+        }
+        .btn-concepts {
+            background-color: #0c2f5b;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-concepts:hover {
+            background-color: #00bcd4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
@@ -252,20 +304,28 @@
         </div>
     </div>
 
+    <!-- --- MODAL PARA LECCIONES --- -->
     <div id="lesson-modal" class="modal-overlay">
         <div class="modal-content">
             <span id="modal-close" class="modal-close-btn">&times;</span>
             <h3 id="modal-lesson-number" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
             <p id="modal-lesson-phrase" class="text-2xl italic text-brand-green font-bold mb-4"></p>
-            <p id="modal-lesson-explanation" class="text-gray-700 mb-6 whitespace-pre-wrap"></p>
-            <div id="modal-exercise-container" class="mt-6 pt-4 border-t-2 border-dashed border-pink-200">
-                <h4 class="font-bold text-brand-pink">Ejercicio Recomendado:</h4>
-                <p id="modal-lesson-exercise" class="mt-2 text-gray-600"></p>
-            </div>
+            <div id="modal-lesson-content" class="text-gray-700 mb-6 whitespace-pre-wrap"></div>
             <div class="mt-8 text-center">
                  <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
                     Marcar como completada
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- NUEVO MODAL PARA CONCEPTOS --- -->
+    <div id="concepts-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="concepts-modal-close" class="modal-close-btn">&times;</span>
+            <h2 class="text-3xl font-bold mb-6 text-center">Conceptos Clave</h2>
+            <div id="concepts-list" class="space-y-4">
+                <!-- Los conceptos se insertarán aquí dinámicamente -->
             </div>
         </div>
     </div>
@@ -317,8 +377,22 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- --- NUEVO CONTENEDOR PARA SECCIONES ESPECIALES --- -->
+                <div id="special-sections-container" class="mb-12">
+                    <h2 class="text-2xl font-bold text-center mb-4">Introducciones y Conceptos</h2>
+                    <div id="introductions-container" class="mb-6">
+                        <!-- Las introducciones se insertarán aquí -->
+                    </div>
+                    <div class="text-center">
+                        <button id="concepts-btn" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md">
+                            <i class="fas fa-lightbulb mr-2"></i>Ver Conceptos Clave
+                        </button>
+                    </div>
+                </div>
+
                 <div id="lesson-groups-container">
-                     <p class="text-center p-8">Cargando estructura del curso...</p>
+                     <p class="text-center p-8">Cargando lecciones del curso...</p>
                 </div>
             </section>
             
@@ -339,29 +413,24 @@
     </div>
 
     <script type="module">
-        // --- IMPORTS DE FIREBASE ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // --- CAMBIO CLAVE: Se añaden las funciones necesarias para consultar una colección ---
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIGURACIÓN DE FIREBASE (sin cambios) ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
             projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.appspot.com", // Corregido a .appspot.com
+            storageBucket: "membresia-ucdm-v2.appspot.com",
             messagingSenderId: "198704348819",
             appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
             measurementId: "G-5L3T8PGXYK"
         };
 
-        // --- INICIALIZACIÓN DE FIREBASE (sin cambios) ---
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        // --- SELECTORES DEL DOM (sin cambios) ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const groupsContainer = document.getElementById('lesson-groups-container');
@@ -383,9 +452,7 @@
         const modalCloseBtn = document.getElementById('modal-close');
         const modalLessonNum = document.getElementById('modal-lesson-number');
         const modalPhrase = document.getElementById('modal-lesson-phrase');
-        const modalExplanation = document.getElementById('modal-lesson-explanation');
-        const modalExerciseContainer = document.getElementById('modal-exercise-container');
-        const modalExercise = document.getElementById('modal-lesson-exercise');
+        const modalContent = document.getElementById('modal-lesson-content');
         const modalCompleteBtn = document.getElementById('modal-complete-btn');
 
         const confirmModal = document.getElementById('confirm-modal');
@@ -394,8 +461,17 @@
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
 
-        // --- VARIABLES GLOBALES (sin cambios) ---
-        let courseStructure = [];
+        // --- NUEVOS SELECTORES ---
+        const introductionsContainer = document.getElementById('introductions-container');
+        const conceptsBtn = document.getElementById('concepts-btn');
+        const conceptsModal = document.getElementById('concepts-modal');
+        const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
+        const conceptsList = document.getElementById('concepts-list');
+
+        let allDocsData = [];
+        let introductionsData = [];
+        let conceptsData = [];
+        let lessonGroupsData = [];
         let allLessonsMap = new Map();
         let completedLessons = new Set();
         let currentLessonId = null;
@@ -407,62 +483,105 @@
         let progressDocRef;
         let progressUnsubscribe;
 
-        // --- CAMBIO CLAVE: Nueva función para cargar el curso desde Firestore ---
         async function fetchAndSetupCourse() {
             groupsContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
-                // 1. Crear una consulta a la colección 'UCDM_lessons' ordenada por el campo 'order'
                 const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
                 const querySnapshot = await getDocs(lessonsQuery);
 
-                let currentGroup = null;
-                
-                // 2. Iterar sobre los documentos obtenidos de Firestore
+                allDocsData = [];
                 querySnapshot.forEach(doc => {
-                    const lessonData = doc.data();
-                    
-                    // Asignamos el ID del documento para referencias futuras
-                    lessonData.docId = doc.id; 
-                    
-                    // Guardamos la lección en un mapa para acceso rápido
-                    // El ID de la lección para el progreso será su número
-                    if (lessonData.number) {
-                        allLessonsMap.set(String(lessonData.number), lessonData);
-                    }
-
-                    // 3. Agrupar lecciones bajo sus títulos de sección (igual que la lógica anterior)
-                    if (lessonData.type === 'section_intro') {
-                         if (currentGroup) {
-                            courseStructure.push(currentGroup);
-                         }
-                         currentGroup = {
-                            title: lessonData.title,
-                            lessons: []
-                         };
-                    } else if (lessonData.type === 'lesson' && currentGroup) {
-                        currentGroup.lessons.push(lessonData);
-                    }
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allDocsData.push(data);
                 });
 
-                // Añadir el último grupo a la estructura
-                if (currentGroup) {
-                    courseStructure.push(currentGroup);
-                }
-                
-                // 4. Renderizar el curso en la página
-                renderCourse();
+                buildCourseStructure(allDocsData);
+                renderAllSections();
 
             } catch (error) {
                 console.error("Error al cargar el curso desde Firestore:", error);
                 groupsContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar la estructura del curso. Por favor, recarga la página.</p>`;
             }
         }
+        
+        function buildCourseStructure(docs) {
+            introductionsData = [];
+            conceptsData = [];
+            lessonGroupsData = [];
+            allLessonsMap.clear();
+            let currentGroup = null;
 
-        function renderCourse() {
+            docs.forEach(doc => {
+                const id = doc.number ? String(doc.number) : doc.id;
+                allLessonsMap.set(id, doc);
+
+                if (doc.type === 'section_intro') {
+                    introductionsData.push(doc);
+                    if (currentGroup) {
+                        lessonGroupsData.push(currentGroup);
+                    }
+                    currentGroup = {
+                        title: doc.title,
+                        lessons: []
+                    };
+                } else if (doc.type === 'concept') {
+                    conceptsData.push(doc);
+                } else if (doc.type === 'lesson' && currentGroup) {
+                    currentGroup.lessons.push(doc);
+                }
+            });
+
+            if (currentGroup) {
+                lessonGroupsData.push(currentGroup);
+            }
+        }
+
+        function renderAllSections() {
+            renderIntroductions();
+            renderConcepts();
+            renderLessonGrids();
+            renderMarkers();
+            updateUI();
+        }
+
+        function renderIntroductions() {
+            introductionsContainer.innerHTML = '';
+            introductionsData.forEach(intro => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <div class="accordion-title">
+                        <span>${intro.title}</span>
+                        <i class="fas fa-chevron-down icon"></i>
+                    </div>
+                    <div class="accordion-content whitespace-pre-wrap">${intro.content}</div>
+                `;
+                introductionsContainer.appendChild(item);
+            });
+        }
+
+        function renderConcepts() {
+            conceptsList.innerHTML = '';
+            conceptsData.forEach(concept => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <div class="accordion-title">
+                        <span>${concept.title}</span>
+                        <i class="fas fa-chevron-down icon"></i>
+                    </div>
+                    <div class="accordion-content whitespace-pre-wrap">${concept.content}</div>
+                `;
+                conceptsList.appendChild(item);
+            });
+        }
+
+        function renderLessonGrids() {
             groupsContainer.innerHTML = '';
-            const totalLessonCount = Array.from(allLessonsMap.values()).filter(l => l.type === 'lesson').length;
+            lessonGroupsData.forEach(group => {
+                if (group.lessons.length === 0) return;
 
-            courseStructure.forEach(group => {
                 const groupContainer = document.createElement('div');
                 
                 const titleEl = document.createElement('h3');
@@ -484,19 +603,18 @@
                 groupContainer.appendChild(grid);
                 groupsContainer.appendChild(groupContainer);
             });
-            renderMarkers(totalLessonCount);
-            updateUI();
         }
         
-        function renderMarkers(totalLessonCount) {
+        function renderMarkers() {
+            const totalLessonCount = Array.from(allLessonsMap.values()).filter(l => l.type === 'lesson').length;
             progressMarkersContainer.innerHTML = '';
             if (totalLessonCount === 0) return;
 
             let accumulatedLessons = 0;
             
-            courseStructure.forEach((group, index) => {
+            lessonGroupsData.forEach((group, index) => {
                 const groupLessonCount = group.lessons.length;
-                if (index < courseStructure.length - 1 && groupLessonCount > 0) {
+                if (index < lessonGroupsData.length - 1 && groupLessonCount > 0) {
                     accumulatedLessons += groupLessonCount;
                     const position = (accumulatedLessons / totalLessonCount) * 100;
                     
@@ -590,7 +708,7 @@
                     if (!oldAchievedMarkers.has(marker.id)) {
                         const isFinalTrophy = marker.classList.contains('final-trophy');
                         const particleCount = isFinalTrophy ? 100 : 30;
-                        const group = courseStructure[index] || { title: '¡Has completado todas las lecciones!' };
+                        const group = lessonGroupsData[index] || { title: '¡Has completado todas las lecciones!' };
                         const stageTitle = isFinalTrophy ? '¡Curso Completado!' : `¡Etapa Superada!`;
                         
                         setTimeout(() => {
@@ -638,12 +756,11 @@
             
             if (!lesson) return;
             
-            modalLessonNum.textContent = lesson.is_review ? `Lección ${lesson.number} (Repaso)` : `Lección ${lesson.number}`;
+            modalLessonNum.textContent = lesson.original_header;
             modalPhrase.textContent = `“${lesson.title}”`;
-            const mainContent = lesson.text || lesson.content || "Contenido no disponible.";
-            modalExplanation.textContent = mainContent;
             
-            modalExerciseContainer.style.display = 'none';
+            const mainText = lesson.text || lesson.content || "";
+            modalContent.textContent = mainText;
             
             modalCompleteBtn.textContent = completedLessons.has(lessonId) ? 'Marcar como pendiente' : 'Marcar como completada';
             lessonModal.classList.add('show');
@@ -730,6 +847,7 @@
         }
 
         function closeLessonModal() { lessonModal.classList.remove('show'); }
+        function closeConceptsModal() { conceptsModal.classList.remove('show'); }
         
         function showConfirmation(message, onConfirm) {
             confirmMessage.textContent = message;
@@ -742,9 +860,22 @@
             confirmCallback = null;
         }
 
+        // --- MANEJO DE EVENTOS ---
         modalCloseBtn.addEventListener('click', closeLessonModal);
         lessonModal.addEventListener('click', (e) => e.target === lessonModal && closeLessonModal());
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
+        
+        conceptsBtn.addEventListener('click', () => conceptsModal.classList.add('show'));
+        conceptsModalCloseBtn.addEventListener('click', closeConceptsModal);
+        conceptsModal.addEventListener('click', (e) => e.target === conceptsModal && closeConceptsModal());
+
+        document.getElementById('special-sections-container').addEventListener('click', function(e) {
+            const title = e.target.closest('.accordion-title');
+            if (title) {
+                title.parentElement.classList.toggle('active');
+            }
+        });
+
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeConfirmModal();
@@ -752,7 +883,7 @@
         confirmNoBtn.addEventListener('click', closeConfirmModal);
         resetBtn.addEventListener('click', handleResetProgress);
         
-        // --- CAMBIO CLAVE: Llamar a la nueva función asíncrona ---
+        // --- INICIAR LA CARGA DEL CURSO ---
         fetchAndSetupCourse();
     </script>
 </body>
