@@ -6,7 +6,7 @@
     <title>Seguimiento de Lecciones - UCDM</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat -->
+    <!-- Google Fonts: Montserrat & Lora -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -173,16 +173,14 @@
             position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
             color: #9ca3af; cursor: pointer; line-height: 1;
         }
-        .whitespace-pre-wrap {
-            white-space: pre-wrap;
-        }
-        /* --- NUEVOS ESTILOS: Contenido del Modal --- */
         #modal-lesson-content p {
             margin-bottom: 1em;
             line-height: 1.7;
+            font-family: 'Lora', serif;
         }
         #modal-lesson-content strong {
-            color: #e91e63;
+            color: #0c2f5b;
+            font-weight: 700;
         }
         .text-brand-green { color: #00bcd4; }
         .btn-primary { background-color: #e91e63; color: white; transition: background-color 0.3s ease; }
@@ -194,7 +192,6 @@
             transition: all 0.3s ease;
         }
         .btn-back:hover { background-color: #0c2f5b; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        /* --- NUEVOS ESTILOS: Botones de Introducción/Concepto --- */
         .intro-item-btn {
             display: block; width: 100%;
             text-align: left; padding: 1rem 1.5rem;
@@ -212,7 +209,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .intro-item-btn.completed {
-            background-color: #e8f5e9; /* Verde claro */
+            background-color: #e8f5e9;
             border-color: #4caf50;
             color: #2e7d32;
         }
@@ -221,7 +218,7 @@
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" style="opacity: 0; visibility: hidden;">
 
     <audio id="completion-sound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
@@ -252,7 +249,7 @@
         </div>
     </div>
 
-    <div id="main-content">
+    <div id="main-content" style="display: none;">
         <div class="max-w-4xl mx-auto p-4 md:p-8">
             <header class="mb-12">
                 <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=Banner+Membres%C3%ADa';">
@@ -302,7 +299,6 @@
         </div>
     </div>
 
-    <!-- El mensaje de "Acceso Denegado" se oculta para la previsualización -->
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
         <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
         <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
@@ -313,9 +309,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- CAMBIO: Claves de Firebase para producción ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -331,6 +328,7 @@
         const auth = getAuth(app);
         
         const mainContent = document.getElementById('main-content');
+        const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
         const progressText = document.getElementById('progress-text');
         const progressBar = document.getElementById('progress-bar');
@@ -359,11 +357,15 @@
         let currentItemId = null;
         let audioInitialized = false;
         let confirmCallback = null;
+        let courseHasBeenRendered = false;
         
         let progressDocRef;
         let progressUnsubscribe;
 
         async function fetchAndRenderCourse() {
+            if (courseHasBeenRendered) return; // Evita recargar el curso
+            courseHasBeenRendered = true;
+            
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
                 const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
@@ -380,6 +382,7 @@
                 });
 
                 renderCourseLayout(courseItems);
+                renderMarkers(); // Render markers after layout is built
                 updateUI();
 
             } catch (error) {
@@ -401,7 +404,7 @@
                     const button = document.createElement('button');
                     button.className = 'intro-item-btn';
                     button.textContent = item.title;
-                    const itemId = item.type === 'lesson' ? String(item.number) : item.id;
+                    const itemId = item.id;
                     button.dataset.id = itemId;
                     button.addEventListener('click', () => openItemModal(itemId));
                     courseContentContainer.appendChild(button);
@@ -425,7 +428,6 @@
             }
         }
 
-        // Esta función se mantiene para la barra de progreso, pero no para la renderización principal
         function getLessonGroups() {
             const groups = [];
             let currentGroup = null;
@@ -451,7 +453,7 @@
             
             lessonGroups.forEach((group, index) => {
                 const groupLessonCount = group.lessons.length;
-                if (index < lessonGroups.length - 1 && groupLessonCount > 0) {
+                if (index < lessonGroups.length && groupLessonCount > 0) {
                     accumulatedLessons += groupLessonCount;
                     const position = (accumulatedLessons / totalLessonCount) * 100;
                     
@@ -462,51 +464,51 @@
                     progressMarkersContainer.appendChild(markerWrapper);
                 }
             });
-
-            const finalTrophy = document.createElement('div');
-            finalTrophy.className = 'marker final-trophy';
-            finalTrophy.style.left = '100%';
-            finalTrophy.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Premio al completar!</span>`;
-            progressMarkersContainer.appendChild(finalTrophy);
         }
 
-        // --- CAMBIO: Lógica de autenticación simplificada para previsualización ---
-        // Se inicia sesión anónimamente para poder interactuar con Firebase.
-        // En tu web real, usarías onAuthStateChanged como antes para manejar usuarios reales.
-        async function setupPreviewUser() {
-            try {
-                await signInAnonymously(auth);
-                const user = auth.currentUser;
-                if (user) {
-                    const userId = user.uid; // Usamos el UID anónimo
-                    const appId = 'ucdm-tracker-app-v2';
-                    progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
+        // --- CAMBIO: Lógica de autenticación restaurada para producción ---
+        onAuthStateChanged(auth, user => {
+            document.body.style.opacity = '1';
+            document.body.style.visibility = 'visible';
 
-                    // Cargar datos de progreso si existen, si no, empezar de cero
-                    const docSnap = await getDoc(progressDocRef);
+            if (user) {
+                mainContent.style.display = 'block';
+                authMessage.style.display = 'none';
+                
+                const userId = user.uid;
+                const userDocRef = doc(db, "users", userId);
+                
+                const appId = 'ucdm-tracker-app-v2';
+                progressDocRef = doc(db, 'artifacts', appId, 'users', userId, 'progress', 'main');
+
+                getDoc(userDocRef).then(userSnap => {
+                    if (userSnap.exists() && userSnap.data().name) {
+                        userTitle.textContent = `El Progreso de ${userSnap.data().name}`;
+                    } else {
+                        userTitle.textContent = `Mi Progreso en las Lecciones`;
+                    }
+                });
+
+                if (progressUnsubscribe) progressUnsubscribe();
+                
+                progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
                     if (docSnap.exists()) {
                         completedItems = new Set(docSnap.data().completed || []);
+                        updateUI();
                     } else {
-                        await setDoc(progressDocRef, { completed: [] });
+                        setDoc(progressDocRef, { completed: [] });
                     }
+                }, (error) => {
+                    console.error("Error en el listener de progreso:", error);
+                });
 
-                    // Iniciar la carga del curso
-                    fetchAndRenderCourse();
+                fetchAndRenderCourse();
 
-                    // Escuchar cambios en el progreso
-                    if (progressUnsubscribe) progressUnsubscribe();
-                    progressUnsubscribe = onSnapshot(progressDocRef, (snap) => {
-                        if (snap.exists()) {
-                            completedItems = new Set(snap.data().completed || []);
-                            updateUI();
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error("Error en la autenticación anónima para previsualización:", error);
-                courseContentContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error de autenticación. No se pudo conectar con la base de datos.</p>`;
+            } else {
+                mainContent.style.display = 'none';
+                authMessage.style.display = 'block';
             }
-        }
+        });
 
 
         function updateUI() {
@@ -518,20 +520,19 @@
             const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
             if (totalLessonCount === 0) return;
 
-            // --- CAMBIO: El progreso solo cuenta lecciones, no introducciones ---
-            const completedLessonCount = [...completedItems].filter(id => allItemsMap.has(id) && allItemsMap.get(id).type === 'lesson').length;
+            const completedLessonCount = [...completedItems].filter(id => {
+                const item = allItemsMap.get(id);
+                return item && item.type === 'lesson';
+            }).length;
             
             const percentage = (completedLessonCount / totalLessonCount) * 100;
             
             progressText.textContent = `${completedLessonCount} / ${totalLessonCount} Lecciones Completadas`;
             progressBar.style.width = `${percentage}%`;
             progressPercent.textContent = `${Math.round(percentage)}%`;
-
-            // La lógica de los marcadores y fuegos artificiales se mantiene igual
         }
 
         function updateItemsState() {
-            // Actualiza tanto los botones de lección como los de introducción
             document.querySelectorAll('[data-id]').forEach(item => {
                  item.classList.toggle('completed', completedItems.has(item.dataset.id));
             });
@@ -539,10 +540,16 @@
         
         function formatModalContent(text) {
             if (!text) return "";
-            // Reemplaza los números al inicio de línea con un strong tag
-            const styledText = text.replace(/^(\d+\.\s)/gm, '<p><strong>$1</strong>');
-            // Reemplaza los saltos de línea con párrafos para un espaciado correcto
-            return styledText.replace(/\n/g, '</p><p>');
+            // Envuelve cada línea en <p> y resalta los números iniciales
+            return text.split('\n').map(line => {
+                line = line.trim();
+                if (line) {
+                    // Resalta números como "1.", "2.", etc.
+                    line = line.replace(/^(\d+\.\s*)/, '<strong>$1</strong>');
+                    return `<p>${line}</p>`;
+                }
+                return '';
+            }).join('');
         }
 
         function openItemModal(itemId) {
@@ -553,7 +560,7 @@
             if (!item) return;
             
             modalLessonNum.textContent = item.original_header;
-            modalPhrase.textContent = `“${item.title}”`;
+            modalPhrase.textContent = item.type === 'lesson' ? `“${item.title}”` : ""; // Solo las lecciones tienen frase principal
             
             const mainText = item.text || item.content || "";
             modalContent.innerHTML = formatModalContent(mainText);
@@ -570,8 +577,8 @@
                 newCompletedSet.delete(currentItemId);
             } else {
                 newCompletedSet.add(currentItemId);
-                // Solo suena si es una lección
-                if (allItemsMap.get(currentItemId)?.type === 'lesson') {
+                const item = allItemsMap.get(currentItemId);
+                if (item && item.type === 'lesson') {
                     playCompletionSound();
                 }
             }
@@ -597,25 +604,46 @@
             });
         }
         
-        function triggerFireworks(position, particleCount) { /* ... sin cambios ... */ }
-        function showAchievementToast(title, message, isFinal) { /* ... sin cambios ... */ }
+        function triggerFireworks(position, particleCount) {
+            const colors = ['#ffd700', '#ffc0cb', '#ffffff', '#00bcd4', '#e91e63'];
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('firework-particle');
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * (particleCount > 50 ? 180 : 80) + 40;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                particle.style.setProperty('--transform-end', `translate(${x}px, ${y}px)`);
+                particle.style.left = position;
+                particle.style.top = '0';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                fireworksContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
         function initializeAudio() {
             if (audioInitialized) return;
             soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
             audioInitialized = true;
         }
+
         function playCompletionSound() {
             if (soundEffect) {
                 soundEffect.currentTime = 0;
                 soundEffect.play().catch(e => console.error("Error playing sound:", e));
             }
         }
+
         function closeLessonModal() { lessonModal.classList.remove('show'); }
+
         function showConfirmation(message, onConfirm) {
             confirmMessage.textContent = message;
             confirmCallback = onConfirm;
             confirmModal.classList.add('show');
         }
+
         function closeConfirmModal() {
             confirmModal.classList.remove('show');
             confirmCallback = null;
@@ -633,8 +661,6 @@
         confirmNoBtn.addEventListener('click', closeConfirmModal);
         resetBtn.addEventListener('click', handleResetProgress);
         
-        // --- INICIAR LA CARGA DEL CURSO (MODO PREVISUALIZACIÓN) ---
-        setupPreviewUser();
     </script>
 </body>
 </html>
