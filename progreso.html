@@ -430,7 +430,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- SECURE FIREBASE CONFIG ---
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -497,7 +497,6 @@
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
-                // The orderBy clause is essential here. Ensure an index is created in Firestore for the 'order' field for performance.
                 const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
                 const querySnapshot = await getDocs(lessonsQuery);
 
@@ -507,7 +506,7 @@
                     const data = doc.data();
                     data.id = doc.id;
                     
-                    const mapId = data.number ? String(data.number) : data.id;
+                    const mapId = data.number ? String(data.number) : item.id;
                     allItemsMap.set(mapId, data);
                     
                     if (data.type === 'concept') {
@@ -534,8 +533,10 @@
 
             items.forEach(item => {
                 const itemId = item.number ? String(item.number) : item.id;
+                const titleLower = item.title.toLowerCase();
 
-                if (item.type === 'section_intro') {
+                // CORRECTED LOGIC: Render as a separator if type is 'section_intro' OR title includes 'introducción'
+                if (item.type === 'section_intro' || titleLower.includes('introducción')) {
                     if (currentGrid) {
                         courseContentContainer.appendChild(currentGrid);
                         currentGrid = null;
@@ -553,14 +554,16 @@
                     });
                     courseContentContainer.appendChild(button);
 
-                } else if (item.type === 'lesson') {
+                } else if (item.type === 'lesson' || item.type === 'review') { 
+                    // Render as a lesson box if it's a 'lesson' or a 'review' (that isn't an intro)
                     if (!currentGrid) {
                         currentGrid = document.createElement('div');
                         currentGrid.className = 'lesson-grid';
                     }
                     const lessonItem = document.createElement('div');
                     lessonItem.className = 'lesson-item';
-                    lessonItem.textContent = String(item.number);
+                    
+                    lessonItem.textContent = String(item.number || 'R'); // Use lesson number, or 'R' for review as fallback
                     lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
                     lessonItem.addEventListener('click', () => {
@@ -596,10 +599,10 @@
             const groups = [];
             let currentGroup = null;
             Array.from(allItemsMap.values()).sort((a, b) => a.order - b.order).forEach(item => {
-                 if (item.type === 'section_intro') {
+                 if (item.type === 'section_intro' || item.title.toLowerCase().includes('introducción')) {
                      if (currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
                      currentGroup = { title: item.title, lessons: [] };
-                 } else if (item.type === 'lesson' && currentGroup) {
+                 } else if ((item.type === 'lesson' || item.type === 'review') && currentGroup) {
                      currentGroup.lessons.push(item);
                  }
             });
@@ -609,7 +612,7 @@
 
         function renderMarkers() {
             const lessonGroups = getLessonGroups();
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
+            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || (l.type === 'review' && !l.title.toLowerCase().includes('introducción'))).length;
             progressMarkersContainer.innerHTML = '';
             milestoneMarkers = [];
             if (totalLessonCount === 0) return;
@@ -669,7 +672,6 @@
                     if (docSnap.exists()) {
                         completedItems = new Set(docSnap.data().completed || []);
                     } else {
-                        // If no progress doc exists, create one.
                         setDoc(progressDocRef, { completed: [] }).catch(err => console.error("Error creating progress doc:", err));
                     }
                     if(courseHasBeenRendered) {
@@ -695,12 +697,12 @@
         }
 
         function updateProgress() {
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
+            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || (l.type === 'review' && !l.title.toLowerCase().includes('introducción'))).length;
             if (totalLessonCount === 0) return;
 
             const completedLessonCount = [...completedItems].filter(id => {
                 const item = allItemsMap.get(id);
-                return item && item.type === 'lesson';
+                return item && (item.type === 'lesson' || item.type === 'review');
             }).length;
             
             const percentage = totalLessonCount > 0 ? (completedLessonCount / totalLessonCount) * 100 : 0;
@@ -709,7 +711,6 @@
             progressBar.style.width = `${percentage}%`;
             progressPercent.textContent = `${Math.round(percentage)}%`;
             
-            // Check for milestones and final completion
             milestoneMarkers.forEach(milestone => {
                 const markerEl = document.querySelector(`.marker[data-milestone-id='${milestone.id}']`);
                 if (completedLessonCount >= milestone.requiredCount) {
@@ -760,7 +761,10 @@
             currentItemId = itemId;
             const item = allItemsMap.get(itemId);
             
-            if (!item) return;
+            if (!item) {
+                console.error("Item not found in map for ID:", itemId);
+                return;
+            }
             
             modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
@@ -778,7 +782,7 @@
                 newCompletedSet.delete(currentItemId);
             } else {
                 newCompletedSet.add(currentItemId);
-                if (item && item.type === 'lesson') {
+                if (item && (item.type === 'lesson' || item.type === 'review')) {
                     playCompletionSound();
                 }
             }
@@ -797,7 +801,7 @@
                 if (progressDocRef) {
                     try {
                         await setDoc(progressDocRef, { completed: [] });
-                        achievedMilestones.clear(); // Reset achieved milestones
+                        achievedMilestones.clear();
                     } catch (error) {
                         console.error("Error resetting progress:", error);
                     }
@@ -822,12 +826,12 @@
                 particle.className = 'firework-particle';
                 
                 const angle = Math.random() * 360;
-                const distance = Math.random() * 80 + 20; // 20 to 100 pixels
+                const distance = Math.random() * 80 + 20;
                 const xEnd = Math.cos(angle * Math.PI / 180) * distance;
                 const yEnd = Math.sin(angle * Math.PI / 180) * distance;
 
                 particle.style.left = positionPercent;
-                particle.style.top = '0px'; // Start from the marker's vertical level
+                particle.style.top = '0px';
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.setProperty('--x-end', `${xEnd}px`);
                 particle.style.setProperty('--y-end', `${yEnd}px`);
@@ -836,7 +840,7 @@
 
                 setTimeout(() => {
                     particle.remove();
-                }, 1000); // Remove particle after animation
+                }, 1000);
             }
         }
 
