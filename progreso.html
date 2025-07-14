@@ -506,7 +506,8 @@
                     const data = doc.data();
                     data.id = doc.id;
                     
-                    const mapId = data.number ? String(data.number) : item.id;
+                    // FIX: Use data.id instead of item.id
+                    const mapId = data.number ? String(data.number) : data.id;
                     allItemsMap.set(mapId, data);
                     
                     if (data.type === 'concept') {
@@ -702,7 +703,7 @@
 
             const completedLessonCount = [...completedItems].filter(id => {
                 const item = allItemsMap.get(id);
-                return item && (item.type === 'lesson' || item.type === 'review');
+                return item && (item.type === 'lesson' || (item.type === 'review' && !item.title.toLowerCase().includes('introducción')));
             }).length;
             
             const percentage = totalLessonCount > 0 ? (completedLessonCount / totalLessonCount) * 100 : 0;
@@ -750,11 +751,13 @@
 
         function openModal(modal) {
             initializeAudio();
-            modal.classList.add('show');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
         function closeModal(modal) {
             modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
         function openItemModal(itemId) {
@@ -788,7 +791,8 @@
             }
 
             try {
-                await updateDoc(progressDocRef, { completed: [...newCompletedSet] });
+                // Use setDoc with merge option to be safe
+                await setDoc(progressDocRef, { completed: [...newCompletedSet] }, { merge: true });
             } catch (error) {
                 console.error("Error updating progress:", error);
                 showConfirmation(`Hubo un error al guardar tu progreso.`);
