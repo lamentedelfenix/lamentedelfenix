@@ -402,7 +402,6 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIGURACIÓN DE FIREBASE (Restaurada para producción) ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -417,7 +416,6 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        // --- Selectores del DOM ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -446,7 +444,6 @@
         const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
         const conceptsList = document.getElementById('concepts-list');
 
-        // --- Variables Globales ---
         let allItemsMap = new Map();
         let completedItems = new Set();
         let currentItemId = null;
@@ -472,7 +469,7 @@
                     const data = doc.data();
                     data.id = doc.id;
                     
-                    const mapId = (data.type === 'lesson' || data.type === 'review') ? String(data.number) : data.id;
+                    const mapId = data.number ? String(data.number) : data.id;
                     allItemsMap.set(mapId, data);
                     
                     if (data.type === 'concept') {
@@ -498,9 +495,9 @@
             let currentGrid = null;
 
             items.forEach(item => {
-                const itemId = (item.type === 'lesson' || item.type === 'review') ? String(item.number) : item.id;
+                const itemId = item.number ? String(item.number) : item.id;
 
-                if (item.type === 'section_intro' || item.type === 'review') {
+                if (item.type === 'section_intro') {
                     if (currentGrid) {
                         courseContentContainer.appendChild(currentGrid);
                         currentGrid = null;
@@ -555,7 +552,7 @@
             const groups = [];
             let currentGroup = null;
             allItemsMap.forEach(item => {
-                 if (item.type === 'section_intro' || item.type === 'review') {
+                 if (item.type === 'section_intro') {
                     if (currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
                     currentGroup = { title: item.title, lessons: [] };
                 } else if (item.type === 'lesson' && currentGroup) {
@@ -568,7 +565,7 @@
 
         function renderMarkers() {
             const lessonGroups = getLessonGroups();
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || l.type === 'review').length;
+            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
             progressMarkersContainer.innerHTML = '';
             if (totalLessonCount === 0) return;
 
@@ -646,12 +643,12 @@
         }
 
         function updateProgress() {
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || l.type === 'review').length;
+            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
             if (totalLessonCount === 0) return;
 
             const completedLessonCount = [...completedItems].filter(id => {
                 const item = allItemsMap.get(id);
-                return item && (item.type === 'lesson' || item.type === 'review');
+                return item && item.type === 'lesson';
             }).length;
             
             const percentage = (completedLessonCount / totalLessonCount) * 100;
@@ -701,7 +698,7 @@
             } else {
                 newCompletedSet.add(currentItemId);
                 const item = allItemsMap.get(currentItemId);
-                if (item && (item.type === 'lesson' || item.type === 'review')) {
+                if (item && item.type === 'lesson') {
                     playCompletionSound();
                 }
             }
