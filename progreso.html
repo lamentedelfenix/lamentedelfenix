@@ -95,20 +95,33 @@
             pointer-events: none;
         }
         .marker:hover .tooltip { opacity: 1; visibility: visible; }
+        
+        /* --- Fireworks --- */
         #fireworks-container {
             position: absolute;
-            top: 28px; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 100;
+            overflow: hidden;
         }
         .firework-particle {
-            position: absolute; width: 5px; height: 5px;
-            border-radius: 50%; opacity: 0;
-            animation: firework-burst 1.2s ease-out forwards;
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: firework-burst 1s ease-out forwards;
         }
         @keyframes firework-burst {
-            0% { opacity: 1; transform: scale(0.3) translate(0, 0); }
-            100% { opacity: 0; transform: scale(1) var(--transform-end); }
+            0% {
+                opacity: 1;
+                transform: scale(0.3) translate(var(--x-start, 0), var(--y-start, 0));
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translate(var(--x-end), var(--y-end));
+            }
         }
+        
         .achievement-text {
             background: linear-gradient(90deg, #e91e63, #ffd700, #00bcd4, #e91e63);
             background-size: 250% 250%;
@@ -158,7 +171,7 @@
         }
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center;
+            background-color: rgba(0, 0, 0, 0.6); display: none; align-items: center;
             justify-content: center; z-index: 1000; padding: 1rem;
             opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
         }
@@ -296,25 +309,25 @@
     </audio>
 
     <!-- Modal para Lecciones e Introducciones -->
-    <div id="item-modal" class="modal-overlay">
+    <div id="item-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-item-title">
         <div class="modal-content">
-            <span id="modal-close" class="modal-close-btn">&times;</span>
+            <button id="modal-close" class="modal-close-btn" aria-label="Cerrar modal">&times;</button>
             <h3 id="modal-item-header" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
             <p id="modal-item-title" class="text-2xl lg:text-3xl italic text-brand-green font-bold mb-4"></p>
             <div id="modal-item-content" class="modal-item-body text-gray-700 mb-6"></div>
             <div class="mt-8 text-center">
                  <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
-                    Marcar como completada
-                </button>
+                   Marcar como completada
+                 </button>
             </div>
         </div>
     </div>
 
     <!-- Modal para Conceptos -->
-    <div id="concepts-modal" class="modal-overlay">
+    <div id="concepts-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="concepts-modal-title">
         <div class="modal-content">
-            <span id="concepts-modal-close" class="modal-close-btn">&times;</span>
-            <h2 class="text-3xl font-bold mb-6 text-center">Conceptos Clave</h2>
+            <button id="concepts-modal-close" class="modal-close-btn" aria-label="Cerrar modal">&times;</button>
+            <h2 id="concepts-modal-title" class="text-3xl font-bold mb-6 text-center">Conceptos Clave</h2>
             <div id="concepts-list" class="space-y-2">
                 <!-- Los conceptos se insertarán aquí dinámicamente -->
             </div>
@@ -322,7 +335,7 @@
     </div>
 
     <!-- Modal de Confirmación -->
-    <div id="confirm-modal" class="modal-overlay">
+    <div id="confirm-modal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
         <div class="modal-content">
             <h3 id="confirm-title" class="text-xl font-bold text-center mb-4">Confirmar Acción</h3>
             <p id="confirm-message" class="text-center text-gray-700 mb-8"></p>
@@ -333,7 +346,7 @@
         </div>
     </div>
 
-    <div id="main-content" style="display: none;">
+    <main id="main-content" style="display: none;">
         <div class="max-w-4xl mx-auto p-4 md:p-8">
             <header class="mb-12">
                 <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=Banner+Membres%C3%ADa';">
@@ -363,11 +376,11 @@
                         </div>
                         <div id="progress-markers-container" class="progress-markers"></div>
                     </div>
-                     <div id="achievement-unlocked" class="text-center hidden">
-                        <p class="achievement-text">
-                            <strong>¡Curso Completado!</strong><br>Desbloqueas una Sesión 1 a 1 de Psicoterapia.
-                        </p>
-                    </div>
+                     <div id="achievement-unlocked" class="text-center" style="display: none;">
+                         <p class="achievement-text">
+                             <strong>¡Curso Completado!</strong><br>Desbloqueas una Sesión 1 a 1 de Psicoterapia.
+                         </p>
+                     </div>
                 </div>
 
                 <div class="text-center mb-12">
@@ -387,7 +400,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </main>
 
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
         <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
@@ -398,26 +411,33 @@
     </div>
 
     <script type="module">
+        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIGURACIÓN DE FIREBASE (Restaurada para producción) ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
-            authDomain: "membresia-ucdm-v2.firebaseapp.com",
-            projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.appspot.com",
-            messagingSenderId: "198704348819",
-            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
-            measurementId: "G-5L3T8PGXYK"
-        };
+        // --- SECURE FIREBASE CONFIG ---
+        // These variables are expected to be populated by a secure backend system.
+        // For local testing, you can manually replace them, but DO NOT commit real keys.
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config)
+            : { 
+                apiKey: "your-api-key", 
+                authDomain: "your-auth-domain", 
+                projectId: "your-project-id", 
+                storageBucket: "your-storage-bucket",
+                messagingSenderId: "your-sender-id",
+                appId: "your-app-id",
+                measurementId: "your-measurement-id"
+              }; // Fallback for local testing
+        
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        // --- Selectores del DOM ---
+        // --- DOM Selectors ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -428,6 +448,8 @@
         const resetBtn = document.getElementById('reset-progress-btn');
         const userTitle = document.getElementById('user-title');
         const soundEffect = document.getElementById('completion-sound');
+        const fireworksContainer = document.getElementById('fireworks-container');
+        const achievementUnlocked = document.getElementById('achievement-unlocked');
         
         const itemModal = document.getElementById('item-modal');
         const modalCloseBtn = document.getElementById('modal-close');
@@ -446,16 +468,20 @@
         const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
         const conceptsList = document.getElementById('concepts-list');
 
-        // --- Variables Globales ---
+        // --- Global State ---
         let allItemsMap = new Map();
         let completedItems = new Set();
         let currentItemId = null;
         let audioInitialized = false;
         let confirmCallback = null;
         let courseHasBeenRendered = false;
+        let milestoneMarkers = [];
+        let achievedMilestones = new Set();
         
         let progressDocRef;
         let progressUnsubscribe;
+
+        // --- Core Functions ---
 
         async function fetchAndRenderCourse() {
             if (courseHasBeenRendered) return;
@@ -463,6 +489,7 @@
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
+                // The orderBy clause is essential here. Ensure an index is created in Firestore for the 'order' field for performance.
                 const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
                 const querySnapshot = await getDocs(lessonsQuery);
 
@@ -488,7 +515,7 @@
                 updateUI();
 
             } catch (error) {
-                console.error("Error al cargar el curso desde Firestore:", error);
+                console.error("Error loading course from Firestore:", error);
                 courseContentContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar la estructura del curso. Por favor, recarga la página.</p>`;
             }
         }
@@ -512,7 +539,7 @@
                         <span>${item.title}</span>
                         <i class="fas fa-eye icon"></i>
                     `;
-                    button.addEventListener('click', () => openItemModal(itemId));
+                    button.addEventListener('click', () => openModal(itemModal, () => openItemModal(itemId)));
                     courseContentContainer.appendChild(button);
 
                 } else if (item.type === 'lesson') {
@@ -525,7 +552,7 @@
                     lessonItem.textContent = String(item.number);
                     lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
-                    lessonItem.addEventListener('click', () => openItemModal(itemId));
+                    lessonItem.addEventListener('click', () => openModal(itemModal, () => openItemModal(itemId)));
                     currentGrid.appendChild(lessonItem);
                 }
             });
@@ -554,13 +581,13 @@
         function getLessonGroups() {
             const groups = [];
             let currentGroup = null;
-            allItemsMap.forEach(item => {
+            Array.from(allItemsMap.values()).sort((a, b) => a.order - b.order).forEach(item => {
                  if (item.type === 'section_intro') {
-                    if (currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
-                    currentGroup = { title: item.title, lessons: [] };
-                } else if (item.type === 'lesson' && currentGroup) {
-                    currentGroup.lessons.push(item);
-                }
+                     if (currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
+                     currentGroup = { title: item.title, lessons: [] };
+                 } else if (item.type === 'lesson' && currentGroup) {
+                     currentGroup.lessons.push(item);
+                 }
             });
             if(currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
             return groups;
@@ -570,11 +597,12 @@
             const lessonGroups = getLessonGroups();
             const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson').length;
             progressMarkersContainer.innerHTML = '';
+            milestoneMarkers = [];
             if (totalLessonCount === 0) return;
 
             let accumulatedLessons = 0;
             
-            lessonGroups.forEach((group) => {
+            lessonGroups.forEach((group, index) => {
                 const groupLessonCount = group.lessons.length;
                 if (groupLessonCount > 0) {
                     accumulatedLessons += groupLessonCount;
@@ -583,7 +611,10 @@
                     const markerWrapper = document.createElement('div');
                     markerWrapper.className = 'marker';
                     markerWrapper.style.left = `${Math.min(position, 100)}%`;
+                    markerWrapper.dataset.milestoneId = index;
                     
+                    milestoneMarkers.push({ id: index, requiredCount: accumulatedLessons, position: markerWrapper.style.left });
+
                     if (position >= 100) {
                          markerWrapper.classList.add('final-trophy');
                          markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
@@ -595,6 +626,7 @@
             });
         }
 
+        // --- Authentication ---
         onAuthStateChanged(auth, user => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
@@ -629,7 +661,7 @@
                         updateUI();
                     }
                 }, (error) => {
-                    console.error("Error en el listener de progreso:", error);
+                    console.error("Error in progress listener:", error);
                 });
 
                 fetchAndRenderCourse();
@@ -639,6 +671,22 @@
                 authMessage.style.display = 'block';
             }
         });
+        
+        async function initializeAuth() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                    console.log("Signed in anonymously.");
+                }
+            } catch(error) {
+                console.error("Authentication failed:", error);
+                authMessage.style.display = 'block';
+            }
+        }
+        
+        // --- UI Update Functions ---
 
         function updateUI() {
             updateProgress();
@@ -654,16 +702,36 @@
                 return item && item.type === 'lesson';
             }).length;
             
-            const percentage = (completedLessonCount / totalLessonCount) * 100;
+            const percentage = totalLessonCount > 0 ? (completedLessonCount / totalLessonCount) * 100 : 0;
             
             progressText.textContent = `${completedLessonCount} / ${totalLessonCount} Lecciones Completadas`;
             progressBar.style.width = `${percentage}%`;
             progressPercent.textContent = `${Math.round(percentage)}%`;
+            
+            // Check for milestones and final completion
+            milestoneMarkers.forEach(milestone => {
+                const markerEl = document.querySelector(`.marker[data-milestone-id='${milestone.id}']`);
+                if (completedLessonCount >= milestone.requiredCount) {
+                    if (markerEl) markerEl.classList.add('achieved');
+                    if (!achievedMilestones.has(milestone.id)) {
+                        achievedMilestones.add(milestone.id);
+                        triggerFireworks(milestone.position);
+                    }
+                } else {
+                    if (markerEl) markerEl.classList.remove('achieved');
+                }
+            });
+
+            if (percentage >= 100) {
+                achievementUnlocked.style.display = 'block';
+            } else {
+                achievementUnlocked.style.display = 'none';
+            }
         }
 
         function updateItemsState() {
-            document.querySelectorAll('[data-id]').forEach(item => {
-                 item.classList.toggle('completed', completedItems.has(item.dataset.id));
+            document.querySelectorAll('[data-id]').forEach(itemEl => {
+                 itemEl.classList.toggle('completed', completedItems.has(itemEl.dataset.id));
             });
         }
         
@@ -676,31 +744,42 @@
             }).join('');
         }
 
+        // --- Modal Handling ---
+
+        function openModal(modal, callback) {
+            initializeAudio();
+            if (callback) callback();
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
         function openItemModal(itemId) {
-            initializeAudio(); 
             currentItemId = itemId;
             const item = allItemsMap.get(itemId);
             
             if (!item) return;
             
-            modalItemHeader.textContent = item.original_header;
+            modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
-            
             modalItemContent.innerHTML = formatParagraphs(item.paragraphs);
-            
             modalCompleteBtn.textContent = completedItems.has(itemId) ? 'Marcar como pendiente' : 'Marcar como completada';
-            itemModal.classList.add('show');
         }
         
         async function handleMarkComplete() {
             if (currentItemId === null || !progressDocRef) return;
             
             const newCompletedSet = new Set(completedItems);
+            const item = allItemsMap.get(currentItemId);
+
             if (newCompletedSet.has(currentItemId)) {
                 newCompletedSet.delete(currentItemId);
             } else {
                 newCompletedSet.add(currentItemId);
-                const item = allItemsMap.get(currentItemId);
                 if (item && item.type === 'lesson') {
                     playCompletionSound();
                 }
@@ -712,7 +791,7 @@
                 console.error("Error updating progress:", error);
                 showConfirmation(`Hubo un error al guardar tu progreso: ${error.message}`, null);
             }
-            closeItemModal();
+            closeModal(itemModal);
         }
 
         function handleResetProgress() {
@@ -720,61 +799,94 @@
                 if (progressDocRef) {
                     try {
                         await setDoc(progressDocRef, { completed: [] });
+                        achievedMilestones.clear(); // Reset achieved milestones
                     } catch (error) {
                         console.error("Error resetting progress:", error);
                     }
                 }
             });
         }
-        
-        function triggerFireworks(position, particleCount) { /* ... sin cambios ... */ }
+
+        function showConfirmation(message, onConfirm) {
+            confirmMessage.textContent = message;
+            confirmCallback = onConfirm;
+            openModal(confirmModal);
+        }
+
+        // --- Effects ---
+
+        function triggerFireworks(positionPercent) {
+            const particleCount = 50;
+            const colors = ['#FFC700', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 80 + 20; // 20 to 100 pixels
+                const xEnd = Math.cos(angle * Math.PI / 180) * distance;
+                const yEnd = Math.sin(angle * Math.PI / 180) * distance;
+
+                particle.style.left = positionPercent;
+                particle.style.top = '0px'; // Start from the marker's vertical level
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.setProperty('--x-end', `${xEnd}px`);
+                particle.style.setProperty('--y-end', `${yEnd}px`);
+                
+                fireworksContainer.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000); // Remove particle after animation
+            }
+        }
+
         function initializeAudio() {
             if (audioInitialized) return;
             soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
             audioInitialized = true;
         }
+
         function playCompletionSound() {
             if (soundEffect) {
                 soundEffect.currentTime = 0;
                 soundEffect.play().catch(e => console.error("Error playing sound:", e));
             }
         }
-        function closeItemModal() { itemModal.classList.remove('show'); }
-        function closeConceptsModal() { conceptsModal.classList.remove('show'); }
         
-        function showConfirmation(message, onConfirm) {
-            confirmMessage.textContent = message;
-            confirmCallback = onConfirm;
-            confirmModal.classList.add('show');
-        }
-        function closeConfirmModal() {
-            confirmModal.classList.remove('show');
-            confirmCallback = null;
-        }
-
-        // --- MANEJO DE EVENTOS ---
-        modalCloseBtn.addEventListener('click', closeItemModal);
-        itemModal.addEventListener('click', (e) => e.target === itemModal && closeItemModal());
+        // --- Event Listeners ---
+        modalCloseBtn.addEventListener('click', () => closeModal(itemModal));
+        itemModal.addEventListener('click', (e) => e.target === itemModal && closeModal(itemModal));
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
         
-        conceptsBtn.addEventListener('click', () => conceptsModal.classList.add('show'));
-        conceptsModalCloseBtn.addEventListener('click', closeConceptsModal);
-        conceptsModal.addEventListener('click', (e) => e.target === conceptsModal && closeConceptsModal());
+        conceptsBtn.addEventListener('click', () => openModal(conceptsModal));
+        conceptsModalCloseBtn.addEventListener('click', () => closeModal(conceptsModal));
+        conceptsModal.addEventListener('click', (e) => e.target === conceptsModal && closeModal(conceptsModal));
 
         conceptsList.addEventListener('click', function(e) {
             const title = e.target.closest('.accordion-title');
             if (title) {
-                title.parentElement.classList.toggle('active');
+                const item = title.parentElement;
+                // Optional: Close other accordions when one opens
+                // if (!item.classList.contains('active')) {
+                //     conceptsList.querySelectorAll('.accordion-item.active').forEach(openItem => openItem.classList.remove('active'));
+                // }
+                item.classList.toggle('active');
             }
         });
 
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
-            closeConfirmModal();
+            closeModal(confirmModal);
+            confirmCallback = null;
         });
-        confirmNoBtn.addEventListener('click', closeConfirmModal);
+        confirmNoBtn.addEventListener('click', () => closeModal(confirmModal));
         resetBtn.addEventListener('click', handleResetProgress);
-        
+
+        // --- Initial Load ---
+        initializeAuth();
+
     </script>
 </body>
 </html>
