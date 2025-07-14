@@ -402,6 +402,7 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- CONFIGURACIÓN DE FIREBASE (Restaurada para producción) ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -416,6 +417,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
+        // --- Selectores del DOM ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -444,6 +446,7 @@
         const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
         const conceptsList = document.getElementById('concepts-list');
 
+        // --- Variables Globales ---
         let allItemsMap = new Map();
         let completedItems = new Set();
         let currentItemId = null;
@@ -542,7 +545,7 @@
                         <span>${concept.title}</span>
                         <i class="fas fa-chevron-down icon"></i>
                     </div>
-                    <div class="accordion-content">${formatParagraphs(concept.paragraphs)}</div>
+                    <div class="accordion-content modal-item-body">${formatParagraphs(concept.paragraphs)}</div>
                 `;
                 conceptsList.appendChild(item);
             });
@@ -681,7 +684,7 @@
             if (!item) return;
             
             modalItemHeader.textContent = item.original_header;
-            modalItemTitle.textContent = item.title;
+            modalItemTitle.textContent = `“${item.title}”`;
             
             modalItemContent.innerHTML = formatParagraphs(item.paragraphs);
             
