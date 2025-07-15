@@ -394,7 +394,7 @@
 
             <div class="mt-4 text-center">
                  <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
-                   Marcar como completada
+                    Marcar como completada
                  </button>
             </div>
         </div>
@@ -491,9 +491,10 @@
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc, getDocs, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- FIREBASE CONFIG ---
+        // IMPORTANT: Replace with your actual Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -570,15 +571,23 @@
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
-                const lessonsQuery = query(collection(db, "UCDM_lessons"), orderBy("order"));
+                // **FIX:** Removed orderBy from the query. Sorting will be done on the client-side.
+                const lessonsQuery = query(collection(db, "UCDM_lessons"));
                 const querySnapshot = await getDocs(lessonsQuery);
 
-                const courseItems = [];
-                const conceptsData = [];
+                const rawItems = [];
                 querySnapshot.forEach(doc => {
                     const data = doc.data();
                     data.id = doc.id;
-                    
+                    rawItems.push(data);
+                });
+
+                // **FIX:** Sort the items by the 'order' field here in the browser.
+                rawItems.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+                const courseItems = [];
+                const conceptsData = [];
+                rawItems.forEach(data => {
                     const mapId = data.number ? String(data.number) : data.id;
                     allItemsMap.set(mapId, data);
                     
@@ -652,6 +661,8 @@
 
         function renderConcepts(concepts) {
             conceptsList.innerHTML = '';
+            // Sort concepts alphabetically by title for consistent order
+            concepts.sort((a, b) => a.title.localeCompare(b.title));
             concepts.forEach(concept => {
                 const item = document.createElement('div');
                 item.className = 'accordion-item';
@@ -704,8 +715,8 @@
                     milestoneMarkers.push({ id: index, requiredCount: accumulatedLessons, position: markerWrapper.style.left });
 
                     if (position >= 100) {
-                         markerWrapper.classList.add('final-trophy');
-                         markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
+                          markerWrapper.classList.add('final-trophy');
+                          markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
                     } else {
                         markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">${group.title}</span>`;
                     }
@@ -853,7 +864,7 @@
             
             // Setup Carousel
             paragraphSlider.innerHTML = '';
-            totalParagraphs = item.paragraphs.length;
+            totalParagraphs = item.paragraphs ? item.paragraphs.length : 0;
             currentParagraphIndex = 0;
 
             if (totalParagraphs > 0) {
@@ -885,11 +896,11 @@
             paragraphSlider.style.transform = `translateX(-${currentParagraphIndex * 100}%)`;
             
             prevBtn.style.display = currentParagraphIndex === 0 ? 'none' : 'flex';
-            nextBtn.style.display = currentParagraphIndex === totalParagraphs - 1 ? 'none' : 'flex';
+            nextBtn.style.display = currentParagraphIndex >= totalParagraphs - 1 ? 'none' : 'flex';
             
             paginationEl.textContent = totalParagraphs > 1 ? `${currentParagraphIndex + 1} / ${totalParagraphs}` : '';
 
-            const isLastParagraph = currentParagraphIndex === totalParagraphs - 1;
+            const isLastParagraph = currentParagraphIndex >= totalParagraphs - 1;
             modalCompleteBtn.disabled = !isLastParagraph;
             modalCompleteBtn.classList.toggle('btn-glow', isLastParagraph);
         }
