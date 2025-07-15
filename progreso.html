@@ -376,6 +376,23 @@
             84% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         }
+        
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .carousel-nav-btn {
+                display: none; /* Hide navigation buttons on smaller screens */
+            }
+            .slide-content-wrapper {
+                padding: 0 1rem; /* Reduce padding on mobile to give text more space */
+            }
+            .modal-content {
+                padding: 1.5rem 0.5rem; /* Adjust modal padding for smaller screens */
+            }
+            .modal-close-btn {
+                top: 0.5rem;
+                right: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
