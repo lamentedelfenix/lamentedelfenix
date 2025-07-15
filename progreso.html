@@ -218,7 +218,7 @@
             position: relative;
             overflow: hidden;
             display: flex;
-            align-items: center;
+            /* align-items: center; /* This property was causing the text to be vertically centered and cut off. Removing it allows the content to fill the available space and scroll properly. */
             min-height: 0; /* Fix for flexbox content clipping */
         }
         .paragraph-slider {
