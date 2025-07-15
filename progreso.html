@@ -686,12 +686,14 @@
             concepts.forEach(concept => {
                 const item = document.createElement('div');
                 item.className = 'accordion-item';
+                // Group paragraphs before rendering
+                const groupedConceptParagraphs = groupParagraphs(concept.paragraphs);
                 item.innerHTML = `
                     <div class="accordion-title">
                         <span>${concept.title}</span>
                         <i class="fas fa-chevron-down icon"></i>
                     </div>
-                    <div class="accordion-content modal-item-body">${formatParagraphs(concept.paragraphs)}</div>
+                    <div class="accordion-content modal-item-body">${formatParagraphs(groupedConceptParagraphs)}</div>
                 `;
                 conceptsList.appendChild(item);
             });
@@ -839,6 +841,47 @@
             });
         }
         
+        /**
+         * Groups raw paragraph data (string or array of strings) into proper paragraphs.
+         * A new paragraph is defined by a line starting with "number."
+         * @param {string|string[]} rawParagraphData The raw text data.
+         * @returns {string[]} An array of correctly grouped paragraphs.
+         */
+        function groupParagraphs(rawParagraphData) {
+            if (!rawParagraphData) return [];
+
+            const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
+            if (!fullText.trim()) return [];
+
+            const paragraphs = [];
+            let currentParagraph = '';
+            let hasNumberedItems = false;
+            const lines = fullText.split('\n');
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                if (/^\d+\.\s/.test(trimmedLine)) {
+                    hasNumberedItems = true;
+                    if (currentParagraph) {
+                        paragraphs.push(currentParagraph.trim());
+                    }
+                    currentParagraph = line;
+                } else {
+                    currentParagraph += (currentParagraph ? '\n' : '') + line;
+                }
+            });
+
+            if (currentParagraph) {
+                paragraphs.push(currentParagraph.trim());
+            }
+
+            if (!hasNumberedItems && fullText.trim()) {
+                return [fullText.trim()];
+            }
+
+            return paragraphs;
+        }
+
         function formatParagraphs(paragraphs) {
             if (!paragraphs || !Array.isArray(paragraphs) || paragraphs.length === 0) return "";
             return paragraphs.map(p => {
@@ -882,18 +925,20 @@
             modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
             
+            // Group paragraphs correctly before rendering
+            const correctlyGroupedParagraphs = groupParagraphs(item.paragraphs);
+
             // Setup Carousel
             paragraphSlider.innerHTML = '';
-            totalParagraphs = item.paragraphs ? item.paragraphs.length : 0;
+            totalParagraphs = correctlyGroupedParagraphs.length;
             currentParagraphIndex = 0;
 
             if (totalParagraphs > 0) {
-                item.paragraphs.forEach(p => {
+                correctlyGroupedParagraphs.forEach(p => {
                     const slide = document.createElement('div');
                     slide.className = 'paragraph-slide';
                     const withBreaks = p.replace(/\n/g, '<br>');
                     const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
-                    // Wrap the content in a dedicated div for padding
                     slide.innerHTML = `<div class="slide-content-wrapper"><p>${styledP}</p></div>`;
                     paragraphSlider.appendChild(slide);
                 });
