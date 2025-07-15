@@ -238,13 +238,16 @@
             display: flex;
             transition: transform 0.4s ease-in-out;
             height: 100%;
+            width: 100%;
         }
         .paragraph-slide {
             width: 100%;
             flex-shrink: 0;
-            padding: 0 2.5rem;
             overflow-y: auto;
             height: 100%;
+        }
+        .slide-content-wrapper {
+            padding: 0 2.5rem;
         }
         .carousel-nav-btn {
             position: absolute;
@@ -890,13 +893,14 @@
                     slide.className = 'paragraph-slide';
                     const withBreaks = p.replace(/\n/g, '<br>');
                     const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
-                    slide.innerHTML = `<p>${styledP}</p>`;
+                    // Wrap the content in a dedicated div for padding
+                    slide.innerHTML = `<div class="slide-content-wrapper"><p>${styledP}</p></div>`;
                     paragraphSlider.appendChild(slide);
                 });
             } else {
                  const slide = document.createElement('div');
                  slide.className = 'paragraph-slide';
-                 slide.innerHTML = `<p>No hay contenido disponible para esta lección.</p>`;
+                 slide.innerHTML = `<div class="slide-content-wrapper"><p>No hay contenido disponible para esta lección.</p></div>`;
                  paragraphSlider.appendChild(slide);
                  totalParagraphs = 1;
             }
