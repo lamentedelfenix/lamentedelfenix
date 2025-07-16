@@ -418,15 +418,19 @@
                 top: 0.5rem;
                 right: 0.75rem;
             }
+            /* UPDATED: Smaller achievements on mobile */
             .achievements-shelf {
                 gap: 1rem;
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
             }
             .achievement-item .icon-wrapper {
-                width: 70px; height: 70px;
+                width: 65px; height: 65px;
             }
             .achievement-item .icon-wrapper i {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            .achievement-item .achievement-title {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -509,8 +513,9 @@
 
             <section class="mb-12">
                 <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-2 text-center">Mi Progreso en las Lecciones</h1>
+                <!-- UPDATED: Welcome message -->
                 <p class="text-lg text-gray-700 max-w-3xl mx-auto text-center mb-8">
-                    Completa las lecciones para llenar tu barra de progreso y desbloquear todos los logros.
+                    Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
                 </p>
                 
                 <!-- PROGRESS BAR SECTION -->
@@ -680,58 +685,55 @@
             }
         }
 
+        // UPDATED: Achievement definition logic
         function defineAchievements() {
-            achievements = [];
-            const lessonGroups = getLessonGroups();
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || (l.type === 'review' && !l.title.toLowerCase().includes('introducción'))).length;
-            const firstIntro = Array.from(allItemsMap.values()).find(item => item.type === 'section_intro' || item.title.toLowerCase().includes('introducción'));
+            const potentialAchievements = [];
+            const allCourseItems = Array.from(allItemsMap.values());
+            
+            const intros = allCourseItems
+                .filter(item => item.type === 'section_intro' || item.title.toLowerCase().includes('introducción'))
+                .sort((a, b) => a.order - b.order);
 
-            // 1. Starting Achievement
-            if (firstIntro) {
-                achievements.push({
-                    id: 'start_course',
-                    title: 'Comienzo del Viaje',
-                    icon: 'fa-play-circle',
-                    condition: (completed) => completed.has(firstIntro.id)
-                });
+            if (intros.length === 0) {
+                achievements = [];
+                return;
             }
 
-            // 2. Intermediate Achievements
-            let accumulatedLessons = 0;
-            lessonGroups.forEach((group) => {
-                const groupLessonCount = group.lessons.length;
-                if (groupLessonCount > 0) {
-                    accumulatedLessons += groupLessonCount;
-                    const requiredCount = accumulatedLessons;
-                    achievements.push({
-                        id: `milestone_${group.title.replace(/\s+/g, '_')}`,
-                        title: group.title,
-                        icon: 'fa-star',
-                        condition: (completed) => {
-                            const completedLessons = [...completed].filter(id => {
-                                const item = allItemsMap.get(id);
-                                return item && (item.type === 'lesson' || item.type === 'review');
-                            }).length;
-                            return completedLessons >= requiredCount;
-                        }
-                    });
+            // Process all intros to create potential achievements
+            intros.forEach((intro, index) => {
+                let title = intro.title.replace(/Introducción: /i, '').trim().toUpperCase();
+                let icon = 'fa-star';
+
+                if (index === 0) {
+                    title = 'INTRODUCCIÓN';
+                    icon = 'fa-play-circle';
+                } else if (title.includes("MENSAJE FINAL PARA TI")) {
+                    title = 'MENSAJE FINAL PARA TI';
+                    icon = 'fa-envelope-open-text';
                 }
+
+                potentialAchievements.push({
+                    id: `milestone_${intro.id}`,
+                    title: title,
+                    icon: icon,
+                    condition: (completed) => completed.has(intro.id)
+                });
             });
 
-            // 3. Final Achievement
-            achievements.push({
+            // Add the final grand prize achievement
+            const finalTrophy = {
                 id: 'complete_course',
                 title: '¡Premio Final! Sesión de Psicoterapia 1 a 1',
                 icon: 'fa-trophy',
                 condition: (completed) => {
-                    const completedLessons = [...completed].filter(id => {
-                        const item = allItemsMap.get(id);
-                        return item && (item.type === 'lesson' || item.type === 'review');
-                    }).length;
-                    return completedLessons >= totalLessonCount && totalLessonCount > 0;
+                    // The condition is that all *other* achievements are met.
+                    return potentialAchievements.every(ach => ach.condition(completed));
                 }
-            });
+            };
+            
+            achievements = [...potentialAchievements, finalTrophy];
         }
+
 
         function renderAchievements() {
             achievementsShelf.innerHTML = '';
@@ -749,6 +751,7 @@
             });
         }
         
+        // UPDATED: Course layout rendering logic
         function renderCourseLayout(items) {
             courseContentContainer.innerHTML = '';
             let currentGrid = null;
@@ -765,7 +768,14 @@
                     const button = document.createElement('button');
                     button.className = 'intro-item-btn';
                     button.dataset.id = itemId;
-                    button.innerHTML = `<span>${item.title}</span><i class="fas fa-eye icon"></i>`;
+                    
+                    // Modify button title for the final message
+                    let buttonTitle = item.title;
+                    if (buttonTitle.includes("MENSAJE FINAL PARA TI")) {
+                        buttonTitle = "MENSAJE FINAL PARA TI";
+                    }
+
+                    button.innerHTML = `<span>${buttonTitle}</span><i class="fas fa-eye icon"></i>`;
                     button.addEventListener('click', () => {
                         openItemModal(itemId);
                         openModal(itemModal);
@@ -883,12 +893,12 @@
         }
         
         function updateProgressBar() {
-            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || (l.type === 'review' && !l.title.toLowerCase().includes('introducción'))).length;
+            const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || l.type === 'review').length;
             if (totalLessonCount === 0) return;
 
             const completedLessonCount = [...completedItems].filter(id => {
                 const item = allItemsMap.get(id);
-                return item && (item.type === 'lesson' || (item.type === 'review' && !item.title.toLowerCase().includes('introducción')));
+                return item && (item.type === 'lesson' || item.type === 'review');
             }).length;
             
             const percentage = totalLessonCount > 0 ? (completedLessonCount / totalLessonCount) * 100 : 0;
@@ -906,9 +916,9 @@
                 const isAchieved = ach.condition(completedItems);
 
                 if (isAchieved) {
-                    achElement.classList.add('unlocked');
                     if (!achievedMilestones.has(ach.id)) {
                         achievedMilestones.add(ach.id);
+                        achElement.classList.add('unlocked');
                         if (justUpdated) {
                             achElement.classList.add('just-unlocked');
                             triggerFireworks(achElement);
