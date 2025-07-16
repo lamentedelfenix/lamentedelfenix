@@ -726,7 +726,6 @@
                 title: '¡Premio Final! Sesión de Psicoterapia 1 a 1',
                 icon: 'fa-trophy',
                 condition: (completed) => {
-                    // The condition is that all *other* achievements are met.
                     if (potentialAchievements.length === 0) return false;
                     return potentialAchievements.every(ach => ach.condition(completed));
                 }
