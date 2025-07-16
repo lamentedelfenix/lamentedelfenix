@@ -759,6 +759,7 @@
         function renderCourseLayout(items) {
             courseContentContainer.innerHTML = '';
             let currentGrid = null;
+            let firstIntroButtonRendered = false; // Flag to track the first intro button
 
             items.forEach(item => {
                 const itemId = item.number ? String(item.number) : item.id;
@@ -774,11 +775,12 @@
                     
                     let buttonTitle;
 
-                    // CORRECTED: Check for the first item (order: 0) and keep its title intact.
-                    if (item.order === 0) {
-                        buttonTitle = item.title;
+                    // CORRECTED: Use a flag to identify the first intro button being rendered.
+                    if (!firstIntroButtonRendered) {
+                        buttonTitle = item.title; // Keep the original title for the first one
+                        firstIntroButtonRendered = true; // Set the flag so it only runs once
                     } else {
-                        // For all other intros, remove "Introducción" and potential hyphens.
+                        // For all subsequent intros, remove "Introducción" and potential hyphens.
                         buttonTitle = item.title.replace(/Introducción:? ?-? ?/i, '').trim();
                         if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
                             buttonTitle = "MENSAJE FINAL PARA TI";
