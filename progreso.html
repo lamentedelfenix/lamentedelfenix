@@ -403,6 +403,28 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         }
         
+        /* NEW: Lesson Separator Styles */
+        .lesson-separator {
+            grid-column: 1 / -1; /* Span all columns of the grid */
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            color: var(--brand-blue);
+            opacity: 0.5;
+        }
+        .lesson-separator::before,
+        .lesson-separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 2px dotted var(--border-color);
+        }
+        .lesson-separator:not(:empty)::before {
+            margin-right: 1em;
+        }
+        .lesson-separator:not(:empty)::after {
+            margin-left: 1em;
+        }
+
         /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
             .carousel-nav-btn {
@@ -809,6 +831,15 @@
                         openModal(itemModal);
                     });
                     currentGrid.appendChild(lessonItem);
+
+                    // NEW: Add separator after specific lessons
+                    const separatorPoints = [60, 90, 120, 150];
+                    if (separatorPoints.includes(item.number)) {
+                        const separator = document.createElement('div');
+                        separator.className = 'lesson-separator';
+                        separator.innerHTML = `<i class="fas fa-feather-alt"></i>`;
+                        currentGrid.appendChild(separator);
+                    }
                 }
             });
 
