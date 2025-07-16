@@ -816,6 +816,7 @@
             courseContentContainer.innerHTML = '';
             let currentGrid = null;
             let firstIntroButtonRendered = false;
+            let introSeparatorRendered = false; // Flag to prevent multiple intro separators
 
             const createSeparator = (key, title = null) => {
                 const separator = document.createElement('div');
@@ -867,9 +868,11 @@
                     if (!currentGrid) {
                         currentGrid = document.createElement('div');
                         currentGrid.className = 'lesson-grid';
-                        // Add the very first separator before the grid is appended
-                        if (titledSeparators['intro']) {
+                        
+                        // CORRECTED: Add the first separator only once, before the first grid.
+                        if (titledSeparators['intro'] && !introSeparatorRendered) {
                             courseContentContainer.appendChild(createSeparator('intro', titledSeparators['intro']));
+                            introSeparatorRendered = true;
                         }
                         courseContentContainer.appendChild(currentGrid);
                     }
@@ -884,7 +887,7 @@
                     });
                     currentGrid.appendChild(lessonItem);
 
-                    // Add separators after the lesson
+                    // Add other separators after their respective lessons
                     if (titledSeparators[item.number]) {
                         currentGrid.appendChild(createSeparator(item.number, titledSeparators[item.number]));
                     } else if (simpleSeparatorPoints.includes(item.number)) {
