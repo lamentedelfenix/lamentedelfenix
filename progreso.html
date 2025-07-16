@@ -420,7 +420,7 @@
             }
             /* UPDATED: Smaller achievements on mobile */
             .achievements-shelf {
-                gap: 1rem;
+                gap: 0.75rem;
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
             .achievement-item .icon-wrapper {
@@ -759,9 +759,8 @@
 
             items.forEach(item => {
                 const itemId = item.number ? String(item.number) : item.id;
-                const titleLower = item.title.toLowerCase();
-
-                if (item.type === 'section_intro' || titleLower.includes('introducción')) {
+                
+                if (item.type === 'section_intro' || item.title.toLowerCase().includes('introducción')) {
                     if (currentGrid) {
                         courseContentContainer.appendChild(currentGrid);
                         currentGrid = null;
@@ -770,9 +769,9 @@
                     button.className = 'intro-item-btn';
                     button.dataset.id = itemId;
                     
-                    // Modify button title for the final message
-                    let buttonTitle = item.title;
-                    if (buttonTitle.includes("MENSAJE FINAL PARA TI")) {
+                    // Modify button title to remove "Introducción"
+                    let buttonTitle = item.title.replace(/Introducción: /i, '').trim();
+                    if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
                         buttonTitle = "MENSAJE FINAL PARA TI";
                     }
 
