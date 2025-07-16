@@ -403,20 +403,22 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         }
         
-        /* NEW: Lesson Separator Styles */
+        /* UPDATED: Lesson Separator Styles */
         .lesson-separator {
-            grid-column: 1 / -1; /* Span all columns of the grid */
+            grid-column: 1 / -1;
             display: flex;
             align-items: center;
-            margin: 1rem 0;
+            text-align: center;
+            margin: 1.5rem 0;
             color: var(--brand-blue);
-            opacity: 0.5;
+            opacity: 0.4;
+            transition: opacity 0.8s ease, color 0.8s ease;
         }
         .lesson-separator::before,
         .lesson-separator::after {
             content: '';
             flex: 1;
-            border-bottom: 2px dotted var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
         .lesson-separator:not(:empty)::before {
             margin-right: 1em;
@@ -424,6 +426,26 @@
         .lesson-separator:not(:empty)::after {
             margin-left: 1em;
         }
+        .separator-title {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+        .lesson-separator.unlocked {
+            opacity: 1;
+            color: var(--brand-pink);
+            animation: separator-glow 1.5s ease-in-out;
+        }
+        .lesson-separator.unlocked .separator-title {
+            text-shadow: 0 0 5px rgba(233, 30, 99, 0.5);
+        }
+        @keyframes separator-glow {
+            0% { opacity: 0.4; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
 
         /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
@@ -440,7 +462,6 @@
                 top: 0.5rem;
                 right: 0.75rem;
             }
-            /* UPDATED: Smaller achievements on mobile */
             .achievements-shelf {
                 gap: 0.75rem;
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -662,6 +683,19 @@
         let progressDocRef;
         let progressUnsubscribe;
 
+        // --- NEW: Separator Data ---
+        const lessonSeparators = {
+            'intro': 'Desmontando la Ilusión y las proyecciones del ego',
+            '19': 'Estableciendo la intención de ver y la receptividad',
+            '28': 'Reconociendo la santidad inherente y la presencia divina',
+            '41': 'Comprendiendo la Voluntad de Dios y el perdón como salvación',
+            '60': 'Afirmación de la verdadera identidad y función',
+            '100': 'Profundización en la Voluntad de Dios y el propósito del perdón',
+            '255': 'Reafirmando el Propósito Verdadero a través del Perdón',
+            '310': 'Disolviendo los Juicios Falsos para Ver la Verdad',
+            '352': 'Consagración al Servicio de Cristo y la Fusión con la Identidad de Cristo'
+        };
+
         // --- Core Functions ---
 
         async function fetchAndRenderCourse() {
@@ -707,7 +741,6 @@
             }
         }
 
-        // UPDATED: Achievement definition logic
         function defineAchievements() {
             const potentialAchievements = [];
             const allCourseItems = Array.from(allItemsMap.values());
@@ -721,7 +754,6 @@
                 return;
             }
 
-            // Process all intros to create potential achievements
             intros.forEach((intro, index) => {
                 let title;
                 let icon = 'fa-star';
@@ -745,10 +777,8 @@
                 });
             });
 
-            // Add the final grand prize achievement
             const finalTrophy = {
                 id: 'complete_course',
-                // MODIFIED: Changed title to be multi-line
                 title: 'Premio Final:<br>Psicoterapia<br>1 a 1',
                 icon: 'fa-trophy',
                 condition: (completed) => {
@@ -777,11 +807,18 @@
             });
         }
         
-        // UPDATED: Course layout rendering logic
         function renderCourseLayout(items) {
             courseContentContainer.innerHTML = '';
             let currentGrid = null;
-            let firstIntroButtonRendered = false; // Flag to track the first intro button
+            let firstIntroButtonRendered = false;
+
+            const createSeparator = (key, title) => {
+                const separator = document.createElement('div');
+                separator.className = 'lesson-separator';
+                separator.id = `separator-${key}`;
+                separator.innerHTML = `<span class="separator-title">${title}</span>`;
+                return separator;
+            };
 
             items.forEach(item => {
                 const itemId = item.number ? String(item.number) : item.id;
@@ -797,12 +834,13 @@
                     
                     let buttonTitle;
 
-                    // CORRECTED: Use a flag to identify the first intro button being rendered.
                     if (!firstIntroButtonRendered) {
-                        buttonTitle = item.title; // Keep the original title for the first one
-                        firstIntroButtonRendered = true; // Set the flag so it only runs once
+                        buttonTitle = item.title;
+                        firstIntroButtonRendered = true;
+                        if (lessonSeparators['intro']) {
+                           courseContentContainer.appendChild(createSeparator('intro', lessonSeparators['intro']));
+                        }
                     } else {
-                        // For all subsequent intros, remove "Introducción" and potential hyphens.
                         buttonTitle = item.title.replace(/Introducción:? ?-? ?/i, '').trim();
                         if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
                             buttonTitle = "MENSAJE FINAL PARA TI";
@@ -832,13 +870,8 @@
                     });
                     currentGrid.appendChild(lessonItem);
 
-                    // NEW: Add separator after specific lessons
-                    const separatorPoints = [60, 90, 120, 150];
-                    if (separatorPoints.includes(item.number)) {
-                        const separator = document.createElement('div');
-                        separator.className = 'lesson-separator';
-                        separator.innerHTML = `<i class="fas fa-feather-alt"></i>`;
-                        currentGrid.appendChild(separator);
+                    if (lessonSeparators[item.number]) {
+                        currentGrid.appendChild(createSeparator(item.number, lessonSeparators[item.number]));
                     }
                 }
             });
@@ -918,6 +951,7 @@
             updateProgressBar();
             updateAchievements(justUpdated);
             updateItemsState();
+            updateSeparatorsState(); // NEW function call
         }
         
         function updateProgressBar() {
@@ -967,6 +1001,29 @@
             });
         }
         
+        // NEW: Function to update separator states
+        function updateSeparatorsState() {
+            const firstIntroId = (Array.from(allItemsMap.values()).find(item => item.order === 0) || {}).id;
+
+            for (const key in lessonSeparators) {
+                const separatorEl = document.getElementById(`separator-${key}`);
+                if (!separatorEl) continue;
+
+                let isUnlocked = false;
+                if (key === 'intro') {
+                    // Unlock if the first intro item is completed
+                    if (firstIntroId) {
+                        isUnlocked = completedItems.has(firstIntroId);
+                    }
+                } else {
+                    // Unlock if the lesson with that number is completed
+                    isUnlocked = completedItems.has(key);
+                }
+                
+                separatorEl.classList.toggle('unlocked', isUnlocked);
+            }
+        }
+
         function groupParagraphs(rawParagraphData) {
             if (!rawParagraphData) return [];
             const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
