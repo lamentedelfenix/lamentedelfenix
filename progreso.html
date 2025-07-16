@@ -191,6 +191,7 @@
             z-index: 1000; padding: 1rem;
             opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0s 0.3s;
+            overscroll-behavior: contain; /* Prevents background scroll */
         }
         .modal-overlay.show {
             opacity: 1; visibility: visible;
@@ -251,6 +252,7 @@
             flex-shrink: 0;
             overflow-y: auto;
             height: 100%;
+            overscroll-behavior: contain; /* Prevents scroll chaining from within the slide */
         }
         .slide-content-wrapper {
             padding: 0 2.5rem;
