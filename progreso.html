@@ -701,16 +701,18 @@
 
             // Process all intros to create potential achievements
             intros.forEach((intro, index) => {
-                // MODIFIED: Regex to remove "Introducción" and potential hyphens
-                let title = intro.title.replace(/Introducción:? ?-? ?/i, '').trim().toUpperCase();
+                let title;
                 let icon = 'fa-star';
 
                 if (index === 0) {
                     title = 'INTRODUCCIÓN ¡Inicio del Viaje!';
                     icon = 'fa-play-circle';
-                } else if (title.includes("MENSAJE FINAL PARA TI")) {
-                    title = 'MENSAJE FINAL PARA TI';
-                    icon = 'fa-envelope-open-text';
+                } else {
+                    title = intro.title.replace(/Introducción:? ?-? ?/i, '').trim().toUpperCase();
+                    if (title.includes("MENSAJE FINAL PARA TI")) {
+                        title = 'MENSAJE FINAL PARA TI';
+                        icon = 'fa-envelope-open-text';
+                    }
                 }
 
                 potentialAchievements.push({
@@ -770,13 +772,19 @@
                     button.className = 'intro-item-btn';
                     button.dataset.id = itemId;
                     
-                    // MODIFIED: Regex to remove "Introducción" and potential hyphens
-                    let buttonTitle = item.title.replace(/Introducción:? ?-? ?/i, '').trim();
-                    if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
-                        buttonTitle = "MENSAJE FINAL PARA TI";
+                    let buttonTitle;
+
+                    // CORRECTED: Check for the first item (order: 0) and keep its title intact.
+                    if (item.order === 0) {
+                        buttonTitle = item.title;
+                    } else {
+                        // For all other intros, remove "Introducción" and potential hyphens.
+                        buttonTitle = item.title.replace(/Introducción:? ?-? ?/i, '').trim();
+                        if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
+                            buttonTitle = "MENSAJE FINAL PARA TI";
+                        }
                     }
 
-                    // MODIFIED: Added "Ver" text next to the icon
                     button.innerHTML = `<span>${buttonTitle}</span><div class="flex items-center gap-2"><span class="text-xs font-semibold opacity-80">Ver</span><i class="fas fa-eye icon"></i></div>`;
                     button.addEventListener('click', () => {
                         openItemModal(itemId);
