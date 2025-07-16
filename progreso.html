@@ -471,7 +471,7 @@
                 <div id="carousel-pagination" class="carousel-pagination"></div>
                 <div class="mt-4 text-center">
                      <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
-                         Marcar como completada
+                          Marcar como completada
                      </button>
                 </div>
             </div>
@@ -515,7 +515,7 @@
                 <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-2 text-center">Mi Progreso en las Lecciones</h1>
                 <!-- UPDATED: Welcome message -->
                 <p class="text-lg text-gray-700 max-w-3xl mx-auto text-center mb-8">
-                    Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
+                    Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. Para un progreso constante, te recomendamos hacer una lección por día. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
                 </p>
                 
                 <!-- PROGRESS BAR SECTION -->
@@ -701,7 +701,8 @@
 
             // Process all intros to create potential achievements
             intros.forEach((intro, index) => {
-                let title = intro.title.replace(/Introducción: /i, '').trim().toUpperCase();
+                // MODIFIED: Regex to remove "Introducción" more broadly
+                let title = intro.title.replace(/Introducción:? /i, '').trim().toUpperCase();
                 let icon = 'fa-star';
 
                 if (index === 0) {
@@ -723,7 +724,8 @@
             // Add the final grand prize achievement
             const finalTrophy = {
                 id: 'complete_course',
-                title: '¡Premio Final! Sesión de Psicoterapia 1 a 1',
+                // MODIFIED: Shortened achievement title
+                title: 'Premio Final: Psicoterapia 1 a 1',
                 icon: 'fa-trophy',
                 condition: (completed) => {
                     if (potentialAchievements.length === 0) return false;
@@ -768,8 +770,8 @@
                     button.className = 'intro-item-btn';
                     button.dataset.id = itemId;
                     
-                    // Modify button title to remove "Introducción"
-                    let buttonTitle = item.title.replace(/Introducción: /i, '').trim();
+                    // MODIFIED: Regex to remove "Introducción" more broadly for consistency
+                    let buttonTitle = item.title.replace(/Introducción:? /i, '').trim();
                     if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
                         buttonTitle = "MENSAJE FINAL PARA TI";
                     }
