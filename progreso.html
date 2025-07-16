@@ -863,15 +863,15 @@
                     
                     courseContentContainer.appendChild(button);
 
-                    // CORRECTED: Place the 'intro' separator AFTER the intro button.
-                    if (item.order === 0 && titledSeparators['intro']) {
-                        courseContentContainer.appendChild(createSeparator('intro', titledSeparators['intro']));
-                    }
-
                 } else if (item.type === 'lesson' || item.type === 'review') { 
                     if (!currentGrid) {
                         currentGrid = document.createElement('div');
                         currentGrid.className = 'lesson-grid';
+                        // Add the very first separator before the grid is appended
+                        if (titledSeparators['intro']) {
+                            courseContentContainer.appendChild(createSeparator('intro', titledSeparators['intro']));
+                        }
+                        courseContentContainer.appendChild(currentGrid);
                     }
                     const lessonItem = document.createElement('div');
                     lessonItem.className = 'lesson-item';
@@ -893,7 +893,7 @@
                 }
             });
 
-            if (currentGrid) {
+            if (currentGrid && !currentGrid.parentElement) {
                 courseContentContainer.appendChild(currentGrid);
             }
         }
@@ -1019,7 +1019,9 @@
         }
         
         function updateSeparatorsState() {
-            const firstIntroItem = Array.from(allItemsMap.values()).find(item => item.order === 0);
+            const firstIntroItem = Array.from(allItemsMap.values())
+                                .sort((a, b) => (a.order || 0) - (b.order || 0))
+                                .find(item => item.type === 'section_intro' || item.title.toLowerCase().includes('introducción'));
             
             const allSeparators = { ...titledSeparators };
             simpleSeparatorPoints.forEach(p => allSeparators[p] = ''); // Add simple separators to the check list
@@ -1030,10 +1032,8 @@
 
                 let isUnlocked = false;
                 if (key === 'intro' && firstIntroItem) {
-                    // CORRECTED: Unlock based on the first intro item's ID
                     isUnlocked = completedItems.has(firstIntroItem.id);
                 } else {
-                    // Unlock if the lesson with that number is completed
                     isUnlocked = completedItems.has(key);
                 }
                 
