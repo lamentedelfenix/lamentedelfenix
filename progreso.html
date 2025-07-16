@@ -421,16 +421,16 @@
             /* UPDATED: Smaller achievements on mobile */
             .achievements-shelf {
                 gap: 1rem;
-                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
             .achievement-item .icon-wrapper {
-                width: 65px; height: 65px;
+                width: 60px; height: 60px;
             }
             .achievement-item .icon-wrapper i {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             .achievement-item .achievement-title {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -705,7 +705,7 @@
                 let icon = 'fa-star';
 
                 if (index === 0) {
-                    title = 'INTRODUCCIÓN';
+                    title = 'INTRODUCCIÓN ¡Inicio del Viaje!';
                     icon = 'fa-play-circle';
                 } else if (title.includes("MENSAJE FINAL PARA TI")) {
                     title = 'MENSAJE FINAL PARA TI';
@@ -727,6 +727,7 @@
                 icon: 'fa-trophy',
                 condition: (completed) => {
                     // The condition is that all *other* achievements are met.
+                    if (potentialAchievements.length === 0) return false;
                     return potentialAchievements.every(ach => ach.condition(completed));
                 }
             };
@@ -820,21 +821,6 @@
                 `;
                 conceptsList.appendChild(item);
             });
-        }
-
-        function getLessonGroups() {
-            const groups = [];
-            let currentGroup = null;
-            Array.from(allItemsMap.values()).sort((a, b) => a.order - b.order).forEach(item => {
-                 if (item.type === 'section_intro' || item.title.toLowerCase().includes('introducción')) {
-                     if (currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
-                     currentGroup = { title: item.title, lessons: [] };
-                 } else if ((item.type === 'lesson' || item.type === 'review') && currentGroup) {
-                     currentGroup.lessons.push(item);
-                 }
-            });
-            if(currentGroup && currentGroup.lessons.length > 0) groups.push(currentGroup);
-            return groups;
         }
 
         // --- Authentication ---
