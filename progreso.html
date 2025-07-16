@@ -35,25 +35,61 @@
         body.modal-open {
             overflow: hidden;
         }
+        
+        /* --- NEW & IMPROVED PROGRESS SECTION --- */
         .progress-section {
             position: relative;
             z-index: 5;
-            padding-bottom: 50px;
+            padding: 2rem 0; /* Added more vertical padding */
         }
         .progress-container {
             position: relative;
             margin-top: 1.5rem;
             margin-bottom: 2rem;
-            padding-top: 20px;
+            padding-top: 30px; /* Increased padding for larger markers */
         }
-        .progress-bar-bg { background-color: var(--border-color); }
+        .progress-bar-bg { 
+            background-color: var(--border-color);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
         .progress-bar-fg {
-            background-image: linear-gradient(to right, var(--brand-cyan), var(--brand-pink));
-            transition: width 0.5s ease-out;
+            /* A more vibrant, dynamic gradient */
+            background-image: linear-gradient(45deg, var(--brand-cyan), var(--brand-pink), #ff7e5f, #feb47b);
+            background-size: 200% 200%;
+            transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Smoother, more satisfying transition */
+            animation: gradient-flow 3s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Add a subtle shine animation to the progress bar */
+        .progress-bar-fg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(
+                -60deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: translateX(-100%);
+            animation: progress-shine 2s infinite;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes progress-shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
         }
         .progress-markers {
             position: absolute;
-            top: 28px;
+            top: 38px; /* Adjusted for new bar height */
             left: 0;
             width: 100%;
             height: 0;
@@ -61,10 +97,10 @@
         .marker {
             position: absolute;
             top: 0;
-            width: 22px;
-            height: 22px;
+            width: 32px; /* Larger markers */
+            height: 32px;
             background-color: white;
-            border: 2px solid #a0aec0;
+            border: 3px solid #a0aec0; /* Thicker border */
             border-radius: 50%;
             transform: translate(-50%, -50%);
             display: flex;
@@ -72,44 +108,53 @@
             justify-content: center;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
             pointer-events: all;
         }
         .marker.achieved {
             border-color: var(--brand-gold);
             background-color: #fffbeb;
+            transform: translate(-50%, -50%) scale(1.1); /* Pop effect */
             animation: marker-glow 1.5s infinite ease-in-out;
         }
         @keyframes marker-glow {
-            0%, 100% { box-shadow: 0 0 10px 2px rgba(253, 224, 71, 0.7); }
-            50% { box-shadow: 0 0 20px 6px rgba(253, 224, 71, 1); }
+            0%, 100% { box-shadow: 0 0 12px 3px rgba(255, 215, 0, 0.7); }
+            50% { box-shadow: 0 0 24px 8px rgba(255, 215, 0, 1); }
         }
         .marker .marker-icon {
-            font-size: 12px;
+            font-size: 16px; /* Larger icon */
             color: #a0aec0;
-            transition: color 0.3s ease;
+            transition: all 0.4s ease;
         }
-        .marker.achieved .marker-icon { color: #daa520; }
+        .marker.achieved .marker-icon { 
+            color: #daa520; 
+            transform: scale(1.2) rotate(15deg); /* Add a little flair */
+        }
         .marker .tooltip {
             position: absolute;
-            bottom: 140%;
+            bottom: 150%; /* Adjust position */
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--brand-blue);
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
             z-index: 20;
             pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .marker:hover .tooltip { opacity: 1; visibility: visible; }
+        .marker:hover .tooltip { 
+            opacity: 1; 
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px);
+        }
         
         #fireworks-container {
             position: absolute;
@@ -119,11 +164,11 @@
         }
         .firework-particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             opacity: 0;
-            animation: firework-burst 1s ease-out forwards;
+            animation: firework-burst 1.2s ease-out forwards;
         }
         @keyframes firework-burst {
             0% {
@@ -140,14 +185,40 @@
             background: linear-gradient(90deg, var(--brand-pink), var(--brand-gold), var(--brand-cyan), var(--brand-pink));
             background-size: 250% 250%;
             -webkit-background-clip: text; background-clip: text;
-            color: transparent; animation: text-glow 4s ease infinite;
-            font-weight: 800; font-size: 1.1rem; line-height: 1.4; margin-top: 2.5rem;
+            color: transparent; 
+            animation: text-glow 4s ease infinite;
+            font-weight: 800; 
+            font-size: 1.5rem; /* Made it larger */
+            line-height: 1.4; 
+            margin-top: 2.5rem;
+            padding: 1rem;
+            display: none; /* Initially hidden, shown by JS */
+        }
+        .achievement-text.unlocked {
+            display: block;
+            animation: text-glow 4s ease infinite, fade-in-trophy 1s ease forwards;
         }
         @keyframes text-glow {
             0%{background-position:0% 50%}
             50%{background-position:100% 50%}
             100%{background-position:0% 50%}
         }
+        @keyframes fade-in-trophy {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .achievement-text .trophy-icon {
+            font-size: 3rem;
+            display: block;
+            margin: 0 auto 0.5rem;
+            animation: trophy-bounce 2s infinite ease-in-out;
+        }
+        @keyframes trophy-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        /* --- END OF NEW STYLES --- */
+
         .lesson-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
@@ -191,7 +262,7 @@
             z-index: 1000; padding: 1rem;
             opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0s 0.3s;
-            overscroll-behavior: contain; /* Prevents background scroll */
+            overscroll-behavior: contain;
         }
         .modal-overlay.show {
             opacity: 1; visibility: visible;
@@ -219,9 +290,7 @@
         .modal-header-section { grid-row: 1; }
         .paragraph-carousel-container { grid-row: 2; min-height: 0; }
         .modal-footer-section { grid-row: 3; padding-top: 1rem; }
-
         .modal-item-title { text-align: center; }
-
         .modal-item-body p {
             margin-bottom: 1em; line-height: 1.7; font-family: 'Lora', serif;
         }
@@ -235,7 +304,6 @@
             0%, 100% { transform: scale(1); text-shadow: 0 0 3px rgba(233, 30, 99, 0.4); }
             50% { transform: scale(1.05); text-shadow: 0 0 8px rgba(233, 30, 99, 0.8); }
         }
-
         .paragraph-carousel-container {
             position: relative;
             overflow: hidden;
@@ -252,7 +320,7 @@
             flex-shrink: 0;
             overflow-y: auto;
             height: 100%;
-            overscroll-behavior: contain; /* Prevents scroll chaining from within the slide */
+            overscroll-behavior: contain;
         }
         .slide-content-wrapper {
             padding: 0 2.5rem;
@@ -283,7 +351,6 @@
             font-weight: bold;
             padding: 0.5rem 0;
         }
-
         .btn-primary.btn-glow {
             animation: btn-glow-anim 1.5s infinite ease-in-out;
         }
@@ -291,7 +358,6 @@
             0%, 100% { box-shadow: 0 0 5px var(--brand-pink), 0 0 10px var(--brand-pink); }
             50% { box-shadow: 0 0 15px var(--brand-pink), 0 0 25px var(--brand-pink); }
         }
-
         .text-brand-green { color: var(--brand-cyan); }
         .btn-primary { background-color: var(--brand-pink); color: white; transition: background-color 0.3s ease, opacity 0.3s ease; }
         .btn-primary:hover { background-color: #c2185b; }
@@ -322,7 +388,6 @@
         .intro-item-btn.completed:hover { background-color: #c8e6c9; }
         .intro-item-btn .icon { transition: transform 0.3s ease; opacity: 0.6; }
         .intro-item-btn.completed .icon { color: #4caf50; opacity: 1; }
-
         .btn-concepts {
             background-color: var(--brand-blue); color: white; transition: all 0.3s ease;
         }
@@ -408,6 +473,10 @@
     <audio id="completion-sound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
     </audio>
+    
+    <audio id="milestone-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-bonus-reached-2065.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="achievement-toast" class="achievement-toast">
         <div class="icon-container">
@@ -441,7 +510,7 @@
                 <div id="carousel-pagination" class="carousel-pagination"></div>
                 <div class="mt-4 text-center">
                      <button id="modal-complete-btn" class="btn-primary font-bold py-2 px-6 rounded-lg shadow-md">
-                        Marcar como completada
+                         Marcar como completada
                      </button>
                 </div>
             </div>
@@ -496,13 +565,16 @@
                         <span id="progress-percent">0%</span>
                     </div>
                     <div class="progress-container">
-                        <div class="w-full progress-bar-bg rounded-full h-4">
-                            <div id="progress-bar" class="progress-bar-fg h-4 rounded-full" style="width: 0%"></div>
+                        <!-- IMPROVED: Bar height increased to h-6 -->
+                        <div class="w-full progress-bar-bg rounded-full h-6">
+                            <div id="progress-bar" class="progress-bar-fg h-6 rounded-full" style="width: 0%"></div>
                         </div>
                         <div id="progress-markers-container" class="progress-markers"></div>
                     </div>
-                     <div id="achievement-unlocked" class="text-center" style="display: none;">
+                     <!-- IMPROVED: Final achievement text with trophy -->
+                     <div id="achievement-unlocked" class="text-center">
                          <p class="achievement-text">
+                            <i class="fas fa-trophy trophy-icon"></i>
                              <strong>¡Curso Completado!</strong><br>Desbloqueas una Sesión 1 a 1 de Psicoterapia.
                          </p>
                      </div>
@@ -568,8 +640,9 @@
         const resetBtn = document.getElementById('reset-progress-btn');
         const userTitle = document.getElementById('user-title');
         const soundEffect = document.getElementById('completion-sound');
+        const milestoneSound = document.getElementById('milestone-sound'); // New sound for milestones
         const fireworksContainer = document.getElementById('fireworks-container');
-        const achievementUnlocked = document.getElementById('achievement-unlocked');
+        const achievementUnlockedText = document.querySelector('#achievement-unlocked .achievement-text');
         
         const itemModal = document.getElementById('item-modal');
         const modalCloseBtn = document.getElementById('modal-close');
@@ -711,7 +784,6 @@
             concepts.forEach(concept => {
                 const item = document.createElement('div');
                 item.className = 'accordion-item';
-                // Group paragraphs before rendering
                 const groupedConceptParagraphs = groupParagraphs(concept.paragraphs);
                 item.innerHTML = `
                     <div class="accordion-title">
@@ -759,13 +831,14 @@
                     markerWrapper.style.left = `${Math.min(position, 100)}%`;
                     markerWrapper.dataset.milestoneId = index;
                     
-                    milestoneMarkers.push({ id: index, requiredCount: accumulatedLessons, position: markerWrapper.style.left });
+                    const markerPositionForFireworks = progressMarkersContainer.getBoundingClientRect().left + (progressMarkersContainer.clientWidth * (Math.min(position, 100) / 100));
+                    milestoneMarkers.push({ id: index, requiredCount: accumulatedLessons, el: markerWrapper });
 
                     if (position >= 100) {
-                          markerWrapper.classList.add('final-trophy');
-                          markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
+                         markerWrapper.classList.add('final-trophy');
+                         markerWrapper.innerHTML = `<i class="fas fa-trophy marker-icon"></i><span class="tooltip">¡Curso Completado!</span>`;
                     } else {
-                        markerWrapper.innerHTML = `<i class="fas fa-medal marker-icon"></i><span class="tooltip">${group.title}</span>`;
+                        markerWrapper.innerHTML = `<i class="fas fa-star marker-icon"></i><span class="tooltip">${group.title}</span>`;
                     }
                     progressMarkersContainer.appendChild(markerWrapper);
                 }
@@ -798,13 +871,14 @@
                 if (progressUnsubscribe) progressUnsubscribe();
                 
                 progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
+                    const oldCompletedCount = completedItems.size;
                     if (docSnap.exists()) {
                         completedItems = new Set(docSnap.data().completed || []);
                     } else {
                         setDoc(progressDocRef, { completed: [] }).catch(err => console.error("Error creating progress doc:", err));
                     }
                     if(courseHasBeenRendered) {
-                        updateUI();
+                        updateUI(oldCompletedCount < completedItems.size);
                     }
                 }, (error) => {
                     console.error("Error in progress listener:", error);
@@ -820,12 +894,12 @@
         
         // --- UI Update Functions ---
 
-        function updateUI() {
-            updateProgress();
+        function updateUI(justUpdated = false) {
+            updateProgress(justUpdated);
             updateItemsState();
         }
 
-        function updateProgress() {
+        function updateProgress(justUpdated) {
             const totalLessonCount = Array.from(allItemsMap.values()).filter(l => l.type === 'lesson' || (l.type === 'review' && !l.title.toLowerCase().includes('introducción'))).length;
             if (totalLessonCount === 0) return;
 
@@ -841,22 +915,27 @@
             progressPercent.textContent = `${Math.round(percentage)}%`;
             
             milestoneMarkers.forEach(milestone => {
-                const markerEl = document.querySelector(`.marker[data-milestone-id='${milestone.id}']`);
-                if (completedLessonCount >= milestone.requiredCount) {
-                    if (markerEl) markerEl.classList.add('achieved');
+                const isAchieved = completedLessonCount >= milestone.requiredCount;
+                if (isAchieved) {
+                    milestone.el.classList.add('achieved');
                     if (!achievedMilestones.has(milestone.id)) {
                         achievedMilestones.add(milestone.id);
-                        triggerFireworks(milestone.position);
+                        if (justUpdated) { // Only trigger effects if progress was just made
+                            triggerFireworks(milestone.el);
+                            playMilestoneSound();
+                        }
                     }
                 } else {
-                    if (markerEl) markerEl.classList.remove('achieved');
+                    milestone.el.classList.remove('achieved');
+                    achievedMilestones.delete(milestone.id);
                 }
             });
 
+            // Handle final achievement text
             if (percentage >= 100) {
-                achievementUnlocked.style.display = 'block';
+                achievementUnlockedText.classList.add('unlocked');
             } else {
-                achievementUnlocked.style.display = 'none';
+                achievementUnlockedText.classList.remove('unlocked');
             }
         }
 
@@ -866,23 +945,14 @@
             });
         }
         
-        /**
-         * Groups raw paragraph data (string or array of strings) into proper paragraphs.
-         * A new paragraph is defined by a line starting with "number."
-         * @param {string|string[]} rawParagraphData The raw text data.
-         * @returns {string[]} An array of correctly grouped paragraphs.
-         */
         function groupParagraphs(rawParagraphData) {
             if (!rawParagraphData) return [];
-
             const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
             if (!fullText.trim()) return [];
-
             const paragraphs = [];
             let currentParagraph = '';
             let hasNumberedItems = false;
             const lines = fullText.split('\n');
-
             lines.forEach(line => {
                 const trimmedLine = line.trim();
                 if (/^\d+\.\s/.test(trimmedLine)) {
@@ -895,15 +965,12 @@
                     currentParagraph += (currentParagraph ? '\n' : '') + line;
                 }
             });
-
             if (currentParagraph) {
                 paragraphs.push(currentParagraph.trim());
             }
-
             if (!hasNumberedItems && fullText.trim()) {
                 return [fullText.trim()];
             }
-
             return paragraphs;
         }
 
@@ -950,10 +1017,8 @@
             modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
             
-            // Group paragraphs correctly before rendering
             const correctlyGroupedParagraphs = groupParagraphs(item.paragraphs);
 
-            // Setup Carousel
             paragraphSlider.innerHTML = '';
             totalParagraphs = correctlyGroupedParagraphs.length;
             currentParagraphIndex = 0;
@@ -968,11 +1033,11 @@
                     paragraphSlider.appendChild(slide);
                 });
             } else {
-                 const slide = document.createElement('div');
-                 slide.className = 'paragraph-slide';
-                 slide.innerHTML = `<div class="slide-content-wrapper"><p>No hay contenido disponible para esta lección.</p></div>`;
-                 paragraphSlider.appendChild(slide);
-                 totalParagraphs = 1;
+               const slide = document.createElement('div');
+               slide.className = 'paragraph-slide';
+               slide.innerHTML = `<div class="slide-content-wrapper"><p>No hay contenido disponible para esta lección.</p></div>`;
+               paragraphSlider.appendChild(slide);
+               totalParagraphs = 1;
             }
 
             const isLessonOrReview = item.type === 'lesson' || item.type === 'review';
@@ -1070,21 +1135,28 @@
             }
         }
 
-        function triggerFireworks(positionPercent) {
-            const particleCount = 50;
-            const colors = ['#FFC700', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF'];
+        function triggerFireworks(markerElement) {
+            const particleCount = 60; // More particles for a bigger burst
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#F7FFF7', '#ffbe0b'];
             
+            const rect = markerElement.getBoundingClientRect();
+            const containerRect = fireworksContainer.getBoundingClientRect();
+
+            // Calculate position relative to the container
+            const xPos = rect.left + rect.width / 2 - containerRect.left;
+            const yPos = rect.top + rect.height / 2 - containerRect.top;
+
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
                 
                 const angle = Math.random() * 360;
-                const distance = Math.random() * 80 + 20;
+                const distance = Math.random() * 100 + 40; // Increased spread
                 const xEnd = Math.cos(angle * Math.PI / 180) * distance;
                 const yEnd = Math.sin(angle * Math.PI / 180) * distance;
 
-                particle.style.left = positionPercent;
-                particle.style.top = '0px';
+                particle.style.left = `${xPos}px`;
+                particle.style.top = `${yPos}px`;
                 particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.setProperty('--x-end', `${xEnd}px`);
                 particle.style.setProperty('--y-end', `${yEnd}px`);
@@ -1093,13 +1165,14 @@
 
                 setTimeout(() => {
                     particle.remove();
-                }, 1000);
+                }, 1200); // Match animation duration
             }
         }
 
         function initializeAudio() {
             if (audioInitialized) return;
             soundEffect.play().then(() => soundEffect.pause()).catch(() => {});
+            milestoneSound.play().then(() => milestoneSound.pause()).catch(() => {});
             audioInitialized = true;
         }
 
@@ -1107,6 +1180,13 @@
             if (soundEffect) {
                 soundEffect.currentTime = 0;
                 soundEffect.play().catch(e => console.error("Error playing sound:", e));
+            }
+        }
+
+        function playMilestoneSound() {
+            if (milestoneSound) {
+                milestoneSound.currentTime = 0;
+                milestoneSound.play().catch(e => console.error("Error playing milestone sound:", e));
             }
         }
         
