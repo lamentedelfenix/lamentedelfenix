@@ -348,29 +348,6 @@
             background-color: var(--brand-cyan); transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .accordion-item {
-            border: 1px solid var(--border-color); border-radius: 0.5rem;
-            margin-bottom: 0.5rem; background-color: #ffffff; overflow: hidden;
-        }
-        .accordion-title {
-            padding: 0.75rem 1rem; font-weight: 700; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-            transition: background-color 0.3s ease;
-        }
-        .accordion-title:hover { background-color: #f7fafc; }
-        .accordion-title .icon { transition: transform 0.3s ease; }
-        .accordion-content {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 1.5rem;
-        }
-        .accordion-content p {
-             margin-bottom: 1em; line-height: 1.7; font-family: 'Lora', serif;
-        }
-        .accordion-content strong { color: var(--brand-blue); font-weight: 700; }
-        .accordion-item.active .accordion-content {
-            max-height: 1000px; padding: 1rem 1.5rem; border-top: 1px solid var(--border-color);
-        }
-        .accordion-item.active .accordion-title .icon { transform: rotate(180deg); }
         
         .achievement-toast {
             position: fixed; top: 50%; left: 50%;
@@ -524,15 +501,6 @@
         </div>
     </div>
 
-    <!-- Modal para Conceptos -->
-    <div id="concepts-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="concepts-modal-title">
-        <div class="modal-content">
-            <button id="concepts-modal-close" class="modal-close-btn" aria-label="Cerrar modal">&times;</button>
-            <h2 id="concepts-modal-title" class="text-3xl font-bold mb-6 text-center">Conceptos Clave</h2>
-            <div id="concepts-list" class="space-y-2"></div>
-        </div>
-    </div>
-
     <!-- Modal de Confirmación -->
     <div id="confirm-modal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
         <div class="modal-content">
@@ -558,11 +526,16 @@
             </div>
 
             <section class="mb-12">
-                <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-2 text-center">Mi Progreso en las Lecciones</h1>
+                <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4 text-center">Mi Progreso en las Lecciones</h1>
                 <!-- UPDATED: Welcome message -->
-                <p class="text-lg text-gray-700 max-w-3xl mx-auto text-center mb-8">
-                    Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida. La forma de progresar en el curso es haciendo <span class="font-bold text-brand-pink tracking-wide">"1 Lección/Día"</span>.
-                </p>
+                <div class="max-w-3xl mx-auto text-center mb-8">
+                    <p class="text-lg text-gray-700">
+                        Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
+                    </p>
+                    <p class="text-lg text-gray-700 mt-4">
+                        La forma de progresar en el curso es haciendo<br><span class="font-bold text-brand-pink tracking-wide text-xl">"1 Lección/Día"</span>
+                    </p>
+                </div>
                 
                 <!-- PROGRESS BAR SECTION -->
                 <div class="progress-section">
@@ -579,16 +552,17 @@
 
                 <!-- ACHIEVEMENTS SHELF SECTION -->
                 <div id="achievements-container" class="achievements-container">
-                    <h2 class="text-2xl font-bold text-center mb-6">Mis Logros</h2>
+                    <h2 class="text-2xl font-bold text-center mb-6">Mis Avances</h2>
                     <div id="achievements-shelf" class="achievements-shelf">
                         <!-- Achievements will be rendered here by JavaScript -->
                     </div>
                 </div>
 
                 <div class="text-center my-12">
-                    <button id="concepts-btn" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md">
+                    <p class="text-center text-sm text-gray-600 mb-2 italic">Es muy importante que estudies los conceptos clave antes de empezar las lecciones.</p>
+                    <a href="./conceptos-clave.html" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md inline-block no-underline">
                         <i class="fas fa-lightbulb mr-2"></i>Ver Conceptos Clave
-                    </button>
+                    </a>
                 </div>
 
                 <div id="course-content-container">
@@ -659,11 +633,6 @@
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
 
-        const conceptsBtn = document.getElementById('concepts-btn');
-        const conceptsModal = document.getElementById('concepts-modal');
-        const conceptsModalCloseBtn = document.getElementById('concepts-modal-close');
-        const conceptsList = document.getElementById('concepts-list');
-
         const paragraphSlider = itemModal.querySelector('.paragraph-slider');
         const prevBtn = itemModal.querySelector('.carousel-nav-btn.prev');
         const nextBtn = itemModal.querySelector('.carousel-nav-btn.next');
@@ -722,14 +691,11 @@
                 rawItems.sort((a, b) => (a.order || 0) - (b.order || 0));
 
                 const courseItems = [];
-                const conceptsData = [];
                 rawItems.forEach(data => {
                     const mapId = data.number ? String(data.number) : data.id;
                     allItemsMap.set(mapId, data);
                     
-                    if (data.type === 'concept') {
-                        conceptsData.push(data);
-                    } else {
+                    if (data.type !== 'concept') {
                         courseItems.push(data);
                     }
                 });
@@ -737,7 +703,6 @@
                 defineAchievements();
                 renderAchievements();
                 renderCourseLayout(courseItems);
-                renderConcepts(conceptsData);
                 updateUI();
 
             } catch (error) {
@@ -816,7 +781,7 @@
             courseContentContainer.innerHTML = '';
             let currentGrid = null;
             let firstIntroButtonRendered = false;
-            let introSeparatorRendered = false; // Flag to prevent multiple intro separators
+            let introSeparatorRendered = false;
 
             const createSeparator = (key, title = null) => {
                 const separator = document.createElement('div');
@@ -901,23 +866,6 @@
             }
         }
 
-        function renderConcepts(concepts) {
-            conceptsList.innerHTML = '';
-            concepts.sort((a, b) => a.title.localeCompare(b.title));
-            concepts.forEach(concept => {
-                const item = document.createElement('div');
-                item.className = 'accordion-item';
-                const groupedConceptParagraphs = groupParagraphs(concept.paragraphs);
-                item.innerHTML = `
-                    <div class="accordion-title">
-                        <span>${concept.title}</span><i class="fas fa-chevron-down icon"></i>
-                    </div>
-                    <div class="accordion-content modal-item-body">${formatParagraphs(groupedConceptParagraphs)}</div>
-                `;
-                conceptsList.appendChild(item);
-            });
-        }
-
         // --- Authentication ---
         onAuthStateChanged(auth, user => {
             document.body.style.opacity = '1';
@@ -935,7 +883,8 @@
 
                 getDoc(userDocRef).then(userSnap => {
                     if (userSnap.exists() && userSnap.data().name) {
-                        userTitle.textContent = `El Progreso de ${userSnap.data().name}`;
+                        // MODIFIED: Use innerHTML to style the name
+                        userTitle.innerHTML = `El Progreso de <span style="color: var(--brand-pink);">${userSnap.data().name}</span>`;
                     } else {
                         userTitle.textContent = `Mi Progreso en las Lecciones`;
                     }
@@ -1261,15 +1210,6 @@
         itemModal.addEventListener('click', (e) => { if (e.target === itemModal) closeModal(itemModal) });
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
         
-        conceptsBtn.addEventListener('click', () => openModal(conceptsModal));
-        conceptsModalCloseBtn.addEventListener('click', () => closeModal(conceptsModal));
-        conceptsModal.addEventListener('click', (e) => e.target === conceptsModal && closeModal(conceptsModal));
-
-        conceptsList.addEventListener('click', function(e) {
-            const title = e.target.closest('.accordion-title');
-            if (title) title.parentElement.classList.toggle('active');
-        });
-
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeModal(confirmModal);
