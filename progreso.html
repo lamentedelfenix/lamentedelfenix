@@ -420,10 +420,10 @@
             flex: 1;
             border-bottom: 1px solid var(--border-color);
         }
-        .lesson-separator:not(:empty)::before {
+        .lesson-separator:not(.separator-simple)::before {
             margin-right: 1em;
         }
-        .lesson-separator:not(:empty)::after {
+        .lesson-separator:not(.separator-simple)::after {
             margin-left: 1em;
         }
         .separator-title {
@@ -440,6 +440,9 @@
         }
         .lesson-separator.unlocked .separator-title {
             text-shadow: 0 0 5px rgba(233, 30, 99, 0.5);
+        }
+        .lesson-separator.unlocked.separator-simple {
+             color: var(--brand-gold);
         }
         @keyframes separator-glow {
             0% { opacity: 0.4; transform: scale(0.98); }
@@ -683,8 +686,8 @@
         let progressDocRef;
         let progressUnsubscribe;
 
-        // --- NEW: Separator Data ---
-        const lessonSeparators = {
+        // --- Separator Data ---
+        const titledSeparators = {
             'intro': 'Desmontando la Ilusión y las proyecciones del ego',
             '19': 'Estableciendo la intención de ver y la receptividad',
             '28': 'Reconociendo la santidad inherente y la presencia divina',
@@ -695,6 +698,8 @@
             '310': 'Disolviendo los Juicios Falsos para Ver la Verdad',
             '352': 'Consagración al Servicio de Cristo y la Fusión con la Identidad de Cristo'
         };
+        const simpleSeparatorPoints = [90, 120, 150];
+
 
         // --- Core Functions ---
 
@@ -812,11 +817,16 @@
             let currentGrid = null;
             let firstIntroButtonRendered = false;
 
-            const createSeparator = (key, title) => {
+            const createSeparator = (key, title = null) => {
                 const separator = document.createElement('div');
                 separator.className = 'lesson-separator';
                 separator.id = `separator-${key}`;
-                separator.innerHTML = `<span class="separator-title">${title}</span>`;
+                if (title) {
+                    separator.innerHTML = `<span class="separator-title">${title}</span>`;
+                } else {
+                    separator.classList.add('separator-simple');
+                    separator.innerHTML = `<i class="fas fa-feather-alt"></i>`;
+                }
                 return separator;
             };
 
@@ -828,6 +838,7 @@
                         courseContentContainer.appendChild(currentGrid);
                         currentGrid = null;
                     }
+                    
                     const button = document.createElement('button');
                     button.className = 'intro-item-btn';
                     button.dataset.id = itemId;
@@ -837,9 +848,6 @@
                     if (!firstIntroButtonRendered) {
                         buttonTitle = item.title;
                         firstIntroButtonRendered = true;
-                        if (lessonSeparators['intro']) {
-                           courseContentContainer.appendChild(createSeparator('intro', lessonSeparators['intro']));
-                        }
                     } else {
                         buttonTitle = item.title.replace(/Introducción:? ?-? ?/i, '').trim();
                         if (buttonTitle.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
@@ -852,7 +860,13 @@
                         openItemModal(itemId);
                         openModal(itemModal);
                     });
+                    
                     courseContentContainer.appendChild(button);
+
+                    // CORRECTED: Place the 'intro' separator AFTER the intro button.
+                    if (item.order === 0 && titledSeparators['intro']) {
+                        courseContentContainer.appendChild(createSeparator('intro', titledSeparators['intro']));
+                    }
 
                 } else if (item.type === 'lesson' || item.type === 'review') { 
                     if (!currentGrid) {
@@ -870,8 +884,11 @@
                     });
                     currentGrid.appendChild(lessonItem);
 
-                    if (lessonSeparators[item.number]) {
-                        currentGrid.appendChild(createSeparator(item.number, lessonSeparators[item.number]));
+                    // Add separators after the lesson
+                    if (titledSeparators[item.number]) {
+                        currentGrid.appendChild(createSeparator(item.number, titledSeparators[item.number]));
+                    } else if (simpleSeparatorPoints.includes(item.number)) {
+                        currentGrid.appendChild(createSeparator(item.number));
                     }
                 }
             });
@@ -951,7 +968,7 @@
             updateProgressBar();
             updateAchievements(justUpdated);
             updateItemsState();
-            updateSeparatorsState(); // NEW function call
+            updateSeparatorsState();
         }
         
         function updateProgressBar() {
@@ -1001,20 +1018,20 @@
             });
         }
         
-        // NEW: Function to update separator states
         function updateSeparatorsState() {
-            const firstIntroId = (Array.from(allItemsMap.values()).find(item => item.order === 0) || {}).id;
+            const firstIntroItem = Array.from(allItemsMap.values()).find(item => item.order === 0);
+            
+            const allSeparators = { ...titledSeparators };
+            simpleSeparatorPoints.forEach(p => allSeparators[p] = ''); // Add simple separators to the check list
 
-            for (const key in lessonSeparators) {
+            for (const key in allSeparators) {
                 const separatorEl = document.getElementById(`separator-${key}`);
                 if (!separatorEl) continue;
 
                 let isUnlocked = false;
-                if (key === 'intro') {
-                    // Unlock if the first intro item is completed
-                    if (firstIntroId) {
-                        isUnlocked = completedItems.has(firstIntroId);
-                    }
+                if (key === 'intro' && firstIntroItem) {
+                    // CORRECTED: Unlock based on the first intro item's ID
+                    isUnlocked = completedItems.has(firstIntroItem.id);
                 } else {
                     // Unlock if the lesson with that number is completed
                     isUnlocked = completedItems.has(key);
