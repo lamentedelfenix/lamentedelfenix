@@ -15,11 +15,11 @@
     <style>
         :root {
             --brand-blue: #0c2f5b;
-            --brand-gold: #ffd700;
+            --brand-gold: #c5a47e; /* A softer gold */
             --brand-pink: #e91e63;
             --brand-cyan: #00bcd4;
             --bg-light: #fbf5e2;
-            --bg-off-white: #fffaf0;
+            --bg-off-white: #fffdfa;
             --border-color: #e0d9c6;
         }
         html {
@@ -28,6 +28,8 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-light);
+            /* Subtle background pattern */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0d9c6' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             color: var(--brand-blue);
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
@@ -41,32 +43,38 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); 
         }
         
-        /* Accordion Styles */
+        /* Enhanced Accordion Styles */
         .accordion-item {
             background-color: var(--bg-off-white);
             border: 1px solid var(--border-color);
+            border-left: 4px solid transparent; /* Placeholder for active state */
             border-radius: 0.75rem;
             margin-bottom: 1rem;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
         }
         .accordion-item:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .accordion-item.active {
+            border-left-color: var(--brand-gold);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .accordion-title {
             padding: 1.25rem 1.5rem;
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.1rem; /* Slightly smaller for balance */
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: background-color 0.3s ease;
         }
-        .accordion-title:hover {
-            background-color: rgba(0,0,0,0.02);
+        .accordion-item.active .accordion-title {
+            color: var(--brand-pink);
         }
         .accordion-title .icon {
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -76,12 +84,13 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            opacity: 0;
+            transition: max-height 0.6s ease, padding 0.6s ease, opacity 0.4s ease;
             padding: 0 1.5rem;
             font-family: 'Lora', serif;
             line-height: 1.9;
             font-size: 1.1rem;
-            color: #374151; /* gray-700 */
+            color: #374151;
         }
         
         .accordion-item.active .accordion-title .icon {
@@ -90,11 +99,16 @@
         .accordion-item.active .accordion-content {
             max-height: 2000px; /* Large enough for content */
             padding: 1rem 1.5rem 2rem 1.5rem;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid #f3eee3;
+            opacity: 1;
+            transition: max-height 0.6s ease, padding 0.6s ease, opacity 0.4s ease 0.2s; /* Delay opacity */
         }
         
         .accordion-content p {
             margin-bottom: 1.5rem;
+        }
+        .accordion-content p:last-child {
+            margin-bottom: 0;
         }
 
         .paragraph-number {
@@ -109,7 +123,7 @@
 <body class="antialiased">
 
     <main id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
-        <header class="text-center mb-12">
+        <header class="text-center mb-12 pb-4 border-b-2 border-dotted border-gray-300">
             <h1 class="text-4xl md:text-5xl font-bold mb-2">Conceptos Clave</h1>
             <p class="text-lg text-gray-600">Los pilares para tu estudio de Un Curso de Milagros.</p>
         </header>
@@ -153,6 +167,13 @@
         const authMessage = document.getElementById('auth-message');
         const conceptsContainer = document.getElementById('concepts-container');
         const loadingMessage = document.getElementById('loading-message');
+        
+        // --- Iconography ---
+        const conceptIcons = [
+            'fa-dove', 'fa-lightbulb', 'fa-key', 'fa-heart', 'fa-seedling', 
+            'fa-star-of-life', 'fa-infinity', 'fa-gem', 'fa-book-open', 
+            'fa-sun', 'fa-water', 'fa-feather-alt'
+        ];
         
         // --- Firebase Services ---
         const app = initializeApp(firebaseConfig);
@@ -217,15 +238,19 @@
                     return;
                 }
 
-                concepts.forEach((concept) => {
+                concepts.forEach((concept, index) => {
                     const item = document.createElement('div');
                     item.className = 'accordion-item';
                     
                     const formattedParagraphs = formatParagraphs(concept.paragraphs);
+                    const iconClass = conceptIcons[index % conceptIcons.length];
 
                     item.innerHTML = `
                         <div class="accordion-title">
-                            <span>${concept.title}</span>
+                            <div class="flex items-center">
+                                <i class="fas ${iconClass} fa-fw text-brand-cyan opacity-70 mr-4"></i>
+                                <span>${concept.title}</span>
+                            </div>
                             <i class="fas fa-chevron-down icon"></i>
                         </div>
                         <div class="accordion-content">
@@ -246,6 +271,15 @@
             const title = e.target.closest('.accordion-title');
             if (title) {
                 const item = title.parentElement;
+                
+                // Optional: Close other accordions when one is opened
+                // If you want this behavior, uncomment the following lines.
+                // if (!item.classList.contains('active')) {
+                //     document.querySelectorAll('.accordion-item.active').forEach(activeItem => {
+                //         activeItem.classList.remove('active');
+                //     });
+                // }
+
                 item.classList.toggle('active');
             }
         });
