@@ -590,7 +590,7 @@
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, onSnapshot, setDoc, getDocs, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- FIREBASE CONFIG ---
         const firebaseConfig = {
@@ -678,16 +678,16 @@
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
-                const lessonsQuery = query(collection(db, "UCDM_lessons"));
-                const querySnapshot = await getDocs(lessonsQuery);
+                // --- OPTIMIZACIÓN: LEER 1 DOCUMENTO EN LUGAR DE CIENTOS ---
+                const courseDocRef = doc(db, "course", "courseStructure");
+                const courseDocSnap = await getDoc(courseDocRef);
 
-                const rawItems = [];
-                querySnapshot.forEach(doc => {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    rawItems.push(data);
-                });
+                if (!courseDocSnap.exists()) {
+                    throw new Error("El documento 'courseStructure' no existe. Por favor, ejecuta el script de migración.");
+                }
 
+                const rawItems = courseDocSnap.data().items || [];
+                
                 rawItems.sort((a, b) => (a.order || 0) - (b.order || 0));
 
                 const courseItems = [];
@@ -707,7 +707,7 @@
 
             } catch (error) {
                 console.error("Error loading course from Firestore:", error);
-                courseContentContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">Error al cargar la estructura del curso. Por favor, recarga la página.</p>`;
+                courseContentContainer.innerHTML = `<p class="col-span-full text-center p-8 text-red-500">${error.message}</p>`;
             }
         }
 
