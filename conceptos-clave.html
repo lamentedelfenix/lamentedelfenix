@@ -183,18 +183,21 @@
         const auth = getAuth(app);
 
         /**
-         * Formats raw paragraph text from Firestore into styled HTML.
+         * Formats an array of paragraphs from Firestore into styled HTML.
+         * Each element in the array is treated as a separate paragraph.
          */
-        function formatParagraphs(rawParagraphData) {
-            if (!rawParagraphData) return "";
-            const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
-            if (!fullText.trim()) return "";
+        function formatParagraphs(paragraphsArray) {
+            if (!paragraphsArray || !Array.isArray(paragraphsArray)) {
+                return "";
+            }
             
-            return fullText
-                .split('\n')
-                .filter(p => p.trim() !== '')
+            return paragraphsArray
+                .filter(p => typeof p === 'string' && p.trim() !== '')
                 .map(p => {
+                    // Treat each string in the array as a single paragraph.
+                    // Replace any internal newlines with <br> for line breaks within the paragraph.
                     const withBreaks = p.replace(/\n/g, '<br>');
+                    // Style numbered lists if they exist at the start of the paragraph.
                     const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
                     return `<p class="mb-4">${styledP}</p>`;
                 }).join('');
