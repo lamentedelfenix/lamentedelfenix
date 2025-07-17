@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceptos Clave - UCDM</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Lora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #0c2f5b;
+            --brand-gold: #ffd700;
+            --brand-pink: #e91e63;
+            --brand-cyan: #00bcd4;
+            --bg-light: #fbf5e2;
+            --bg-off-white: #fffaf0;
+            --border-color: #e0d9c6;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--brand-blue);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .btn-back {
+            background-color: transparent; color: var(--brand-blue); border: 2px solid var(--brand-blue);
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover { 
+            background-color: var(--brand-blue); color: white; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); 
+        }
+        
+        /* Flowing Article Styles */
+        .concept-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 768px) {
+            .concept-section {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            /* Alternating layout for desktop */
+            .concept-section:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+        }
+
+        .concept-icon-wrapper {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            background-color: var(--bg-off-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 0 auto 1rem auto;
+        }
+        
+        @media (min-width: 768px) {
+            .concept-icon-wrapper {
+                margin: 0;
+            }
+        }
+
+        .concept-icon-wrapper i {
+            font-size: 2.5rem;
+            color: var(--brand-pink);
+            opacity: 0.8;
+        }
+
+        .concept-text-content {
+            flex-grow: 1;
+        }
+
+        .concept-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--brand-blue);
+        }
+        .concept-body {
+            font-family: 'Lora', serif;
+            line-height: 1.9;
+            font-size: 1.1rem;
+            color: #374151; /* gray-700 */
+        }
+        /* Focus highlighting styles */
+        .concept-body p {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0.6;
+        }
+        .concept-body p.is-in-focus {
+            opacity: 1;
+            transform: scale(1.01);
+        }
+        .paragraph-number {
+            font-size: 1.25em; 
+            font-weight: 800; 
+            color: var(--brand-pink);
+            display: inline-block; 
+            margin-right: 0.2em;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">Conceptos Clave</h1>
+            <p class="text-lg text-gray-600">Los pilares para tu estudio de Un Curso de Milagros.</p>
+        </header>
+
+        <div class="text-center mb-12">
+            <a href="./progreso.html" class="btn-back font-semibold py-2 px-5 rounded-lg no-underline inline-block">
+                &larr; Volver a Mi Progreso
+            </a>
+        </div>
+
+        <!-- Container for the concepts -->
+        <div id="concepts-container">
+            <!-- Loading message -->
+            <p id="loading-message" class="col-span-full text-center p-8 text-gray-500">Autenticando y cargando conceptos...</p>
+        </div>
+    </main>
+    
+    <footer class="text-center p-4 mt-8">
+        <p id="user-id-display" class="text-xs text-gray-400"></p>
+    </footer>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- FIREBASE CONFIG (Provided by the environment) ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- DOM Selectors ---
+        const conceptsContainer = document.getElementById('concepts-container');
+        const loadingMessage = document.getElementById('loading-message');
+        const userIdDisplay = document.getElementById('user-id-display');
+        
+        // --- Iconography ---
+        const conceptIcons = [
+            'fa-dove', 'fa-lightbulb', 'fa-key', 'fa-heart', 'fa-seedling', 
+            'fa-star-of-life', 'fa-infinity', 'fa-gem', 'fa-book-open', 
+            'fa-sun', 'fa-water', 'fa-feather-alt'
+        ];
+
+        // --- Firebase Services ---
+        let app;
+        let db;
+        let auth;
+
+        /**
+         * Formats raw paragraph text from Firestore into styled HTML.
+         */
+        function formatParagraphs(rawParagraphData) {
+            if (!rawParagraphData) return "";
+            const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
+            if (!fullText.trim()) return "";
+            
+            return fullText
+                .split('\n')
+                .filter(p => p.trim() !== '')
+                .map(p => {
+                    const withBreaks = p.replace(/\n/g, '<br>');
+                    const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
+                    return `<p class="mb-4">${styledP}</p>`;
+                }).join('');
+        }
+
+        /**
+         * Fetches concepts from Firestore and renders them in a flowing layout.
+         */
+        async function fetchAndRenderConcepts() {
+            if (!db) {
+                console.error("Firestore is not initialized.");
+                conceptsContainer.innerHTML = '<p class="text-center p-8 text-red-500">Error: No se pudo conectar a la base de datos.</p>';
+                return;
+            }
+
+            loadingMessage.innerText = "Cargando conceptos...";
+            try {
+                // CORRECTED: Point to the root-level collection, consistent with progreso.html
+                const collectionPath = "UCDM_lessons";
+                const conceptsQuery = query(collection(db, collectionPath), where("type", "==", "concept"));
+                const querySnapshot = await getDocs(conceptsQuery);
+
+                const concepts = [];
+                querySnapshot.forEach(doc => {
+                    concepts.push(doc.data());
+                });
+
+                concepts.sort((a, b) => a.title.localeCompare(b.title));
+
+                conceptsContainer.innerHTML = '';
+
+                if (concepts.length === 0) {
+                    conceptsContainer.innerHTML = `<p class="text-center p-8 text-gray-500">No se encontraron conceptos clave. Verifique que la colección '${collectionPath}' exista y contenga documentos con type="concept".</p>`;
+                    return;
+                }
+
+                concepts.forEach((concept, index) => {
+                    const section = document.createElement('section');
+                    section.className = 'concept-section';
+                    
+                    const formattedParagraphs = formatParagraphs(concept.paragraphs);
+                    const iconClass = conceptIcons[index % conceptIcons.length];
+
+                    section.innerHTML = `
+                        <div class="concept-icon-wrapper">
+                            <i class="fas ${iconClass}"></i>
+                        </div>
+                        <div class="concept-text-content">
+                            <h2 class="concept-title">${concept.title}</h2>
+                            <div class="concept-body">
+                                ${formattedParagraphs}
+                            </div>
+                        </div>
+                    `;
+                    conceptsContainer.appendChild(section);
+                });
+                
+                initFocusHighlighting();
+
+            } catch (error) {
+                console.error("Error fetching concepts:", error);
+                conceptsContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error al cargar los conceptos. Verifique la consola para más detalles.</p>`;
+            }
+        }
+
+        // --- Focus Highlighting Logic ---
+        let paragraphs = [];
+        let ticking = false;
+
+        function updateFocus() {
+            const viewportCenter = window.innerHeight / 2;
+            let minDistance = Infinity;
+            let focusedParagraph = null;
+
+            paragraphs.forEach(p => {
+                const rect = p.getBoundingClientRect();
+                if (rect.height === 0) return;
+                
+                const pCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(viewportCenter - pCenter);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    focusedParagraph = p;
+                }
+            });
+
+            paragraphs.forEach(p => {
+                p.classList.remove('is-in-focus');
+            });
+
+            if (focusedParagraph) {
+                focusedParagraph.classList.add('is-in-focus');
+            }
+            
+            ticking = false;
+        }
+
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateFocus);
+                ticking = true;
+            }
+        }
+
+        function initFocusHighlighting() {
+            paragraphs = document.querySelectorAll('.concept-body p');
+            if (paragraphs.length > 0) {
+                window.addEventListener('scroll', onScroll, { passive: true });
+                window.addEventListener('resize', onScroll);
+                updateFocus();
+            }
+        }
+
+        // --- Initial Load and Auth ---
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+
+            if (!firebaseConfig) {
+                loadingMessage.innerText = "Error: Configuración de Firebase no encontrada.";
+                console.error("Firebase config is missing.");
+                return;
+            }
+            
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        console.log("User is authenticated. UID:", user.uid);
+                        userIdDisplay.innerText = `User ID: ${user.uid}`;
+                        await fetchAndRenderConcepts();
+                    } else {
+                        console.log("User is not authenticated. Attempting sign-in...");
+                        userIdDisplay.innerText = '';
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                                console.log("Signed in with custom token.");
+                            } else {
+                                await signInAnonymously(auth);
+                                console.log("Signed in anonymously.");
+                            }
+                        } catch (error) {
+                            console.error("Authentication failed:", error);
+                            loadingMessage.innerText = "Error de autenticación. No se pueden cargar los datos.";
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                loadingMessage.innerText = "Error al inicializar la aplicación.";
+            }
+        });
+
+    </script>
+</body>
+</html>
