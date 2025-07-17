@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
@@ -21,7 +21,49 @@
         .card { background-color: #ffffff; border: 1px solid #e0d9c6; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); }
         .highlight-card { border: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(to right, #00bcd4, #e91e63) border-box; border-radius: 0.5rem; }
-        .message-card { background-color: #fffaf0; border: 2px dashed #e91e63; min-height: 150px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        
+        /* --- ESTILO DE TARJETA DE LECCIÓN MEJORADO --- */
+        .lesson-card-spectacular {
+            background: linear-gradient(145deg, #fffdf7, #fffaf0);
+            border: 1px solid #e0d9c6;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 200px;
+        }
+        .lesson-card-spectacular::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 0.75rem;
+            border: 3px solid transparent;
+            background: linear-gradient(to right, #fde68a, #f59e0b) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: 0;
+        }
+        .lesson-card-spectacular > * {
+            position: relative;
+            z-index: 1;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .lesson-card-spectacular #lesson-phrase {
+            font-weight: 700;
+            font-style: italic;
+            font-size: 1.5rem;
+        }
+        .lesson-card-spectacular #lesson-explanation {
+            text-align: center;
+        }
+
+
         .btn { position: relative; z-index: 1; overflow: hidden; transition: color 0.4s ease-out, background-color 0.3s; border: 2px solid transparent; display: inline-flex; align-items: center; justify-content: center; }
         .btn-pink { background-color: #e91e63; color: white; }
         .btn-cyan { background-color: #00bcd4; color: white; }
@@ -33,6 +75,44 @@
         .btn-cyan:hover { color: #00bcd4; }
         .btn-pink:hover::before { border: 2px solid #e91e63; transform: scaleX(1); transform-origin: left; }
         .btn-cyan:hover::before { border: 2px solid #00bcd4; transform: scaleX(1); transform-origin: left; }
+        
+        /* --- ESTILOS MODIFICADOS PARA BOTÓN DE LECCIONES --- */
+        @keyframes heartbeat {
+            0% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(0, 188, 212, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px 15px rgba(0, 188, 212, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(0, 188, 212, 0.5); }
+        }
+        .btn-lecciones-wrapper {
+            position: relative;
+        }
+        .btn-lecciones {
+            background-image: linear-gradient(45deg, #00bcd4 0%, #009688 100%);
+            color: white;
+            transition: all 0.3s ease-in-out;
+            border: none;
+        }
+        .btn-lecciones.animate-heartbeat {
+            animation: heartbeat 2.5s infinite ease-in-out;
+        }
+        .btn-lecciones:hover {
+            transform: translateY(-3px) scale(1.08);
+        }
+        .btn-lecciones i {
+            margin-right: 0.5rem;
+        }
+
+        /* --- NUEVO ESTILO PARA BOTÓN DE VIDEOS --- */
+        .btn-videos {
+            background-image: linear-gradient(45deg, #f59e0b, #d97706);
+            color: white;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .btn-videos:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
+        }
+
         .text-brand-green { color: #00bcd4; }
         .text-brand-pink { color: #e91e63; }
         .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; max-height: 160px; overflow: hidden; border-radius: 8px; }
@@ -95,13 +175,23 @@
         </section>
         <hr class="my-28 section-divider">
         <section>
-            <h2 class="text-3xl font-bold mb-6 text-center">📚 Lección del Día</h2>
-            <div id="daily-lesson-container" class="card message-card p-6 rounded-lg text-center">
-                <p class="text-lg text-gray-500">Cargando lección...</p>
+            <h2 class="text-3xl font-bold mb-6 text-center">
+                <i class="fas fa-envelope-open-text mr-3 text-amber-600"></i>Mensaje del Día
+            </h2>
+            <div id="daily-lesson-container" class="lesson-card-spectacular text-center">
+                <p class="text-lg text-gray-500">Cargando mensaje...</p>
             </div>
+            <!-- --- BOTONES MODIFICADOS --- -->
             <div class="flex justify-center items-center flex-wrap gap-4 mt-6">
-                <a href="./progreso.html" class="btn btn-cyan font-bold py-2 px-5 rounded-lg">Ir a mi Seguimiento</a>
-                <button id="new-lesson-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">Mostrar otra lección</button>
+                <div class="btn-lecciones-wrapper">
+                    <a href="./progreso.html" id="btn-lecciones" class="btn btn-lecciones font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
+                        <i class="fas fa-book-open"></i>Mis lecciones
+                    </a>
+                </div>
+                <button id="btn-conocimiento" class="btn btn-videos font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
+                    <i class="fas fa-video mr-2"></i>Inspiración y Conocimiento
+                </button>
+                <button id="new-lesson-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">Mostrar otro mensaje</button>
             </div>
         </section>
         <hr class="my-28 section-divider">
@@ -216,7 +306,7 @@
                 <i class="fas fa-tools"></i>
             </div>
             <h3 class="text-2xl font-bold mb-2">¡Estamos Construyendo Algo Increíble!</h3>
-            <p class="text-gray-700">Esta nueva área de estudio está en desarrollo y estará disponible muy pronto como parte de las actualizaciones de la membresía.</p>
+            <p class="text-gray-700">Esta nueva área de "Inspiración" está en desarrollo y estará disponible muy pronto como parte de las actualizaciones de la membresía.</p>
             <p class="font-bold mt-4">¡Gracias por formar parte de esta etapa inicial!</p>
         </div>
     </div>
@@ -228,13 +318,13 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
             projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.firebasestorage.app",
+            storageBucket: "membresia-ucdm-v2.appspot.com",
             messagingSenderId: "198704348819",
             appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
             measurementId: "G-5L3T8PGXYK"
@@ -251,35 +341,34 @@
         const newLessonBtn = document.getElementById('new-lesson-btn');
         const logoutBtn = document.getElementById('logout-btn');
         let allLessons = [];
+        let startAnimation;
 
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
-            
+
             if (user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
-                
-                const [userDocSnap, lessonsData] = await Promise.all([
-                    getDoc(doc(db, "users", user.uid)),
-                    fetchAllLessons()
-                ]);
 
+                const userDocSnap = await getDoc(doc(db, "users", user.uid));
                 if (userDocSnap.exists() && userDocSnap.data().name) {
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${userDocSnap.data().name}</span>`;
                 } else {
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
 
+                const lessonsData = await fetchAllLessons();
                 allLessons = lessonsData;
-                if (allLessons.length > 0) {
-                    const dayOfYear = getDayOfYear();
-                    const lessonIndex = (dayOfYear - 1) % allLessons.length;
-                    displayLesson(allLessons[lessonIndex]);
-                } else {
-                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar las lecciones.</p>';
-                }
 
+                if (allLessons.length > 0) {
+                    const today = new Date();
+                    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+                    let pseudoRandomIndex = seed % allLessons.length;
+                    displayLesson(allLessons[pseudoRandomIndex]);
+                } else {
+                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar los mensajes. Revisa la consola (F12) para más detalles.</p>';
+                }
             } else {
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
@@ -287,39 +376,49 @@
         });
 
         async function fetchAllLessons() {
-            try {
-                const sectionsCollection = collection(db, 'sections');
-                const querySnapshot = await getDocs(sectionsCollection);
-                let lessonsFromDB = [];
-                
-                querySnapshot.forEach((doc) => {
-                    const sectionData = doc.data();
-                    const titleLower = sectionData.title ? sectionData.title.toLowerCase() : '';
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgJn05SkzONj1pCuB6pmJUnJcErDBDCuRd8MaC5m3uLmV3KSs-X1wFqxngdcv50_vymFlnmx4rUdcT/pub?gid=0&single=true&output=csv';
 
-                    if (!titleLower.includes('repaso')) {
-                        if (sectionData.lessons && Array.isArray(sectionData.lessons)) {
-                            const formattedLessons = sectionData.lessons.map(l => [
-                                l.number || 'N/A',
-                                l.title || 'Sin título',
-                                l.explanation || '',
-                                l.exercise || ''
-                            ]);
-                            lessonsFromDB.push(...formattedLessons);
-                        }
-                    }
-                });
-                console.log(`Se han cargado un total de ${lessonsFromDB.length} lecciones (repasos excluidos).`);
-                return lessonsFromDB;
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) {
+                    throw new Error(`Error al cargar el CSV: ${response.statusText}`);
+                }
+                const csvText = await response.text();
+                return parseCSV(csvText);
             } catch (error) {
-                console.error("Error crítico al obtener las lecciones desde Firestore:", error);
+                console.error("Error crítico al obtener los mensajes desde Google Sheets:", error);
                 return []; 
             }
         }
 
-        // --- CAMBIO CLAVE: Redirección al cerrar sesión ---
+        function parseCSV(text) {
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const headers = lines.shift().split(',').map(h => h.trim());
+            
+            const lessons = lines.map(line => {
+                const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+                if (values.length === 0 || values.every(v => v.trim() === '')) return null;
+
+                const lessonObject = {};
+                headers.forEach((header, index) => {
+                    const value = values[index] || '';
+                    lessonObject[header] = value.replace(/^"|"$/g, '').trim();
+                });
+                return lessonObject;
+            }).filter(Boolean);
+
+            console.log(`Se han cargado un total de ${lessons.length} mensajes desde el CSV.`);
+            if (lessons.length > 0) {
+                console.log("Primer mensaje parseado:", lessons[0]);
+            }
+            return lessons;
+        }
+
+
         logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
-                // Al cerrar sesión correctamente, redirige a la página de login
                 window.location.href = './login.html';
             }).catch((error) => {
                 console.error('Error al cerrar sesión:', error);
@@ -327,23 +426,130 @@
         });
         
         document.addEventListener('DOMContentLoaded', () => {
-            const teaserCards = document.querySelectorAll('.teaser-card');
+            startAnimation = (elements) => {
+                let delay = 0;
+                elements.forEach(el => {
+                    (function(currentEl) {
+                        setTimeout(() => {
+                            currentEl.classList.add('fade-in-animate');
+                            currentEl.classList.remove('initially-hidden');
+                            if (currentEl.id === 'lesson-phrase') {
+                                currentEl.querySelector('strong').classList.add('shine-animate');
+                            }
+                        }, delay);
+                    })(el);
+                    delay += 300;
+                });
+            };
+
+            window.displayLesson = function(lesson) {
+                if (!lesson || typeof lesson !== 'object') {
+                    console.error("Intento de mostrar un mensaje inválido:", lesson);
+                    return;
+                };
+                
+                const keys = Object.keys(lesson);
+                const lessonNum = lesson[keys[0]] || ''; 
+                const phrase = lesson[keys[1]] || '';    
+                const explanation = lesson[keys[2]] || '';
+                const exercise = lesson[keys[3]] || '';
+
+                if (phrase) {
+                    lessonContainer.innerHTML = '';
+                    
+                    const h4 = document.createElement('h4');
+                    h4.id = 'lesson-number';
+                    h4.className = 'text-sm font-bold tracking-widest uppercase initially-hidden text-amber-600';
+                    h4.textContent = lessonNum ? `Lección ${lessonNum}` : 'Concepto Clave';
+
+                    const p1 = document.createElement('p');
+                    p1.id = 'lesson-phrase';
+                    p1.className = 'text-xl md:text-2xl mt-2 initially-hidden text-cyan-700';
+                    const strongEl = document.createElement('strong');
+                    strongEl.textContent = `“${phrase}”`;
+                    p1.appendChild(strongEl);
+                    
+                    const p2 = document.createElement('p');
+                    p2.id = 'lesson-explanation';
+                    p2.className = 'text-lg mt-4 initially-hidden text-gray-800';
+                    p2.innerHTML = explanation ? explanation.replace(/\n/g, '<br>') : 'Contenido no disponible.';
+                    
+                    lessonContainer.appendChild(h4);
+                    lessonContainer.appendChild(p1);
+                    lessonContainer.appendChild(p2);
+                    
+                    const animatedElements = [h4, p1, p2];
+
+                    if (exercise && exercise.trim() !== '') {
+                        const exerciseBox = document.createElement('div');
+                        exerciseBox.id = 'lesson-exercise-box';
+                        exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed border-amber-300 w-full initially-hidden';
+                        const h5 = document.createElement('h5');
+                        h5.className = 'font-bold text-brand-pink';
+                        h5.textContent = 'Ejercicio Recomendado:';
+                        const p3 = document.createElement('p');
+                        p3.className = 'mt-2 text-gray-700';
+                        p3.textContent = exercise;
+                        exerciseBox.appendChild(h5);
+                        exerciseBox.appendChild(p3);
+                        lessonContainer.appendChild(exerciseBox);
+                        animatedElements.push(exerciseBox);
+                    }
+
+                    if(startAnimation) {
+                        startAnimation(animatedElements);
+                    }
+                } else {
+                     console.warn("El mensaje parseado no tiene una frase principal (columna B). Mensaje:", lesson);
+                }
+            };
+            
+            // --- LÓGICA DEL BOTÓN DE LECCIONES INTELIGENTE ---
+            const leccionesBtn = document.getElementById('btn-lecciones');
+            const storageKey = 'lastLessonButtonClickDate';
+
+            function checkButtonAnimation() {
+                const lastClickDate = localStorage.getItem(storageKey);
+                const today = new Date().toISOString().slice(0, 10);
+
+                if (lastClickDate !== today) {
+                    leccionesBtn.classList.add('animate-heartbeat');
+                } else {
+                    leccionesBtn.classList.remove('animate-heartbeat');
+                }
+            }
+
+            leccionesBtn.addEventListener('click', () => {
+                const today = new Date().toISOString().slice(0, 10);
+                localStorage.setItem(storageKey, today);
+                leccionesBtn.classList.remove('animate-heartbeat');
+            });
+
+            checkButtonAnimation();
+
+            // --- LÓGICA PARA MODALES ---
             const comingSoonModal = document.getElementById('coming-soon-modal');
             const closeComingSoonModalBtn = document.getElementById('close-coming-soon-modal');
 
-            teaserCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    comingSoonModal.classList.add('show');
-                });
-            });
-            
+            const showComingSoonModal = () => comingSoonModal.classList.add('show');
             const closeComingSoonModal = () => comingSoonModal.classList.remove('show');
+            
+            // Botón de Conocimiento
+            const conocimientoBtn = document.getElementById('btn-conocimiento');
+            conocimientoBtn.addEventListener('click', showComingSoonModal);
+
+            // Tarjetas de Próximas Áreas
+            const teaserCards = document.querySelectorAll('.teaser-card');
+            teaserCards.forEach(card => card.addEventListener('click', showComingSoonModal));
+            
+            // Eventos para cerrar el modal
             closeComingSoonModalBtn.addEventListener('click', closeComingSoonModal);
             comingSoonModal.addEventListener('click', (e) => {
                 if (e.target === comingSoonModal) {
                     closeComingSoonModal();
                 }
             });
+
 
             const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
             
@@ -369,8 +575,7 @@
             function getYouTubeID(url) { const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); return (match && match[2].length === 11) ? match[2] : null; }
             function parseCsvRow(row) { const delimiter = row.includes(';') ? ';' : ','; const parts = []; let current = ''; let inQuotes = false; for (const char of row) { if (char === '"' && (row.indexOf(char) === 0 || row[row.indexOf(char)-1] !== '\\')) inQuotes = !inQuotes; else if (char === delimiter && !inQuotes) { parts.push(current); current = ''; } else { current += char; } } parts.push(current); return parts.map(item => item.trim().replace(/^"|"$/g, '')); }
             if (audioPlaylistCsvUrl) { fetch(audioPlaylistCsvUrl).then(response => response.ok ? response.text() : Promise.reject('Audio list not found')).then(data => { const rows = data.split(/\r?\n/).filter(row => row.trim() !== ''); if (rows.length > 1) { const lastRow = rows[rows.length - 1]; const [title, link] = parseCsvRow(lastRow); const videoId = getYouTubeID(link); if (title && videoId) { dynamicAudioTitle.innerHTML = `<span class="text-brand-pink font-extrabold">CONVERSACIONES:</span> ${title}`; dynamicYoutubeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`; } } }).catch(error => { console.error('Error fetching YouTube playlist:', error); dynamicYoutubeContainer.innerHTML = '<p class="text-center text-red-500 p-4">No se pudo cargar el último vídeo.</p>'; }); }
-            const startAnimation = (elements) => { let delay = 0; elements.forEach(el => { (function(currentEl) { setTimeout(() => { currentEl.classList.add('fade-in-animate'); currentEl.classList.remove('initially-hidden'); if (currentEl.id === 'lesson-phrase') { currentEl.querySelector('strong').classList.add('shine-animate'); } }, delay); })(el); delay += 600; }); };
-            window.displayLesson = function(lesson) { if (!lesson) return; const [lessonNum, phrase, explanation, exercise] = lesson; if (phrase && explanation) { lessonContainer.innerHTML = ''; const h4 = document.createElement('h4'); h4.id = 'lesson-number'; h4.className = 'text-sm font-bold tracking-widest uppercase initially-hidden'; h4.textContent = `Lección ${lessonNum}`; const p1 = document.createElement('p'); p1.id = 'lesson-phrase'; p1.className = 'text-xl italic mt-2 initially-hidden'; const strongEl = document.createElement('strong'); strongEl.className = 'text-brand-green font-bold'; strongEl.textContent = `“${phrase}”`; p1.appendChild(strongEl); const p2 = document.createElement('p'); p2.id = 'lesson-explanation'; p2.className = 'text-lg mt-4 initially-hidden'; p2.textContent = explanation; lessonContainer.appendChild(h4); lessonContainer.appendChild(p1); lessonContainer.appendChild(p2); const animatedElements = [h4, p1, p2]; if (exercise && exercise.trim() !== '') { const exerciseBox = document.createElement('div'); exerciseBox.id = 'lesson-exercise-box'; exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed border-pink-200 w-full initially-hidden'; const h5 = document.createElement('h5'); h5.className = 'font-bold text-brand-pink'; h5.textContent = 'Ejercicio Recomendado:'; const p3 = document.createElement('p'); p3.className = 'mt-2 text-gray-700'; p3.textContent = exercise; exerciseBox.appendChild(h5); exerciseBox.appendChild(p3); lessonContainer.appendChild(exerciseBox); animatedElements.push(exerciseBox); } startAnimation(animatedElements); } }
+            
             window.getDayOfYear = function() { const now = new Date(); const start = new Date(now.getFullYear(), 0, 0); const diff = now - start; const oneDay = 1000 * 60 * 60 * 24; return Math.floor(diff / oneDay); }
             
             newLessonBtn.addEventListener('click', () => {
