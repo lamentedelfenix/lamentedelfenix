@@ -183,24 +183,55 @@
         const auth = getAuth(app);
 
         /**
-         * Formats an array of paragraphs from Firestore into styled HTML.
-         * Each element in the array is treated as a separate paragraph.
+         * Formats raw paragraph text from Firestore into styled HTML,
+         * correctly grouping numbered sections and adding breaks for readability.
          */
         function formatParagraphs(paragraphsArray) {
             if (!paragraphsArray || !Array.isArray(paragraphsArray)) {
                 return "";
             }
-            
-            return paragraphsArray
-                .filter(p => typeof p === 'string' && p.trim() !== '')
-                .map(p => {
-                    // Treat each string in the array as a single paragraph.
-                    // Replace any internal newlines with <br> for line breaks within the paragraph.
-                    const withBreaks = p.replace(/\n/g, '<br>');
-                    // Style numbered lists if they exist at the start of the paragraph.
-                    const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
-                    return `<p class="mb-4">${styledP}</p>`;
-                }).join('');
+
+            // 1. Join all pieces from the array into a single block of text.
+            const fullText = paragraphsArray.join(' ').replace(/\n/g, ' ');
+
+            // 2. Split the text into sections based on the "1. ", "2. " pattern.
+            // This regex splits the string but keeps the delimiter (the number) at the start of each new section.
+            const sections = fullText.split(/(?=\d+\.\s)/).filter(s => s.trim() !== '');
+
+            let finalHtml = '';
+
+            // 3. Process each numbered section individually.
+            sections.forEach(sectionText => {
+                // Extract the number part (e.g., "1. ")
+                const numberMatch = sectionText.match(/^(\d+\.\s)/);
+                const numberHtml = numberMatch ? `<span class="paragraph-number">${numberMatch[1]}</span>` : '';
+                const textWithoutNumber = numberMatch ? sectionText.substring(numberMatch[0].length) : sectionText;
+
+                // Split the remaining text into sentences. This regex is good at finding sentence endings.
+                const sentences = textWithoutNumber.match(/[^.!?]+[.!?]+/g) || [textWithoutNumber];
+                
+                let sentencesInCurrentParagraph = 0;
+                let currentParagraphContent = numberHtml;
+
+                sentences.forEach((sentence, index) => {
+                    currentParagraphContent += sentence.trim() + ' ';
+                    sentencesInCurrentParagraph++;
+
+                    // After approximately 3 sentences that end with a period, create a new paragraph for better readability.
+                    if (sentencesInCurrentParagraph >= 3 && sentence.trim().endsWith('.') && index < sentences.length - 1) {
+                        finalHtml += `<p class="mb-4">${currentParagraphContent.trim()}</p>`;
+                        currentParagraphContent = ''; // Reset for the next paragraph within the same numbered section
+                        sentencesInCurrentParagraph = 0;
+                    }
+                });
+
+                // Add any remaining content as the last paragraph for this section.
+                if (currentParagraphContent.trim()) {
+                    finalHtml += `<p class="mb-4">${currentParagraphContent.trim()}</p>`;
+                }
+            });
+
+            return finalHtml;
         }
 
         /**
