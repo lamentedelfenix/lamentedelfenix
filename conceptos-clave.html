@@ -41,7 +41,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); 
         }
         
-        /* NEW: Accordion Styles */
+        /* Accordion Styles */
         .accordion-item {
             background-color: var(--bg-off-white);
             border: 1px solid var(--border-color);
@@ -108,7 +108,7 @@
 </head>
 <body class="antialiased">
 
-    <main class="max-w-4xl mx-auto p-4 md:p-8">
+    <main id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold mb-2">Conceptos Clave</h1>
             <p class="text-lg text-gray-600">Los pilares para tu estudio de Un Curso de Milagros.</p>
@@ -122,28 +122,45 @@
 
         <!-- Container for the accordion -->
         <div id="concepts-container">
-            <p id="loading-message" class="col-span-full text-center p-8 text-gray-500">Autenticando para la vista previa...</p>
+            <p id="loading-message" class="col-span-full text-center p-8 text-gray-500">Cargando conceptos...</p>
         </div>
     </main>
+    
+    <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
+        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
+        <p class="text-lg mt-4">Necesitas iniciar sesión en la membresía para ver este contenido.</p>
+    </div>
     
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- FIREBASE CONFIG (For Deployment) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.appspot.com",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
+        };
+
         // --- DOM Selectors ---
+        const mainContent = document.getElementById('main-content');
+        const authMessage = document.getElementById('auth-message');
         const conceptsContainer = document.getElementById('concepts-container');
         const loadingMessage = document.getElementById('loading-message');
         
-        // --- Firebase Services (will be initialized on DOM load) ---
-        let db;
+        // --- Firebase Services ---
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
         /**
-         * REVISED: Groups lines into meaningful paragraphs.
-         * Treats numbered lines as the start of a new paragraph.
-         * @param {string[] | string} rawParagraphData - The raw text data.
-         * @returns {string} The formatted HTML string.
+         * Groups lines into meaningful paragraphs.
          */
         function formatParagraphs(rawParagraphData) {
             if (!rawParagraphData) return "";
@@ -157,43 +174,29 @@
 
             lines.forEach(line => {
                 const trimmedLine = line.trim();
-                // If a line starts with a number (e.g., "1. "), it's a new paragraph.
                 if (/^\d+\.\s/.test(trimmedLine)) {
-                    if (currentParagraph) {
-                        paragraphs.push(currentParagraph);
-                    }
+                    if (currentParagraph) paragraphs.push(currentParagraph);
                     currentParagraph = line;
                 } else {
-                    // Otherwise, append it to the current paragraph.
                     currentParagraph += (currentParagraph ? ' ' : '') + line;
                 }
             });
-            // Add the last paragraph
-            if (currentParagraph) {
-                paragraphs.push(currentParagraph);
-            }
+            if (currentParagraph) paragraphs.push(currentParagraph);
 
-            // If no paragraphs were formed (e.g., no numbered lists), treat the whole text as one.
             if (paragraphs.length === 0 && fullText.trim()) {
                 paragraphs.push(fullText.trim().replace(/\n/g, ' '));
             }
 
             return paragraphs.map(p => {
-                // Style the numbered prefix if it exists
                 const styledP = p.replace(/^(\s*\d+\.\s*)/, '<span class="paragraph-number">$1</span>');
                 return `<p>${styledP}</p>`;
             }).join('');
         }
 
         /**
-         * REVISED: Fetches concepts and renders them as an accordion.
+         * Fetches concepts and renders them as an accordion.
          */
         async function fetchAndRenderConcepts() {
-            if (!db) {
-                console.error("Firestore DB is not initialized.");
-                loadingMessage.innerText = "Error: La conexión con la base de datos falló.";
-                return;
-            }
             loadingMessage.innerText = "Cargando conceptos...";
             try {
                 const collectionPath = "UCDM_lessons";
@@ -234,65 +237,37 @@
                 
             } catch (error) {
                 console.error("Error fetching concepts:", error);
-                conceptsContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error al cargar los conceptos: ${error.message}.</p>`;
+                conceptsContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error al cargar los conceptos: ${error.message}. Es posible que necesites ajustar las reglas de seguridad de Firestore.</p>`;
             }
         }
 
-        // --- NEW: Accordion Logic ---
+        // --- Accordion Logic ---
         conceptsContainer.addEventListener('click', function(e) {
             const title = e.target.closest('.accordion-title');
             if (title) {
                 const item = title.parentElement;
-                // Optional: Close other accordions when one is opened
-                // document.querySelectorAll('.accordion-item.active').forEach(activeItem => {
-                //     if (activeItem !== item) activeItem.classList.remove('active');
-                // });
                 item.classList.toggle('active');
             }
         });
 
-
-        // --- Initial Load and Auth for Preview ---
+        // --- Initial Load and Auth for Deployment ---
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.opacity = '1';
 
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-            if (!firebaseConfig) {
-                loadingMessage.innerText = "Error: Configuración de Firebase no encontrada para la vista previa.";
-                console.error("Firebase config is missing from the preview environment.");
-                return;
-            }
-            
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                const auth = getAuth(app);
-
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        console.log("Preview user is authenticated. UID:", user.uid);
-                        await fetchAndRenderConcepts();
-                    } else {
-                        console.log("Preview user not authenticated. Attempting sign-in...");
-                        try {
-                            if (initialAuthToken) {
-                                await signInWithCustomToken(auth, initialAuthToken);
-                            } else {
-                                await signInAnonymously(auth);
-                            }
-                        } catch (error) {
-                            console.error("Preview authentication failed:", error);
-                            loadingMessage.innerText = "Error de autenticación para la vista previa.";
-                        }
-                    }
-                });
-
-            } catch (error) {
-                console.error("Firebase initialization failed for preview:", error);
-                loadingMessage.innerText = "Error al inicializar la aplicación para la vista previa.";
-            }
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, show content and fetch data.
+                    console.log("User is authenticated. UID:", user.uid);
+                    authMessage.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    fetchAndRenderConcepts();
+                } else {
+                    // User is not signed in, show auth message.
+                    console.log("User is not authenticated.");
+                    mainContent.style.display = 'none';
+                    authMessage.style.display = 'block';
+                }
+            });
         });
 
     </script>
