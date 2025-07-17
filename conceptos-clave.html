@@ -41,76 +41,62 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); 
         }
         
-        /* Flowing Article Styles */
-        .concept-section {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding: 3rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        @media (min-width: 768px) {
-            .concept-section {
-                flex-direction: row;
-                align-items: flex-start;
-            }
-            .concept-section:nth-child(even) {
-                flex-direction: row-reverse;
-            }
-        }
-
-        .concept-icon-wrapper {
-            flex-shrink: 0;
-            width: 100px;
-            height: 100px;
+        /* NEW: Accordion Styles */
+        .accordion-item {
             background-color: var(--bg-off-white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin: 0 auto 1rem auto;
-        }
-        
-        @media (min-width: 768px) {
-            .concept-icon-wrapper {
-                margin: 0;
-            }
-        }
-
-        .concept-icon-wrapper i {
-            font-size: 2.5rem;
-            color: var(--brand-pink);
-            opacity: 0.8;
-        }
-
-        .concept-text-content {
-            flex-grow: 1;
-        }
-
-        .concept-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
             margin-bottom: 1rem;
-            color: var(--brand-blue);
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
         }
-        .concept-body {
+        .accordion-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .accordion-title {
+            padding: 1.25rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-title:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+        .accordion-title .icon {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            color: var(--brand-pink);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
             font-family: 'Lora', serif;
             line-height: 1.9;
             font-size: 1.1rem;
             color: #374151; /* gray-700 */
         }
-        .concept-body p {
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            opacity: 0.6;
+        
+        .accordion-item.active .accordion-title .icon {
+            transform: rotate(180deg);
         }
-        .concept-body p.is-in-focus {
-            opacity: 1;
-            transform: scale(1.01);
+        .accordion-item.active .accordion-content {
+            max-height: 2000px; /* Large enough for content */
+            padding: 1rem 1.5rem 2rem 1.5rem;
+            border-top: 1px solid var(--border-color);
         }
+        
+        .accordion-content p {
+            margin-bottom: 1.5rem;
+        }
+
         .paragraph-number {
             font-size: 1.25em; 
             font-weight: 800; 
@@ -122,7 +108,7 @@
 </head>
 <body class="antialiased">
 
-    <main id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold mb-2">Conceptos Clave</h1>
             <p class="text-lg text-gray-600">Los pilares para tu estudio de Un Curso de Milagros.</p>
@@ -134,73 +120,80 @@
             </a>
         </div>
 
+        <!-- Container for the accordion -->
         <div id="concepts-container">
-            <p id="loading-message" class="col-span-full text-center p-8 text-gray-500">Cargando conceptos...</p>
+            <p id="loading-message" class="col-span-full text-center p-8 text-gray-500">Autenticando para la vista previa...</p>
         </div>
     </main>
     
-    <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-        <p class="text-lg mt-4">Necesitas iniciar sesión en la membresía para ver este contenido.</p>
-    </div>
-
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- FIREBASE CONFIG (Hardcoded for deployment) ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
-            authDomain: "membresia-ucdm-v2.firebaseapp.com",
-            projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.appspot.com",
-            messagingSenderId: "198704348819",
-            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
-            measurementId: "G-5L3T8PGXYK"
-        };
-
         // --- DOM Selectors ---
-        const mainContent = document.getElementById('main-content');
-        const authMessage = document.getElementById('auth-message');
         const conceptsContainer = document.getElementById('concepts-container');
         const loadingMessage = document.getElementById('loading-message');
         
-        // --- Iconography ---
-        const conceptIcons = [
-            'fa-dove', 'fa-lightbulb', 'fa-key', 'fa-heart', 'fa-seedling', 
-            'fa-star-of-life', 'fa-infinity', 'fa-gem', 'fa-book-open', 
-            'fa-sun', 'fa-water', 'fa-feather-alt'
-        ];
-
-        // --- Firebase Services ---
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        // --- Firebase Services (will be initialized on DOM load) ---
+        let db;
 
         /**
-         * Formats raw paragraph text from Firestore into styled HTML.
+         * REVISED: Groups lines into meaningful paragraphs.
+         * Treats numbered lines as the start of a new paragraph.
+         * @param {string[] | string} rawParagraphData - The raw text data.
+         * @returns {string} The formatted HTML string.
          */
         function formatParagraphs(rawParagraphData) {
             if (!rawParagraphData) return "";
             const fullText = Array.isArray(rawParagraphData) ? rawParagraphData.join('\n') : String(rawParagraphData);
             if (!fullText.trim()) return "";
+
+            const paragraphs = [];
+            let currentParagraph = '';
             
-            return fullText
-                .split('\n')
-                .filter(p => p.trim() !== '')
-                .map(p => {
-                    const withBreaks = p.replace(/\n/g, '<br>');
-                    const styledP = withBreaks.replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
-                    return `<p class="mb-4">${styledP}</p>`;
-                }).join('');
+            const lines = fullText.split('\n').filter(line => line.trim() !== '');
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                // If a line starts with a number (e.g., "1. "), it's a new paragraph.
+                if (/^\d+\.\s/.test(trimmedLine)) {
+                    if (currentParagraph) {
+                        paragraphs.push(currentParagraph);
+                    }
+                    currentParagraph = line;
+                } else {
+                    // Otherwise, append it to the current paragraph.
+                    currentParagraph += (currentParagraph ? ' ' : '') + line;
+                }
+            });
+            // Add the last paragraph
+            if (currentParagraph) {
+                paragraphs.push(currentParagraph);
+            }
+
+            // If no paragraphs were formed (e.g., no numbered lists), treat the whole text as one.
+            if (paragraphs.length === 0 && fullText.trim()) {
+                paragraphs.push(fullText.trim().replace(/\n/g, ' '));
+            }
+
+            return paragraphs.map(p => {
+                // Style the numbered prefix if it exists
+                const styledP = p.replace(/^(\s*\d+\.\s*)/, '<span class="paragraph-number">$1</span>');
+                return `<p>${styledP}</p>`;
+            }).join('');
         }
 
         /**
-         * Fetches concepts from Firestore and renders them in a flowing layout.
+         * REVISED: Fetches concepts and renders them as an accordion.
          */
         async function fetchAndRenderConcepts() {
+            if (!db) {
+                console.error("Firestore DB is not initialized.");
+                loadingMessage.innerText = "Error: La conexión con la base de datos falló.";
+                return;
+            }
             loadingMessage.innerText = "Cargando conceptos...";
             try {
                 const collectionPath = "UCDM_lessons";
@@ -217,106 +210,89 @@
                 conceptsContainer.innerHTML = '';
 
                 if (concepts.length === 0) {
-                    conceptsContainer.innerHTML = `<p class="text-center p-8 text-gray-500">No se encontraron conceptos clave. Verifique que la colección '${collectionPath}' exista y contenga documentos con type="concept".</p>`;
+                    conceptsContainer.innerHTML = `<p class="text-center p-8 text-gray-500">No se encontraron conceptos clave.</p>`;
                     return;
                 }
 
-                concepts.forEach((concept, index) => {
-                    const section = document.createElement('section');
-                    section.className = 'concept-section';
+                concepts.forEach((concept) => {
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item';
                     
                     const formattedParagraphs = formatParagraphs(concept.paragraphs);
-                    const iconClass = conceptIcons[index % conceptIcons.length];
 
-                    section.innerHTML = `
-                        <div class="concept-icon-wrapper">
-                            <i class="fas ${iconClass}"></i>
+                    item.innerHTML = `
+                        <div class="accordion-title">
+                            <span>${concept.title}</span>
+                            <i class="fas fa-chevron-down icon"></i>
                         </div>
-                        <div class="concept-text-content">
-                            <h2 class="concept-title">${concept.title}</h2>
-                            <div class="concept-body">
-                                ${formattedParagraphs}
-                            </div>
+                        <div class="accordion-content">
+                            ${formattedParagraphs}
                         </div>
                     `;
-                    conceptsContainer.appendChild(section);
+                    conceptsContainer.appendChild(item);
                 });
                 
-                initFocusHighlighting();
-
             } catch (error) {
                 console.error("Error fetching concepts:", error);
-                conceptsContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error al cargar los conceptos: ${error.message}. Es posible que necesites ajustar las reglas de seguridad de Firestore.</p>`;
+                conceptsContainer.innerHTML = `<p class="text-center p-8 text-red-500">Error al cargar los conceptos: ${error.message}.</p>`;
             }
         }
 
-        // --- Focus Highlighting Logic ---
-        let paragraphs = [];
-        let ticking = false;
-
-        function updateFocus() {
-            const viewportCenter = window.innerHeight / 2;
-            let minDistance = Infinity;
-            let focusedParagraph = null;
-
-            paragraphs.forEach(p => {
-                const rect = p.getBoundingClientRect();
-                if (rect.height === 0) return;
-                
-                const pCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(viewportCenter - pCenter);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    focusedParagraph = p;
-                }
-            });
-
-            paragraphs.forEach(p => {
-                p.classList.remove('is-in-focus');
-            });
-
-            if (focusedParagraph) {
-                focusedParagraph.classList.add('is-in-focus');
+        // --- NEW: Accordion Logic ---
+        conceptsContainer.addEventListener('click', function(e) {
+            const title = e.target.closest('.accordion-title');
+            if (title) {
+                const item = title.parentElement;
+                // Optional: Close other accordions when one is opened
+                // document.querySelectorAll('.accordion-item.active').forEach(activeItem => {
+                //     if (activeItem !== item) activeItem.classList.remove('active');
+                // });
+                item.classList.toggle('active');
             }
-            
-            ticking = false;
-        }
+        });
 
-        function onScroll() {
-            if (!ticking) {
-                window.requestAnimationFrame(updateFocus);
-                ticking = true;
-            }
-        }
 
-        function initFocusHighlighting() {
-            paragraphs = document.querySelectorAll('.concept-body p');
-            if (paragraphs.length > 0) {
-                window.addEventListener('scroll', onScroll, { passive: true });
-                window.addEventListener('resize', onScroll);
-                updateFocus();
-            }
-        }
-
-        // --- Initial Load and Auth ---
+        // --- Initial Load and Auth for Preview ---
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.opacity = '1';
 
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    // User is signed in, show the content and fetch data.
-                    console.log("User is authenticated. UID:", user.uid);
-                    authMessage.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    fetchAndRenderConcepts();
-                } else {
-                    // User is not signed in, show the auth message.
-                    console.log("User is not authenticated.");
-                    mainContent.style.display = 'none';
-                    authMessage.style.display = 'block';
-                }
-            });
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+            if (!firebaseConfig) {
+                loadingMessage.innerText = "Error: Configuración de Firebase no encontrada para la vista previa.";
+                console.error("Firebase config is missing from the preview environment.");
+                return;
+            }
+            
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                const auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        console.log("Preview user is authenticated. UID:", user.uid);
+                        await fetchAndRenderConcepts();
+                    } else {
+                        console.log("Preview user not authenticated. Attempting sign-in...");
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error("Preview authentication failed:", error);
+                            loadingMessage.innerText = "Error de autenticación para la vista previa.";
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase initialization failed for preview:", error);
+                loadingMessage.innerText = "Error al inicializar la aplicación para la vista previa.";
+            }
         });
 
     </script>
