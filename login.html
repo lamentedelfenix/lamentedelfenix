@@ -8,45 +8,178 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; }
-        .form-container { background-color: white; border: 1px solid #e0d9c6; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .form-input { border: 2px solid #e0d9c6; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
-        .form-input:focus { outline: none; border-color: #00bcd4; box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2); }
-        .btn-submit { background-color: #e91e63; color: white; transition: all 0.3s ease; }
-        .btn-submit:hover { background-color: #c2185b; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .error-message { background-color: #ffcdd2; color: #c62828; border-left: 4px solid #c62828; }
-        .success-message { background-color: #d1f2eb; color: #0d6e5a; border-left: 4px solid #10b981; }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(-45deg, #007a8a, #00bcd4, #0c2f5b, #009688);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            color: #f7fafc;
+        }
+
+        .form-wrapper {
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-container {
+            background: rgba(12, 47, 91, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .form-content {
+            position: relative;
+            z-index: 1;
+            background: rgba(12, 47, 91, 0.7);
+            border-radius: 0.9rem;
+            padding: 2rem;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+
+        .input-label {
+            color: #80DEEA; /* Color cian claro para la etiqueta */
+            transition: color 0.3s ease;
+        }
+
+        .form-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #80DEEA; /* Borde cian claro */
+            color: white;
+            transition: border-color 0.3s ease;
+            padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 0.5rem;
+            transform: translateY(-50%);
+            color: #80DEEA; /* Color cian claro para el icono */
+            transition: color 0.3s ease;
+        }
+        
+        /* Animación de resplandor magenta */
+        @keyframes magenta-pulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 4px rgba(233, 30, 99, 0.7));
+            }
+            50% {
+                filter: drop-shadow(0 0 12px rgba(233, 30, 99, 1));
+            }
+        }
+
+        /* Aplicar animación de resplandor magenta cuando el input está enfocado */
+        .input-group:focus-within .input-label,
+        .input-group:focus-within .input-icon,
+        .input-group:focus-within .form-input {
+             animation: magenta-pulse 2s infinite ease-in-out;
+        }
+        
+        /* Cambiar color de texto e icono a un magenta claro al enfocar */
+        .input-group:focus-within .input-label,
+        .input-group:focus-within .input-icon {
+            color: #f8bbd0;
+        }
+        .input-group:focus-within .form-input {
+             border-color: #f8bbd0;
+        }
+
+        /* Animación de latido para el botón */
+        @keyframes button-pulse {
+            0% { box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); }
+            50% { box-shadow: 0 0 25px 10px rgba(0, 188, 212, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); }
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, #00bcd4, #009688);
+            color: white;
+            transition: all 0.3s ease;
+            border: none;
+            animation: button-pulse 2.5s infinite ease-in-out; /* Animación añadida */
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px 12px rgba(0, 188, 212, 1); /* Sombra más intensa en hover */
+        }
+
+        .error-message { 
+            background-color: rgba(198, 40, 40, 0.3); 
+            color: #ffcdd2; 
+            border-left: 4px solid #c62828; 
+        }
+        .success-message { 
+            background-color: rgba(13, 110, 90, 0.3); 
+            color: #d1f2eb; 
+            border-left: 4px solid #10b981; 
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md">
+    <div class="w-full max-w-md form-wrapper">
         <header class="mb-8 text-center">
             <a href="./index.html"><img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg"></a>
         </header>
 
-        <div class="form-container p-8 rounded-lg">
-            <h2 id="form-title" class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
-            
-            <div id="message-box" class="p-3 rounded-md mb-6 hidden"></div>
+        <div class="form-container">
+            <div class="form-content">
+                <h2 id="form-title" class="text-3xl font-extrabold text-center mb-8" style="color: #e91e63;">Inicio de Sesión</h2>
+                
+                <div id="message-box" class="p-3 rounded-md mb-6 hidden"></div>
 
-            <form id="auth-form">
-                <div class="mb-4">
-                    <label for="email" class="block font-semibold mb-1">Correo Electrónico</label>
-                    <input type="email" id="email" class="form-input w-full p-2 rounded-md" required>
-                </div>
-                <div class="mb-6" id="password-container">
-                    <label for="password" class="block font-semibold mb-1">Contraseña</label>
-                    <input type="password" id="password" class="form-input w-full p-2 rounded-md" required>
-                </div>
-                <button type="submit" id="submit-btn" class="btn-submit w-full font-bold py-3 rounded-lg">
-                    Iniciar Sesión
-                </button>
-            </form>
+                <form id="auth-form">
+                    <div class="mb-6">
+                        <label for="email" class="input-label block text-sm font-medium mb-2">Correo Electrónico</label>
+                        <div class="relative input-group">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-envelope input-icon"></i>
+                            </div>
+                            <input type="email" id="email" class="form-input w-full" required>
+                        </div>
+                    </div>
+                    <div class="mb-8" id="password-container">
+                         <label for="password" class="input-label block text-sm font-medium mb-2">Contraseña</label>
+                        <div class="relative input-group">
+                           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <i class="fas fa-lock input-icon"></i>
+                            </div>
+                            <input type="password" id="password" class="form-input w-full" required>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-btn" class="btn-submit w-full font-bold py-3 rounded-lg">
+                        Iniciar Sesión
+                    </button>
+                </form>
 
-            <div class="text-center text-sm text-gray-600 mt-6">
-                 <button id="forgot-password-btn" class="font-bold text-gray-500 hover:underline">¿Has olvidado tu contraseña?</button>
+                <div class="text-center text-sm text-gray-400 mt-6">
+                     <button id="forgot-password-btn" class="font-bold hover:underline">¿Has olvidado tu contraseña?</button>
+                </div>
             </div>
         </div>
     </div>
@@ -55,7 +188,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
-        // --- IMPORTANTE: Usa la configuración de tu NUEVO proyecto de Firebase ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -94,6 +226,7 @@
                 case 'auth/wrong-password': message = 'La contraseña es incorrecta.'; break;
                 case 'auth/user-not-found': message = 'No se ha encontrado ninguna cuenta con este correo electrónico.'; break;
                 case 'auth/invalid-email': message = 'El formato del correo electrónico no es válido.'; break;
+                case 'auth/too-many-requests': message = 'Acceso bloqueado temporalmente por demasiados intentos. Inténtalo más tarde.'; break;
             }
             showMessage(message, 'error');
         }
@@ -120,15 +253,20 @@
 
         forgotPasswordBtn.addEventListener('click', () => {
             isResetMode = !isResetMode;
+            messageBox.classList.add('hidden'); // Ocultar mensajes al cambiar de modo
             if (isResetMode) {
                 formTitle.textContent = 'Restablecer Contraseña';
+                formTitle.style.color = '#e91e63';
                 passwordContainer.style.display = 'none';
                 submitBtn.textContent = 'Enviar Enlace de Recuperación';
+                submitBtn.style.background = 'linear-gradient(45deg, #e91e63, #c2185b)'; // Cambiar botón a magenta en modo reseteo
                 forgotPasswordBtn.textContent = 'Volver a Iniciar Sesión';
             } else {
-                formTitle.textContent = 'Iniciar Sesión';
+                formTitle.textContent = 'Inicio de Sesión';
+                 formTitle.style.color = '#e91e63';
                 passwordContainer.style.display = 'block';
                 submitBtn.textContent = 'Iniciar Sesión';
+                submitBtn.style.background = 'linear-gradient(45deg, #00bcd4, #009688)'; // Volver al botón cian
                 forgotPasswordBtn.textContent = '¿Has olvidado tu contraseña?';
             }
         });
