@@ -379,11 +379,11 @@
             card.dataset.url = video.url;
             card.dataset.category = video.category || 'Inspiración';
 
-            const thumbnailUrl = getThumbnailUrl(video.url, video.thumbnail);
+            const thumbnailUrl = getThumbnailUrl(video); // CAMBIO: Pasar el objeto de vídeo completo
 
             card.innerHTML = `
                 <div class="thumbnail-container">
-                    <img src="${thumbnailUrl}" alt="Miniatura del vídeo ${video.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2a4365/fbf5e2?text=Video';">
+                    <img src="${thumbnailUrl}" alt="Miniatura del vídeo ${video.title}" loading="lazy" onerror="this.onerror=null;this.src='${getThumbnailUrl(video, true)}';">
                     <div class="play-icon"><i class="fas fa-play"></i></div>
                 </div>
                 <div class="p-6">
@@ -421,7 +421,6 @@
             });
         }
 
-        // CAMBIO: Función de parseo de CSV mejorada para manejar comas en los campos
         function parseCSV(text) {
             const lines = text.split(/\r?\n/);
             if (lines.length < 2) return [];
@@ -466,6 +465,7 @@
 
         function getEmbedUrl(url) {
             if (!url || typeof url !== 'string') return null;
+            
             const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
             let match = url.match(youtubeRegex);
             if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0`;
@@ -474,18 +474,33 @@
             match = url.match(driveRegex);
             if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
 
+            const odyseeRegex = /odysee\.com\/([^?]+)/;
+            match = url.match(odyseeRegex);
+            if (match) return `https://odysee.com/$/embed/${match[1]}`;
+
             return null;
         }
 
-        function getThumbnailUrl(videoUrl, customThumbnail) {
+        // CAMBIO: La función ahora recibe el objeto de vídeo completo
+        function getThumbnailUrl(video, isError = false) {
+            const videoUrl = video.url;
+            const customThumbnail = video.thumbnail;
+            const category = video.category || 'Inspiración';
+
+            // Si es un error, siempre devuelve el placeholder con la categoría correcta
+            if (isError) {
+                return `https://placehold.co/600x400/2a4365/fbf5e2?text=${encodeURIComponent(category)}`;
+            }
+
             if (customThumbnail && customThumbnail.startsWith('http')) return customThumbnail;
-            if (!videoUrl || typeof videoUrl !== 'string') return `https://placehold.co/600x400/2a4365/fbf5e2?text=Inspiración`;
+            if (!videoUrl || typeof videoUrl !== 'string') return `https://placehold.co/600x400/2a4365/fbf5e2?text=${encodeURIComponent(category)}`;
             
             const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
             const match = videoUrl.match(youtubeRegex);
             if (match) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
             
-            return `https://placehold.co/600x400/2a4365/fbf5e2?text=Inspiración`;
+            // Para Odysee y otros, devuelve el placeholder con la categoría correcta
+            return `https://placehold.co/600x400/2a4365/fbf5e2?text=${encodeURIComponent(category)}`;
         }
         
         function hideLoading() {
