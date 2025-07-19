@@ -113,6 +113,29 @@
             box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
         }
 
+        /* --- ESTILO PARA NOTIFICACIÓN --- */
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .notification-badge {
+            position: absolute;
+            top: -0.75rem;
+            right: -0.75rem;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border: 2px solid white;
+            animation: pulse-red 2s infinite;
+        }
+        .notification-badge.hidden {
+            display: none;
+        }
+
         .text-brand-green { color: #00bcd4; }
         .text-brand-pink { color: #e91e63; }
         .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; max-height: 160px; overflow: hidden; border-radius: 8px; }
@@ -146,7 +169,6 @@
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
         #scroll-to-top-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; background-color: #0c2f5b; color: white; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 0.3s, visibility 0.3s, transform 0.3s; z-index: 999; }
         #scroll-to-top-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        #scroll-to-top-btn:hover { background-color: #e91e63; }
     </style>
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
@@ -188,9 +210,11 @@
                         <i class="fas fa-book-open"></i>Mis lecciones
                     </a>
                 </div>
-                <button id="btn-conocimiento" class="btn btn-videos font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
+                <!-- BOTÓN ACTUALIZADO PARA ENLAZAR Y MOSTRAR NOTIFICACIÓN -->
+                <a href="./inspiracion.html" id="btn-conocimiento" class="btn btn-videos font-bold py-3 px-6 rounded-lg no-underline shadow-lg relative">
                     <i class="fas fa-video mr-2"></i>Inspiración y Conocimiento
-                </button>
+                    <span id="video-notification-badge" class="notification-badge hidden">NUEVO</span>
+                </a>
                 <button id="new-lesson-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">Mostrar otro mensaje</button>
             </div>
         </section>
@@ -299,17 +323,7 @@
         Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Ctrl</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
     </div>
 
-    <div id="coming-soon-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span id="close-coming-soon-modal" class="modal-close-btn">&times;</span>
-            <div class="text-yellow-500 text-5xl mb-4">
-                <i class="fas fa-tools"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-2">¡Estamos Construyendo Algo Increíble!</h3>
-            <p class="text-gray-700">Esta nueva área de "Inspiración" está en desarrollo y estará disponible muy pronto como parte de las actualizaciones de la membresía.</p>
-            <p class="font-bold mt-4">¡Gracias por formar parte de esta etapa inicial!</p>
-        </div>
-    </div>
+    <!-- Modal eliminado ya que el botón ahora es un enlace directo -->
     
     <button id="scroll-to-top-btn" title="Volver arriba">
         <i class="fas fa-arrow-up"></i>
@@ -343,6 +357,9 @@
         let allLessons = [];
         let startAnimation;
 
+        // --- URL para la lista de videos de inspiración ---
+        const inspirationVideosUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
+
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
@@ -369,11 +386,36 @@
                 } else {
                     lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar los mensajes. Revisa la consola (F12) para más detalles.</p>';
                 }
+                
+                // --- LÓGICA DE NOTIFICACIÓN DE NUEVOS VÍDEOS ---
+                await checkNewVideos();
+
             } else {
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
             }
         });
+
+        // --- FUNCIÓN PARA CONTAR VÍDEOS Y MOSTRAR NOTIFICACIÓN ---
+        async function checkNewVideos() {
+            try {
+                const response = await fetch(inspirationVideosUrl);
+                if (!response.ok) return; // Falla silenciosamente si no puede acceder
+                const csvText = await response.text();
+                const videoCount = (csvText.match(/\n/g) || []).length; // Cuenta las filas
+                
+                const lastSeenCount = parseInt(localStorage.getItem('lastVideoCount') || '0');
+                const notificationBadge = document.getElementById('video-notification-badge');
+
+                if (videoCount > lastSeenCount) {
+                    notificationBadge.classList.remove('hidden');
+                } else {
+                    notificationBadge.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error("No se pudo verificar si hay nuevos vídeos:", error);
+            }
+        }
 
         async function fetchAllLessons() {
             const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgJn05SkzONj1pCuB6pmJUnJcErDBDCuRd8MaC5m3uLmV3KSs-X1wFqxngdcv50_vymFlnmx4rUdcT/pub?gid=0&single=true&output=csv';
@@ -527,26 +569,43 @@
 
             checkButtonAnimation();
 
-            // --- LÓGICA PARA MODALES ---
-            const comingSoonModal = document.getElementById('coming-soon-modal');
-            const closeComingSoonModalBtn = document.getElementById('close-coming-soon-modal');
+            // --- LÓGICA PARA MODALES (SOLO PARA PRÓXIMAS ÁREAS) ---
+            const modalOverlay = document.createElement('div');
+            modalOverlay.id = 'coming-soon-modal';
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.innerHTML = `
+                <div class="modal-content">
+                    <span class="modal-close-btn">&times;</span>
+                    <div class="text-yellow-500 text-5xl mb-4"><i class="fas fa-tools"></i></div>
+                    <h3 class="text-2xl font-bold mb-2">¡Función en Desarrollo!</h3>
+                    <p class="text-gray-700">Esta área estará disponible muy pronto.</p>
+                </div>
+            `;
+            document.body.appendChild(modalOverlay);
 
-            const showComingSoonModal = () => comingSoonModal.classList.add('show');
-            const closeComingSoonModal = () => comingSoonModal.classList.remove('show');
+            const showModal = () => modalOverlay.classList.add('show');
+            const closeModal = () => modalOverlay.classList.remove('show');
             
-            // Botón de Conocimiento
-            const conocimientoBtn = document.getElementById('btn-conocimiento');
-            conocimientoBtn.addEventListener('click', showComingSoonModal);
+            modalOverlay.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
 
-            // Tarjetas de Próximas Áreas
             const teaserCards = document.querySelectorAll('.teaser-card');
-            teaserCards.forEach(card => card.addEventListener('click', showComingSoonModal));
+            teaserCards.forEach(card => card.addEventListener('click', showModal));
             
-            // Eventos para cerrar el modal
-            closeComingSoonModalBtn.addEventListener('click', closeComingSoonModal);
-            comingSoonModal.addEventListener('click', (e) => {
-                if (e.target === comingSoonModal) {
-                    closeComingSoonModal();
+            // --- LÓGICA PARA ACTUALIZAR EL CONTADOR DE VÍDEOS AL HACER CLIC ---
+            const conocimientoBtn = document.getElementById('btn-conocimiento');
+            conocimientoBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch(inspirationVideosUrl);
+                    if (!response.ok) return;
+                    const csvText = await response.text();
+                    const videoCount = (csvText.match(/\n/g) || []).length;
+                    localStorage.setItem('lastVideoCount', videoCount.toString());
+                    document.getElementById('video-notification-badge').classList.add('hidden');
+                } catch (error) {
+                    console.error("No se pudo actualizar el contador de vídeos vistos:", error);
                 }
             });
 
