@@ -618,23 +618,6 @@
 
             const teaserCards = document.querySelectorAll('.teaser-card');
             teaserCards.forEach(card => card.addEventListener('click', showModal));
-            
-            // --- LÓGICA PARA ACTUALIZAR EL CONTADOR DE VÍDEOS AL HACER CLIC ---
-            const conocimientoBtn = document.getElementById('btn-conocimiento');
-            conocimientoBtn.addEventListener('click', async () => {
-                const notificationTicker = document.getElementById('notification-ticker');
-                try {
-                    const response = await fetch(inspirationVideosUrl);
-                    if (!response.ok) return;
-                    const csvText = await response.text();
-                    const videoCount = (csvText.trim().split(/\r?\n/).length - 1);
-                    localStorage.setItem('lastVideoCount', videoCount.toString());
-                    notificationTicker.classList.remove('show');
-                } catch (error) {
-                    console.error("No se pudo actualizar el contador de vídeos vistos:", error);
-                }
-            });
-
 
             const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
             
