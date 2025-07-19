@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiración y Conocimiento - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0c2f5b; 
+            color: #fbf5e2;
+            overflow-x: hidden;
+        }
+        
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .text-brand-pink { color: #e91e63; }
+        .text-brand-cyan { color: #00bcd4; }
+        .bg-brand-pink { background-color: #e91e63; }
+
+        .banner-container {
+            position: relative;
+            margin: 0 auto;
+            animation: pulsating-glow 4s infinite ease-in-out;
+            border-radius: 1rem;
+        }
+        .banner-container img {
+            border-radius: 1rem;
+            width: 100%;
+        }
+
+        @keyframes pulsating-glow {
+            0% { 
+                box-shadow: 0 0 25px rgba(0, 188, 212, 0.6); 
+            }
+            50% { 
+                box-shadow: 0 0 55px rgba(0, 188, 212, 1), 0 0 20px rgba(233, 30, 99, 0.3); 
+            }
+            100% { 
+                box-shadow: 0 0 25px rgba(0, 188, 212, 0.6); 
+            }
+        }
+
+        .video-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #0c2f5b;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            cursor: pointer;
+            border: 1px solid rgba(224, 217, 198, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSoft 0.8s ease-out forwards;
+        }
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes fadeInSoft {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-card .thumbnail-container {
+            position: relative; padding-bottom: 56.25%; height: 0;
+            background-color: #2a4365; overflow: hidden;
+        }
+        .video-card .thumbnail-container img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: transform 0.5s ease;
+        }
+        .video-card:hover .thumbnail-container img { transform: scale(1.07); }
+        .video-card .play-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 3.5rem; color: white;
+            transition: transform 0.5s ease, text-shadow 0.5s ease;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+        .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(12, 47, 91, 0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: #fbf5e2; border-radius: 0.5rem; width: 100%;
+            max-width: 900px; max-height: 90vh; transform: scale(0.9);
+            transition: transform 0.3s ease; position: relative; overflow: hidden;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute; top: -10px; right: -10px; font-size: 1.5rem;
+            color: white; background-color: #0c2f5b; border-radius: 50%;
+            width: 40px; height: 40px; cursor: pointer; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; border: 2px solid #fbf5e2;
+        }
+        .video-embed-container {
+            position: relative; padding-bottom: 56.25%; height: 0;
+            overflow: hidden; background-color: #000;
+        }
+        .video-embed-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .loader {
+            width: 50px; aspect-ratio: 1; border-radius: 50%;
+            border: 8px solid #0000; border-right-color: #e91e63;
+            position: relative; animation: l24 1s infinite linear;
+        }
+        .loader:before, .loader:after {
+            content: ""; position: absolute; inset: -8px;
+            border-radius: 50%; border: inherit; animation: inherit;
+            animation-duration: 2s;
+        }
+        .loader:after { animation-duration: 4s; }
+        @keyframes l24 { 100% {transform: rotate(1turn)} }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <canvas id="background-canvas"></canvas>
+
+    <div class="max-w-6xl mx-auto p-4 md:p-8 relative z-10">
+        <header class="text-center my-12 md:my-20">
+            <div class="banner-container">
+                <img src="https://i.imgur.com/JOeaWYI.png" alt="Banner de Inspiración y Conocimiento" class="max-w-full h-auto mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x150/0c2f5b/fbf5e2?text=Inspiración+y+Conocimiento';">
+            </div>
+             <a href="./miembros.html" class="inline-block mt-16 bg-brand-pink text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-transform transform hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i> Volver al Portal
+            </a>
+        </header>
+
+        <main>
+            <div id="video-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"></div>
+            <div id="loading-indicator" class="flex flex-col items-center justify-center py-20">
+                <div class="loader"></div>
+                <p class="mt-4 text-lg font-semibold">Cargando vídeos...</p>
+            </div>
+            <div id="error-message" class="hidden text-center py-20 bg-red-900 bg-opacity-50 rounded-lg p-6">
+                 <h3 class="font-bold text-xl text-red-300">¡Ups! Algo salió mal.</h3>
+                <p class="mt-2 text-red-300">No pudimos cargar la galería de vídeos. Por favor, revisa que la URL de Google Sheets sea correcta y que la hoja esté publicada.</p>
+            </div>
+        </main>
+    </div>
+
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close-btn" title="Cerrar">&times;</button>
+            <div id="modal-video-player" class="video-embed-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- SCRIPT PARA ANIMACIÓN DE FONDO CALMADO ---
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor(x, y, dirX, dirY, size, color) {
+                this.x = x; this.y = y; this.dirX = dirX; this.dirY = dirY;
+                this.size = size; this.color = color;
+                this.baseAlpha = Math.random() * 0.4 + 0.1;
+                this.alpha = 0; this.alphaSpeed = Math.random() * 0.01 + 0.002;
+                this.fadingIn = true;
+            }
+
+            draw() {
+                ctx.beginPath();
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                gradient.addColorStop(0, `rgba(${this.color}, ${this.alpha})`);
+                gradient.addColorStop(1, `rgba(${this.color}, 0)`);
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.dirX; this.y += this.dirY;
+                if (this.fadingIn) {
+                    if (this.alpha < this.baseAlpha) this.alpha += this.alphaSpeed;
+                    else this.fadingIn = false;
+                } else {
+                    if (this.alpha > 0) this.alpha -= this.alphaSpeed;
+                    else {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                        this.fadingIn = true;
+                    }
+                }
+                if (this.x > canvas.width + this.size) this.x = -this.size;
+                if (this.x < -this.size) this.x = canvas.width + this.size;
+                if (this.y > canvas.height + this.size) this.y = -this.size;
+                if (this.y < -this.size) this.y = canvas.height + this.size;
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const colors = ['233, 30, 99', '0, 188, 212', '251, 191, 36'];
+            const numberOfParticles = window.innerWidth / 30;
+            for (let i = 0; i < numberOfParticles; i++) {
+                const size = Math.random() * 40 + 20;
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const dirX = (Math.random() - 0.5) * 0.1;
+                const dirY = (Math.random() - 0.5) * 0.1;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, dirX, dirY, size, color));
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+    </script>
+
+    <script type="module">
+        // --- CONFIGURACIÓN ---
+        // CAMBIO: URL de la hoja de cálculo del usuario insertada.
+        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
+        
+        const gallery = document.getElementById('video-gallery');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const errorMessage = document.getElementById('error-message');
+        const modal = document.getElementById('video-modal');
+        const modalPlayer = document.getElementById('modal-video-player');
+        const modalCloseBtn = document.getElementById('modal-close');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CONTROL ---
+            // CAMBIO: Se ha cambiado a 'false' para usar los datos reales de Google Sheets.
+            loadVideos(false); 
+        });
+        
+        async function loadVideos(useMockData = false) {
+            // La simulación con mockVideos ya no es necesaria, pero se mantiene la lógica por si se necesita en el futuro.
+            if (useMockData) {
+                // Código de simulación (no se ejecutará por defecto)
+                const mockVideos = [
+                    { category: 'FILOSOFÍA Y PERSPECTIVA', title: 'Charla Inspiradora sobre la Mente', description: 'Una poderosa charla de Alan Watts sobre la perspectiva y la realidad.', url: 'https://www.youtube.com/watch?v=f2p_w21J_oA', thumbnail: '' }
+                ];
+                console.log("Usando datos de simulación para la vista previa.");
+                displayVideos(mockVideos);
+                hideLoading();
+                return;
+            }
+
+            try {
+                if (googleSheetUrl === 'URL_DE_TU_HOJA_DE_CÁLCULO_AQUÍ' || !googleSheetUrl) {
+                    throw new Error("La URL de Google Sheets no ha sido configurada en el código.");
+                }
+                const response = await fetch(googleSheetUrl);
+                if (!response.ok) {
+                    throw new Error(`Error en la red: ${response.status} ${response.statusText}`);
+                }
+                const csvData = await response.text();
+                const videos = parseCSV(csvData);
+                displayVideos(videos);
+            } catch (error) {
+                console.error("Error detallado al cargar los vídeos:", error);
+                showError();
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function displayVideos(videos) {
+            if (!videos || videos.length === 0) {
+                gallery.innerHTML = '<p class="text-center col-span-full">No hay vídeos para mostrar en este momento.</p>';
+                return;
+            }
+
+            gallery.innerHTML = '';
+            videos.forEach((video, index) => {
+                const videoCard = createVideoCard(video);
+                videoCard.style.animationDelay = `${index * 120}ms`;
+                gallery.appendChild(videoCard);
+            });
+        }
+        
+        function createVideoCard(video) {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.dataset.url = video.url;
+
+            const thumbnailUrl = getThumbnailUrl(video.url, video.thumbnail);
+
+            card.innerHTML = `
+                <div class="thumbnail-container">
+                    <img src="${thumbnailUrl}" alt="Miniatura del vídeo ${video.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2a4365/fbf5e2?text=Video';">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="p-6">
+                    <p class="text-xs font-bold uppercase tracking-widest text-brand-pink mb-2">${video.category || 'Inspiración'}</p>
+                    <h3 class="text-xl font-bold mb-2">${video.title || 'Sin Título'}</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed">${video.description || ''}</p>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => openModal(video.url));
+            return card;
+        }
+        
+        function openModal(url) {
+            const embedUrl = getEmbedUrl(url);
+            if (!embedUrl) {
+                console.error("El formato de este vídeo no es compatible:", url);
+                return;
+            }
+            modalPlayer.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            modalPlayer.innerHTML = '';
+        }
+        
+        if(modal && modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        function parseCSV(text) {
+            const lines = text.split(/\r?\n/);
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const result = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                const obj = {};
+                const values = [];
+                let currentField = '';
+                let inQuotes = false;
+                for (const char of lines[i]) {
+                    if (char === '"' && (currentField.length === 0 || currentField.slice(-1) !== '\\')) {
+                        inQuotes = !inQuotes;
+                        continue;
+                    }
+                    if (char === ',' && !inQuotes) {
+                        values.push(currentField.trim());
+                        currentField = '';
+                    } else {
+                        currentField += char;
+                    }
+                }
+                values.push(currentField.trim());
+                if (values.length >= headers.length) {
+                     for (let j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = values[j].replace(/^"|"$/g, '');
+                    }
+                    if (obj.title && obj.url) {
+                        result.push(obj);
+                    }
+                }
+            }
+            return result;
+        }
+
+        function getEmbedUrl(url) {
+            const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
+            let match = url.match(youtubeRegex);
+            if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0`;
+
+            const driveRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
+            match = url.match(driveRegex);
+            if (match) return `https://drive.google.com/file/d/${match[1]}/preview`;
+
+            return null;
+        }
+
+        function getThumbnailUrl(videoUrl, customThumbnail) {
+            if (customThumbnail && customThumbnail.startsWith('http')) return customThumbnail;
+            const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
+            const match = videoUrl.match(youtubeRegex);
+            if (match) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+            return `https://placehold.co/600x400/2a4365/fbf5e2?text=Inspiración`;
+        }
+        
+        function hideLoading() {
+            if(loadingIndicator) loadingIndicator.style.display = 'none';
+        }
+
+        function showError() {
+            if(errorMessage) errorMessage.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
