@@ -410,7 +410,6 @@
                     lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar los mensajes. Revisa la consola (F12) para más detalles.</p>';
                 }
                 
-                // --- LÓGICA DE NOTIFICACIÓN DE NUEVOS VÍDEOS ---
                 await checkNewVideos();
 
             } else {
@@ -419,14 +418,12 @@
             }
         });
 
-        // --- FUNCIÓN PARA CONTAR VÍDEOS Y MOSTRAR NOTIFICACIÓN ---
         async function checkNewVideos() {
             const notificationTicker = document.getElementById('notification-ticker');
             try {
                 const response = await fetch(inspirationVideosUrl);
-                if (!response.ok) return; // Falla silenciosamente si no puede acceder
+                if (!response.ok) return;
                 const csvText = await response.text();
-                // Cuenta las filas de datos (total de líneas - 1 para la cabecera)
                 const videoCount = (csvText.trim().split(/\r?\n/).length - 1); 
                 
                 const lastSeenCount = parseInt(localStorage.getItem('lastVideoCount') || '0');
@@ -475,11 +472,6 @@
                 });
                 return lessonObject;
             }).filter(Boolean);
-
-            console.log(`Se han cargado un total de ${lessons.length} mensajes desde el CSV.`);
-            if (lessons.length > 0) {
-                console.log("Primer mensaje parseado:", lessons[0]);
-            }
             return lessons;
         }
 
@@ -492,6 +484,16 @@
             });
         });
         
+        // --- CORRECCIÓN: Escuchar el evento 'pageshow' ---
+        window.addEventListener('pageshow', (event) => {
+            // Este evento se dispara cada vez que la página se muestra,
+            // incluyendo cuando se vuelve desde la caché del navegador (al usar el botón "atrás").
+            // Esto asegura que la comprobación de notificaciones se ejecute siempre.
+            if (auth.currentUser) {
+                checkNewVideos();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             startAnimation = (elements) => {
                 let delay = 0;
@@ -571,7 +573,6 @@
                 }
             };
             
-            // --- LÓGICA DEL BOTÓN DE LECCIONES INTELIGENTE ---
             const leccionesBtn = document.getElementById('btn-lecciones');
             const storageKey = 'lastLessonButtonClickDate';
 
@@ -594,7 +595,6 @@
 
             checkButtonAnimation();
 
-            // --- LÓGICA PARA MODALES (SOLO PARA PRÓXIMAS ÁREAS) ---
             const modalOverlay = document.createElement('div');
             modalOverlay.id = 'coming-soon-modal';
             modalOverlay.className = 'modal-overlay';
