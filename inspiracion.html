@@ -63,19 +63,23 @@
             transition: transform 0.5s ease, box-shadow 0.5s ease;
             cursor: pointer;
             border: 1px solid rgba(224, 217, 198, 0.2);
-            opacity: 0;
-            transform: translateY(20px);
             animation: fadeInSoft 0.8s ease-out forwards;
         }
-        .video-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
+        
         @keyframes fadeInSoft {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
         .video-card .thumbnail-container {
@@ -87,13 +91,20 @@
             object-fit: cover; transition: transform 0.5s ease;
         }
         .video-card:hover .thumbnail-container img { transform: scale(1.07); }
+        
         .video-card .play-icon {
             position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); font-size: 3.5rem; color: white;
-            transition: transform 0.5s ease, text-shadow 0.5s ease;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            transform: translate(-50%, -50%); font-size: 3.5rem;
+            transition: transform 0.5s ease;
+            animation: color-cycle-play-icon 5s infinite ease-in-out;
         }
         .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); }
+
+        @keyframes color-cycle-play-icon {
+            0% { color: #00bcd4; text-shadow: 0 0 20px rgba(0, 188, 212, 0.8); }
+            50% { color: #e91e63; text-shadow: 0 0 25px rgba(233, 30, 99, 1); }
+            100% { color: #00bcd4; text-shadow: 0 0 20px rgba(0, 188, 212, 0.8); }
+        }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -137,6 +148,18 @@
         }
         .loader:after { animation-duration: 4s; }
         @keyframes l24 { 100% {transform: rotate(1turn)} }
+        
+        /* Estilos para el menú de ordenación */
+        #category-sorter {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fbf5e2;
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            cursor: pointer;
+        }
+        #category-sorter option {
+            background-color: #0c2f5b;
+            color: #fbf5e2;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -148,12 +171,26 @@
             <div class="banner-container">
                 <img src="https://i.imgur.com/JOeaWYI.png" alt="Banner de Inspiración y Conocimiento" class="max-w-full h-auto mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x150/0c2f5b/fbf5e2?text=Inspiración+y+Conocimiento';">
             </div>
-             <a href="./miembros.html" class="inline-block mt-16 bg-brand-pink text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-transform transform hover:scale-105">
+            
+            <!-- Texto explicativo actualizado -->
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-8 leading-relaxed">
+                Bienvenido/a, aquí encontrarás una cuidadosa selección de videos de internet, películas y contenido exclusivo para alimentar tu mente y motivarte en tu camino de desarrollo interior.
+            </p>
+
+             <a href="./miembros.html" class="inline-block mt-12 bg-brand-pink text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-transform transform hover:scale-105">
                 <i class="fas fa-arrow-left mr-2"></i> Volver al Portal
             </a>
         </header>
 
         <main>
+            <!-- Contenedor para el menú de ordenación -->
+            <div id="sorter-container" class="flex justify-center items-center gap-4 mb-12">
+                <label for="category-sorter" class="text-lg font-semibold text-gray-300">Ordenar por:</label>
+                <select id="category-sorter" class="rounded-lg px-4 py-2 text-base">
+                    <!-- Las opciones se insertarán aquí dinámicamente -->
+                </select>
+            </div>
+
             <div id="video-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"></div>
             <div id="loading-indicator" class="flex flex-col items-center justify-center py-20">
                 <div class="loader"></div>
@@ -259,46 +296,32 @@
 
     <script type="module">
         // --- CONFIGURACIÓN ---
-        // CAMBIO: URL de la hoja de cálculo del usuario insertada.
         const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
         
         const gallery = document.getElementById('video-gallery');
         const loadingIndicator = document.getElementById('loading-indicator');
         const errorMessage = document.getElementById('error-message');
+        const categorySorter = document.getElementById('category-sorter');
         const modal = document.getElementById('video-modal');
         const modalPlayer = document.getElementById('modal-video-player');
         const modalCloseBtn = document.getElementById('modal-close');
+        let allVideos = []; // Almacenará todos los vídeos
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- CONTROL ---
-            // CAMBIO: Se ha cambiado a 'false' para usar los datos reales de Google Sheets.
-            loadVideos(false); 
+            loadVideos(); 
         });
         
-        async function loadVideos(useMockData = false) {
-            // La simulación con mockVideos ya no es necesaria, pero se mantiene la lógica por si se necesita en el futuro.
-            if (useMockData) {
-                // Código de simulación (no se ejecutará por defecto)
-                const mockVideos = [
-                    { category: 'FILOSOFÍA Y PERSPECTIVA', title: 'Charla Inspiradora sobre la Mente', description: 'Una poderosa charla de Alan Watts sobre la perspectiva y la realidad.', url: 'https://www.youtube.com/watch?v=f2p_w21J_oA', thumbnail: '' }
-                ];
-                console.log("Usando datos de simulación para la vista previa.");
-                displayVideos(mockVideos);
-                hideLoading();
-                return;
-            }
-
+        async function loadVideos() {
             try {
-                if (googleSheetUrl === 'URL_DE_TU_HOJA_DE_CÁLCULO_AQUÍ' || !googleSheetUrl) {
-                    throw new Error("La URL de Google Sheets no ha sido configurada en el código.");
-                }
                 const response = await fetch(googleSheetUrl);
-                if (!response.ok) {
-                    throw new Error(`Error en la red: ${response.status} ${response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Error en la red: ${response.status}`);
+                
                 const csvData = await response.text();
-                const videos = parseCSV(csvData);
-                displayVideos(videos);
+                allVideos = parseCSV(csvData);
+                
+                displayVideos(allVideos);
+                setupSorter(allVideos);
+
             } catch (error) {
                 console.error("Error detallado al cargar los vídeos:", error);
                 showError();
@@ -307,16 +330,45 @@
             }
         }
 
+        function setupSorter(videos) {
+            const categories = ['Orden por defecto', ...new Set(videos.map(video => video.category).filter(Boolean))];
+            
+            categorySorter.innerHTML = ''; // Limpiar opciones existentes
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySorter.appendChild(option);
+            });
+
+            categorySorter.addEventListener('change', (event) => {
+                const selectedCategory = event.target.value;
+                sortAndDisplayVideos(selectedCategory);
+            });
+        }
+
+        function sortAndDisplayVideos(category) {
+            let sortedVideos = [...allVideos]; // Crear una copia para no modificar el original
+            if (category !== 'Orden por defecto') {
+                sortedVideos.sort((a, b) => {
+                    if (a.category === category && b.category !== category) return -1;
+                    if (a.category !== category && b.category === category) return 1;
+                    return 0;
+                });
+            }
+            displayVideos(sortedVideos);
+        }
+
         function displayVideos(videos) {
             if (!videos || videos.length === 0) {
                 gallery.innerHTML = '<p class="text-center col-span-full">No hay vídeos para mostrar en este momento.</p>';
                 return;
             }
 
-            gallery.innerHTML = '';
+            gallery.innerHTML = ''; // Limpiar la galería antes de volver a mostrar los vídeos
             videos.forEach((video, index) => {
                 const videoCard = createVideoCard(video);
-                videoCard.style.animationDelay = `${index * 120}ms`;
+                // La animación se aplica a través de la clase .video-card en CSS
                 gallery.appendChild(videoCard);
             });
         }
@@ -325,6 +377,7 @@
             const card = document.createElement('div');
             card.className = 'video-card';
             card.dataset.url = video.url;
+            card.dataset.category = video.category || 'Inspiración';
 
             const thumbnailUrl = getThumbnailUrl(video.url, video.thumbnail);
 
@@ -368,22 +421,28 @@
             });
         }
 
+        // CAMBIO: Función de parseo de CSV mejorada para manejar comas en los campos
         function parseCSV(text) {
             const lines = text.split(/\r?\n/);
             if (lines.length < 2) return [];
+
             const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
             const result = [];
+
             for (let i = 1; i < lines.length; i++) {
                 if (lines[i].trim() === '') continue;
+
                 const obj = {};
                 const values = [];
                 let currentField = '';
                 let inQuotes = false;
+
                 for (const char of lines[i]) {
                     if (char === '"' && (currentField.length === 0 || currentField.slice(-1) !== '\\')) {
                         inQuotes = !inQuotes;
                         continue;
                     }
+                    
                     if (char === ',' && !inQuotes) {
                         values.push(currentField.trim());
                         currentField = '';
@@ -392,6 +451,7 @@
                     }
                 }
                 values.push(currentField.trim());
+
                 if (values.length >= headers.length) {
                      for (let j = 0; j < headers.length; j++) {
                         obj[headers[j]] = values[j].replace(/^"|"$/g, '');
@@ -405,6 +465,7 @@
         }
 
         function getEmbedUrl(url) {
+            if (!url || typeof url !== 'string') return null;
             const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
             let match = url.match(youtubeRegex);
             if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0`;
@@ -418,9 +479,12 @@
 
         function getThumbnailUrl(videoUrl, customThumbnail) {
             if (customThumbnail && customThumbnail.startsWith('http')) return customThumbnail;
+            if (!videoUrl || typeof videoUrl !== 'string') return `https://placehold.co/600x400/2a4365/fbf5e2?text=Inspiración`;
+            
             const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/;
             const match = videoUrl.match(youtubeRegex);
             if (match) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+            
             return `https://placehold.co/600x400/2a4365/fbf5e2?text=Inspiración`;
         }
         
