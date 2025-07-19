@@ -133,7 +133,7 @@
         .ticker-wrap {
             display: inline-block;
             padding-left: 100%;
-            animation: ticker-scroll 25s linear infinite;
+            animation: ticker-scroll 30s linear infinite;
         }
         .ticker-item {
             display: inline-block;
@@ -143,7 +143,7 @@
         }
         .ticker-item i {
             margin-right: 0.75rem;
-            color: #00bcd4;
+            color: #facc15; /* Brighter yellow */
         }
         @keyframes ticker-scroll {
             0% { transform: translateX(0); }
@@ -191,10 +191,10 @@
     <div id="notification-ticker">
         <div class="ticker-wrap">
             <div class="ticker-item">
-                <i class="fas fa-star"></i> ¡Nuevo contenido disponible en la sección de Inspiración y Conocimiento!
+                <i class="fas fa-lightbulb"></i> ¡Recuerda! Entrena tu mente con las lecciones diarias y explora el nuevo contenido de inspiración.
             </div>
             <div class="ticker-item">
-                <i class="fas fa-star"></i> ¡Nuevo contenido disponible en la sección de Inspiración y Conocimiento!
+                <i class="fas fa-lightbulb"></i> ¡Recuerda! Entrena tu mente con las lecciones diarias y explora el nuevo contenido de inspiración.
             </div>
         </div>
     </div>
@@ -377,11 +377,9 @@
         const lessonContainer = document.getElementById('daily-lesson-container');
         const newLessonBtn = document.getElementById('new-lesson-btn');
         const logoutBtn = document.getElementById('logout-btn');
+        const notificationTicker = document.getElementById('notification-ticker');
         let allLessons = [];
         let startAnimation;
-
-        // --- URL para la lista de videos de inspiración ---
-        const inspirationVideosUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
 
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
@@ -390,6 +388,7 @@
             if (user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
+                notificationTicker.classList.add('show'); // Mostrar siempre la notificación
 
                 const userDocSnap = await getDoc(doc(db, "users", user.uid));
                 if (userDocSnap.exists() && userDocSnap.data().name) {
@@ -409,35 +408,12 @@
                 } else {
                     lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar los mensajes. Revisa la consola (F12) para más detalles.</p>';
                 }
-                
-                await checkNewVideos();
-
             } else {
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
-            }
-        });
-
-        async function checkNewVideos() {
-            const notificationTicker = document.getElementById('notification-ticker');
-            try {
-                const response = await fetch(inspirationVideosUrl);
-                if (!response.ok) return;
-                const csvText = await response.text();
-                const videoCount = (csvText.trim().split(/\r?\n/).length - 1); 
-                
-                const lastSeenCount = parseInt(localStorage.getItem('lastVideoCount') || '0');
-
-                if (videoCount > lastSeenCount) {
-                    notificationTicker.classList.add('show');
-                } else {
-                    notificationTicker.classList.remove('show');
-                }
-            } catch (error) {
-                console.error("No se pudo verificar si hay nuevos vídeos:", error);
                 notificationTicker.classList.remove('show');
             }
-        }
+        });
 
         async function fetchAllLessons() {
             const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgJn05SkzONj1pCuB6pmJUnJcErDBDCuRd8MaC5m3uLmV3KSs-X1wFqxngdcv50_vymFlnmx4rUdcT/pub?gid=0&single=true&output=csv';
@@ -475,23 +451,12 @@
             return lessons;
         }
 
-
         logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
                 window.location.href = './login.html';
             }).catch((error) => {
                 console.error('Error al cerrar sesión:', error);
             });
-        });
-        
-        // --- CORRECCIÓN: Escuchar el evento 'pageshow' ---
-        window.addEventListener('pageshow', (event) => {
-            // Este evento se dispara cada vez que la página se muestra,
-            // incluyendo cuando se vuelve desde la caché del navegador (al usar el botón "atrás").
-            // Esto asegura que la comprobación de notificaciones se ejecute siempre.
-            if (auth.currentUser) {
-                checkNewVideos();
-            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
