@@ -11,22 +11,47 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body{
+        
+        body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #fbf5e2;
-            color: #0c2f5b;
+            background-color: #0c1427;
+            color: #fbf5e2;
             transition: opacity 0.3s ease-in-out;
+            overflow-x: hidden;
             opacity: 0; /* Oculto por defecto para evitar parpadeo */
         }
-        .card { background-color: #ffffff; border: 1px solid #e0d9c6; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); }
-        .highlight-card { border: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(to right, #00bcd4, #e91e63) border-box; border-radius: 0.5rem; }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .card { 
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
+            border: 1px solid rgba(0, 188, 212, 0.5);
+        }
+        .highlight-card { 
+            border: 2px solid transparent; 
+            background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)) padding-box, linear-gradient(to right, #00bcd4, #e91e63) border-box; 
+            border-radius: 0.5rem; 
+        }
         
-        /* --- ESTILO DE TARJETA DE LECCIÓN MEJORADO --- */
         .lesson-card-spectacular {
-            background: linear-gradient(145deg, #fffdf7, #fffaf0);
-            border: 1px solid #e0d9c6;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             border-radius: 0.75rem;
             padding: 2rem;
             position: relative;
@@ -48,144 +73,163 @@
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
             z-index: 0;
+            opacity: 0.7;
         }
-        .lesson-card-spectacular > * {
-            position: relative;
-            z-index: 1;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .lesson-card-spectacular #lesson-phrase {
-            font-weight: 700;
-            font-style: italic;
-            font-size: 1.5rem;
-        }
-        .lesson-card-spectacular #lesson-explanation {
-            text-align: center;
-        }
+        .lesson-card-spectacular > * { position: relative; z-index: 1; }
+        .lesson-card-spectacular #lesson-phrase { font-weight: 700; font-style: italic; font-size: 1.5rem; color: #fde68a; text-shadow: 0 0 10px rgba(253, 230, 138, 0.5); }
+        .lesson-card-spectacular #lesson-explanation { text-align: center; color: #fbf5e2; }
 
-
-        .btn { position: relative; z-index: 1; overflow: hidden; transition: color 0.4s ease-out, background-color 0.3s; border: 2px solid transparent; display: inline-flex; align-items: center; justify-content: center; }
-        .btn-pink { background-color: #e91e63; color: white; }
-        .btn-cyan { background-color: #00bcd4; color: white; }
-        .btn-whatsapp { background-color: #25D366; color: white; }
-        .btn-telegram { background-color: #0088cc; color: white; }
-        .btn:hover { filter: brightness(110%); }
-        .btn-pink::before, .btn-cyan::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: -1; transform: scaleX(0); transform-origin: right; transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
-        .btn-pink:hover { color: #e91e63; }
-        .btn-cyan:hover { color: #00bcd4; }
-        .btn-pink:hover::before { border: 2px solid #e91e63; transform: scaleX(1); transform-origin: left; }
-        .btn-cyan:hover::before { border: 2px solid #00bcd4; transform: scaleX(1); transform-origin: left; }
+        .btn { 
+            position: relative; 
+            z-index: 1; 
+            overflow: hidden; 
+            transition: all 0.3s ease; 
+            border: 1px solid transparent;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white;
+            box-shadow: 0 0 5px rgba(255,255,255,0.2);
+        }
+        .btn-pink { background-color: transparent; border-color: #e91e63; }
+        .btn-cyan { background-color: transparent; border-color: #00bcd4; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--glow-color);
+            background-color: var(--glow-color-bg);
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); }
         
-        /* --- ESTILOS MODIFICADOS PARA BOTÓN DE LECCIONES --- */
+        .btn-lecciones {
+            background-image: linear-gradient(45deg, #00bcd4 0%, #009688 100%);
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        .btn-lecciones i {
+            margin-right: 0.5rem; /* Separación entre icono y texto */
+        }
+        .btn-videos {
+            background-image: linear-gradient(45deg, #f59e0b, #d97706);
+            border: none;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+
         @keyframes heartbeat {
             0% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(0, 188, 212, 0.5); }
             50% { transform: scale(1.05); box-shadow: 0 0 40px 15px rgba(0, 188, 212, 0.8); }
             100% { transform: scale(1); box-shadow: 0 0 15px 5px rgba(0, 188, 212, 0.5); }
         }
-        .btn-lecciones-wrapper {
-            position: relative;
-        }
-        .btn-lecciones {
-            background-image: linear-gradient(45deg, #00bcd4 0%, #009688 100%);
-            color: white;
-            transition: all 0.3s ease-in-out;
-            border: none;
-        }
-        .btn-lecciones.animate-heartbeat {
-            animation: heartbeat 2.5s infinite ease-in-out;
-        }
-        .btn-lecciones:hover {
-            transform: translateY(-3px) scale(1.08);
-        }
-        .btn-lecciones i {
-            margin-right: 0.5rem;
-        }
+        .btn-lecciones.animate-heartbeat { animation: heartbeat 2.5s infinite ease-in-out; }
 
-        /* --- NUEVO ESTILO PARA BOTÓN DE VIDEOS --- */
-        .btn-videos {
-            background-image: linear-gradient(45deg, #f59e0b, #d97706);
-            color: white;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-        }
-        .btn-videos:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
-        }
-
-        /* --- ESTILO PARA NOTIFICACIÓN TICKER --- */
         #notification-ticker {
-            background: linear-gradient(45deg, #0c2f5b, #1e3a8a);
-            color: #fde68a; /* Gold-like color */
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            color: #fde68a;
             padding: 0.75rem 0;
             width: 100%;
             overflow: hidden;
             position: sticky;
             top: 0;
-            z-index: 1001; /* High z-index */
+            z-index: 1001;
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: none; /* Hidden by default */
+            border-bottom: 1px solid rgba(253, 230, 138, 0.3);
+            display: none;
         }
-        #notification-ticker.show {
-            display: block;
+        #notification-ticker.show { display: block; }
+        .ticker-wrap { display: inline-block; padding-left: 100%; animation: ticker-scroll 30s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 2rem; font-weight: 700; letter-spacing: 1px; }
+        .ticker-item i { margin-right: 0.75rem; color: #facc15; }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        .text-brand-green { color: #00bcd4; text-shadow: 0 0 8px rgba(0, 188, 212, 0.7); }
+        .text-brand-pink { color: #e91e63; text-shadow: 0 0 8px rgba(233, 30, 99, 0.7); }
+        h1, h2, h3, h4 { color: #fbf5e2; }
+        p { color: #fbf5e2; }
+        .text-gray-700 { color: #fbf5e2 !important; }
+        .text-gray-600 { color: #b0b0b0 !important; }
+        
+        .section-divider { border: 0; height: 1px; background-image: linear-gradient(to right, transparent, rgba(0, 188, 212, 0.5), transparent); }
+        
+        .accordion-toggle { background-color: rgba(255, 255, 255, 0.05); color: #fbf5e2; }
+        .accordion-toggle.active { background-color: #00bcd4; color: white; }
+        .accordion-content { background-color: rgba(255, 255, 255, 0.03); max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .accordion-toggle i.fa-chevron-down { transition: transform 0.3s ease; }
+
+        #scroll-to-top-btn { 
+            position: fixed; 
+            bottom: 1.5rem; 
+            right: 1.5rem; 
+            background-color: rgba(233, 30, 99, 0.8); 
+            color: white; 
+            width: 3.5rem; 
+            height: 3.5rem; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            cursor: pointer; 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: translateY(20px); 
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s; 
+            z-index: 999; 
         }
-        .ticker-wrap {
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker-scroll 30s linear infinite;
+        #scroll-to-top-btn.show {
+             opacity: 1; visibility: visible; transform: translateY(0);
         }
-        .ticker-item {
-            display: inline-block;
-            padding: 0 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .ticker-item i {
-            margin-right: 0.75rem;
-            color: #facc15; /* Brighter yellow */
-        }
-        @keyframes ticker-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+        #scroll-to-top-btn:hover {
+            background-color: #e91e63;
         }
 
-        .text-brand-green { color: #00bcd4; }
-        .text-brand-pink { color: #e91e63; }
-        .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; max-height: 160px; overflow: hidden; border-radius: 8px; }
-        .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .fade-in-animate { animation: fadeIn 1.2s ease-out forwards; }
-        .shine-animate { animation: shine 2s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shine { 0%, 100% { filter: drop-shadow(0 0 0px gold); } 50% { filter: drop-shadow(0 0 20px gold); } }
-        .initially-hidden { opacity: 0; }
-        #bookmark-tooltip { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #0c2f5b; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, bottom 0.3s; z-index: 100; }
+        #auth-message h1 { color: #ef4444; }
+        #auth-message p { color: #fbf5e2; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background-color: #0c1427; border: 1px solid rgba(255,255,255,0.2); padding: 2.5rem; border-radius: 0.75rem; max-width: 500px; width: 100%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
+        
+        #bookmark-tooltip { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background-color: #0c2f5b; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, bottom 0.3s; z-index: 100; }
         #bookmark-tooltip.show { opacity: 1; visibility: visible; bottom: 3rem; }
-        #bookmark-btn { animation: star-glow 2.5s infinite ease-in-out; }
-        @keyframes star-glow { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #facc15); } 50% { transform: scale(1.2); filter: drop-shadow(0 0 8px #fde047); } }
-        .accordion-toggle { transition: background-color 0.3s ease; }
-        .accordion-toggle.active { background-color: #00bcd4; color: white; }
-        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-        .accordion-toggle i.fa-chevron-down { transition: transform 0.3s ease; }
-        .section-divider { border: 0; height: 6px; background: #e0d9c6; border-radius: 6px; border-top: 2px solid rgba(0, 0, 0, 0.25); border-bottom: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 10px 25px 0px rgba(255, 255, 255, 0.7); }
+
+        .banner-container img {
+            border-radius: 0.5rem;
+            animation: banner-glow 5s infinite ease-in-out;
+        }
+        
+        @keyframes banner-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.8));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.8));
+            }
+        }
+
+        .calendar-container iframe {
+            filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+            border-radius: 0.5rem;
+        }
+
         .contact-link { position: relative; transition: color 0.3s ease-out; }
         .contact-link > * { transition: color 0.3s ease-out; }
         .contact-link::after { content: ''; position: absolute; width: 100%; height: 2px; bottom: -4px; left: 0; background-color: #00bcd4; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease-out; }
         .contact-link:hover::after { transform: scaleX(1); }
         .contact-link:hover, .contact-link:hover > * { color: #00bcd4 !important; }
-        .teaser-card { position: relative; overflow: hidden; filter: grayscale(80%); cursor: pointer; transition: filter 0.3s ease, transform 0.3s ease; }
-        .teaser-card:hover { filter: grayscale(0%); transform: translateY(-5px); }
-        .teaser-badge { position: absolute; top: 1rem; right: 1rem; background-color: #e91e63; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: bold; transform: rotate(15deg); }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background-color: #fffaf0; padding: 2.5rem; border-radius: 0.75rem; max-width: 500px; width: 100%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
-        .modal-overlay.show .modal-content { transform: scale(1); }
-        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
-        #scroll-to-top-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; background-color: #0c2f5b; color: white; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 0.3s, visibility 0.3s, transform 0.3s; z-index: 999; }
-        #scroll-to-top-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .contact-link.text-brand-pink:hover, .contact-link.text-brand-pink:hover > * { color: #e91e63 !important; }
+        .contact-link.text-brand-pink::after { background-color: #e91e63; }
+
+        .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
     </style>
 </head>
-<body class="antialiased" style="opacity: 0; visibility: hidden;">
+<body class="antialiased">
+
+    <canvas id="background-canvas"></canvas>
 
     <!-- Notification Ticker -->
     <div id="notification-ticker">
@@ -199,17 +243,19 @@
         </div>
     </div>
 
-    <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
+    <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10" style="display: none;">
         <header class="mb-16 flex flex-col items-center gap-6">
-            <img src="https://i.imgur.com/I7XshtA.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
+            <div class="banner-container">
+                <img src="https://i.imgur.com/L2gwqzH.png" alt="Banner de la Membresía" class="w-full h-auto shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
+            </div>
             <button id="logout-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg text-sm">
                 <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
             </button>
         </header>
 
         <section class="text-center mb-32 md:mb-40">
-            <h1 id="welcome-title" class="text-5xl md:text-6xl font-bold mb-4">Bienvenido/a...</h1>
-            <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+            <h1 id="welcome-title" class="text-5xl md:text-6xl font-bold mb-4" style="text-shadow: 0 0 15px rgba(255,255,255,0.3);">Bienvenido/a...</h1>
+            <p class="text-lg max-w-2xl mx-auto">
                 Este es nuestro centro de operaciones. ¡Guarda esta página en tus favoritos!
                 <button id="bookmark-btn" class="ml-2 text-yellow-400 text-xl"><i class="fas fa-star"></i></button>
             </p>
@@ -217,26 +263,24 @@
         
         <section>
             <h2 class="text-3xl font-bold mb-6 text-center">🗓️ Calendario de Mentorías</h2>
-            <div class="card rounded-lg overflow-hidden p-0" style="max-height: 400px;">
-                 <iframe src="https://calendar.google.com/calendar/embed?height=400&wkst=1&ctz=Europe%2FMadrid&showPrint=0&src=MDhiYzQxOGMzMTA0Y2VhYTdkODhlNjI2YWVkODQyZTU5OGM5MDViZDA3YjkzYTMzNGFkNTM1M2ZiYWJhOWE4M0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23c0ca33&mode=AGENDA" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
+            <div class="card rounded-lg overflow-hidden p-0 calendar-container" style="max-height: 400px;">
+                 <iframe src="https://calendar.google.com/calendar/embed?height=400&wkst=1&ctz=Europe%2FMadrid&showPrint=0&src=MDhiYzQxOGMzMTA0Y2VhYTdkODhlNjI2YWVkODQyZTU5OGM5MDViZDA3YjkzYTMzNGFkNTM1M2ZiYWJhOWE4M0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%2300BCD4&mode=AGENDA&bgcolor=%230c1427" style="border: 0" width="100%" height="400" frameborder="0" scrolling="no"></iframe>
             </div>
         </section>
         <hr class="my-28 section-divider">
         <section>
             <h2 class="text-3xl font-bold mb-6 text-center">
-                <i class="fas fa-envelope-open-text mr-3 text-amber-600"></i>Mensaje del Día
+                <i class="fas fa-envelope-open-text mr-3" style="color: #f59e0b;"></i>Mensaje del Día
             </h2>
             <div id="daily-lesson-container" class="lesson-card-spectacular text-center">
-                <p class="text-lg text-gray-500">Cargando mensaje...</p>
+                <p class="text-lg">Cargando mensaje...</p>
             </div>
-            <!-- --- BOTONES MODIFICADOS --- -->
             <div class="flex justify-center items-center flex-wrap gap-4 mt-6">
                 <div class="btn-lecciones-wrapper">
                     <a href="./progreso.html" id="btn-lecciones" class="btn btn-lecciones font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
                         <i class="fas fa-book-open"></i>Mis lecciones
                     </a>
                 </div>
-                <!-- BOTÓN ACTUALIZADO PARA ENLAZAR -->
                 <a href="./inspiracion.html" id="btn-conocimiento" class="btn btn-videos font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
                     <i class="fas fa-video mr-2"></i>Inspiración y Conocimiento
                 </a>
@@ -248,7 +292,7 @@
              <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramienta de Estudio</h2>
              <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center">
                  <h3 class="text-2xl font-bold mb-2">Plataforma Inteligente</h3>
-                 <p class="text-gray-700 mb-4 max-w-xl mx-auto">Tu asistente personal para explorar, consultar dudas, investigar y obtener resúmenes de "Un Curso de Milagros".</p>
+                 <p class="mb-4 max-w-xl mx-auto">Tu asistente personal para explorar, consultar dudas, investigar y obtener resúmenes de "Un Curso de Milagros".</p>
                  <div class="inline-block btn btn-cyan font-bold py-2 px-4 rounded-lg">Cómo Empezar</div>
             </a>
         </section>
@@ -261,34 +305,33 @@
                     <div class="teaser-badge">Próximamente</div>
                     <i class="fas fa-coins text-5xl text-yellow-500 mb-4"></i>
                     <h3 class="text-2xl font-bold">Dinero</h3>
-                    <p class="text-gray-600 mt-2">Sanando tu relación con la abundancia.</p>
+                    <p class="mt-2">Sanando tu relación con la abundancia.</p>
                 </div>
                 <div class="teaser-card card p-6 rounded-lg text-center">
                     <div class="teaser-badge">Próximamente</div>
                     <i class="fas fa-heartbeat text-5xl text-red-500 mb-4"></i>
                     <h3 class="text-2xl font-bold">Salud</h3>
-                    <p class="text-gray-600 mt-2">El cuerpo como herramienta de aprendizaje.</p>
+                    <p class="mt-2">El cuerpo como herramienta de aprendizaje.</p>
                 </div>
                 <div class="teaser-card card p-6 rounded-lg text-center">
                     <div class="teaser-badge">Próximamente</div>
                     <i class="fas fa-heart text-5xl text-pink-500 mb-4"></i>
                     <h3 class="text-2xl font-bold">Amor</h3>
-                    <p class="text-gray-600 mt-2">Relaciones especiales y relaciones santas.</p>
+                    <p class="mt-2">Relaciones especiales y relaciones santas.</p>
                 </div>
             </div>
         </section>
 
         <hr class="my-28 section-divider">
         <div class="space-y-4">
-            <!-- Acordeones -->
             <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
+                <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
                     <span class="text-xl font-bold">Comunidad Privada</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
-                <div class="accordion-content bg-white rounded-b-lg">
+                <div class="accordion-content rounded-b-lg">
                     <div class="p-6 content-wrapper">
-                        <p class="text-gray-700 mb-4 text-center">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+                        <p class="mb-4 text-center">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
                         <div class="flex justify-center gap-4">
                             <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
                             <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-telegram font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
@@ -297,60 +340,143 @@
                 </div>
             </div>
             <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
+                <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
                     <span class="text-xl font-bold">Recursos y Sesiones</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
-                <div class="accordion-content bg-white rounded-b-lg">
+                <div class="accordion-content rounded-b-lg">
                     <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 content-wrapper">
-                        <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="text-gray-700 mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
-                        <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="text-gray-700 mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
+                        <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
+                        <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
                     </div>
                 </div>
             </div>
             <div>
-                <button class="accordion-toggle w-full flex justify-between items-center bg-white p-4 rounded-lg shadow-md text-left">
+                <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
                     <span class="text-xl font-bold">Audios</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
-                <div class="accordion-content bg-white rounded-b-lg">
+                <div class="accordion-content rounded-b-lg">
                     <div class="p-6 space-y-6 content-wrapper">
-                        <div class="card p-4 rounded-lg"><h3 class="font-bold mb-2"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3><div class="youtube-container"><iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
-                        <div class="card p-4 rounded-lg"><h3 id="dynamic-audio-title" class="font-bold mb-2">Cargando conversación...</h3><div id="dynamic-youtube-player" class="youtube-container"><p class="text-center text-gray-500 p-4">Cargando último vídeo...</p></div></div>
+                        <div class="card p-4 rounded-lg max-w-xl mx-auto"><h3 class="font-bold mb-2"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3><div class="youtube-container"><iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+                        <div class="card p-4 rounded-lg max-w-xl mx-auto"><h3 id="dynamic-audio-title" class="font-bold mb-2">Cargando conversación...</h3><div id="dynamic-youtube-player" class="youtube-container"><p class="text-center p-4">Cargando último vídeo...</p></div></div>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+        <footer class="mt-20 py-8 border-t border-gray-700 text-center">
              <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
              <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
-                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2">
                      <i class="fas fa-envelope text-2xl"></i>
                      <span>lamentedelfenix@gmail.com</span>
                  </a>
-                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link flex items-center gap-2 text-pink-600">
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link text-brand-pink flex items-center gap-2">
                      <i class="fab fa-instagram text-2xl"></i>
                      <span>@darioarrigazzi</span>
                  </a>
              </div>
         </footer>
     </div>
-
+    
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
+        <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
         <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
         <a href="./login.html" class="mt-8 inline-block btn btn-pink font-bold py-3 px-6 rounded-lg">
             Ir a Iniciar Sesión
         </a>
     </div>
 
+    <!-- Modal para Próximas Áreas -->
+    <div id="coming-soon-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="close-coming-soon-modal" class="modal-close-btn">&times;</span>
+            <div class="text-yellow-500 text-5xl mb-4"><i class="fas fa-tools"></i></div>
+            <h3 class="text-2xl font-bold mb-2">¡Función en Desarrollo!</h3>
+            <p>Esta área estará disponible muy pronto.</p>
+        </div>
+    </div>
+
     <div id="bookmark-tooltip">
-        Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Ctrl</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
+        Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar esta página.
     </div>
     
     <button id="scroll-to-top-btn" title="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <script>
+        // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.body.scrollHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeLag);
+            window.resizeLag = setTimeout(() => {
+                resizeCanvas();
+                initParticles();
+            }, 500);
+        });
+
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                resizeCanvas();
+                initParticles();
+            }
+        });
+        resizeObserver.observe(document.body);
+        
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -370,25 +496,23 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
+
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
+        const notificationTicker = document.getElementById('notification-ticker');
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
-        const newLessonBtn = document.getElementById('new-lesson-btn');
         const logoutBtn = document.getElementById('logout-btn');
-        const notificationTicker = document.getElementById('notification-ticker');
         let allLessons = [];
         let startAnimation;
 
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
-            document.body.style.visibility = 'visible';
 
             if (user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
-                notificationTicker.classList.add('show'); // Mostrar siempre la notificación
+                notificationTicker.classList.add('show');
 
                 const userDocSnap = await getDoc(doc(db, "users", user.uid));
                 if (userDocSnap.exists() && userDocSnap.data().name) {
@@ -406,7 +530,7 @@
                     let pseudoRandomIndex = seed % allLessons.length;
                     displayLesson(allLessons[pseudoRandomIndex]);
                 } else {
-                    lessonContainer.innerHTML = '<p class="text-lg text-red-500">No se pudieron cargar los mensajes. Revisa la consola (F12) para más detalles.</p>';
+                    lessonContainer.innerHTML = '<p class="text-lg text-red-400">No se pudieron cargar los mensajes.</p>';
                 }
             } else {
                 mainContent.style.display = 'none';
@@ -414,7 +538,7 @@
                 notificationTicker.classList.remove('show');
             }
         });
-
+        
         async function fetchAllLessons() {
             const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgJn05SkzONj1pCuB6pmJUnJcErDBDCuRd8MaC5m3uLmV3KSs-X1wFqxngdcv50_vymFlnmx4rUdcT/pub?gid=0&single=true&output=csv';
 
@@ -465,11 +589,8 @@
                 elements.forEach(el => {
                     (function(currentEl) {
                         setTimeout(() => {
-                            currentEl.classList.add('fade-in-animate');
-                            currentEl.classList.remove('initially-hidden');
-                            if (currentEl.id === 'lesson-phrase') {
-                                currentEl.querySelector('strong').classList.add('shine-animate');
-                            }
+                            el.style.opacity = 1;
+                            el.style.transform = 'translateY(0)';
                         }, delay);
                     })(el);
                     delay += 300;
@@ -493,19 +614,23 @@
                     
                     const h4 = document.createElement('h4');
                     h4.id = 'lesson-number';
-                    h4.className = 'text-sm font-bold tracking-widest uppercase initially-hidden text-amber-600';
+                    h4.className = 'text-sm font-bold tracking-widest uppercase';
+                    h4.style.color = '#f59e0b';
+                    h4.style.opacity = 0; h4.style.transform = 'translateY(20px)'; h4.style.transition = 'all 0.5s ease';
                     h4.textContent = lessonNum ? `Lección ${lessonNum}` : 'Concepto Clave';
 
                     const p1 = document.createElement('p');
                     p1.id = 'lesson-phrase';
-                    p1.className = 'text-xl md:text-2xl mt-2 initially-hidden text-cyan-700';
+                    p1.className = 'text-xl md:text-2xl mt-2';
+                    p1.style.opacity = 0; p1.style.transform = 'translateY(20px)'; p1.style.transition = 'all 0.5s ease';
                     const strongEl = document.createElement('strong');
                     strongEl.textContent = `“${phrase}”`;
                     p1.appendChild(strongEl);
                     
                     const p2 = document.createElement('p');
                     p2.id = 'lesson-explanation';
-                    p2.className = 'text-lg mt-4 initially-hidden text-gray-800';
+                    p2.className = 'text-lg mt-4';
+                    p2.style.opacity = 0; p2.style.transform = 'translateY(20px)'; p2.style.transition = 'all 0.5s ease';
                     p2.innerHTML = explanation ? explanation.replace(/\n/g, '<br>') : 'Contenido no disponible.';
                     
                     lessonContainer.appendChild(h4);
@@ -517,12 +642,14 @@
                     if (exercise && exercise.trim() !== '') {
                         const exerciseBox = document.createElement('div');
                         exerciseBox.id = 'lesson-exercise-box';
-                        exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed border-amber-300 w-full initially-hidden';
+                        exerciseBox.className = 'mt-6 pt-4 border-t-2 border-dashed w-full';
+                        exerciseBox.style.borderColor = 'rgba(253, 230, 138, 0.3)';
+                        exerciseBox.style.opacity = 0; exerciseBox.style.transform = 'translateY(20px)'; exerciseBox.style.transition = 'all 0.5s ease';
                         const h5 = document.createElement('h5');
                         h5.className = 'font-bold text-brand-pink';
                         h5.textContent = 'Ejercicio Recomendado:';
                         const p3 = document.createElement('p');
-                        p3.className = 'mt-2 text-gray-700';
+                        p3.className = 'mt-2';
                         p3.textContent = exercise;
                         exerciseBox.appendChild(h5);
                         exerciseBox.appendChild(p3);
@@ -538,6 +665,16 @@
                 }
             };
             
+            const newLessonBtn = document.getElementById('new-lesson-btn');
+            if (newLessonBtn) {
+                newLessonBtn.addEventListener('click', () => {
+                    if (allLessons.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * allLessons.length);
+                        displayLesson(allLessons[randomIndex]);
+                    }
+                });
+            }
+
             const leccionesBtn = document.getElementById('btn-lecciones');
             const storageKey = 'lastLessonButtonClickDate';
 
@@ -545,61 +682,56 @@
                 const lastClickDate = localStorage.getItem(storageKey);
                 const today = new Date().toISOString().slice(0, 10);
 
-                if (lastClickDate !== today) {
+                if (leccionesBtn && lastClickDate !== today) {
                     leccionesBtn.classList.add('animate-heartbeat');
-                } else {
+                } else if (leccionesBtn) {
                     leccionesBtn.classList.remove('animate-heartbeat');
                 }
             }
+            if(leccionesBtn) {
+                leccionesBtn.addEventListener('click', () => {
+                    const today = new Date().toISOString().slice(0, 10);
+                    localStorage.setItem(storageKey, today);
+                    leccionesBtn.classList.remove('animate-heartbeat');
+                });
+                checkButtonAnimation();
+            }
 
-            leccionesBtn.addEventListener('click', () => {
-                const today = new Date().toISOString().slice(0, 10);
-                localStorage.setItem(storageKey, today);
-                leccionesBtn.classList.remove('animate-heartbeat');
-            });
+            const comingSoonModal = document.getElementById('coming-soon-modal');
+            const closeModalBtn = document.getElementById('close-coming-soon-modal');
 
-            checkButtonAnimation();
-
-            const modalOverlay = document.createElement('div');
-            modalOverlay.id = 'coming-soon-modal';
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.innerHTML = `
-                <div class="modal-content">
-                    <span class="modal-close-btn">&times;</span>
-                    <div class="text-yellow-500 text-5xl mb-4"><i class="fas fa-tools"></i></div>
-                    <h3 class="text-2xl font-bold mb-2">¡Función en Desarrollo!</h3>
-                    <p class="text-gray-700">Esta área estará disponible muy pronto.</p>
-                </div>
-            `;
-            document.body.appendChild(modalOverlay);
-
-            const showModal = () => modalOverlay.classList.add('show');
-            const closeModal = () => modalOverlay.classList.remove('show');
+            const showModal = () => comingSoonModal.classList.add('show');
+            const closeModal = () => comingSoonModal.classList.remove('show');
             
-            modalOverlay.querySelector('.modal-close-btn').addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) closeModal();
-            });
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+            if(comingSoonModal) {
+                comingSoonModal.addEventListener('click', (e) => {
+                    if (e.target === comingSoonModal) closeModal();
+                });
+            }
 
             const teaserCards = document.querySelectorAll('.teaser-card');
             teaserCards.forEach(card => card.addEventListener('click', showModal));
 
             const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    scrollToTopBtn.classList.add('show');
-                } else {
-                    scrollToTopBtn.classList.remove('show');
-                }
-            });
-
-            scrollToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+            if (scrollToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        scrollToTopBtn.classList.add('show');
+                    } else {
+                        scrollToTopBtn.classList.remove('show');
+                    }
                 });
-            });
+
+                scrollToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
 
             const dynamicYoutubeContainer = document.getElementById('dynamic-youtube-player');
             const dynamicAudioTitle = document.getElementById('dynamic-audio-title');
@@ -607,56 +739,54 @@
             
             function getYouTubeID(url) { const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); return (match && match[2].length === 11) ? match[2] : null; }
             function parseCsvRow(row) { const delimiter = row.includes(';') ? ';' : ','; const parts = []; let current = ''; let inQuotes = false; for (const char of row) { if (char === '"' && (row.indexOf(char) === 0 || row[row.indexOf(char)-1] !== '\\')) inQuotes = !inQuotes; else if (char === delimiter && !inQuotes) { parts.push(current); current = ''; } else { current += char; } } parts.push(current); return parts.map(item => item.trim().replace(/^"|"$/g, '')); }
-            if (audioPlaylistCsvUrl) { fetch(audioPlaylistCsvUrl).then(response => response.ok ? response.text() : Promise.reject('Audio list not found')).then(data => { const rows = data.split(/\r?\n/).filter(row => row.trim() !== ''); if (rows.length > 1) { const lastRow = rows[rows.length - 1]; const [title, link] = parseCsvRow(lastRow); const videoId = getYouTubeID(link); if (title && videoId) { dynamicAudioTitle.innerHTML = `<span class="text-brand-pink font-extrabold">CONVERSACIONES:</span> ${title}`; dynamicYoutubeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`; } } }).catch(error => { console.error('Error fetching YouTube playlist:', error); dynamicYoutubeContainer.innerHTML = '<p class="text-center text-red-500 p-4">No se pudo cargar el último vídeo.</p>'; }); }
+            if (audioPlaylistCsvUrl) { fetch(audioPlaylistCsvUrl).then(response => response.ok ? response.text() : Promise.reject('Audio list not found')).then(data => { const rows = data.split(/\r?\n/).filter(row => row.trim() !== ''); if (rows.length > 1) { const lastRow = rows[rows.length - 1]; const [title, link] = parseCsvRow(lastRow); const videoId = getYouTubeID(link); if (title && videoId) { if(dynamicAudioTitle) dynamicAudioTitle.innerHTML = `<span class="text-brand-pink font-extrabold">CONVERSACIONES:</span> ${title}`; if(dynamicYoutubeContainer) dynamicYoutubeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`; } } }).catch(error => { console.error('Error fetching YouTube playlist:', error); if(dynamicYoutubeContainer) dynamicYoutubeContainer.innerHTML = '<p class="text-center p-4">No se pudo cargar el último vídeo.</p>'; }); }
             
-            window.getDayOfYear = function() { const now = new Date(); const start = new Date(now.getFullYear(), 0, 0); const diff = now - start; const oneDay = 1000 * 60 * 60 * 24; return Math.floor(diff / oneDay); }
-            
-            newLessonBtn.addEventListener('click', () => {
-                if (allLessons.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * allLessons.length);
-                    displayLesson(allLessons[randomIndex]);
-                }
-            });
-
             const bookmarkBtn = document.getElementById('bookmark-btn');
             const bookmarkTooltip = document.getElementById('bookmark-tooltip');
-            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
             
-            if (isMobile) {
-                bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
-            } else if(navigator.userAgent.includes("Mac")) {
-                bookmarkTooltip.innerHTML = `Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar.`;
+            if (bookmarkBtn && bookmarkTooltip) {
+                const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                    bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
+                } else if(navigator.userAgent.includes("Mac")) {
+                    bookmarkTooltip.innerHTML = `Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar.`;
+                }
+                
+                bookmarkBtn.addEventListener('click', () => {
+                    bookmarkTooltip.classList.add('show');
+                    setTimeout(() => {
+                        bookmarkTooltip.classList.remove('show');
+                    }, 3000);
+                });
             }
-            
-            bookmarkBtn.addEventListener('click', () => {
-                bookmarkTooltip.classList.add('show');
-                setTimeout(() => {
-                    bookmarkTooltip.classList.remove('show');
-                }, 3000);
-            });
 
             const accordions = document.querySelectorAll('.accordion-toggle');
             accordions.forEach(accordion => {
                 accordion.addEventListener('click', () => {
                     const content = accordion.nextElementSibling;
+                    if (!content) return;
+
                     const icon = accordion.querySelector('i.fa-chevron-down');
                     const isActive = accordion.classList.contains('active');
-
-                    accordions.forEach(otherAccordion => {
-                        if (otherAccordion !== accordion) {
-                            otherAccordion.classList.remove('active');
-                            otherAccordion.nextElementSibling.style.maxHeight = null;
-                            otherAccordion.querySelector('i.fa-chevron-down').style.transform = 'rotate(0deg)';
-                        }
-                    });
 
                     if (isActive) {
                         accordion.classList.remove('active');
                         content.style.maxHeight = null;
-                        icon.style.transform = 'rotate(0deg)';
+                        if(icon) icon.style.transform = 'rotate(0deg)';
                     } else {
+                        // Primero, cierra todos los demás acordeones
+                        accordions.forEach(otherAccordion => {
+                            if (otherAccordion !== accordion) {
+                                otherAccordion.classList.remove('active');
+                                const otherContent = otherAccordion.nextElementSibling;
+                                if (otherContent) otherContent.style.maxHeight = null;
+                                const otherIcon = otherAccordion.querySelector('i.fa-chevron-down');
+                                if(otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                            }
+                        });
+                        // Luego, abre el actual
                         accordion.classList.add('active');
-                        icon.style.transform = 'rotate(180deg)';
+                        if(icon) icon.style.transform = 'rotate(180deg)';
                         content.style.maxHeight = content.scrollHeight + "px";
                     }
                 });
