@@ -63,7 +63,6 @@
         }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- NUEVA ANIMACIÓN PARA EL BANNER --- */
         @keyframes pulsating-brain-glow {
             0%, 100% {
                 filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.7));
@@ -185,12 +184,23 @@
             if (user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
+                // Cargar el libro solo si el usuario está autenticado
+                loadBookText();
             } else {
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
             }
         });
         
+        // --- LÓGICA DE LA HERRAMIENTA DE IA ---
+        
+        // =================================================================================
+        // IMPORTANTE: Pega tu propia API Key de Google AI aquí.
+        // Puedes obtenerla en Google AI Studio: https://aistudio.google.com/app/apikey
+        // =================================================================================
+        const GEMINI_API_KEY = "PEGA_AQUÍ_TU_API_KEY_DE_GOOGLE_AI";
+        // =================================================================================
+
         const explainBtn = document.getElementById('explain-btn');
         const prayBtn = document.getElementById('pray-btn');
         const conceptInput = document.getElementById('concept-input');
@@ -202,42 +212,59 @@
 
         let UCDM_TEXT = ''; // Almacenará el texto del libro.
 
+        // 1. FUNCIÓN PARA CARGAR EL LIBRO UNA SOLA VEZ
         async function loadBookText() {
-            if (UCDM_TEXT) return UCDM_TEXT;
+            if (UCDM_TEXT) return; // Si ya está cargado, no hacer nada
             
-            showAIResponse("Cargando el conocimiento de Un Curso de Milagros por primera vez...", false);
+            showAIResponse("Cargando el conocimiento de Un Curso de Milagros...", false);
             explainBtn.disabled = true;
             prayBtn.disabled = true;
 
             try {
-                // URL de tu Gist público
                 const gistUrl = 'https://gist.githubusercontent.com/lamentedelfenix/53ae2869adab53e259dc4aeaac8f5e03/raw/446ddea029bf49f851404bf2693c96fb099790f4/ucdm_completo.txt';
                 const response = await fetch(gistUrl);
                 
                 if (!response.ok) {
-                    throw new Error('No se pudo cargar el texto del libro desde la fuente externa.');
+                    throw new Error('No se pudo cargar el texto del libro desde GitHub.');
                 }
                 
                 UCDM_TEXT = await response.text();
                 showAIResponse("¡Listo! El conocimiento ha sido cargado. Ya puedes hacer tus preguntas.", false);
-                return UCDM_TEXT;
 
             } catch (error) {
                 console.error("Error al cargar el texto del libro:", error);
-                showAIResponse("Error: No se pudo cargar el texto de 'Un Curso de Milagros'. Por favor, inténtalo de nuevo más tarde.", true);
-                return null;
+                showAIResponse("Error: No se pudo cargar el texto de 'Un Curso de Milagros'. Por favor, recarga la página.", true);
             } finally {
                 explainBtn.disabled = false;
                 prayBtn.disabled = false;
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadBookText);
+        // 2. FUNCIÓN PARA ENCONTRAR FRAGMENTOS RELEVANTES EN EL LIBRO
+        function findRelevantChunks(query, text) {
+            if (!text) return "";
+
+            const MAX_CONTEXT_LENGTH = 15000; // Límite de caracteres para enviar a la IA
+            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+            const paragraphs = text.split(/\n\s*\n/); // Dividir por párrafos
+            let relevantText = "";
+
+            for (const p of paragraphs) {
+                const pLower = p.toLowerCase();
+                if (keywords.some(kw => pLower.includes(kw))) {
+                    if (relevantText.length + p.length < MAX_CONTEXT_LENGTH) {
+                        relevantText += p + "\n\n";
+                    } else {
+                        break; // Detenerse si se supera el límite de longitud
+                    }
+                }
+            }
+            return relevantText;
+        }
+
 
         function formatAIResponse(text) {
-            // Reemplaza **texto** con <strong class="text-brand-green">texto</strong>
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
-            // Elimina cualquier ** suelto que haya podido quedar.
             formattedText = formattedText.replace(/\*\*/g, '');
             aiResponseEl.innerHTML = formattedText;
         }
@@ -245,7 +272,7 @@
         function showAIResponse(message, isError = false) {
             loader.classList.add('hidden');
             aiPlaceholder.classList.add('hidden');
-            aiResponseEl.innerHTML = ''; // Limpiar contenido previo
+            aiResponseEl.innerHTML = '';
             
             if(isError) {
                 aiResponseEl.style.color = '#ef4444';
@@ -257,6 +284,11 @@
         }
 
         async function callAI(prompt) {
+            if (GEMINI_API_KEY === "PEGA_AQUÍ_TU_API_KEY_DE_GOOGLE_AI") {
+                showAIResponse("Error de configuración: Por favor, añade una API Key de Google AI válida en el código.", true);
+                return;
+            }
+
             aiResponseEl.innerHTML = '';
             aiPlaceholder.classList.add('hidden');
             loader.classList.remove('hidden');
@@ -265,8 +297,8 @@
 
             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
             const payload = { contents: chatHistory };
-            const apiKey = ""; // Dejar vacío
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const modelName = 'gemini-1.5-flash-latest';
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
 
             try {
                 const response = await fetch(apiUrl, {
@@ -275,21 +307,26 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Error de red: ${response.status}`);
-                }
-
                 const result = await response.json();
+
+                if (!response.ok) {
+                    const errorDetails = result.error ? result.error.message : `Error de red: ${response.status}`;
+                    throw new Error(errorDetails);
+                }
                 
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
                     showAIResponse(text.trim());
                 } else {
-                    throw new Error("Respuesta inesperada de la API.");
+                    let errorMessage = "La IA no pudo generar una respuesta. Esto puede ocurrir si la pregunta infringe las políticas de seguridad.";
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].finishReason) {
+                        errorMessage += ` (Razón: ${result.candidates[0].finishReason})`;
+                    }
+                    showAIResponse(errorMessage, true);
                 }
             } catch (error) {
                 console.error("Error al llamar a la IA:", error);
-                showAIResponse("Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.", true);
+                showAIResponse(`Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde. (${error.message})`, true);
             } finally {
                 loader.classList.add('hidden');
                 explainBtn.disabled = false;
@@ -297,29 +334,42 @@
             }
         }
 
-        explainBtn.addEventListener('click', async () => {
+        // 3. EVENT LISTENERS ACTUALIZADOS
+        explainBtn.addEventListener('click', () => {
             const concept = conceptInput.value.trim();
             if (!concept) {
                 showAIResponse("Por favor, introduce un concepto para explicar.", true);
                 return;
             }
-            const bookText = await loadBookText();
-            if (!bookText) return;
-
-            const prompt = `Basándote únicamente en el siguiente texto de 'Un Curso de Milagros', explica el concepto de '${concept}' de una forma clara y sencilla para un estudiante. Cita fragmentos relevantes si es posible. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**. Texto del curso: """${bookText}"""`;
+            if (!UCDM_TEXT) {
+                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
+                return;
+            }
+            
+            const relevantContext = findRelevantChunks(concept, UCDM_TEXT);
+            const prompt = 'Basándote estricta y únicamente en los siguientes fragmentos de \'Un Curso de Milagros\', explica el concepto de \'' + concept + '\' de una forma clara, profunda y sencilla para un estudiante. ' +
+                         'No uses ningún conocimiento externo a estos fragmentos. Si los fragmentos no son suficientes, indícalo. ' +
+                         'Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
+                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
             callAI(prompt);
         });
 
-        prayBtn.addEventListener('click', async () => {
+        prayBtn.addEventListener('click', () => {
             const situation = situationInput.value.trim();
             if (!situation) {
                 showAIResponse("Por favor, describe una situación para generar una oración.", true);
                 return;
             }
-            const bookText = await loadBookText();
-            if (!bookText) return;
+            if (!UCDM_TEXT) {
+                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
+                return;
+            }
 
-            const prompt = `Actúa como un guía experto en 'Un Curso de Milagros'. Basándote únicamente en los principios encontrados en el siguiente texto, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación: '${situation}'. La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. No añadas explicaciones, solo la oración. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**. Texto del curso: """${bookText}"""`;
+            const relevantContext = findRelevantChunks(situation, UCDM_TEXT);
+            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
+                         'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
+                         'Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
+                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
             callAI(prompt);
         });
     </script>
