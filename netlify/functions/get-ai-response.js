@@ -1,7 +1,6 @@
 // Este código debe ir en un archivo llamado:
-// /netlify/functions/get-ai-response.js
+// herramienta-ia-netlify/netlify/functions/get-ai-response.js
 
-// Importa 'node-fetch' para poder usar fetch en el entorno de Node.js de Netlify
 const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
