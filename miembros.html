@@ -20,7 +20,7 @@
             color: #fbf5e2;
             transition: opacity 0.3s ease-in-out;
             overflow-x: hidden;
-            opacity: 0;
+            opacity: 0; /* Oculto por defecto para evitar parpadeo */
         }
 
         #background-canvas {
@@ -45,8 +45,8 @@
             border: 1px solid rgba(0, 188, 212, 0.5);
         }
         .highlight-card { 
-            border: 2px solid transparent; 
-            background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)) padding-box, linear-gradient(to right, #00bcd4, #e91e63) border-box; 
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo más sutil */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 0.5rem; 
         }
         
@@ -91,7 +91,6 @@
             align-items: center; 
             justify-content: center; 
             color: white;
-            box-shadow: 0 0 5px rgba(255,255,255,0.2);
         }
         .btn-pink { background-color: transparent; border-color: #e91e63; }
         .btn-cyan { background-color: transparent; border-color: #00bcd4; }
@@ -222,6 +221,36 @@
         
         #share-preview-image { max-width: 100%; max-height: 60vh; border-radius: 0.5rem; margin: 0 auto 1.5rem auto; }
         #watermark { opacity: 0.7; font-size: 0.8rem; }
+
+        /* --- NUEVOS ESTILOS PARA BOTONES DE HERRAMIENTAS --- */
+        .tool-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            background-size: 200% auto;
+            transition: all 0.3s ease;
+            animation: pulsating-glow-alternating 4s infinite ease-in-out;
+        }
+        .tool-button:hover {
+            transform: scale(1.05);
+        }
+        .tool-button-cyan {
+            background-image: linear-gradient(120deg, #00bcd4, #007a8a);
+        }
+        .tool-button-pink {
+            background-image: linear-gradient(120deg, #e91e63, #b8184f);
+        }
+        @keyframes pulsating-glow-alternating {
+            0%, 100% {
+                box-shadow: 0 0 20px 4px rgba(233, 30, 99, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 30px 7px rgba(0, 188, 212, 0.5);
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -240,10 +269,10 @@
         </div>
     </div>
 
-    <div id="main-content" style="display: none;" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10">
+    <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10" style="display: none;">
         <header class="mb-16 flex flex-col items-center gap-6">
             <div class="banner-container">
-                <img src="https://i.imgur.com/L2gwqzH.png" alt="Banner de la Membresía" class="w-full h-auto shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
+                <img src="https://i.imgur.com/L2gwqzH.png" alt="Banner de la Membresía" class="w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
             </div>
             <button id="logout-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg text-sm">
                 <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
@@ -289,12 +318,23 @@
         </section>
         <hr class="my-28 section-divider">
         <section>
-             <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramienta de Estudio</h2>
-             <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center">
-                 <h3 class="text-2xl font-bold mb-2">Plataforma Inteligente</h3>
-                 <p class="mb-4 max-w-xl mx-auto">Tu asistente personal para explorar, consultar dudas, investigar y obtener resúmenes de "Un Curso de Milagros".</p>
-                 <div class="inline-block btn btn-cyan font-bold py-2 px-4 rounded-lg">Cómo Empezar</div>
-            </a>
+             <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramientas de Estudio</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Plataforma de Investigación</h3>
+                        <p class="mb-4 max-w-xl mx-auto">Tu espacio para explorar, consultar dudas e investigar en profundidad "Un Curso de Milagros".</p>
+                    </div>
+                    <div class="inline-block tool-button tool-button-cyan self-center mt-4">Cómo Empezar</div>
+                </a>
+                <a href="./herramienta-ia.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Asistente de Claridad (IA)</h3>
+                        <p class="mb-4 max-w-xl mx-auto">Obtén explicaciones de conceptos y oraciones personalizadas basadas en el curso al instante.</p>
+                    </div>
+                    <div class="inline-block tool-button tool-button-pink self-center mt-4">Acceder al Asistente</div>
+                </a>
+             </div>
         </section>
 
         <hr class="my-28 section-divider">
