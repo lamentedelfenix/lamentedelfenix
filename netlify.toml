@@ -1,0 +1,4 @@
+[build]
+  base = "herramienta-ia-netlify"
+  publish = "herramienta-ia-netlify"
+  functions = "herramienta-ia-netlify/netlify/functions"
