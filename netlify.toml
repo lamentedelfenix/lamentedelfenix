@@ -1,12 +1,9 @@
-# Este es el archivo de configuración corregido para Netlify.
+# Configuración de despliegue para Netlify
 
 [build]
-  # Directorio base donde se encuentra la herramienta de IA.
-  base = "herramienta-ia-netlify"
+  # Directorio que Netlify publicará como tu sitio web.
+  publish = "herramienta-ia-netlify"
   
-  # El directorio a publicar es el mismo directorio base.
-  publish = "." 
-  
-  # El directorio de las funciones seguras.
-  functions = "netlify/functions"
+  # Directorio donde se encuentran las funciones seguras.
+  functions = "herramienta-ia-netlify/netlify/functions"
 
