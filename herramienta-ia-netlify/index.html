@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramienta de Estudio IA - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0c1427;
+            color: #fbf5e2;
+            overflow-x: hidden;
+        }
+        #background-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+        }
+        .card { 
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn { 
+            position: relative; z-index: 1; overflow: hidden; transition: all 0.3s ease; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; color: white; box-shadow: 0 0 5px rgba(255,255,255,0.2);
+        }
+        .btn:hover { 
+            transform: translateY(-2px); box-shadow: 0 0 20px var(--glow-color); background-color: var(--glow-color-bg);
+        }
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .btn-pink { background-color: transparent; border-color: #e91e63; --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); }
+        .btn-cyan { background-color: transparent; border-color: #00bcd4; --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); }
+        
+        .text-brand-pink { color: #e91e63; text-shadow: 0 0 8px rgba(233, 30, 99, 0.7); }
+        .text-brand-green { color: #00bcd4; text-shadow: 0 0 8px rgba(0, 188, 212, 0.7); }
+        
+        input, textarea {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fbf5e2;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00bcd4;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        #ai-response-card {
+            min-height: 150px;
+            white-space: pre-wrap;
+        }
+        .loader {
+            width: 48px; height: 48px; border: 5px solid #fbf5e2; border-bottom-color: #e91e63; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @keyframes pulsating-brain-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.7));
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(0, 188, 212, 1));
+            }
+        }
+        .pulsating-banner {
+            animation: pulsating-brain-glow 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="background-canvas"></canvas>
+
+    <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10">
+        <header class="mb-12 text-center">
+            <div class="mb-8">
+                <img src="https://i.imgur.com/czz25c5.png" alt="Banner de Herramienta IA" class="pulsating-banner w-full h-auto rounded-lg max-w-md mx-auto">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-brand-pink">Generador de Claridad</h1>
+            <p class="text-lg max-w-2xl mx-auto">Tu asistente de IA personal para profundizar en "Un Curso de Milagros".</p>
+            <p class="text-sm text-gray-400 mt-2 italic">Esta IA ha sido configurada por Darío Arrigazzi para dar sus respuestas exclusivamente basada en los textos de UCDM.</p>
+        </header>
+
+        <main class="space-y-12">
+            <section class="card rounded-lg p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-4"><i class="fas fa-book-open mr-3 text-cyan-400"></i>Explícame este concepto</h2>
+                <p class="mb-4">Introduce un término o concepto del curso (ej: "Proyección", "Ego", "Relación Santa") y la IA te lo explicará basándose en el libro.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="concept-input" placeholder="Escribe el concepto aquí..." class="w-full p-3 rounded-lg transition">
+                    <button id="explain-btn" class="btn btn-cyan font-bold py-3 px-6 rounded-lg">Generar Explicación</button>
+                </div>
+            </section>
+
+            <section class="card rounded-lg p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-4"><i class="fas fa-feather-alt mr-3 text-pink-400"></i>Dame una oración para...</h2>
+                <p class="mb-4">Describe una situación que te preocupe (ej: "un conflicto con un familiar", "miedo a la escasez") y la IA creará una oración para ayudarte a cambiar tu percepción.</p>
+                
+                <div class="text-sm text-gray-300 mt-4 mb-4 border-t border-b border-cyan-400/20 py-3 px-2 rounded-md">
+                    <p class="font-bold mb-2">Instrucciones para la práctica:</p>
+                    <p>Para anclar esta oración en tu mente, se necesita un <a href="https://amzn.to/3IEK6u8" target="_blank" class="text-cyan-400 hover:text-cyan-300 underline">Japa Mala (Rosario Hindú de 108 cuentas)</a>. Por la noche, justo antes de dormir, repite la oración generada por cada una de las 108 bolitas. Es un ejercicio de 3-4 minutos. Opcionalmente, puedes hacerlo también por la mañana.</p>
+                </div>
+                
+                <textarea id="situation-input" rows="3" placeholder="Describe la situación aquí..." class="w-full p-3 rounded-lg transition"></textarea>
+                <button id="pray-btn" class="btn btn-pink font-bold py-3 px-6 rounded-lg mt-4">Generar Oración</button>
+            </section>
+
+            <section id="ai-response-card" class="card rounded-lg p-6 md:p-8 flex items-center justify-center transition-all duration-500">
+                <p id="ai-placeholder" class="text-gray-400">La respuesta de la IA aparecerá aquí...</p>
+                <div id="loader" class="loader hidden"></div>
+                <p id="ai-response" class="text-lg leading-relaxed"></p>
+            </section>
+        </main>
+        
+        <footer class="mt-12 text-center">
+             <a href="javascript:history.back()" class="btn btn-cyan font-bold py-2 px-5 rounded-lg text-sm bg-opacity-80">
+                <i class="fas fa-arrow-left mr-2"></i> Volver
+            </a>
+        </footer>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+        class Particle {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
+        window.addEventListener('resize', () => { clearTimeout(window.resizeLag); window.resizeLag = setTimeout(() => { resizeCanvas(); initParticles(); }, 500); });
+        const resizeObserver = new ResizeObserver(() => { resizeCanvas(); initParticles(); });
+        resizeObserver.observe(document.body);
+        resizeCanvas(); initParticles(); animateParticles();
+    </script>
+
+    <script>
+        const explainBtn = document.getElementById('explain-btn');
+        const prayBtn = document.getElementById('pray-btn');
+        const conceptInput = document.getElementById('concept-input');
+        const situationInput = document.getElementById('situation-input');
+        
+        const loader = document.getElementById('loader');
+        const aiResponseEl = document.getElementById('ai-response');
+        const aiPlaceholder = document.getElementById('ai-placeholder');
+
+        let UCDM_TEXT = '';
+
+        async function loadBookText() {
+            if (UCDM_TEXT) return;
+            
+            showAIResponse("Cargando el conocimiento de Un Curso de Milagros...", false);
+            explainBtn.disabled = true;
+            prayBtn.disabled = true;
+
+            try {
+                const gistUrl = 'https://gist.githubusercontent.com/lamentedelfenix/53ae2869adab53e259dc4aeaac8f5e03/raw/446ddea029bf49f851404bf2693c96fb099790f4/ucdm_completo.txt';
+                const response = await fetch(gistUrl);
+                
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el texto del libro desde GitHub.');
+                }
+                
+                UCDM_TEXT = await response.text();
+                showAIResponse("¡Listo! El conocimiento ha sido cargado. Ya puedes hacer tus preguntas.", false);
+
+            } catch (error) {
+                console.error("Error al cargar el texto del libro:", error);
+                showAIResponse("Error: No se pudo cargar el texto de 'Un Curso de Milagros'. Por favor, recarga la página.", true);
+            } finally {
+                explainBtn.disabled = false;
+                prayBtn.disabled = false;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadBookText);
+
+        function findRelevantChunks(query, text) {
+            if (!text) return "";
+
+            const MAX_CONTEXT_LENGTH = 15000;
+            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+            const paragraphs = text.split(/\n\s*\n/);
+            let relevantText = "";
+
+            for (const p of paragraphs) {
+                const pLower = p.toLowerCase();
+                if (keywords.some(kw => pLower.includes(kw))) {
+                    if (relevantText.length + p.length < MAX_CONTEXT_LENGTH) {
+                        relevantText += p + "\n\n";
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return relevantText;
+        }
+
+        function formatAIResponse(text) {
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
+            formattedText = formattedText.replace(/\*\*/g, '');
+            aiResponseEl.innerHTML = formattedText;
+        }
+
+        function showAIResponse(message, isError = false) {
+            loader.classList.add('hidden');
+            aiPlaceholder.classList.add('hidden');
+            aiResponseEl.innerHTML = '';
+            
+            if(isError) {
+                aiResponseEl.style.color = '#ef4444';
+                aiResponseEl.textContent = message;
+            } else {
+                aiResponseEl.style.color = '#fbf5e2';
+                formatAIResponse(message);
+            }
+        }
+
+        async function callAI(prompt) {
+            aiResponseEl.innerHTML = '';
+            aiPlaceholder.classList.add('hidden');
+            loader.classList.remove('hidden');
+            explainBtn.disabled = true;
+            prayBtn.disabled = true;
+
+            const apiUrl = `/.netlify/functions/get-ai-response`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Error en el servidor');
+                }
+                
+                showAIResponse(result.text.trim());
+
+            } catch (error) {
+                console.error("Error al llamar a la IA:", error);
+                showAIResponse(`Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde. (${error.message})`, true);
+            } finally {
+                loader.classList.add('hidden');
+                explainBtn.disabled = false;
+                prayBtn.disabled = false;
+            }
+        }
+
+        explainBtn.addEventListener('click', () => {
+            const concept = conceptInput.value.trim();
+            if (!concept) {
+                showAIResponse("Por favor, introduce un concepto para explicar.", true);
+                return;
+            }
+            if (!UCDM_TEXT) {
+                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
+                return;
+            }
+            
+            const relevantContext = findRelevantChunks(concept, UCDM_TEXT);
+            const prompt = 'Basándote estricta y únicamente en los siguientes fragmentos de \'Un Curso de Milagros\', explica el concepto de \'' + concept + '\' de una forma clara, profunda y sencilla para un estudiante. ' +
+                         'No uses ningún conocimiento externo a estos fragmentos. Si los fragmentos no son suficientes, indícalo. ' +
+                         'Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
+                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+            callAI(prompt);
+        });
+
+        prayBtn.addEventListener('click', () => {
+            const situation = situationInput.value.trim();
+            if (!situation) {
+                showAIResponse("Por favor, describe una situación para generar una oración.", true);
+                return;
+            }
+            if (!UCDM_TEXT) {
+                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
+                return;
+            }
+
+            const relevantContext = findRelevantChunks(situation, UCDM_TEXT);
+            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
+                         'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
+                         'Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
+                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+            callAI(prompt);
+        });
+    </script>
+</body>
+</html>
