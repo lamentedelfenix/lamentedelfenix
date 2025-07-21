@@ -1,7 +1,7 @@
 // Este código debe ir en un archivo llamado:
 // herramienta-ia-netlify/netlify/functions/get-ai-response.js
 
-const fetch = require('node-fetch');
+// NO se necesita 'node-fetch'. Usamos el fetch nativo que Netlify ya incluye.
 
 exports.handler = async function (event, context) {
   // 1. Obtener el prompt enviado desde la página web
@@ -51,7 +51,7 @@ exports.handler = async function (event, context) {
       };
     }
 
-    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
       const text = result.candidates[0].content.parts[0].text;
       return {
         statusCode: 200,
