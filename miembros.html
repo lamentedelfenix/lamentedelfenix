@@ -601,9 +601,6 @@
                 startAnimation(lessonContainer.querySelectorAll('[style*="opacity"]'));
             };
             
-            // La carga de lecciones se mueve dentro del onAuthStateChanged
-            // para asegurar que solo se ejecuta cuando el usuario está logueado.
-
             const newLessonBtn = document.getElementById('new-lesson-btn');
             if (newLessonBtn) {
                 newLessonBtn.addEventListener('click', () => {
@@ -631,7 +628,7 @@
                 checkButtonAnimation();
             }
 
-            // --- LÓGICA PARA COMPARTIR MEJORADA ---
+            // --- LÓGICA PARA COMPARTIR CORREGIDA ---
             const shareModal = document.getElementById('share-modal');
             const closeShareModalBtn = document.getElementById('close-share-modal');
             const shareLessonBtn = document.getElementById('share-lesson-btn');
@@ -644,35 +641,43 @@
                 clone.style.left = '-9999px';
                 clone.style.top = '0px';
                 clone.style.width = lessonContainer.offsetWidth + 'px';
-                clone.style.paddingBottom = '20px'; // Añadir padding para asegurar que el borde inferior se capture
+                clone.style.paddingBottom = '20px'; // Add padding to ensure the bottom border is captured
                 
                 const watermarkContainer = document.createElement('div');
                 watermarkContainer.style.textAlign = 'center';
                 watermarkContainer.style.paddingTop = '20px';
                 
                 const watermark = new Image();
-                watermark.crossOrigin = "anonymous"; // Necesario para que html2canvas capture imágenes de otros dominios
+                watermark.crossOrigin = "anonymous"; // Needed for html2canvas to capture images from other domains
                 
                 watermark.onload = () => {
-                    // Solo cuando la imagen esté cargada, procedemos a generar el canvas
+                    // Only when the image is loaded, we proceed to generate the canvas
                     clone.appendChild(watermarkContainer).appendChild(watermark);
                     document.body.appendChild(clone);
 
                     html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
                         document.body.removeChild(clone);
-                        
                         const dataUrl = canvas.toDataURL('image/png');
                         
                         canvas.toBlob(blob => {
-                            if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'mensaje.png', {type: 'image/png'})] })) {
-                                 const file = new File([blob], 'mensaje-del-dia.png', { type: 'image/png' });
+                            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                            const filesArray = [new File([blob], 'mensaje-del-dia.png', { type: 'image/png' })];
+
+                            // Check if it's mobile and if the share API can be used
+                            if (isMobile && navigator.share) {
                                  navigator.share({
-                                    files: [file],
+                                    files: filesArray,
                                     title: 'Mensaje del Día',
                                     text: 'Un mensaje de La Mente del Fénix',
-                                }).catch(err => console.error("Error al compartir:", err));
+                                }).catch(err => {
+                                    console.error("Share API error:", err);
+                                    // Fallback to desktop modal if share fails (e.g., user cancels)
+                                    sharePreviewImage.src = dataUrl;
+                                    downloadShareImageLink.href = dataUrl;
+                                    shareModal.classList.add('show');
+                                });
                             } else {
-                                // Lógica para escritorio
+                                // Desktop logic or fallback
                                 sharePreviewImage.src = dataUrl;
                                 downloadShareImageLink.href = dataUrl;
                                 shareModal.classList.add('show');
@@ -680,13 +685,13 @@
                         }, 'image/png');
 
                     }).catch(err => {
-                        console.error("Error al generar el canvas:", err);
+                        console.error("Error generating canvas:", err);
                         document.body.removeChild(clone);
                     });
                 };
                 
                 watermark.onerror = () => {
-                    console.error("No se pudo cargar la imagen de la firma.");
+                    console.error("Could not load the signature image.");
                     document.body.removeChild(clone);
                 };
 
