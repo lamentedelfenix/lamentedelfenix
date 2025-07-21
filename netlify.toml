@@ -1,4 +1,12 @@
+# Este es el archivo de configuración corregido para Netlify.
+
 [build]
+  # Directorio base donde se encuentra la herramienta de IA.
   base = "herramienta-ia-netlify"
-  publish = "herramienta-ia-netlify"
-  functions = "herramienta-ia-netlify/netlify/functions"
+  
+  # El directorio a publicar es el mismo directorio base.
+  publish = "." 
+  
+  # El directorio de las funciones seguras.
+  functions = "netlify/functions"
+
