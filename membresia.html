@@ -93,10 +93,47 @@
         .zoomable-image { cursor: pointer; transition: transform 0.3s ease; }
         .zoomable-image:hover { transform: scale(1.03); }
         /* Lightbox styles */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .lightbox { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.85); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+            padding: 1rem; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.3s ease, visibility 0.3s ease; 
+        }
         .lightbox.show { opacity: 1; visibility: visible; }
-        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); cursor: grab; }
-        .lightbox .close-btn { position: absolute; top: 20px; right: 30px; font-size: 3rem; color: white; cursor: pointer; line-height: 1; }
+        .lightbox img { 
+            max-width: 90%; 
+            max-height: 90%; 
+            border-radius: 8px; 
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); 
+            cursor: grab; 
+        }
+        .lightbox .close-btn { 
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            font-size: 3rem; 
+            color: white; 
+            cursor: pointer; 
+            line-height: 1; 
+        }
+        /* CSS to pause GIFs in lightbox */
+        .lightbox img.gif-paused {
+            animation-play-state: paused !important;
+        }
+        /* Ensure GIFs play normally outside the lightbox */
+        .zoomable-image {
+            animation-play-state: running !important; 
+        }
         
         .benefit-icon {
             background: linear-gradient(135deg, #f0c74c, #daa520);
@@ -156,7 +193,7 @@
              <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
         </header>
 
-        <!-- MODIFICACIÓN: Botón para volver a la página principal -->
+        <!-- Botón para volver a la página principal -->
         <section class="px-4 md:px-8 -mt-4 mb-12">
             <a href="./index.html" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300">
                 <i class="fas fa-arrow-left"></i>
@@ -207,37 +244,37 @@
              <div class="max-w-4xl mx-auto">
                 <h2 class="text-3xl font-bold text-center mb-16">¿Qué encontrarás dentro de la membresía?</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-                    <!-- Feature 1 -->
+                    <!-- Feature 1: Mentorías Grupales (Moved to first position) -->
+                    <div class="feature-item text-center">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Mentorías Grupales</h3>
+                        <p class="text-gray-600">Sesiones en vivo con Darío Arrigazzi (experto en Coaching, PNL y UCDM) para resolver dudas, profundizar y compartir experiencias.</p>
+                    </div>
+                    <!-- Feature 2: Plataforma Inteligente -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-robot"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Plataforma Inteligente</h3>
-                        <p class="text-gray-600">Tu asistente personal de UCDM, diseñado para analizar únicamente el libro y darte respuestas fiables (a diferencia de otras IAs como ChatGPT). Pregúntale dudas y obtén respuestas basadas 100% en el Curso, disponibles 24/7.</p>
+                        <p class="text-gray-600">Tu asistente personal de UCDM, configurado cuidadosamente para darte respuestas fiables. Pregúntale dudas y obtén respuestas basadas 100% en el Curso, disponibles 24/7.</p>
                     </div>
-                    <!-- Feature 2 -->
+                    <!-- Feature 3: Seguimiento de Lecciones -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-check-double"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Seguimiento de Lecciones</h3>
                         <p class="text-gray-600">Una herramienta interactiva para marcar tu progreso diario en las lecciones de El Curso de Milagros y mantenerte motivado/a en tu práctica.</p>
                     </div>
-                    <!-- Feature 3 -->
-                    <div class="feature-item text-center">
-                        <div class="feature-icon"><i class="fas fa-users"></i></div>
-                        <h3 class="text-xl font-bold mt-4 mb-2">Mentorías Grupales</h3>
-                        <p class="text-gray-600">Sesiones en vivo para resolver dudas, profundizar en conceptos y compartir experiencias en un entorno de apoyo.</p>
-                    </div>
-                    <!-- Feature 4 -->
+                    <!-- Feature 4: Comunidad Privada -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-comment-dots"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Comunidad Privada</h3>
                         <p class="text-gray-600">Acceso a nuestros grupos exclusivos de WhatsApp y Telegram para conectar con otros estudiantes como tú.</p>
                     </div>
-                    <!-- Feature 5 -->
+                    <!-- Feature 5: Biblioteca de Recursos -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-photo-video"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Biblioteca de Recursos</h3>
                         <p class="text-gray-600">Todas las grabaciones de las mentorías y materiales de estudio adicional siempre a tu disposición en la plataforma y en Google Drive.</p>
                     </div>
-                    <!-- Feature 6 -->
+                    <!-- Feature 6: Descuentos Exclusivos -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-tags"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Descuentos Exclusivos</h3>
@@ -253,23 +290,60 @@
                 <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que encontrarás dentro...</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="text-center">
-                        <img id="mapa-conceptual-img" 
-                             src="https://i.imgur.com/xrTind4.png" 
-                             alt="Mapa Conceptual de UCDM" 
-                             class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
-                        <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
+                        <div class="max-w-xs mx-auto">
+                            <img id="mapa-conceptual-img" 
+                                 src="https://i.imgur.com/DiOIB3w.gif" 
+                                 alt="Mapa Conceptual de UCDM" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/xrTind4.png"
+                                 data-gif-src="https://i.imgur.com/DiOIB3w.gif">
+                            <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
+                        </div>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/4k5747N.png" alt="Chat con IA" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
-                        <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que te aclarará cualquier duda</p>
+                        <div class="max-w-xs mx-auto">
+                            <img id="chat-ia-img"
+                                 src="https://i.imgur.com/LqovuKM.gif" 
+                                 alt="Chat con IA" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/4k5747N.png" 
+                                 data-gif-src="https://i.imgur.com/LqovuKM.gif">
+                            <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclarará dudas y te ayudará con frases para entrenar tu mente</p>
+                        </div>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/dnEevQz.png" alt="Lección del Día" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
-                        <p class="mt-2 font-semibold">Lección del <span class="highlight-word">Día</span></p>
+                        <div class="max-w-xs mx-auto">
+                            <img id="mensajes-diarios-img"
+                                 src="https://i.imgur.com/BheekP1.gif" 
+                                 alt="Mensajes Diarios" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/BheekP1.gif" 
+                                 data-gif-src="https://i.imgur.com/BheekP1.gif">
+                            <p class="mt-2 font-semibold">Mensajes Diarios para ti y <span class="highlight-word">compartir</span></p>
+                        </div>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/EzAcFys.png" alt="Seguimiento de Lecciones" class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer">
-                        <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
+                        <div class="max-w-xs mx-auto">
+                            <img id="lecciones-ritmo-img"
+                                 src="https://i.imgur.com/JLweKjE.gif" 
+                                 alt="Seguimiento de Lecciones" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/JLweKjE.gif" 
+                                 data-gif-src="https://i.imgur.com/JLweKjE.gif">
+                            <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
+                        </div>
+                    </div>
+                    <!-- New image added - Centered for PC view, same size -->
+                    <div class="text-center sm:col-start-1 sm:col-end-3">
+                        <div class="max-w-xs mx-auto"> 
+                            <img id="rincon-inspiracion-img"
+                                 src="https://i.imgur.com/p7idYrx.gif" 
+                                 alt="Rincón de Inspiración" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/p7idYrx.gif" 
+                                 data-gif-src="https://i.imgur.com/p7idYrx.gif">
+                            <p class="mt-2 font-semibold">Rincón de <span class="highlight-word">Inspiración y Conocimiento</span> (contenido público y privado)</p>
+                        </div>
                     </div>
                 </div>
                 <p class="text-center text-xl text-brand-pink font-bold italic mt-8">... ¡y mucho más!</p>
@@ -346,13 +420,50 @@
             const lightboxImg = document.getElementById('lightbox-img');
             const closeLightboxBtn = document.getElementById('close-lightbox');
             const zoomableImages = document.querySelectorAll('.zoomable-image');
+
             let panzoomInstance = null;
+            let currentLightboxImageId = null; 
+            let isGifPlaying = true; // GIFs start playing in lightbox by default
+
+            // Map of image IDs to their GIF and static URLs
+            const imageSources = {
+                'mapa-conceptual-img': { 
+                    static: 'https://i.imgur.com/xrTind4.png', // Static image of the map
+                    gif: 'https://i.imgur.com/DiOIB3w.gif' // Animated GIF of the map
+                },
+                'chat-ia-img': { 
+                    static: 'https://i.imgur.com/4k5747N.png', // Static image of the chat
+                    gif: 'https://i.imgur.com/LqovuKM.gif' // Animated GIF of the chat
+                },
+                'mensajes-diarios-img': { 
+                    static: 'https://i.imgur.com/BheekP1.gif', // Using GIF itself as static if no separate static provided
+                    gif: 'https://i.imgur.com/BheekP1.gif'
+                },
+                'lecciones-ritmo-img': { 
+                    static: 'https://i.imgur.com/JLweKjE.gif', // Using GIF itself as static
+                    gif: 'https://i.imgur.com/JLweKjE.gif'
+                },
+                'rincon-inspiracion-img': { 
+                    static: 'https://i.imgur.com/p7idYrx.gif', // Using GIF itself as static
+                    gif: 'https://i.imgur.com/p7idYrx.gif'
+                }
+            };
 
             zoomableImages.forEach(image => {
                 image.addEventListener('click', () => {
-                    // Si la imagen es el GIF, usamos su versión GIF para el zoom, si no, la normal
-                    const imageSource = image.id === 'mapa-conceptual-img' ? 'https://i.imgur.com/DiOIB3w.gif' : image.src;
-                    lightboxImg.src = imageSource;
+                    const imageId = image.id;
+                    currentLightboxImageId = imageId; 
+                    const sources = imageSources[imageId];
+
+                    if (sources && sources.gif) {
+                        lightboxImg.src = sources.gif; // Load the GIF
+                        lightboxImg.classList.remove('gif-paused'); // Ensure it's playing
+                        isGifPlaying = true; // Set state to playing
+                    } else {
+                        // For non-GIFs or if gif source is not defined
+                        lightboxImg.src = image.src; 
+                        isGifPlaying = false; 
+                    }
                     
                     lightbox.classList.add('show');
                     if (panzoomInstance) {
@@ -365,15 +476,101 @@
                 });
             });
 
+            // Function to toggle GIF play/pause using CSS
+            function toggleGifPlayPause() {
+                if (!currentLightboxImageId) return; 
+
+                const sources = imageSources[currentLightboxImageId];
+
+                // Only proceed if it's a GIF
+                if (!sources || !sources.gif) {
+                    return; // Not a GIF, no play/pause needed
+                }
+
+                if (isGifPlaying) {
+                    // Pause GIF: Add CSS class and set src to static image if available
+                    if (sources.static) {
+                        lightboxImg.src = sources.static;
+                    } else {
+                        lightboxImg.classList.add('gif-paused'); // Fallback to CSS pause
+                    }
+                    isGifPlaying = false;
+                } else {
+                    // Play GIF: Remove CSS class and set src to gif
+                    lightboxImg.src = sources.gif;
+                    lightboxImg.classList.remove('gif-paused');
+                    isGifPlaying = true;
+                }
+
+                // Re-initialize panzoom after src change if needed, or ensure it adapts
+                if (panzoomInstance) {
+                    panzoomInstance.destroy();
+                    panzoomInstance = Panzoom(lightboxImg, {
+                        maxScale: 5,
+                        minScale: 0.7
+                    });
+                }
+            }
+
+            // Event listeners for play/pause interaction on lightbox image
+            // PC: No click listener on lightboxImg for play/pause. It should always play.
+            // Only mobile touch events will control play/pause.
+
+            // Mobile: Touch and hold to pause, release to play
+            lightboxImg.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                // Only pause if it's a GIF and currently playing
+                const sources = imageSources[currentLightboxImageId];
+                if (sources && sources.gif && isGifPlaying) {
+                    if (sources.static) {
+                        lightboxImg.src = sources.static;
+                    } else {
+                        lightboxImg.classList.add('gif-paused');
+                    }
+                    isGifPlaying = false;
+                    // Re-initialize panzoom after src change if needed
+                    if (panzoomInstance) {
+                        panzoomInstance.destroy();
+                        panzoomInstance = Panzoom(lightboxImg, {
+                            maxScale: 5,
+                            minScale: 0.7
+                        });
+                    }
+                }
+            });
+
+            lightboxImg.addEventListener('touchend', (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                // Only play if it's a GIF and currently paused
+                const sources = imageSources[currentLightboxImageId];
+                if (sources && sources.gif && !isGifPlaying) {
+                    lightboxImg.src = sources.gif;
+                    lightboxImg.classList.remove('gif-paused');
+                    isGifPlaying = true;
+                    // Re-initialize panzoom after src change if needed
+                    if (panzoomInstance) {
+                        panzoomInstance.destroy();
+                        panzoomInstance = Panzoom(lightboxImg, {
+                            maxScale: 5,
+                            minScale: 0.7
+                        });
+                    }
+                }
+            });
+            
             function closeLightbox() { 
                 lightbox.classList.remove('show');
                 if(panzoomInstance) {
                     panzoomInstance.destroy();
                     panzoomInstance = null;
                 }
+                currentLightboxImageId = null; 
+                isGifPlaying = true; // Reset for next open
+                lightboxImg.classList.remove('gif-paused'); // Ensure it's not paused for next time
             }
             closeLightboxBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => {
+                // Only close if clicking on the background, not the image itself
                 if (e.target === lightbox) closeLightbox();
             });
             
@@ -398,23 +595,6 @@
 
             featureItems.forEach(item => featureObserver.observe(item));
             
-            // --- Lógica para activar el GIF al ser visible ---
-            const mapaConceptualImg = document.getElementById('mapa-conceptual-img');
-            const gifObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Cambia la fuente a GIF
-                        entry.target.src = 'https://i.imgur.com/DiOIB3w.gif';
-                        // Deja de observar para que no se reinicie
-                        gifObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.7 }); // Se activa cuando el 70% del GIF es visible
-
-            if (mapaConceptualImg) {
-                gifObserver.observe(mapaConceptualImg);
-            }
-
             // --- Lógica del selector de precios ---
             const toggle = document.getElementById('pricing-toggle-checkbox');
             const monthlyPrice = document.getElementById('monthly-price');
