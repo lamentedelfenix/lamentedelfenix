@@ -126,7 +126,6 @@
             cursor: pointer; 
             line-height: 1; 
         }
-        /* No specific GIF pause CSS needed as it's removed */
         
         .benefit-icon {
             background: linear-gradient(135deg, #f0c74c, #daa520);
@@ -237,11 +236,11 @@
              <div class="max-w-4xl mx-auto">
                 <h2 class="text-3xl font-bold text-center mb-16">¿Qué encontrarás dentro de la membresía?</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-                    <!-- Feature 1: Mentorías Grupales (Moved to first position) -->
+                    <!-- Feature 1: Mentorías Grupales (Modified text here) -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-users"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Mentorías Grupales</h3>
-                        <p class="text-gray-600">Sesiones en vivo con Darío Arrigazzi (experto en Coaching, PNL y UCDM) para resolver dudas, profundizar y compartir experiencias.</p>
+                        <p class="text-gray-600">Sesiones en vivo con Darío Arrigazzi (especialista en Coaching, PNL y UCDM) para resolver dudas, profundizar y compartir experiencias.</p>
                     </div>
                     <!-- Feature 2: Plataforma Inteligente -->
                     <div class="feature-item text-center">
@@ -283,9 +282,10 @@
                 <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que encontrarás dentro...</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="text-center">
-                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
+                        <div class="max-w-sm mx-auto">
+                            <!-- Mapa Conceptual: src apunta a la imagen estática, data-gif-src al GIF -->
                             <img id="mapa-conceptual-img" 
-                                 src="https://i.imgur.com/DiOIB3w.gif" 
+                                 src="https://i.imgur.com/xrTind4.png" 
                                  alt="Mapa Conceptual de UCDM" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
                                  data-static-src="https://i.imgur.com/xrTind4.png"
@@ -294,48 +294,52 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
+                        <div class="max-w-sm mx-auto">
+                            <!-- Chat IA: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="chat-ia-img"
-                                 src="https://i.imgur.com/LqovuKM.gif" 
+                                 src="https://i.imgur.com/RPIB19T.png" 
                                  alt="Chat con IA" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/4k5747N.png" 
+                                 data-static-src="https://i.imgur.com/RPIB19T.png" 
                                  data-gif-src="https://i.imgur.com/LqovuKM.gif">
                             <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclarará dudas y te ayudará con frases para entrenar tu mente</p>
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
+                        <div class="max-w-sm mx-auto">
+                            <!-- Mensajes Diarios: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="mensajes-diarios-img"
-                                 src="https://i.imgur.com/BheekP1.gif" 
+                                 src="https://i.imgur.com/D0Zh9jy.png" 
                                  alt="Mensajes Diarios" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/BheekP1.gif" 
+                                 data-static-src="https://i.imgur.com/D0Zh9jy.png" 
                                  data-gif-src="https://i.imgur.com/BheekP1.gif">
                             <p class="mt-2 font-semibold">Mensajes Diarios para ti y <span class="highlight-word">compartir</span></p>
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
+                        <div class="max-w-sm mx-auto">
+                            <!-- Lecciones Ritmo: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="lecciones-ritmo-img"
-                                 src="https://i.imgur.com/JLweKjE.gif" 
+                                 src="https://i.imgur.com/XCb5yM7.png" 
                                  alt="Seguimiento de Lecciones" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/JLweKjE.gif" 
+                                 data-static-src="https://i.imgur.com/XCb5yM7.png" 
                                  data-gif-src="https://i.imgur.com/JLweKjE.gif">
                             <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
                         </div>
                     </div>
                     <!-- New image added - Centered for PC view, same size -->
                     <div class="text-center sm:col-start-1 sm:col-end-3">
-                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
+                        <div class="max-w-sm mx-auto">
+                            <!-- Rincón Inspiración: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="rincon-inspiracion-img"
-                                 src="https://i.imgur.com/p7idYrx.gif" 
+                                 src="https://i.imgur.com/g5NgVsm.png" 
                                  alt="Rincón de Inspiración" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/p7idYrx.gif" 
+                                 data-static-src="https://i.imgur.com/g5NgVsm.png" 
                                  data-gif-src="https://i.imgur.com/p7idYrx.gif">
-                            <p class="mt-2 font-semibold">Rincón de <span class="highlight-word">Inspiración y Conocimiento</span> (contenido público y privado)</p>
+                            <p class="mt-2 font-semibold">Rincón de <span class="highlight-word">Inspiración y Conocimiento</span></p>
                         </div>
                     </div>
                 </div>
@@ -408,14 +412,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Lógica de Lightbox y Panzoom ---
+            // --- Lightbox and Panzoom Logic ---
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const closeLightboxBtn = document.getElementById('close-lightbox');
             const zoomableImages = document.querySelectorAll('.zoomable-image');
 
             let panzoomInstance = null;
-            let currentLightboxImageId = null; 
 
             // Map of image IDs to their GIF and static URLs
             const imageSources = {
@@ -424,64 +427,71 @@
                     gif: 'https://i.imgur.com/DiOIB3w.gif' 
                 },
                 'chat-ia-img': { 
-                    static: 'https://i.imgur.com/4k5747N.png', 
+                    static: 'https://i.imgur.com/RPIB19T.png', // Nueva imagen estática
                     gif: 'https://i.imgur.com/LqovuKM.gif' 
                 },
                 'mensajes-diarios-img': { 
-                    static: 'https://i.imgur.com/BheekP1.gif', 
+                    static: 'https://i.imgur.com/D0Zh9jy.png', // Nueva imagen estática
                     gif: 'https://i.imgur.com/BheekP1.gif'
                 },
                 'lecciones-ritmo-img': { 
-                    static: 'https://i.imgur.com/JLweKjE.gif', 
+                    static: 'https://i.imgur.com/XCb5yM7.png', // Nueva imagen estática
                     gif: 'https://i.imgur.com/JLweKjE.gif'
                 },
                 'rincon-inspiracion-img': { 
-                    static: 'https://i.imgur.com/p7idYrx.gif', 
+                    static: 'https://i.imgur.com/g5NgVsm.png', // Nueva imagen estática
                     gif: 'https://i.imgur.com/p7idYrx.gif'
                 }
             };
 
             zoomableImages.forEach(image => {
-                image.addEventListener('click', () => {
-                    const imageId = image.id;
-                    currentLightboxImageId = imageId; 
-                    const sources = imageSources[imageId];
+                // Establece el src inicial de la imagen en la galería a su versión estática
+                const imageId = image.id;
+                const sources = imageSources[imageId];
+                if (sources && sources.static) {
+                    image.src = sources.static;
+                }
 
+                image.addEventListener('click', () => {
+                    // Al hacer clic, carga el GIF en el lightbox
                     if (sources && sources.gif) {
-                        lightboxImg.src = sources.gif; // Load the GIF, it will play automatically
-                    } else {
-                        // For non-GIFs or if gif source is not defined
+                        lightboxImg.src = sources.gif; 
+                    } else if (sources && sources.static) { // Fallback a la estática si no hay GIF
+                        lightboxImg.src = sources.static;
+                    } else { // Fallback al src actual de la imagen si no hay fuentes definidas
                         lightboxImg.src = image.src; 
                     }
                     
                     lightbox.classList.add('show');
+                    // Destruye cualquier instancia de Panzoom existente antes de crear una nueva
                     if (panzoomInstance) {
                         panzoomInstance.destroy();
                     }
+                    // Inicializa Panzoom en la imagen del lightbox
                     panzoomInstance = Panzoom(lightboxImg, {
                         maxScale: 5,
                         minScale: 0.7
                     });
                 });
             });
-
-            // Removed click listener from lightboxImg for PC play/pause.
-            // Removed touchstart and touchend listeners for mobile play/pause.
             
             function closeLightbox() { 
                 lightbox.classList.remove('show');
+                // Destruye la instancia de Panzoom cuando el lightbox se cierra
                 if(panzoomInstance) {
                     panzoomInstance.destroy();
                     panzoomInstance = null;
                 }
-                currentLightboxImageId = null; 
+                // Resetea el src de la imagen del lightbox para evitar que el GIF siga reproduciéndose en segundo plano
+                lightboxImg.src = ''; 
             }
             closeLightboxBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => {
-                // Only close if clicking on the background, not the image itself
+                // Solo cierra si se hace clic en el fondo, no en la imagen misma
                 if (e.target === lightbox) closeLightbox();
             });
             
+            // Añade el listener para el zoom con la rueda del ratón
             if (lightboxImg) {
                 lightbox.addEventListener('wheel', function (event) {
                     if (!panzoomInstance) return;
@@ -516,7 +526,7 @@
             const annualLink = "https://buy.stripe.com/14AaEW5WQ7p62MV5BT3F601";
 
             toggle.addEventListener('change', () => {
-                if (toggle.checked) { // Annual selected
+                if (toggle.checked) { // Anual seleccionado
                     monthlyPrice.classList.add('hidden');
                     annualPrice.classList.remove('hidden');
                     paymentLink.href = annualLink;
@@ -525,7 +535,7 @@
                     pricingCard.classList.add('annual-selected');
                     monthlyLabel.classList.remove('text-brand-pink');
                     annualLabel.classList.add('text-yellow-600');
-                } else { // Monthly selected
+                } else { // Mensual seleccionado
                     annualPrice.classList.add('hidden');
                     monthlyPrice.classList.remove('hidden');
                     paymentLink.href = monthlyLink;
@@ -536,7 +546,8 @@
                     monthlyLabel.classList.add('text-brand-pink');
                 }
             });
-            paymentLink.href = monthlyLink;
+            // Establece el enlace inicial a mensual
+            paymentLink.href = monthlyLink; 
         });
     </script>
 </body>
