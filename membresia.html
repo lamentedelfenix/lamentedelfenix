@@ -126,14 +126,7 @@
             cursor: pointer; 
             line-height: 1; 
         }
-        /* CSS to pause GIFs in lightbox */
-        .lightbox img.gif-paused {
-            animation-play-state: paused !important;
-        }
-        /* Ensure GIFs play normally outside the lightbox */
-        .zoomable-image {
-            animation-play-state: running !important; 
-        }
+        /* No specific GIF pause CSS needed as it's removed */
         
         .benefit-icon {
             background: linear-gradient(135deg, #f0c74c, #daa520);
@@ -290,7 +283,7 @@
                 <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que encontrarás dentro...</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="text-center">
-                        <div class="max-w-xs mx-auto">
+                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
                             <img id="mapa-conceptual-img" 
                                  src="https://i.imgur.com/DiOIB3w.gif" 
                                  alt="Mapa Conceptual de UCDM" 
@@ -301,7 +294,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-xs mx-auto">
+                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
                             <img id="chat-ia-img"
                                  src="https://i.imgur.com/LqovuKM.gif" 
                                  alt="Chat con IA" 
@@ -312,7 +305,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-xs mx-auto">
+                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
                             <img id="mensajes-diarios-img"
                                  src="https://i.imgur.com/BheekP1.gif" 
                                  alt="Mensajes Diarios" 
@@ -323,7 +316,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <div class="max-w-xs mx-auto">
+                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
                             <img id="lecciones-ritmo-img"
                                  src="https://i.imgur.com/JLweKjE.gif" 
                                  alt="Seguimiento de Lecciones" 
@@ -335,7 +328,7 @@
                     </div>
                     <!-- New image added - Centered for PC view, same size -->
                     <div class="text-center sm:col-start-1 sm:col-end-3">
-                        <div class="max-w-xs mx-auto"> 
+                        <div class="max-w-sm mx-auto"> <!-- Changed from max-w-xs to max-w-sm -->
                             <img id="rincon-inspiracion-img"
                                  src="https://i.imgur.com/p7idYrx.gif" 
                                  alt="Rincón de Inspiración" 
@@ -423,28 +416,27 @@
 
             let panzoomInstance = null;
             let currentLightboxImageId = null; 
-            let isGifPlaying = true; // GIFs start playing in lightbox by default
 
             // Map of image IDs to their GIF and static URLs
             const imageSources = {
                 'mapa-conceptual-img': { 
-                    static: 'https://i.imgur.com/xrTind4.png', // Static image of the map
-                    gif: 'https://i.imgur.com/DiOIB3w.gif' // Animated GIF of the map
+                    static: 'https://i.imgur.com/xrTind4.png', 
+                    gif: 'https://i.imgur.com/DiOIB3w.gif' 
                 },
                 'chat-ia-img': { 
-                    static: 'https://i.imgur.com/4k5747N.png', // Static image of the chat
-                    gif: 'https://i.imgur.com/LqovuKM.gif' // Animated GIF of the chat
+                    static: 'https://i.imgur.com/4k5747N.png', 
+                    gif: 'https://i.imgur.com/LqovuKM.gif' 
                 },
                 'mensajes-diarios-img': { 
-                    static: 'https://i.imgur.com/BheekP1.gif', // Using GIF itself as static if no separate static provided
+                    static: 'https://i.imgur.com/BheekP1.gif', 
                     gif: 'https://i.imgur.com/BheekP1.gif'
                 },
                 'lecciones-ritmo-img': { 
-                    static: 'https://i.imgur.com/JLweKjE.gif', // Using GIF itself as static
+                    static: 'https://i.imgur.com/JLweKjE.gif', 
                     gif: 'https://i.imgur.com/JLweKjE.gif'
                 },
                 'rincon-inspiracion-img': { 
-                    static: 'https://i.imgur.com/p7idYrx.gif', // Using GIF itself as static
+                    static: 'https://i.imgur.com/p7idYrx.gif', 
                     gif: 'https://i.imgur.com/p7idYrx.gif'
                 }
             };
@@ -456,13 +448,10 @@
                     const sources = imageSources[imageId];
 
                     if (sources && sources.gif) {
-                        lightboxImg.src = sources.gif; // Load the GIF
-                        lightboxImg.classList.remove('gif-paused'); // Ensure it's playing
-                        isGifPlaying = true; // Set state to playing
+                        lightboxImg.src = sources.gif; // Load the GIF, it will play automatically
                     } else {
                         // For non-GIFs or if gif source is not defined
                         lightboxImg.src = image.src; 
-                        isGifPlaying = false; 
                     }
                     
                     lightbox.classList.add('show');
@@ -476,87 +465,8 @@
                 });
             });
 
-            // Function to toggle GIF play/pause using CSS
-            function toggleGifPlayPause() {
-                if (!currentLightboxImageId) return; 
-
-                const sources = imageSources[currentLightboxImageId];
-
-                // Only proceed if it's a GIF
-                if (!sources || !sources.gif) {
-                    return; // Not a GIF, no play/pause needed
-                }
-
-                if (isGifPlaying) {
-                    // Pause GIF: Add CSS class and set src to static image if available
-                    if (sources.static) {
-                        lightboxImg.src = sources.static;
-                    } else {
-                        lightboxImg.classList.add('gif-paused'); // Fallback to CSS pause
-                    }
-                    isGifPlaying = false;
-                } else {
-                    // Play GIF: Remove CSS class and set src to gif
-                    lightboxImg.src = sources.gif;
-                    lightboxImg.classList.remove('gif-paused');
-                    isGifPlaying = true;
-                }
-
-                // Re-initialize panzoom after src change if needed, or ensure it adapts
-                if (panzoomInstance) {
-                    panzoomInstance.destroy();
-                    panzoomInstance = Panzoom(lightboxImg, {
-                        maxScale: 5,
-                        minScale: 0.7
-                    });
-                }
-            }
-
-            // Event listeners for play/pause interaction on lightbox image
-            // PC: No click listener on lightboxImg for play/pause. It should always play.
-            // Only mobile touch events will control play/pause.
-
-            // Mobile: Touch and hold to pause, release to play
-            lightboxImg.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                // Only pause if it's a GIF and currently playing
-                const sources = imageSources[currentLightboxImageId];
-                if (sources && sources.gif && isGifPlaying) {
-                    if (sources.static) {
-                        lightboxImg.src = sources.static;
-                    } else {
-                        lightboxImg.classList.add('gif-paused');
-                    }
-                    isGifPlaying = false;
-                    // Re-initialize panzoom after src change if needed
-                    if (panzoomInstance) {
-                        panzoomInstance.destroy();
-                        panzoomInstance = Panzoom(lightboxImg, {
-                            maxScale: 5,
-                            minScale: 0.7
-                        });
-                    }
-                }
-            });
-
-            lightboxImg.addEventListener('touchend', (e) => {
-                e.preventDefault(); // Prevent default touch behavior
-                // Only play if it's a GIF and currently paused
-                const sources = imageSources[currentLightboxImageId];
-                if (sources && sources.gif && !isGifPlaying) {
-                    lightboxImg.src = sources.gif;
-                    lightboxImg.classList.remove('gif-paused');
-                    isGifPlaying = true;
-                    // Re-initialize panzoom after src change if needed
-                    if (panzoomInstance) {
-                        panzoomInstance.destroy();
-                        panzoomInstance = Panzoom(lightboxImg, {
-                            maxScale: 5,
-                            minScale: 0.7
-                        });
-                    }
-                }
-            });
+            // Removed click listener from lightboxImg for PC play/pause.
+            // Removed touchstart and touchend listeners for mobile play/pause.
             
             function closeLightbox() { 
                 lightbox.classList.remove('show');
@@ -565,8 +475,6 @@
                     panzoomInstance = null;
                 }
                 currentLightboxImageId = null; 
-                isGifPlaying = true; // Reset for next open
-                lightboxImg.classList.remove('gif-paused'); // Ensure it's not paused for next time
             }
             closeLightboxBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => {
