@@ -373,6 +373,11 @@
                     <!-- CORRECCIÓN 1: Título del menú en móvil -->
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
+                <!-- CONTADOR DE RACHA PARA MÓVIL -->
+                <div id="mobile-streak-counter" class="flex items-center gap-2 text-lg font-bold text-yellow-500" style="display: none;">
+                    <i class="fas fa-fire"></i>
+                    <span id="mobile-streak-days">0</span>
+                </div>
                 <button id="hamburger-btn" class="text-white focus:outline-none">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
@@ -643,6 +648,8 @@
         const logoutBtn = document.getElementById('logout-btn');
         const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
         const sidebarStreakDays = document.getElementById('sidebar-streak-days');
+        const mobileStreakCounter = document.getElementById('mobile-streak-counter');
+        const mobileStreakDays = document.getElementById('mobile-streak-days');
         let allLessons = [];
         let startAnimation;
 
@@ -682,6 +689,10 @@
                     if (sidebarStreakCounter && sidebarStreakDays) {
                         sidebarStreakDays.textContent = currentStreak;
                         sidebarStreakCounter.style.display = 'flex';
+                    }
+                    if (mobileStreakCounter && mobileStreakDays) {
+                        mobileStreakDays.textContent = currentStreak;
+                        mobileStreakCounter.style.display = 'flex';
                     }
                 });
 
