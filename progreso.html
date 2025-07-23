@@ -4,77 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimiento de Lecciones - UCDM</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Lora -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --brand-blue: #0c1427;
+            --brand-blue: #0c2f5b;
             --brand-gold: #ffd700;
             --brand-pink: #e91e63;
             --brand-cyan: #00bcd4;
-            --bg-main: #0c1427;
-            --text-main: #fbf5e2;
-            --text-muted: #a7b3ce;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-light: #fbf5e2;
+            --bg-off-white: #fffaf0;
+            --border-color: #e0d9c6;
+            --locked-grey: #a0aec0;
         }
         * {
             box-sizing: border-box;
         }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: var(--bg-light);
+            color: var(--brand-blue);
             transition: opacity 0.5s ease-in-out;
             overflow-x: hidden;
-            opacity: 0;
-            visibility: hidden;
         }
         body.modal-open {
             overflow: hidden;
-        }
-
-        /* --- ESTILOS BARRA LATERAL --- */
-        #sidebar {
-            background-color: #080f1e;
-            transition: transform 0.3s ease-in-out;
-            z-index: 1010;
-        }
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-muted);
-            border-radius: 0.5rem;
-            margin: 0.25rem 0;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            text-decoration: none;
-        }
-        .sidebar-link:hover {
-            background-color: rgba(0, 188, 212, 0.1);
-            color: var(--text-main);
-        }
-        .sidebar-link.active {
-            background-color: var(--brand-cyan);
-            color: var(--brand-blue);
-            font-weight: 700;
-            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
-        }
-        .sidebar-link i {
-            width: 2rem;
-            text-align: center;
-        }
-        #sidebar-backdrop {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5); z-index: 1005;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        #sidebar-backdrop.show {
-            opacity: 1;
-            visibility: visible;
         }
         
         /* --- PROGRESS BAR STYLES --- */
@@ -88,8 +48,8 @@
             margin-bottom: 2rem;
         }
         .progress-bar-bg { 
-            background-color: rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            background-color: var(--border-color);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         .progress-bar-fg {
             background-image: linear-gradient(45deg, var(--brand-cyan), var(--brand-pink), #ff7e5f, #feb47b);
@@ -119,7 +79,8 @@
 
         /* --- ACHIEVEMENTS SHELF STYLES --- */
         #fireworks-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; /* Changed to fixed to cover viewport */
+            top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 5000;
             overflow: hidden;
         }
@@ -136,7 +97,7 @@
         .achievements-container {
             margin-top: 2.5rem;
             padding: 1.5rem;
-            background-color: rgba(0,0,0,0.2);
+            background-color: rgba(0,0,0,0.02);
             border-radius: 1rem;
             border: 1px solid var(--border-color);
         }
@@ -161,21 +122,21 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            background-color: #2c3e50;
-            border: 4px solid var(--text-muted);
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.25);
+            background-color: #e2e8f0;
+            border: 4px solid var(--locked-grey);
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.15);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .achievement-item .icon-wrapper i {
             font-size: 2.5rem;
-            color: var(--text-muted);
+            color: var(--locked-grey);
             transition: all 0.4s ease;
         }
         .achievement-item .achievement-title {
             margin-top: 0.75rem;
             font-weight: 600;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: var(--locked-grey);
             transition: color 0.4s ease;
             line-height: 1.3;
         }
@@ -186,7 +147,7 @@
             transform: scale(1.05);
         }
         .achievement-item.unlocked .icon-wrapper {
-            background-color: #1a2a44;
+            background-color: #fffbeb;
             border-color: var(--brand-gold);
             box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.5);
         }
@@ -195,7 +156,7 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
         }
         .achievement-item.unlocked .achievement-title {
-            color: var(--text-main);
+            color: var(--brand-blue);
             font-weight: 700;
         }
 
@@ -209,6 +170,8 @@
             100% { transform: scale(1.05); opacity: 1; }
         }
         
+        /* --- END OF NEW STYLES --- */
+
         .lesson-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
@@ -219,17 +182,16 @@
             position: relative; display: flex; align-items: center; justify-content: center;
             height: 60px; border: 2px solid var(--border-color); border-radius: 0.5rem;
             font-weight: 700; font-size: 1.125rem; cursor: pointer;
-            transition: all 0.3s ease; background-color: rgba(255,255,255,0.05);
-            color: var(--text-main); overflow: hidden;  
+            transition: all 0.3s ease; background-color: #ffffff;
+            color: var(--brand-blue); overflow: hidden;  
         }
         .lesson-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            border-color: var(--brand-cyan);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .lesson-item.completed {
-            background-color: rgba(255, 215, 0, 0.1); color: var(--brand-gold); border-color: var(--brand-gold);
-            box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.3);
+            background-color: #fff8e1; color: #b8860b; border-color: var(--brand-gold);
+            box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.5);
         }
         .lesson-item .line-through {
             position: absolute; top: 50%; left: 50%;
@@ -249,7 +211,6 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
             display: flex; align-items: center; justify-content: center;
             z-index: 1000; padding: 1rem;
             opacity: 0; visibility: hidden;
@@ -261,8 +222,7 @@
             transition: opacity 0.3s ease, visibility 0s;
         }
         .modal-content {
-            background-color: #0c1427; 
-            border: 1px solid var(--border-color);
+            background-color: var(--bg-off-white); 
             padding: 2rem; 
             border-radius: 0.75rem;
             max-width: 600px; 
@@ -322,8 +282,8 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -333,10 +293,10 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            color: var(--text-main);
+            color: var(--brand-blue);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .carousel-nav-btn:hover { background-color: rgba(0,0,0,0.5); }
+        .carousel-nav-btn:hover { background-color: white; }
         .carousel-nav-btn.prev { left: 5px; }
         .carousel-nav-btn.next { right: 5px; }
         .carousel-pagination {
@@ -354,34 +314,39 @@
         .text-brand-green { color: var(--brand-cyan); }
         .btn-primary { background-color: var(--brand-pink); color: white; transition: background-color 0.3s ease, opacity 0.3s ease; }
         .btn-primary:hover { background-color: #c2185b; }
-        .btn-primary:disabled { background-color: #4a5568; cursor: not-allowed; opacity: 0.7; }
-        .btn-secondary { background-color: #4a5568; color: white; transition: background-color 0.3s ease; }
-        .btn-secondary:hover { background-color: #2d3748; }
+        .btn-primary:disabled { background-color: #9e9e9e; cursor: not-allowed; opacity: 0.7; }
+        .btn-secondary { background-color: #e0e0e0; color: #333; transition: background-color 0.3s ease; }
+        .btn-secondary:hover { background-color: #bdbdbd; }
+        .btn-back {
+            background-color: transparent; color: var(--brand-blue); border: 2px solid var(--brand-blue);
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover { background-color: var(--brand-blue); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); }
         
         .intro-item-btn {
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; text-align: left; padding: 1rem 1.5rem;
             font-weight: 700; cursor: pointer;
             border: 2px solid var(--border-color); border-radius: 0.5rem;
-            background-color: rgba(255,255,255,0.05); color: var(--text-main);
+            background-color: #ffffff; color: var(--brand-blue);
             transition: all 0.3s ease; margin-top: 2.5rem; margin-bottom: 1rem;
         }
         .intro-item-btn:hover {
-            background-color: rgba(0, 188, 212, 0.1); border-color: var(--brand-cyan);
-            transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background-color: #e6f7ff; border-color: var(--brand-cyan);
+            transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .intro-item-btn.completed {
-            background-color: rgba(76, 175, 80, 0.1); border-color: #4caf50; color: #a5d6a7;
+            background-color: #e8f5e9; border-color: #4caf50; color: #2e7d32;
         }
-        .intro-item-btn.completed:hover { background-color: rgba(76, 175, 80, 0.2); }
+        .intro-item-btn.completed:hover { background-color: #c8e6c9; }
         .intro-item-btn .icon { transition: transform 0.3s ease; opacity: 0.6; }
         .intro-item-btn.completed .icon { color: #4caf50; opacity: 1; }
         .btn-concepts {
-            background-color: var(--brand-blue); color: white; transition: all 0.3s ease; border: 1px solid var(--brand-cyan);
+            background-color: var(--brand-blue); color: white; transition: all 0.3s ease;
         }
         .btn-concepts:hover {
-            background-color: var(--brand-cyan); color: var(--brand-blue); transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
+            background-color: var(--brand-cyan); transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .achievement-toast {
@@ -415,13 +380,14 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
         }
         
+        /* UPDATED: Lesson Separator Styles */
         .lesson-separator {
             grid-column: 1 / -1;
             display: flex;
             align-items: center;
             text-align: center;
             margin: 1.5rem 0;
-            color: var(--text-muted);
+            color: var(--brand-blue);
             opacity: 0.4;
             transition: opacity 0.8s ease, color 0.8s ease;
         }
@@ -460,6 +426,8 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+
+        /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
             .carousel-nav-btn {
                 display: none;
@@ -490,7 +458,7 @@
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" style="opacity: 0; visibility: hidden;">
 
     <audio id="completion-sound" preload="auto">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
@@ -517,7 +485,7 @@
                 <h3 id="modal-item-header" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
                 <p id="modal-item-title" class="text-2xl lg:text-3xl italic text-brand-green font-bold mb-4 text-center"></p>
             </div>
-            <div id="modal-item-content" class="modal-item-body paragraph-carousel-container">
+            <div id="modal-item-content" class="modal-item-body text-gray-700 paragraph-carousel-container">
                 <button class="carousel-nav-btn prev" aria-label="Párrafo anterior">&lt;</button>
                 <div class="paragraph-slider"></div>
                 <button class="carousel-nav-btn next" aria-label="Siguiente párrafo">&gt;</button>
@@ -537,7 +505,7 @@
     <div id="confirm-modal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
         <div class="modal-content">
             <h3 id="confirm-title" class="text-xl font-bold text-center mb-4">Confirmar Acción</h3>
-            <p id="confirm-message" class="text-center mb-8"></p>
+            <p id="confirm-message" class="text-center text-gray-700 mb-8"></p>
             <div class="flex justify-center gap-4">
                 <button id="confirm-no-btn" class="btn-secondary font-bold py-2 px-6 rounded-lg">Cancelar</button>
                 <button id="confirm-yes-btn" class="btn-primary font-bold py-2 px-6 rounded-lg">Confirmar</button>
@@ -545,128 +513,86 @@
         </div>
     </div>
 
-    <div class="relative min-h-screen md:flex">
-        <!-- Fondo para modo móvil -->
-        <div id="sidebar-backdrop"></div>
+    <main id="main-content" style="display: none;">
+        <div class="max-w-4xl mx-auto p-4 md:p-8">
+            <header class="mb-12">
+                <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=Banner+Membres%C3%ADa';">
+            </header>
 
-        <!-- Barra de Navegación Lateral -->
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col">
-            <div>
-                <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                    <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
-                    <span class="text-2xl font-extrabold">Miembro Fénix</span>
+            <div class="text-center mb-12">
+                <a href="./miembros.html" class="btn-back font-semibold py-2 px-5 rounded-lg no-underline inline-block">
+                    &larr; Volver al panel de miembros
                 </a>
-                <nav class="mt-10">
-                    <a href="./miembros.html" class="sidebar-link">
-                        <i class="fas fa-home"></i>
-                        <span>Panel Principal</span>
-                    </a>
-                    <a href="./progreso.html" class="sidebar-link active">
-                        <i class="fas fa-tasks"></i>
-                        <span>Mi Progreso</span>
-                    </a>
-                    <a href="./inspiracion.html" class="sidebar-link">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Inspiración</span>
-                    </a>
-                    <a href="./herramienta-ia.html" class="sidebar-link">
-                        <i class="fas fa-robot"></i>
-                        <span>Asistente IA</span>
-                    </a>
-                </nav>
-            </div>
-            <div class="px-4 py-2 mt-auto">
-                <hr class="border-t-2 border-gray-700 mb-4">
-                <button id="logout-btn" class="w-full sidebar-link text-left">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Cerrar Sesión</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Contenido Principal (CORREGIDO) -->
-        <div class="flex-1 flex flex-col">
-             <!-- Botón Hamburguesa para Móvil -->
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-1000">
-                <a href="./miembros.html" class="text-white flex items-center space-x-2">
-                    <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
-                    <span class="text-xl font-extrabold">Miembro Fénix</span>
-                </a>
-                <button id="hamburger-btn" class="text-white focus:outline-none">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
             </div>
 
-            <main id="main-content" class="flex-1 overflow-y-auto" style="display: none;">
-                <div class="max-w-4xl mx-auto p-4 md:p-8">
-                    <header class="mb-12">
-                        <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/0c1427/fbf5e2?text=Banner+Membres%C3%ADa';">
-                    </header>
-
-                    <section class="mb-12">
-                        <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4 text-center">Mi Progreso en las Lecciones</h1>
-                        <div class="max-w-3xl mx-auto text-center mb-8">
-                            <p class="text-lg text-gray-300">
-                                Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
-                            </p>
-                            <p class="text-lg text-gray-300 mt-4">
-                                La forma de progresar en el curso es haciendo<br><span class="font-bold text-brand-pink tracking-wide text-xl">"1 Lección/Día"</span>
-                            </p>
+            <section class="mb-12">
+                <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4 text-center">Mi Progreso en las Lecciones</h1>
+                <!-- UPDATED: Welcome message -->
+                <div class="max-w-3xl mx-auto text-center mb-8">
+                    <p class="text-lg text-gray-700">
+                        Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
+                    </p>
+                    <p class="text-lg text-gray-700 mt-4">
+                        La forma de progresar en el curso es haciendo<br><span class="font-bold text-brand-pink tracking-wide text-xl">"1 Lección/Día"</span>
+                    </p>
+                </div>
+                
+                <!-- PROGRESS BAR SECTION -->
+                <div class="progress-section">
+                    <div class="flex justify-between items-center mb-1 text-sm font-bold">
+                        <span id="progress-text">0 / 0 Completadas</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="w-full progress-bar-bg rounded-full h-4">
+                            <div id="progress-bar" class="progress-bar-fg h-4 rounded-full" style="width: 0%"></div>
                         </div>
-                        
-                        <div class="progress-section">
-                            <div class="flex justify-between items-center mb-1 text-sm font-bold">
-                                <span id="progress-text">0 / 0 Completadas</span>
-                                <span id="progress-percent">0%</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="w-full progress-bar-bg rounded-full h-4">
-                                    <div id="progress-bar" class="progress-bar-fg h-4 rounded-full" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="achievements-container" class="achievements-container">
-                            <h2 class="text-2xl font-bold text-center mb-6">Mis Avances</h2>
-                            <div id="achievements-shelf" class="achievements-shelf">
-                            </div>
-                        </div>
-
-                        <div class="text-center my-12">
-                            <p class="text-center text-sm text-gray-400 mb-2 italic">Es muy importante que estudies los conceptos clave antes de empezar las lecciones.</p>
-                            <a href="./conceptos-clave.html" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md inline-block no-underline">
-                                <i class="fas fa-lightbulb mr-2"></i>Ver Conceptos Clave
-                            </a>
-                        </div>
-
-                        <div id="course-content-container">
-                             <p class="text-center p-8">Cargando lecciones del curso...</p>
-                        </div>
-                    </section>
-                    
-                    <div class="text-center mt-8 flex justify-center gap-4 flex-wrap">
-                        <button id="reset-progress-btn" class="bg-gray-600 hover:bg-gray-700 text-gray-200 font-bold py-2 px-4 rounded-lg text-sm">
-                            <i class="fas fa-undo mr-2"></i>Reiniciar progreso
-                        </button>
                     </div>
                 </div>
-            </main>
 
-            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-                <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-                <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
-                <a href="./login.html" class="mt-8 inline-block btn-primary font-bold py-3 px-6 rounded-lg">
-                    Ir a Iniciar Sesión
-                </a>
+                <!-- ACHIEVEMENTS SHELF SECTION -->
+                <div id="achievements-container" class="achievements-container">
+                    <h2 class="text-2xl font-bold text-center mb-6">Mis Avances</h2>
+                    <div id="achievements-shelf" class="achievements-shelf">
+                        <!-- Achievements will be rendered here by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="text-center my-12">
+                    <p class="text-center text-sm text-gray-600 mb-2 italic">Es muy importante que estudies los conceptos clave antes de empezar las lecciones.</p>
+                    <a href="./conceptos-clave.html" class="btn-concepts font-bold py-3 px-8 rounded-lg shadow-md inline-block no-underline">
+                        <i class="fas fa-lightbulb mr-2"></i>Ver Conceptos Clave
+                    </a>
+                </div>
+
+                <div id="course-content-container">
+                     <p class="text-center p-8">Cargando lecciones del curso...</p>
+                </div>
+            </section>
+            
+            <div class="text-center mt-8 flex justify-center gap-4 flex-wrap">
+                <button id="reset-progress-btn" class="bg-gray-400 hover:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-lg text-sm">
+                    <i class="fas fa-undo mr-2"></i>Reiniciar progreso
+                </button>
             </div>
         </div>
+    </main>
+
+    <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
+        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
+        <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
+        <a href="./login.html" class="mt-8 inline-block btn-primary font-bold py-3 px-6 rounded-lg">
+            Ir a Iniciar Sesión
+        </a>
     </div>
 
     <script type="module">
+        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, onSnapshot, setDoc, getDocs, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -681,26 +607,7 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        // --- MANEJO DE LA BARRA LATERAL (SEPARADO) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.getElementById('sidebar');
-            const hamburgerBtn = document.getElementById('hamburger-btn');
-            const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-            const logoutBtn = document.getElementById('logout-btn');
-
-            function toggleSidebar() {
-                sidebar.classList.toggle('-translate-x-full');
-                sidebarBackdrop.classList.toggle('show');
-            }
-
-            if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
-            if (logoutBtn) logoutBtn.addEventListener('click', () => {
-                signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
-            });
-        });
-        
-        // --- SCRIPT ORIGINAL DE PROGRESO.HTML (LÓGICA PRINCIPAL) ---
+        // --- DOM Selectors ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -748,6 +655,7 @@
         let progressDocRef;
         let progressUnsubscribe;
 
+        // --- Separator Data ---
         const titledSeparators = {
             'intro': 'Desmontando la Ilusión y las proyecciones del ego',
             '19': 'Estableciendo la intención de ver y la receptividad',
@@ -766,6 +674,7 @@
 
         async function fetchAndRenderCourse() {
             if (courseHasBeenRendered) return;
+            courseHasBeenRendered = true;
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
@@ -795,7 +704,6 @@
                 renderAchievements();
                 renderCourseLayout(courseItems);
                 updateUI();
-                courseHasBeenRendered = true;
 
             } catch (error) {
                 console.error("Error loading course from Firestore:", error);
@@ -926,6 +834,7 @@
                         currentGrid = document.createElement('div');
                         currentGrid.className = 'lesson-grid';
                         
+                        // CORRECTED: Add the first separator only once, before the first grid.
                         if (titledSeparators['intro'] && !introSeparatorRendered) {
                             courseContentContainer.appendChild(createSeparator('intro', titledSeparators['intro']));
                             introSeparatorRendered = true;
@@ -943,6 +852,7 @@
                     });
                     currentGrid.appendChild(lessonItem);
 
+                    // Add other separators after their respective lessons
                     if (titledSeparators[item.number]) {
                         currentGrid.appendChild(createSeparator(item.number, titledSeparators[item.number]));
                     } else if (simpleSeparatorPoints.includes(item.number)) {
@@ -956,6 +866,7 @@
             }
         }
 
+        // --- Authentication ---
         onAuthStateChanged(auth, user => {
             document.body.style.opacity = '1';
             document.body.style.visibility = 'visible';
@@ -972,7 +883,8 @@
 
                 getDoc(userDocRef).then(userSnap => {
                     if (userSnap.exists() && userSnap.data().name) {
-                        userTitle.innerHTML = `El Progreso de <span class="text-brand-pink">${userSnap.data().name}</span>`;
+                        // MODIFIED: Use innerHTML to style the name
+                        userTitle.innerHTML = `El Progreso de <span style="color: var(--brand-pink);">${userSnap.data().name}</span>`;
                     } else {
                         userTitle.textContent = `Mi Progreso en las Lecciones`;
                     }
@@ -1002,6 +914,8 @@
             }
         });
         
+        // --- UI Update Functions ---
+
         function updateUI(justUpdated = false) {
             updateProgressBar();
             updateAchievements(justUpdated);
@@ -1062,7 +976,7 @@
                                 .find(item => item.type === 'section_intro' || item.title.toLowerCase().includes('introducción'));
             
             const allSeparators = { ...titledSeparators };
-            simpleSeparatorPoints.forEach(p => allSeparators[p] = '');
+            simpleSeparatorPoints.forEach(p => allSeparators[p] = ''); // Add simple separators to the check list
 
             for (const key in allSeparators) {
                 const separatorEl = document.getElementById(`separator-${key}`);
@@ -1101,6 +1015,8 @@
             if (!hasNumberedItems && fullText.trim()) return [fullText.trim()];
             return paragraphs;
         }
+
+        // --- Modal & Carousel Handling ---
 
         function openModal(modal) {
             initializeAudio();
@@ -1221,6 +1137,8 @@
             openModal(confirmModal);
         }
 
+        // --- Effects ---
+
         function triggerAchievementAnimation() {
             const toast = document.getElementById('achievement-toast');
             if (toast) {
@@ -1278,6 +1196,7 @@
             }
         }
         
+        // --- Event Listeners ---
         modalCloseBtn.addEventListener('click', () => closeModal(itemModal));
         itemModal.addEventListener('click', (e) => { if (e.target === itemModal) closeModal(itemModal) });
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
