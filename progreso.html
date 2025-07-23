@@ -559,11 +559,11 @@
     </div>
 
     <div class="relative min-h-screen md:flex">
-        <!-- Fondo para modo móvil -->
-        <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-1005 md:hidden" style="display: none;"></div>
+        <!-- CORREGIDO: Eliminado style y clases innecesarias -->
+        <div id="sidebar-backdrop"></div>
 
-        <!-- Barra de Navegación Lateral -->
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col">
+        <!-- CORREGIDO: Cambiado 'absolute' por 'fixed' para el menú en móvil -->
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col">
             <div>
                 <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                     <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
@@ -598,7 +598,7 @@
         </aside>
 
         <!-- Contenido Principal -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col md:ml-64"> <!-- CORREGIDO: Añadido margen en desktop para no solapar con el menú -->
              <!-- Botón Hamburguesa para Móvil -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-1000">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
@@ -700,15 +700,10 @@
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const logoutBtn = document.getElementById('logout-btn');
 
+        // --- FUNCIÓN DE MENÚ CORREGIDA ---
         function toggleSidebar() {
-            const isVisible = !sidebar.classList.contains('-translate-x-full');
-            if (isVisible) {
-                sidebar.classList.add('-translate-x-full');
-                sidebarBackdrop.style.display = 'none';
-            } else {
-                sidebar.classList.remove('-translate-x-full');
-                sidebarBackdrop.style.display = 'block';
-            }
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
         }
 
         if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
