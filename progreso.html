@@ -681,24 +681,26 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        // --- MANEJO DE LA BARRA LATERAL ---
-        const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-        const logoutBtn = document.getElementById('logout-btn');
+        // --- MANEJO DE LA BARRA LATERAL (SEPARADO) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+            const logoutBtn = document.getElementById('logout-btn');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarBackdrop.classList.toggle('show');
-        }
+            function toggleSidebar() {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebarBackdrop.classList.toggle('show');
+            }
 
-        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
-        if (logoutBtn) logoutBtn.addEventListener('click', () => {
-             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+            if (logoutBtn) logoutBtn.addEventListener('click', () => {
+                signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+            });
         });
-
-        // --- DOM Selectors ---
+        
+        // --- SCRIPT ORIGINAL DE PROGRESO.HTML (LÓGICA PRINCIPAL) ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const courseContentContainer = document.getElementById('course-content-container');
@@ -764,6 +766,7 @@
 
         async function fetchAndRenderCourse() {
             if (courseHasBeenRendered) return;
+            courseHasBeenRendered = true;
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
@@ -793,7 +796,6 @@
                 renderAchievements();
                 renderCourseLayout(courseItems);
                 updateUI();
-                courseHasBeenRendered = true;
 
             } catch (error) {
                 console.error("Error loading course from Firestore:", error);
@@ -1001,7 +1003,6 @@
         });
         
         function updateUI(justUpdated = false) {
-            if (!courseHasBeenRendered) return;
             updateProgressBar();
             updateAchievements(justUpdated);
             updateItemsState();
