@@ -14,27 +14,77 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Evita dobles barras de scroll */
             font-family: 'Montserrat', sans-serif;
-            background-color: #0c1427; /* Mismo color de fondo */
+            background-color: #0c1427;
             color: #fbf5e2;
         }
-        #auth-container, #iframe-container {
-            display: none; /* Ocultos por defecto */
+        .main-container, .content-wrapper, #iframe-container, #auth-container, #tool-iframe {
             height: 100%;
+        }
+        #page-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-wrapper {
+            flex-grow: 1;
+        }
+
+        /* --- ESTILOS BARRA LATERAL --- */
+        #sidebar {
+            background-color: #080f1e;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1010;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #a7b3ce;
+            border-radius: 0.5rem;
+            margin: 0.25rem 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+        }
+        .sidebar-link:hover {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: #fbf5e2;
+        }
+        .sidebar-link.active {
+            background-color: #00bcd4;
+            color: #0c1427;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        .sidebar-link i {
+            width: 2rem;
+            text-align: center;
+        }
+        #sidebar-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1005;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* --- FIN ESTILOS BARRA LATERAL --- */
+
+        #iframe-container {
+            display: none; 
         }
         #tool-iframe {
             width: 100%;
-            height: 100%;
             border: none;
         }
         .auth-message-container {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            height: 100%;
             padding: 2rem;
         }
         .btn { 
@@ -57,26 +107,80 @@
 </head>
 <body>
 
-    <!-- Contenedor para la herramienta (si el usuario está logueado) -->
-    <div id="iframe-container">
-        <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/"></iframe>
-    </div>
+    <div class="relative min-h-screen md:flex main-container">
+        <!-- Fondo para modo móvil -->
+        <div id="sidebar-backdrop"></div>
 
-    <!-- Mensaje de error (si el usuario NO está logueado) -->
-    <div id="auth-container" class="auth-message-container">
-        <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
-        <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para usar esta herramienta.</p>
-        <a href="./login.html" class="btn">
-            Ir a Iniciar Sesión
-        </a>
+        <!-- Barra de Navegación Lateral -->
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col">
+            <div>
+                <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
+                    <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
+                    <span class="text-2xl font-extrabold">Miembro Fénix</span>
+                </a>
+                <nav class="mt-10">
+                    <a href="./miembros.html" class="sidebar-link">
+                        <i class="fas fa-home"></i>
+                        <span>Panel Principal</span>
+                    </a>
+                    <a href="./progreso.html" class="sidebar-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Mi Progreso</span>
+                    </a>
+                    <a href="./inspiracion.html" class="sidebar-link">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Inspiración</span>
+                    </a>
+                    <a href="./herramienta-ia.html" class="sidebar-link active">
+                        <i class="fas fa-robot"></i>
+                        <span>Asistente IA</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="px-4 py-2 mt-auto">
+                <hr class="border-t-2 border-gray-700 mb-4">
+                <button id="logout-btn" class="w-full sidebar-link text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <div id="page-content" class="flex-1">
+            <!-- Botón Hamburguesa para Móvil -->
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-1000">
+                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
+                    <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
+                    <span class="text-xl font-extrabold">Miembro Fénix</span>
+                </a>
+                <button id="hamburger-btn" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="content-wrapper">
+                <!-- Contenedor para la herramienta (si el usuario está logueado) -->
+                <div id="iframe-container">
+                    <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/"></iframe>
+                </div>
+
+                <!-- Mensaje de error (si el usuario NO está logueado) -->
+                <div id="auth-container" class="auth-message-container">
+                    <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                    <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para usar esta herramienta.</p>
+                    <a href="./login.html" class="btn">
+                        Ir a Iniciar Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module">
-        // Importaciones de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
-        // Tu configuración de Firebase (la misma que en miembros.html)
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -87,24 +191,37 @@
             measurementId: "G-5L3T8PGXYK"
         };
 
-        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Elementos del DOM
+        // --- MANEJO DE LA BARRA LATERAL ---
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+        if (logoutBtn) logoutBtn.addEventListener('click', () => {
+             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+        });
+
+        // --- MANEJO DE CONTENIDO ---
         const iframeContainer = document.getElementById('iframe-container');
         const authContainer = document.getElementById('auth-container');
 
-        // Comprobar estado de autenticación
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Si el usuario está logueado, muestra el iframe con la herramienta
                 iframeContainer.style.display = 'block';
                 authContainer.style.display = 'none';
             } else {
-                // Si no está logueado, muestra el mensaje de acceso denegado
                 iframeContainer.style.display = 'none';
-                authContainer.style.display = 'block';
+                authContainer.style.display = 'flex';
             }
         });
     </script>
