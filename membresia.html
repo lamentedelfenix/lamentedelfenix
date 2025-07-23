@@ -427,19 +427,19 @@
                     gif: 'https://i.imgur.com/DiOIB3w.gif' 
                 },
                 'chat-ia-img': { 
-                    static: 'https://i.imgur.com/RPIB19T.png', // Nueva imagen estática
+                    static: 'https://i.imgur.com/RPIB19T.png', 
                     gif: 'https://i.imgur.com/LqovuKM.gif' 
                 },
                 'mensajes-diarios-img': { 
-                    static: 'https://i.imgur.com/D0Zh9jy.png', // Nueva imagen estática
+                    static: 'https://i.imgur.com/D0Zh9jy.png', 
                     gif: 'https://i.imgur.com/BheekP1.gif'
                 },
                 'lecciones-ritmo-img': { 
-                    static: 'https://i.imgur.com/XCb5yM7.png', // Nueva imagen estática
+                    static: 'https://i.imgur.com/XCb5yM7.png', 
                     gif: 'https://i.imgur.com/JLweKjE.gif'
                 },
                 'rincon-inspiracion-img': { 
-                    static: 'https://i.imgur.com/g5NgVsm.png', // Nueva imagen estática
+                    static: 'https://i.imgur.com/g5NgVsm.png', 
                     gif: 'https://i.imgur.com/p7idYrx.gif'
                 }
             };
@@ -467,10 +467,20 @@
                     if (panzoomInstance) {
                         panzoomInstance.destroy();
                     }
-                    // Inicializa Panzoom en la imagen del lightbox
+                    // Inicializa Panzoom en la imagen del lightbox con opciones mejoradas para móvil
                     panzoomInstance = Panzoom(lightboxImg, {
-                        maxScale: 5,
-                        minScale: 0.7
+                        maxScale: 10, // Aumentado el zoom máximo para permitir más ampliación
+                        minScale: 0.7,
+                        // Eliminada la opción 'contain: inside' para permitir el paneo libre
+                        // incluso cuando la imagen se sale de los límites del lightbox.
+                        // Esto permite al usuario arrastrar para ver todas las partes de la imagen ampliada.
+                        handleStartEvent: (e) => {
+                            // Previene el comportamiento por defecto del navegador en eventos táctiles
+                            // para mejorar la fluidez del arrastre (panning)
+                            if (e.touches && e.touches.length === 1) { 
+                                e.preventDefault();
+                            }
+                        }
                     });
                 });
             });
