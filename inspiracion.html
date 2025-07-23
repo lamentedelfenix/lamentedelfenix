@@ -13,7 +13,7 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0c2f5b; 
+            background-color: #0c1427; /* Unificado con el resto de páginas */
             color: #fbf5e2;
             overflow-x: hidden;
         }
@@ -26,6 +26,48 @@
             height: 100%;
             z-index: -1;
         }
+
+        /* --- ESTILOS BARRA LATERAL --- */
+        #sidebar {
+            background-color: #080f1e;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1010;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #a7b3ce;
+            border-radius: 0.5rem;
+            margin: 0.25rem 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+        }
+        .sidebar-link:hover {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: #fbf5e2;
+        }
+        .sidebar-link.active {
+            background-color: #00bcd4;
+            color: #0c1427;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        .sidebar-link i {
+            width: 2rem;
+            text-align: center;
+        }
+        #sidebar-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1005;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* --- FIN ESTILOS BARRA LATERAL --- */
 
         .text-brand-pink { color: #e91e63; }
         .text-brand-cyan { color: #00bcd4; }
@@ -55,14 +97,15 @@
         }
 
         .video-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #0c2f5b;
+            background-color: rgba(12, 20, 39, 0.8); /* Adaptado al fondo oscuro */
+            backdrop-filter: blur(10px);
+            color: #fbf5e2;
             border-radius: 0.75rem;
             overflow: hidden;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             transition: transform 0.5s ease, box-shadow 0.5s ease;
             cursor: pointer;
-            border: 1px solid rgba(224, 217, 198, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             animation: fadeInSoft 0.8s ease-out forwards;
         }
         
@@ -79,7 +122,8 @@
 
         .video-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3);
+            border: 1px solid rgba(0, 188, 212, 0.5);
         }
 
         .video-card .thumbnail-container {
@@ -108,7 +152,7 @@
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(12, 47, 91, 0.85);
+            background-color: rgba(12, 20, 39, 0.85);
             display: flex; align-items: center; justify-content: center;
             z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -116,17 +160,19 @@
         }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-content {
-            background-color: #fbf5e2; border-radius: 0.5rem; width: 100%;
+            background-color: #080f1e; 
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 0.5rem; width: 100%;
             max-width: 900px; max-height: 90vh; transform: scale(0.9);
             transition: transform 0.3s ease; position: relative; overflow: hidden;
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn {
             position: absolute; top: -10px; right: -10px; font-size: 1.5rem;
-            color: white; background-color: #0c2f5b; border-radius: 50%;
+            color: #080f1e; background-color: #fbf5e2; border-radius: 50%;
             width: 40px; height: 40px; cursor: pointer; line-height: 1;
             display: flex; align-items: center; justify-content: center;
-            z-index: 10; border: 2px solid #fbf5e2;
+            z-index: 10; border: 2px solid #080f1e;
         }
         .video-embed-container {
             position: relative; padding-bottom: 56.25%; height: 0;
@@ -149,16 +195,21 @@
         .loader:after { animation-duration: 4s; }
         @keyframes l24 { 100% {transform: rotate(1turn)} }
         
-        /* Estilos para el menú de ordenación */
         #category-sorter {
             background-color: rgba(255, 255, 255, 0.1);
             color: #fbf5e2;
-            border: 1px solid rgba(251, 191, 36, 0.5);
+            border: 1px solid rgba(0, 188, 212, 0.5);
             cursor: pointer;
         }
         #category-sorter option {
-            background-color: #0c2f5b;
+            background-color: #0c1427;
             color: #fbf5e2;
+        }
+        .btn-pink { background-color: transparent; border-color: #e91e63; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px #e91e63;
+            background-color: rgba(233, 30, 99, 0.2);
         }
     </style>
 </head>
@@ -166,41 +217,96 @@
     
     <canvas id="background-canvas"></canvas>
 
-    <div class="max-w-6xl mx-auto p-4 md:p-8 relative z-10">
-        <header class="text-center my-12 md:my-20">
-            <div class="banner-container">
-                <img src="https://i.imgur.com/JOeaWYI.png" alt="Banner de Inspiración y Conocimiento" class="max-w-full h-auto mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x150/0c2f5b/fbf5e2?text=Inspiración+y+Conocimiento';">
+    <div class="relative min-h-screen md:flex">
+        <!-- Fondo para modo móvil -->
+        <div id="sidebar-backdrop"></div>
+
+        <!-- Barra de Navegación Lateral -->
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0">
+            <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
+                <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
+                <span class="text-2xl font-extrabold">Miembro Fénix</span>
+            </a>
+            <nav>
+                <a href="./miembros.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>Panel Principal</span>
+                </a>
+                <a href="./progreso.html" class="sidebar-link">
+                    <i class="fas fa-tasks"></i>
+                    <span>Mi Progreso</span>
+                </a>
+                <a href="./inspiracion.html" class="sidebar-link active">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Inspiración</span>
+                </a>
+                <a href="./herramienta-ia.html" class="sidebar-link">
+                    <i class="fas fa-robot"></i>
+                    <span>Asistente IA</span>
+                </a>
+            </nav>
+            <div class="px-4 py-2 mt-auto">
+                <hr class="border-t-2 border-gray-700 mb-4">
+                <button id="logout-btn" class="w-full sidebar-link text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <div class="flex-1">
+            <!-- Botón Hamburguesa para Móvil -->
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-1000">
+                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
+                    <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
+                    <span class="text-xl font-extrabold">Miembro Fénix</span>
+                </a>
+                <button id="hamburger-btn" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
             </div>
             
-            <!-- Texto explicativo actualizado -->
-            <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-8 leading-relaxed">
-                Bienvenido/a, aquí encontrarás una cuidadosa selección de videos de internet, películas y contenido exclusivo para alimentar tu mente y motivarte en tu camino de desarrollo interior.
-            </p>
+            <div id="main-content" style="display: none;">
+                <div class="max-w-6xl mx-auto p-4 md:p-8 relative z-10">
+                    <header class="text-center my-12 md:my-20">
+                        <div class="banner-container">
+                            <img src="https://i.imgur.com/JOeaWYI.png" alt="Banner de Inspiración y Conocimiento" class="max-w-full h-auto mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x150/0c2f5b/fbf5e2?text=Inspiración+y+Conocimiento';">
+                        </div>
+                        
+                        <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-8 leading-relaxed">
+                            Bienvenido/a, aquí encontrarás una cuidadosa selección de videos de internet, películas y contenido exclusivo para alimentar tu mente y motivarte en tu camino de desarrollo interior.
+                        </p>
+                    </header>
 
-             <a href="./miembros.html" class="inline-block mt-12 bg-brand-pink text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-transform transform hover:scale-105">
-                <i class="fas fa-arrow-left mr-2"></i> Volver al Portal
-            </a>
-        </header>
+                    <main>
+                        <div id="sorter-container" class="flex justify-center items-center gap-4 mb-12">
+                            <label for="category-sorter" class="text-lg font-semibold text-gray-300">Ordenar por:</label>
+                            <select id="category-sorter" class="rounded-lg px-4 py-2 text-base">
+                            </select>
+                        </div>
 
-        <main>
-            <!-- Contenedor para el menú de ordenación -->
-            <div id="sorter-container" class="flex justify-center items-center gap-4 mb-12">
-                <label for="category-sorter" class="text-lg font-semibold text-gray-300">Ordenar por:</label>
-                <select id="category-sorter" class="rounded-lg px-4 py-2 text-base">
-                    <!-- Las opciones se insertarán aquí dinámicamente -->
-                </select>
+                        <div id="video-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"></div>
+                        <div id="loading-indicator" class="flex flex-col items-center justify-center py-20">
+                            <div class="loader"></div>
+                            <p class="mt-4 text-lg font-semibold">Cargando vídeos...</p>
+                        </div>
+                        <div id="error-message" class="hidden text-center py-20 bg-red-900 bg-opacity-50 rounded-lg p-6">
+                             <h3 class="font-bold text-xl text-red-300">¡Ups! Algo salió mal.</h3>
+                            <p class="mt-2 text-red-300">No pudimos cargar la galería de vídeos. Por favor, revisa que la URL de Google Sheets sea correcta y que la hoja esté publicada.</p>
+                        </div>
+                    </main>
+                </div>
             </div>
 
-            <div id="video-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"></div>
-            <div id="loading-indicator" class="flex flex-col items-center justify-center py-20">
-                <div class="loader"></div>
-                <p class="mt-4 text-lg font-semibold">Cargando vídeos...</p>
+            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center h-screen flex flex-col justify-center items-center" style="display: none;">
+                <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para ver este contenido.</p>
+                <a href="./login.html" class="btn btn-pink font-bold py-3 px-6 rounded-lg">
+                    Ir a Iniciar Sesión
+                </a>
             </div>
-            <div id="error-message" class="hidden text-center py-20 bg-red-900 bg-opacity-50 rounded-lg p-6">
-                 <h3 class="font-bold text-xl text-red-300">¡Ups! Algo salió mal.</h3>
-                <p class="mt-2 text-red-300">No pudimos cargar la galería de vídeos. Por favor, revisa que la URL de Google Sheets sea correcta y que la hoja esté publicada.</p>
-            </div>
-        </main>
+        </div>
     </div>
 
     <div id="video-modal" class="modal-overlay">
@@ -295,7 +401,42 @@
     </script>
 
     <script type="module">
-        // --- CONFIGURACIÓN ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.appspot.com",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // --- MANEJO DE LA BARRA LATERAL ---
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+        if (logoutBtn) logoutBtn.addEventListener('click', () => {
+             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+        });
+
+        // --- MANEJO DE CONTENIDO ---
+        const mainContent = document.getElementById('main-content');
+        const authMessage = document.getElementById('auth-message');
         const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
         
         const gallery = document.getElementById('video-gallery');
@@ -305,10 +446,17 @@
         const modal = document.getElementById('video-modal');
         const modalPlayer = document.getElementById('modal-video-player');
         const modalCloseBtn = document.getElementById('modal-close');
-        let allVideos = []; // Almacenará todos los vídeos
+        let allVideos = []; 
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadVideos(); 
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                mainContent.style.display = 'block';
+                authMessage.style.display = 'none';
+                loadVideos();
+            } else {
+                mainContent.style.display = 'none';
+                authMessage.style.display = 'flex';
+            }
         });
         
         async function loadVideos() {
@@ -333,7 +481,7 @@
         function setupSorter(videos) {
             const categories = ['Orden por defecto', ...new Set(videos.map(video => video.category).filter(Boolean))];
             
-            categorySorter.innerHTML = ''; // Limpiar opciones existentes
+            categorySorter.innerHTML = ''; 
             categories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category;
@@ -348,7 +496,7 @@
         }
 
         function sortAndDisplayVideos(category) {
-            let sortedVideos = [...allVideos]; // Crear una copia para no modificar el original
+            let sortedVideos = [...allVideos]; 
             if (category !== 'Orden por defecto') {
                 sortedVideos.sort((a, b) => {
                     if (a.category === category && b.category !== category) return -1;
@@ -365,10 +513,9 @@
                 return;
             }
 
-            gallery.innerHTML = ''; // Limpiar la galería antes de volver a mostrar los vídeos
+            gallery.innerHTML = ''; 
             videos.forEach((video, index) => {
                 const videoCard = createVideoCard(video);
-                // La animación se aplica a través de la clase .video-card en CSS
                 gallery.appendChild(videoCard);
             });
         }
@@ -379,7 +526,7 @@
             card.dataset.url = video.url;
             card.dataset.category = video.category || 'Inspiración';
 
-            const thumbnailUrl = getThumbnailUrl(video); // CAMBIO: Pasar el objeto de vídeo completo
+            const thumbnailUrl = getThumbnailUrl(video); 
 
             card.innerHTML = `
                 <div class="thumbnail-container">
@@ -389,7 +536,7 @@
                 <div class="p-6">
                     <p class="text-xs font-bold uppercase tracking-widest text-brand-pink mb-2">${video.category || 'Inspiración'}</p>
                     <h3 class="text-xl font-bold mb-2">${video.title || 'Sin Título'}</h3>
-                    <p class="text-gray-700 text-sm leading-relaxed">${video.description || ''}</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">${video.description || ''}</p>
                 </div>
             `;
             
@@ -481,13 +628,11 @@
             return null;
         }
 
-        // CAMBIO: La función ahora recibe el objeto de vídeo completo
         function getThumbnailUrl(video, isError = false) {
             const videoUrl = video.url;
             const customThumbnail = video.thumbnail;
             const category = video.category || 'Inspiración';
 
-            // Si es un error, siempre devuelve el placeholder con la categoría correcta
             if (isError) {
                 return `https://placehold.co/600x400/2a4365/fbf5e2?text=${encodeURIComponent(category)}`;
             }
@@ -499,7 +644,6 @@
             const match = videoUrl.match(youtubeRegex);
             if (match) return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
             
-            // Para Odysee y otros, devuelve el placeholder con la categoría correcta
             return `https://placehold.co/600x400/2a4365/fbf5e2?text=${encodeURIComponent(category)}`;
         }
         
