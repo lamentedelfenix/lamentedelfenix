@@ -31,7 +31,7 @@
             z-index: -2;
         }
 
-        /* --- NUEVOS ESTILOS PARA LA BARRA LATERAL --- */
+        /* --- ESTILOS PARA LA BARRA LATERAL --- */
         #sidebar {
             background-color: #080f1e;
             transition: transform 0.3s ease-in-out;
@@ -76,7 +76,24 @@
             opacity: 1;
             visibility: visible;
         }
-        /* --- FIN ESTILOS BARRA LATERAL --- */
+        
+        /* --- ESTILOS DE RACHA EN EL MENÚ --- */
+        #sidebar-streak-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            margin-top: 1rem;
+            font-weight: 700;
+            color: #f6ad55; /* Naranja para la llama */
+            background-color: rgba(246, 173, 85, 0.1);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(246, 173, 85, 0.3);
+        }
+        #sidebar-streak-counter .fa-fire {
+            font-size: 1.25rem;
+            text-shadow: 0 0 8px #f6ad55;
+        }
 
         .card { 
             background-color: rgba(255, 255, 255, 0.05);
@@ -309,7 +326,7 @@
         <div id="sidebar-backdrop" class=""></div>
 
         <!-- Barra de Navegación Lateral -->
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0">
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
                 <span class="text-2xl font-extrabold">El Fénix</span>
@@ -331,6 +348,14 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
+                <!-- CONTADOR DE RACHA EN EL MENÚ -->
+                <div id="sidebar-streak-counter" class="px-4" style="display: none;">
+                    <i class="fas fa-fire"></i>
+                    <div>
+                        <span id="sidebar-streak-days">0</span>
+                        <span>días de racha</span>
+                    </div>
+                </div>
             </nav>
             <div class="px-4 py-2 mt-auto">
                 <hr class="border-gray-700 mb-4">
@@ -342,9 +367,9 @@
         </aside>
 
         <!-- Contenido Principal -->
-        <div id="page-content" class="flex-1">
+        <div id="page-content" class="flex-1 md:ml-64">
             <!-- Botón Hamburguesa para Móvil -->
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-1000">
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
                     <span class="text-xl font-extrabold">El Fénix</span>
@@ -576,7 +601,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
@@ -617,6 +642,8 @@
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
         const logoutBtn = document.getElementById('logout-btn');
+        const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
+        const sidebarStreakDays = document.getElementById('sidebar-streak-days');
         let allLessons = [];
         let startAnimation;
 
@@ -633,6 +660,32 @@
                 } else {
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
+                
+                // Escuchar cambios en el progreso para la racha
+                const appId = 'ucdm-tracker-app-v2';
+                const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
+                onSnapshot(progressDocRef, (docSnap) => {
+                    let currentStreak = 0;
+                    let lastCompletedDate = null;
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        currentStreak = data.currentStreak || 0;
+                        lastCompletedDate = data.lastCompletedDate || null;
+                    }
+                    
+                    const today = new Date().toISOString().slice(0, 10);
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+                    if (lastCompletedDate !== today && lastCompletedDate !== yesterday) {
+                        currentStreak = 0;
+                    }
+                    
+                    if (sidebarStreakCounter && sidebarStreakDays) {
+                        sidebarStreakDays.textContent = currentStreak;
+                        sidebarStreakCounter.style.display = 'flex';
+                    }
+                });
+
 
                 allLessons = await fetchAllLessons();
                 if (allLessons.length > 0) {
