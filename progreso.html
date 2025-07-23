@@ -36,14 +36,13 @@
             overflow: hidden;
         }
 
-        /* --- AÑADIDO: ESTILOS FONDO ANIMADO --- */
         #background-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2; /* Detrás de todo el contenido */
+            z-index: -2;
         }
 
         /* --- ESTILOS BARRA LATERAL --- */
@@ -87,6 +86,73 @@
             visibility: visible;
         }
         
+        /* --- ESTILOS DE RACHA --- */
+        #streak-counter {
+            display: none; /* Oculto hasta que se carguen los datos */
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #f6ad55; /* Naranja para la llama */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        #streak-counter.on-fire {
+            text-shadow: 0 0 8px #f6ad55;
+        }
+        #streak-counter .fa-fire {
+            font-size: 1.5rem;
+            animation: flame-flicker 1.5s infinite ease-in-out;
+        }
+        @keyframes flame-flicker {
+            0%, 100% { transform: scale(1) rotate(-2deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- ESTILOS MODAL DE LOGRO --- */
+        #achievement-modal .modal-content {
+            background: radial-gradient(circle, rgba(20, 36, 68, 0.95) 0%, rgba(12, 20, 39, 0.98) 100%);
+            text-align: center;
+        }
+        #achievement-modal-icon {
+            font-size: 5rem;
+            color: var(--brand-gold);
+            text-shadow: 0 0 25px var(--brand-gold);
+            animation: achievement-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes achievement-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        #confetti-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 16px;
+            background-color: #f00;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10vh) rotateZ(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotateZ(720deg);
+                opacity: 0;
+            }
+        }
+
         /* --- PROGRESS BAR STYLES --- */
         .progress-section {
             position: relative;
@@ -394,37 +460,6 @@
             box-shadow: 0 4px 15px rgba(0, 188, 212, 0.3);
         }
         
-        .achievement-toast {
-            position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.5);
-            background-color: rgba(12, 47, 91, 0.95);
-            color: white; padding: 2rem; border-radius: 1rem;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 2000; opacity: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .achievement-toast.show {
-            display: flex;
-            animation: show-hide-toast 2.5s ease-in-out forwards;
-        }
-        .achievement-toast .icon-container {
-            border: 4px solid #4caf50; border-radius: 50%;
-            width: 80px; height: 80px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 1rem; animation: icon-pop 0.5s 0.2s ease-out backwards;
-        }
-        @keyframes icon-pop {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-        .achievement-toast .icon-container i { font-size: 3rem; color: #4caf50; }
-        .achievement-toast p { font-size: 1.5rem; font-weight: bold; }
-        @keyframes show-hide-toast {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            16% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-            84% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-        }
-        
         .lesson-separator {
             grid-column: 1 / -1;
             display: flex;
@@ -502,7 +537,6 @@
 </head>
 <body class="antialiased" style="opacity: 0; visibility: hidden;">
 
-    <!-- AÑADIDO: Canvas para el fondo animado -->
     <canvas id="background-canvas"></canvas>
 
     <audio id="completion-sound" preload="auto">
@@ -515,11 +549,15 @@
 
     <div id="fireworks-container"></div>
 
-    <div id="achievement-toast" class="achievement-toast">
-        <div class="icon-container">
-            <i class="fas fa-check"></i>
+    <!-- MODAL DE LOGRO ESPECTACULAR -->
+    <div id="achievement-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="achievement-modal-title">
+        <div class="modal-content relative">
+            <div id="confetti-container"></div>
+            <h2 id="achievement-modal-title" class="text-3xl font-bold text-brand-cyan mb-4">¡Logro Desbloqueado!</h2>
+            <i id="achievement-modal-icon" class="fas fa-star mb-4"></i>
+            <p id="achievement-modal-text" class="text-xl font-semibold mb-8"></p>
+            <button id="achievement-modal-close" class="btn-primary font-bold py-2 px-6 rounded-lg">Continuar</button>
         </div>
-        <p>¡Completado!</p>
     </div>
 
     <!-- Modal para Lecciones e Introducciones -->
@@ -561,7 +599,6 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <!-- CORRECCIÓN 2: Menú siempre fijo y visible en escritorio -->
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <div>
                 <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
@@ -596,10 +633,7 @@
             </div>
         </aside>
 
-        <!-- Contenido Principal -->
-        <!-- CORRECCIÓN 3: Margen izquierdo solo en escritorio para dejar espacio al menú fijo -->
         <div class="flex-1 flex flex-col md:ml-64">
-             <!-- CORRECCIÓN 1: Barra superior móvil con z-index más alto -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
@@ -612,12 +646,17 @@
 
             <main id="main-content" class="flex-1 overflow-y-auto" style="display: none;">
                 <div class="max-w-4xl mx-auto p-4 md:p-8">
-                    <header class="mb-12">
-                        <img src="https://i.imgur.com/7CzZqwX.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/0c1427/fbf5e2?text=Banner+Membres%C3%ADa';">
+                    <header class="mb-8 text-center">
+                        <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4">Mi Progreso en las Lecciones</h1>
+                        <!-- CONTADOR DE RACHA -->
+                        <div id="streak-counter" class="text-xl mt-2">
+                            <i class="fas fa-fire"></i>
+                            <span id="streak-days">0</span>
+                            <span>días de racha</span>
+                        </div>
                     </header>
 
                     <section class="mb-12">
-                        <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4 text-center">Mi Progreso en las Lecciones</h1>
                         <div class="max-w-3xl mx-auto text-center mb-8">
                             <p class="text-lg text-gray-300">
                                 Recuerda que los logros que desbloquees son solo una "magia" para motivar tu estudio. El verdadero premio es la paz que encontrarás al aplicar estas lecciones en tu vida.
@@ -678,7 +717,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
@@ -700,7 +739,6 @@
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const logoutBtn = document.getElementById('logout-btn');
 
-        // --- FUNCIÓN DE MENÚ CORREGIDA ---
         function toggleSidebar() {
             sidebar.classList.toggle('-translate-x-full');
             sidebarBackdrop.classList.toggle('show');
@@ -737,6 +775,16 @@
         const confirmMessage = document.getElementById('confirm-message');
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
+        
+        // Elementos de racha y logros
+        const streakCounterEl = document.getElementById('streak-counter');
+        const streakDaysEl = document.getElementById('streak-days');
+        const achievementModal = document.getElementById('achievement-modal');
+        const achievementModalCloseBtn = document.getElementById('achievement-modal-close');
+        const achievementModalIcon = document.getElementById('achievement-modal-icon');
+        const achievementModalText = document.getElementById('achievement-modal-text');
+        const confettiContainer = document.getElementById('confetti-container');
+
 
         const paragraphSlider = itemModal.querySelector('.paragraph-slider');
         const prevBtn = itemModal.querySelector('.carousel-nav-btn.prev');
@@ -759,6 +807,10 @@
         
         let progressDocRef;
         let progressUnsubscribe;
+        let userData = {
+            currentStreak: 0,
+            lastCompletedDate: null
+        };
 
         const titledSeparators = {
             'intro': 'Desmontando la Ilusión y las proyecciones del ego',
@@ -780,7 +832,6 @@
             
             courseContentContainer.innerHTML = '<p class="text-center p-8">Cargando estructura del curso...</p>';
             try {
-                // *** CORRECCIÓN CLAVE: Usar el método de carga optimizado ***
                 const courseDocRef = doc(db, "course", "courseStructure");
                 const courseDocSnap = await getDoc(courseDocRef);
 
@@ -833,11 +884,11 @@
                 let icon = 'fa-star';
 
                 if (index === 0) {
-                    title = 'INTRODUCCIÓN ¡Inicio del Viaje!';
+                    title = '¡Inicio del Viaje!';
                     icon = 'fa-play-circle';
                 } else {
-                    title = intro.title.replace(/Introducción:? ?-? ?/i, '').trim().toUpperCase();
-                    if (title.includes("MENSAJE FINAL PARA TI")) {
+                    title = intro.title.replace(/Introducción:? ?-? ?/i, '').trim();
+                    if (title.toUpperCase().includes("MENSAJE FINAL PARA TI")) {
                         title = 'MENSAJE FINAL PARA TI';
                         icon = 'fa-envelope-open-text';
                     }
@@ -853,7 +904,7 @@
 
             const finalTrophy = {
                 id: 'complete_course',
-                title: 'Premio Final:<br>Psicoterapia<br>1 a 1',
+                title: 'Premio Final: Psicoterapia 1 a 1',
                 icon: 'fa-trophy',
                 condition: (completed) => {
                     if (potentialAchievements.length === 0) return false;
@@ -875,7 +926,7 @@
                     <div class="icon-wrapper">
                         <i class="fas ${ach.icon}"></i>
                     </div>
-                    <p class="achievement-title">${ach.title}</p>
+                    <p class="achievement-title">${ach.title.replace(/<br>/g, ' ')}</p>
                 `;
                 achievementsShelf.appendChild(item);
             });
@@ -995,10 +1046,18 @@
                 progressUnsubscribe = onSnapshot(progressDocRef, (docSnap) => {
                     const oldCompletedCount = completedItems.size;
                     if (docSnap.exists()) {
-                        completedItems = new Set(docSnap.data().completed || []);
+                        const data = docSnap.data();
+                        completedItems = new Set(data.completed || []);
+                        // Cargar datos de racha
+                        userData.currentStreak = data.currentStreak || 0;
+                        userData.lastCompletedDate = data.lastCompletedDate || null;
+
                     } else {
-                        setDoc(progressDocRef, { completed: [] }).catch(err => console.error("Error creating progress doc:", err));
+                        // Si no existe, lo creamos con valores iniciales
+                        const initialData = { completed: [], currentStreak: 0, lastCompletedDate: null };
+                        setDoc(progressDocRef, initialData).catch(err => console.error("Error creating progress doc:", err));
                     }
+                    
                     if(courseHasBeenRendered) {
                         updateUI(oldCompletedCount < completedItems.size);
                     }
@@ -1016,6 +1075,7 @@
         
         function updateUI(justUpdated = false) {
             updateProgressBar();
+            updateStreakDisplay();
             updateAchievements(justUpdated);
             updateItemsState();
             updateSeparatorsState();
@@ -1036,6 +1096,19 @@
             progressBar.style.width = `${percentage}%`;
             progressPercent.textContent = `${Math.round(percentage)}%`;
         }
+
+        function updateStreakDisplay() {
+            const today = new Date().toISOString().slice(0, 10);
+            const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+            if (userData.lastCompletedDate !== today && userData.lastCompletedDate !== yesterday) {
+                userData.currentStreak = 0; // La racha se rompió
+            }
+
+            streakDaysEl.textContent = userData.currentStreak;
+            streakCounterEl.style.display = 'flex';
+            streakCounterEl.classList.toggle('on-fire', userData.currentStreak > 0);
+        }
         
         function updateAchievements(justUpdated) {
             achievements.forEach(ach => {
@@ -1050,8 +1123,7 @@
                         achElement.classList.add('unlocked');
                         if (justUpdated) {
                             achElement.classList.add('just-unlocked');
-                            triggerFireworks(achElement);
-                            playMilestoneSound();
+                            showAchievementModal(ach); // Mostrar el nuevo modal
                             setTimeout(() => achElement.classList.remove('just-unlocked'), 800);
                         }
                     }
@@ -1192,23 +1264,38 @@
         
         async function handleMarkComplete() {
             if (currentItemId === null || !progressDocRef) return;
+            
             const newCompletedSet = new Set(completedItems);
-            const item = allItemsMap.get(currentItemId);
+            const wasAlreadyCompleted = newCompletedSet.has(currentItemId);
             let justCompleted = false;
 
-            if (newCompletedSet.has(currentItemId)) {
+            if (wasAlreadyCompleted) {
                 newCompletedSet.delete(currentItemId);
             } else {
                 newCompletedSet.add(currentItemId);
                 justCompleted = true;
-                if (item && (item.type === 'lesson' || item.type === 'review' || item.type === 'section_intro')) {
-                    playCompletionSound();
+                playCompletionSound();
+            }
+
+            const updates = { completed: [...newCompletedSet] };
+            
+            // Lógica de racha solo al completar, no al desmarcar
+            if (justCompleted) {
+                const today = new Date().toISOString().slice(0, 10);
+                if (userData.lastCompletedDate !== today) { // Solo actualizar racha una vez al día
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+                    if (userData.lastCompletedDate === yesterday) {
+                        updates.currentStreak = (userData.currentStreak || 0) + 1; // Continuar racha
+                    } else {
+                        updates.currentStreak = 1; // Nueva racha
+                    }
+                    updates.lastCompletedDate = today;
                 }
             }
 
             try {
-                await setDoc(progressDocRef, { completed: [...newCompletedSet] }, { merge: true });
-                if (justCompleted) triggerAchievementAnimation();
+                // Usar updateDoc para no sobreescribir el documento si solo se añade un campo
+                await updateDoc(progressDocRef, updates);
             } catch (error) {
                 console.error("Error updating progress:", error);
                 showConfirmation(`Hubo un error al guardar tu progreso.`);
@@ -1220,7 +1307,8 @@
             showConfirmation('¿Estás seguro de que quieres reiniciar todo tu progreso? Esta acción no se puede deshacer.', async () => {
                 if (progressDocRef) {
                     try {
-                        await setDoc(progressDocRef, { completed: [] });
+                        // Reiniciar todo
+                        await setDoc(progressDocRef, { completed: [], currentStreak: 0, lastCompletedDate: null });
                         achievedMilestones.clear();
                     } catch (error) {
                         console.error("Error resetting progress:", error);
@@ -1237,41 +1325,28 @@
 
         // --- Effects ---
 
-        function triggerAchievementAnimation() {
-            const toast = document.getElementById('achievement-toast');
-            if (toast) {
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2500);
+        function showAchievementModal(achievement) {
+            achievementModalIcon.className = `fas ${achievement.icon} mb-4`;
+            achievementModalText.innerHTML = achievement.title;
+            openModal(achievementModal);
+            triggerConfetti();
+            playMilestoneSound();
+        }
+        
+        function triggerConfetti() {
+            confettiContainer.innerHTML = '';
+            const colors = ['#ffd700', '#e91e63', '#00bcd4', '#ffffff'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.style.transform = `rotateZ(${Math.random() * 360}deg)`;
+                confettiContainer.appendChild(confetti);
             }
         }
 
-        function triggerFireworks(achElement) {
-            const particleCount = 80;
-            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#F7FFF7', '#ffbe0b'];
-            const rect = achElement.getBoundingClientRect();
-            
-            const xPos = rect.left + rect.width / 2;
-            const yPos = rect.top + rect.height / 2;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'firework-particle';
-                
-                const angle = Math.random() * 360;
-                const distance = Math.random() * 100 + 50;
-                const xEnd = Math.cos(angle * Math.PI / 180) * distance;
-                const yEnd = Math.sin(angle * Math.PI / 180) * distance;
-
-                particle.style.left = `${xPos}px`;
-                particle.style.top = `${yPos}px`;
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.setProperty('--x-end', `${xEnd}px`);
-                particle.style.setProperty('--y-end', `${yEnd}px`);
-                
-                fireworksContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 1200);
-            }
-        }
 
         function initializeAudio() {
             if (audioInitialized) return;
@@ -1299,6 +1374,9 @@
         itemModal.addEventListener('click', (e) => { if (e.target === itemModal) closeModal(itemModal) });
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
         
+        achievementModalCloseBtn.addEventListener('click', () => closeModal(achievementModal));
+        achievementModal.addEventListener('click', (e) => { if(e.target === achievementModal) closeModal(achievementModal) });
+
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeModal(confirmModal);
@@ -1320,7 +1398,6 @@
 
     </script>
     
-    <!-- REEMPLAZADO: Script para el fondo de estrellas -->
     <script>
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
