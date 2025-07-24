@@ -96,14 +96,30 @@
             text-align: left;
             font-size: 0.8rem;
         }
-        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip {
+        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip, .streak-container:focus-within .streak-tooltip {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
         .streak-tooltip h4 { font-weight: 800; color: #f6ad55; margin-bottom: 0.5rem; }
         .streak-tooltip p { font-size: 0.75rem; line-height: 1.5; color: #a7b3ce; }
         .streak-tooltip p strong { color: #fbf5e2; }
         .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+        
+        .streak-tooltip-close {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.5rem;
+            font-size: 1.75rem;
+            color: #a7b3ce;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+        .streak-tooltip-close:hover {
+            color: #fbf5e2;
+        }
+
 
         #mobile-streak-counter + .streak-tooltip {
             top: 100%;
@@ -307,14 +323,10 @@
         #bookmark-tooltip { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background-color: #0c2f5b; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, bottom 0.3s; z-index: 100; }
         #bookmark-tooltip.show { opacity: 1; visibility: visible; bottom: 3rem; }
 
+        /* MODIFICADO: Banner con resplandor estático */
         .banner-container img {
             border-radius: 0.5rem;
-            animation: banner-glow 5s infinite ease-in-out;
-        }
-        
-        @keyframes banner-glow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.8)); }
-            50% { filter: drop-shadow(0 0 15px rgba(233, 30, 99, 0.8)); }
+            filter: drop-shadow(0 0 12px rgba(0, 188, 212, 0.8));
         }
 
         .calendar-container iframe {
@@ -365,7 +377,6 @@
             }
         }
         
-        /* MODIFICADO: Animación con pulso más pronunciado */
         @keyframes ember-effect-glow {
             0%, 100% {
                 filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
@@ -380,7 +391,6 @@
             }
         }
 
-        /* MODIFICADO: Animación ralentizada un 50% más */
         .logo-glow {
             animation: ember-effect-glow 3.6s infinite ease-in-out;
             transition: transform 0.3s ease-in-out;
@@ -414,6 +424,7 @@
                     </div>
                 </div>
                 <div class="streak-tooltip">
+                    <span class="streak-tooltip-close">&times;</span>
                     <h4>Niveles de la Llama</h4>
                     <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
                     <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
@@ -480,6 +491,7 @@
                         <span id="mobile-streak-days">0</span>
                     </div>
                     <div class="streak-tooltip">
+                        <span class="streak-tooltip-close">&times;</span>
                         <h4>Niveles de la Llama</h4>
                         <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
                         <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
@@ -571,19 +583,19 @@
                 <section>
                      <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramientas de Estudio</h2>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
-                             <div>
-                                 <h3 class="text-2xl font-bold mb-2">Plataforma de Investigación</h3>
-                                 <p class="mb-4 max-w-xl mx-auto">Tu espacio para explorar, consultar dudas e investigar en profundidad "Un Curso de Milagros".</p>
-                             </div>
-                             <div class="inline-block tool-button tool-button-cyan self-center mt-4">Cómo Empezar</div>
-                         </a>
                          <a href="./herramienta-ia.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
                              <div>
                                  <h3 class="text-2xl font-bold mb-2">Asistente de Claridad (IA)</h3>
                                  <p class="mb-4 max-w-xl mx-auto">Obtén explicaciones de conceptos y oraciones personalizadas basadas en el curso al instante.</p>
                              </div>
                              <div class="inline-block tool-button tool-button-pink self-center mt-4">Acceder al Asistente</div>
+                         </a>
+                         <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
+                             <div>
+                                 <h3 class="text-2xl font-bold mb-2">Plataforma de Investigación</h3>
+                                 <p class="mb-4 max-w-xl mx-auto">Tu espacio para explorar, consultar dudas e investigar en profundidad "Un Curso de Milagros".</p>
+                             </div>
+                             <div class="inline-block tool-button tool-button-cyan self-center mt-4">Cómo Empezar</div>
                          </a>
                      </div>
                 </section>
@@ -1055,6 +1067,18 @@
         comunidadBtn.addEventListener('click', () => openModal(comunidadModal));
         recursosBtn.addEventListener('click', () => openModal(recursosModal));
         meditacionBtn.addEventListener('click', () => openModal(meditacionModal));
+
+        document.querySelectorAll('.streak-tooltip-close').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tooltip = e.target.closest('.streak-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                    tooltip.style.pointerEvents = 'none';
+                }
+            });
+        });
 
     </script>
 </body>
