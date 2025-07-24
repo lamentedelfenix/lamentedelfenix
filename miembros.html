@@ -91,7 +91,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
-            z-index: 1020;
+            z-index: 1030; /* Aumentado para estar sobre el ticker */
             pointer-events: none;
             text-align: left;
             font-size: 0.8rem;
@@ -106,19 +106,33 @@
         .streak-tooltip p strong { color: #fbf5e2; }
         .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
 
-        /* CORRECCIÓN: Posicionamiento del tooltip en móvil */
+        /* Posicionamiento del tooltip en móvil (barra superior) */
         #mobile-streak-counter + .streak-tooltip {
             top: 100%;
             right: 0;
             margin-top: 10px;
         }
-        /* CORRECCIÓN: Posicionamiento del tooltip en escritorio */
+        /* Posicionamiento del tooltip en escritorio (barra lateral) */
         #sidebar-streak-counter + .streak-tooltip {
             top: 50%;
             left: 100%;
             transform: translateY(-50%);
             margin-left: 10px;
         }
+
+        /* CORRECCIÓN ADICIONAL: Tooltip de la racha en el menú lateral para móviles */
+        @media (max-width: 767px) {
+            #sidebar-streak-counter + .streak-tooltip {
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto;
+                margin-left: 0;
+                margin-top: 10px;
+                width: 250px; /* Ajustar ancho para que no se salga */
+            }
+        }
+
 
         #sidebar-streak-counter {
             display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem;
@@ -363,7 +377,7 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <!-- CORRECCIÓN: Ancho del menú aumentado a w-72 -->
+        <!-- Ancho del menú aumentado a w-72 -->
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
@@ -386,6 +400,8 @@
                     <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                     <hr>
                     <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
+                    <!-- CAMBIO: Texto añadido -->
+                    <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                 </div>
             </div>
             <nav class="mt-4">
@@ -430,17 +446,19 @@
         </aside>
 
         <!-- Contenido Principal -->
-        <!-- CORRECCIÓN: Margen izquierdo ajustado a ml-72 -->
+        <!-- Margen izquierdo ajustado a ml-72 -->
         <div id="page-content" class="flex-1 md:ml-72">
             <!-- Botón Hamburguesa para Móvil -->
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
+            <!-- CAMBIO: z-index aumentado para que el tooltip de la racha se vea sobre el ticker -->
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
                 <!-- CONTADOR DE RACHA PARA MÓVIL -->
                 <div class="streak-container" tabindex="0">
-                    <div id="mobile-streak-counter" class="flex items-center gap-2 text-lg font-bold" style="display: none;">
+                    <!-- CAMBIO: Clases de estilo para hacerlo redondeado y con más espacio -->
+                    <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
                         <i class="fas fa-fire"></i>
                         <span id="mobile-streak-days">0</span>
                     </div>
@@ -452,6 +470,8 @@
                         <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                         <hr>
                         <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
+                        <!-- CAMBIO: Texto añadido -->
+                        <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                     </div>
                 </div>
                 <button id="hamburger-btn" class="text-white focus:outline-none">
@@ -579,8 +599,6 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN DE ACORDEONES ELIMINADA -->
-
                 <footer class="mt-20 py-8 border-t border-gray-700 text-center">
                      <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
                      <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
@@ -606,7 +624,7 @@
         </div>
     </div>
 
-    <!-- NUEVOS MODALES -->
+    <!-- MODALES -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
