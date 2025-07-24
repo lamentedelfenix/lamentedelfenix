@@ -45,6 +45,7 @@
             border-radius: 0.5rem;
             margin: 0.25rem 0;
             transition: background-color 0.2s ease, color 0.2s ease;
+            cursor: pointer;
         }
         .sidebar-link:hover {
             background-color: rgba(0, 188, 212, 0.1);
@@ -224,11 +225,6 @@
         
         .section-divider { border: 0; height: 1px; background-image: linear-gradient(to right, transparent, rgba(0, 188, 212, 0.5), transparent); }
         
-        .accordion-toggle { background-color: rgba(255, 255, 255, 0.05); color: #fbf5e2; }
-        .accordion-toggle.active { background-color: #00bcd4; color: white; }
-        .accordion-content { background-color: rgba(255, 255, 255, 0.03); max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-        .accordion-toggle i.fa-chevron-down { transition: transform 0.3s ease; }
-
         #scroll-to-top-btn { 
             position: fixed; bottom: 1.5rem; right: 1.5rem; background-color: rgba(233, 30, 99, 0.8); color: white; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 0.3s, visibility 0.3s, transform 0.3s; z-index: 999; 
         }
@@ -325,7 +321,6 @@
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
-                <!-- CORRECCIÓN 1: Título del menú -->
                 <span class="text-2xl font-extrabold">Miembro Fénix</span>
             </a>
             <nav>
@@ -353,6 +348,20 @@
                         <span>días de racha</span>
                     </div>
                 </div>
+                 <!-- NUEVOS ENLACES DEL MENÚ -->
+                <hr class="border-gray-700 my-4">
+                <a id="comunidad-btn" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>Comunidad</span>
+                </a>
+                <a id="recursos-btn" class="sidebar-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Recursos</span>
+                </a>
+                <a id="meditacion-btn" class="sidebar-link">
+                    <i class="fas fa-headphones"></i>
+                    <span>Meditación</span>
+                </a>
             </nav>
             <div class="px-4 py-2 mt-auto">
                 <hr class="border-gray-700 mb-4">
@@ -364,13 +373,11 @@
         </aside>
 
         <!-- Contenido Principal -->
-        <!-- CORRECCIÓN 2: Espaciado del contenido principal -->
         <div id="page-content" class="flex-1 md:ml-64">
             <!-- Botón Hamburguesa para Móvil -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
-                    <!-- CORRECCIÓN 1: Título del menú en móvil -->
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
                 <!-- CONTADOR DE RACHA PARA MÓVIL -->
@@ -502,48 +509,8 @@
                     </div>
                 </section>
 
-                <hr class="my-28 section-divider">
-                <div class="space-y-4">
-                    <div>
-                        <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
-                            <span class="text-xl font-bold">Comunidad Privada</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content rounded-b-lg">
-                            <div class="p-6 content-wrapper">
-                                <p class="mb-4 text-center">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
-                                <div class="flex justify-center gap-4">
-                                    <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                                    <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-telegram font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
-                            <span class="text-xl font-bold">Recursos y Sesiones</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content rounded-b-lg">
-                            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 content-wrapper">
-                                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
-                                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="accordion-toggle w-full flex justify-between items-center p-4 rounded-lg shadow-md text-left">
-                            <span class="text-xl font-bold">Audios</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-content rounded-b-lg">
-                            <div class="p-6 space-y-6 content-wrapper">
-                                <div class="card p-4 rounded-lg max-w-xl mx-auto"><h3 class="font-bold mb-2"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3><div class="youtube-container"><iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
-                                <div class="card p-4 rounded-lg max-w-xl mx-auto"><h3 id="dynamic-audio-title" class="font-bold mb-2">Cargando conversación...</h3><div id="dynamic-youtube-player" class="youtube-container"><p class="text-center p-4">Cargando último vídeo...</p></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- SECCIÓN DE ACORDEONES ELIMINADA -->
+
                 <footer class="mt-20 py-8 border-t border-gray-700 text-center">
                      <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
                      <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
@@ -569,10 +536,44 @@
         </div>
     </div>
 
+    <!-- NUEVOS MODALES -->
+    <div id="comunidad-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
+            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <div class="flex justify-center gap-4">
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="recursos-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
+            <div class="grid grid-cols-1 gap-6">
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="meditacion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="font-bold mb-4 text-xl"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3>
+            <div class="youtube-container">
+                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal para Compartir -->
     <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
-            <span id="close-share-modal" class="modal-close-btn">&times;</span>
+            <span class="modal-close-btn">&times;</span>
             <h3 class="text-2xl font-bold mb-4">Comparte el Mensaje del Día</h3>
             <p class="mb-6">Descarga la imagen y compártela en tus redes sociales.</p>
             <img id="share-preview-image" src="" alt="Previsualización del Mensaje">
@@ -584,7 +585,7 @@
     
     <div id="coming-soon-modal" class="modal-overlay">
         <div class="modal-content">
-            <span id="close-coming-soon-modal" class="modal-close-btn">&times;</span>
+            <span class="modal-close-btn">&times;</span>
             <div class="text-yellow-500 text-5xl mb-4"><i class="fas fa-tools"></i></div>
             <h3 class="text-2xl font-bold mb-2">¡Función en Desarrollo!</h3>
             <p>Esta área estará disponible muy pronto.</p>
@@ -669,6 +670,22 @@
         const mobileStreakDays = document.getElementById('mobile-streak-days');
         let allLessons = [];
         let startAnimation;
+
+        // --- LÓGICA DE MODALES (UNIFICADA) ---
+        const allModals = document.querySelectorAll('.modal-overlay');
+        function openModal(modal) {
+            if (modal) modal.classList.add('show');
+        }
+        function closeModal(modal) {
+            if (modal) modal.classList.remove('show');
+        }
+        allModals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+        });
 
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
@@ -761,207 +778,172 @@
             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
         });
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            startAnimation = (elements) => {
-                let delay = 0;
-                elements.forEach(el => {
-                    setTimeout(() => {
-                        el.style.opacity = 1;
-                        el.style.transform = 'translateY(0)';
-                    }, delay);
-                    delay += 300;
-                });
-            };
+        startAnimation = (elements) => {
+            let delay = 0;
+            elements.forEach(el => {
+                setTimeout(() => {
+                    el.style.opacity = 1;
+                    el.style.transform = 'translateY(0)';
+                }, delay);
+                delay += 300;
+            });
+        };
 
-            window.displayLesson = function(lesson) {
-                if (!lesson || !lesson[Object.keys(lesson)[1]]) return;
-                const [lessonNum, phrase, explanation, exercise] = Object.values(lesson);
-                
-                lessonContainer.innerHTML = `
-                    <h4 id="lesson-number" class="text-sm font-bold tracking-widest uppercase" style="color: #f59e0b; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-                        ${lessonNum ? `Lección ${lessonNum}` : 'Concepto Clave'}
-                    </h4>
-                    <p id="lesson-phrase" class="text-xl md:text-2xl mt-2" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-                        <strong>“${phrase}”</strong>
-                    </p>
-                    <p id="lesson-explanation" class="text-lg mt-4" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-                        ${explanation ? explanation.replace(/\n/g, '<br>') : ''}
-                    </p>
-                    ${exercise ? `
-                    <div id="lesson-exercise-box" class="mt-6 pt-4 border-t-2 border-dashed w-full" style="border-color: rgba(253, 230, 138, 0.3); opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-                        <h5 class="font-bold text-brand-pink">Ejercicio Recomendado:</h5>
-                        <p class="mt-2">${exercise}</p>
-                    </div>` : ''}
-                `;
-                startAnimation(lessonContainer.querySelectorAll('[style*="opacity"]'));
-            };
+        window.displayLesson = function(lesson) {
+            if (!lesson || !lesson[Object.keys(lesson)[1]]) return;
+            const [lessonNum, phrase, explanation, exercise] = Object.values(lesson);
             
-            const newLessonBtn = document.getElementById('new-lesson-btn');
-            if (newLessonBtn) {
-                newLessonBtn.addEventListener('click', () => {
-                    if (allLessons.length > 0) {
-                        const randomIndex = Math.floor(Math.random() * allLessons.length);
-                        displayLesson(allLessons[randomIndex]);
-                    }
-                });
-            }
+            lessonContainer.innerHTML = `
+                <h4 id="lesson-number" class="text-sm font-bold tracking-widest uppercase" style="color: #f59e0b; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    ${lessonNum ? `Lección ${lessonNum}` : 'Concepto Clave'}
+                </h4>
+                <p id="lesson-phrase" class="text-xl md:text-2xl mt-2" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    <strong>“${phrase}”</strong>
+                </p>
+                <p id="lesson-explanation" class="text-lg mt-4" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    ${explanation ? explanation.replace(/\n/g, '<br>') : ''}
+                </p>
+                ${exercise ? `
+                <div id="lesson-exercise-box" class="mt-6 pt-4 border-t-2 border-dashed w-full" style="border-color: rgba(253, 230, 138, 0.3); opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                    <h5 class="font-bold text-brand-pink">Ejercicio Recomendado:</h5>
+                    <p class="mt-2">${exercise}</p>
+                </div>` : ''}
+            `;
+            startAnimation(lessonContainer.querySelectorAll('[style*="opacity"]'));
+        };
+        
+        const newLessonBtn = document.getElementById('new-lesson-btn');
+        if (newLessonBtn) {
+            newLessonBtn.addEventListener('click', () => {
+                if (allLessons.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * allLessons.length);
+                    displayLesson(allLessons[randomIndex]);
+                }
+            });
+        }
 
-            const leccionesBtn = document.getElementById('btn-lecciones');
-            const storageKey = 'lastLessonButtonClickDate';
-            function checkButtonAnimation() {
-                const lastClickDate = localStorage.getItem(storageKey);
+        const leccionesBtn = document.getElementById('btn-lecciones');
+        const storageKey = 'lastLessonButtonClickDate';
+        function checkButtonAnimation() {
+            const lastClickDate = localStorage.getItem(storageKey);
+            const today = new Date().toISOString().slice(0, 10);
+            if (leccionesBtn && lastClickDate !== today) leccionesBtn.classList.add('animate-heartbeat');
+            else if (leccionesBtn) leccionesBtn.classList.remove('animate-heartbeat');
+        }
+        if(leccionesBtn) {
+            leccionesBtn.addEventListener('click', () => {
                 const today = new Date().toISOString().slice(0, 10);
-                if (leccionesBtn && lastClickDate !== today) leccionesBtn.classList.add('animate-heartbeat');
-                else if (leccionesBtn) leccionesBtn.classList.remove('animate-heartbeat');
-            }
-            if(leccionesBtn) {
-                leccionesBtn.addEventListener('click', () => {
-                    const today = new Date().toISOString().slice(0, 10);
-                    localStorage.setItem(storageKey, today);
-                    leccionesBtn.classList.remove('animate-heartbeat');
-                });
-                checkButtonAnimation();
-            }
+                localStorage.setItem(storageKey, today);
+                leccionesBtn.classList.remove('animate-heartbeat');
+            });
+            checkButtonAnimation();
+        }
 
-            const shareModal = document.getElementById('share-modal');
-            const closeShareModalBtn = document.getElementById('close-share-modal');
-            const shareLessonBtn = document.getElementById('share-lesson-btn');
-            const sharePreviewImage = document.getElementById('share-preview-image');
-            const downloadShareImageLink = document.getElementById('download-share-image');
+        const shareModal = document.getElementById('share-modal');
+        const shareLessonBtn = document.getElementById('share-lesson-btn');
+        const sharePreviewImage = document.getElementById('share-preview-image');
+        const downloadShareImageLink = document.getElementById('download-share-image');
 
-            shareLessonBtn.addEventListener('click', () => {
-                const clone = lessonContainer.cloneNode(true);
-                clone.style.position = 'absolute';
-                clone.style.left = '-9999px';
-                clone.style.top = '0px';
-                clone.style.width = lessonContainer.offsetWidth + 'px';
-                clone.style.paddingBottom = '20px';
-                
-                const watermarkContainer = document.createElement('div');
-                watermarkContainer.style.textAlign = 'center';
-                watermarkContainer.style.paddingTop = '20px';
-                
-                const watermark = new Image();
-                watermark.crossOrigin = "anonymous";
-                
-                watermark.onload = () => {
-                    clone.appendChild(watermarkContainer).appendChild(watermark);
-                    document.body.appendChild(clone);
+        shareLessonBtn.addEventListener('click', () => {
+            const clone = lessonContainer.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.top = '0px';
+            clone.style.width = lessonContainer.offsetWidth + 'px';
+            clone.style.paddingBottom = '20px';
+            
+            const watermarkContainer = document.createElement('div');
+            watermarkContainer.style.textAlign = 'center';
+            watermarkContainer.style.paddingTop = '20px';
+            
+            const watermark = new Image();
+            watermark.crossOrigin = "anonymous";
+            
+            watermark.onload = () => {
+                clone.appendChild(watermarkContainer).appendChild(watermark);
+                document.body.appendChild(clone);
 
-                    html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
-                        document.body.removeChild(clone);
-                        const dataUrl = canvas.toDataURL('image/png');
-                        
-                        canvas.toBlob(blob => {
-                            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                            const filesArray = [new File([blob], 'mensaje-del-dia.png', { type: 'image/png' })];
+                html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
+                    document.body.removeChild(clone);
+                    const dataUrl = canvas.toDataURL('image/png');
+                    
+                    canvas.toBlob(blob => {
+                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                        const filesArray = [new File([blob], 'mensaje-del-dia.png', { type: 'image/png' })];
 
-                            if (isMobile && navigator.share) {
-                                 navigator.share({
-                                    files: filesArray,
-                                    title: 'Mensaje del Día',
-                                    text: 'Un mensaje de La Mente del Fénix',
-                                }).catch(err => {
-                                    console.error("Share API error:", err);
-                                    sharePreviewImage.src = dataUrl;
-                                    downloadShareImageLink.href = dataUrl;
-                                    shareModal.classList.add('show');
-                                });
-                            } else {
+                        if (isMobile && navigator.share) {
+                             navigator.share({
+                                files: filesArray,
+                                title: 'Mensaje del Día',
+                                text: 'Un mensaje de La Mente del Fénix',
+                            }).catch(err => {
+                                console.error("Share API error:", err);
                                 sharePreviewImage.src = dataUrl;
                                 downloadShareImageLink.href = dataUrl;
-                                shareModal.classList.add('show');
-                            }
-                        }, 'image/png');
-
-                    }).catch(err => {
-                        console.error("Error generating canvas:", err);
-                        document.body.removeChild(clone);
-                    });
-                };
-                
-                watermark.onerror = () => {
-                    console.error("Could not load the signature image.");
-                    document.body.removeChild(clone);
-                };
-
-                watermark.src = 'https://i.imgur.com/CG2tWKI.png';
-                watermark.style.width = '180px';
-                watermark.style.opacity = '0.7';
-            });
-
-            closeShareModalBtn.addEventListener('click', () => shareModal.classList.remove('show'));
-            shareModal.addEventListener('click', (e) => { if (e.target === shareModal) shareModal.classList.remove('show'); });
-
-
-            const comingSoonModal = document.getElementById('coming-soon-modal');
-            const closeModalBtn = document.getElementById('close-coming-soon-modal');
-            const showModal = () => comingSoonModal.classList.add('show');
-            const closeModal = () => comingSoonModal.classList.remove('show');
-            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-            if(comingSoonModal) comingSoonModal.addEventListener('click', (e) => { if (e.target === comingSoonModal) closeModal(); });
-            document.querySelectorAll('.teaser-card').forEach(card => card.addEventListener('click', showModal));
-
-            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
-            if (scrollToTopBtn) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 300) scrollToTopBtn.classList.add('show');
-                    else scrollToTopBtn.classList.remove('show');
-                });
-                scrollToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            }
-
-            const dynamicYoutubeContainer = document.getElementById('dynamic-youtube-player');
-            const dynamicAudioTitle = document.getElementById('dynamic-audio-title');
-            const audioPlaylistCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRmZK4KXp4kSpX6Q0VqVshkj_2L46CDfcped6i-PzqFBOHVMc1_aTAIouCB900HLCDtUcR_gH7FKYk4/pub?gid=0&single=true&output=csv'; 
-            
-            function getYouTubeID(url) { const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; }
-            if (audioPlaylistCsvUrl) { fetch(audioPlaylistCsvUrl).then(r => r.ok ? r.text() : Promise.reject()).then(data => { const rows = data.split(/\r?\n/).filter(row => row.trim()); if (rows.length > 1) { const [title, link] = (rows[rows.length - 1].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || []).map(v => v.replace(/^"|"$/g, '')); const videoId = getYouTubeID(link); if (title && videoId) { if(dynamicAudioTitle) dynamicAudioTitle.innerHTML = `<span class="text-brand-pink font-extrabold">CONVERSACIONES:</span> ${title}`; if(dynamicYoutubeContainer) dynamicYoutubeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`; } } }).catch(() => { if(dynamicYoutubeContainer) dynamicYoutubeContainer.innerHTML = '<p class="text-center p-4">No se pudo cargar el último vídeo.</p>'; }); }
-            
-            const bookmarkBtn = document.getElementById('bookmark-btn');
-            const bookmarkTooltip = document.getElementById('bookmark-tooltip');
-            
-            if (bookmarkBtn && bookmarkTooltip) {
-                const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-                if (isMobile) bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
-                else if(navigator.userAgent.includes("Mac")) bookmarkTooltip.innerHTML = `Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar.`;
-                
-                bookmarkBtn.addEventListener('click', () => {
-                    bookmarkTooltip.classList.add('show');
-                    setTimeout(() => bookmarkTooltip.classList.remove('show'), 3000);
-                });
-            }
-
-            const accordions = document.querySelectorAll('.accordion-toggle');
-            accordions.forEach(accordion => {
-                accordion.addEventListener('click', () => {
-                    const content = accordion.nextElementSibling;
-                    if (!content) return;
-                    const icon = accordion.querySelector('i.fa-chevron-down');
-                    const isActive = accordion.classList.contains('active');
-
-                    accordions.forEach(otherAccordion => {
-                        if (otherAccordion !== accordion) {
-                            otherAccordion.classList.remove('active');
-                            const otherContent = otherAccordion.nextElementSibling;
-                            if (otherContent) otherContent.style.maxHeight = null;
-                            const otherIcon = otherAccordion.querySelector('i.fa-chevron-down');
-                            if(otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                                openModal(shareModal);
+                            });
+                        } else {
+                            sharePreviewImage.src = dataUrl;
+                            downloadShareImageLink.href = dataUrl;
+                            openModal(shareModal);
                         }
-                    });
+                    }, 'image/png');
 
-                    if (isActive) {
-                        accordion.classList.remove('active');
-                        content.style.maxHeight = null;
-                        if(icon) icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        accordion.classList.add('active');
-                        if(icon) icon.style.transform = 'rotate(180deg)';
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    }
+                }).catch(err => {
+                    console.error("Error generating canvas:", err);
+                    document.body.removeChild(clone);
                 });
-            });
+            };
+            
+            watermark.onerror = () => {
+                console.error("Could not load the signature image.");
+                document.body.removeChild(clone);
+            };
+
+            watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+            watermark.style.width = '180px';
+            watermark.style.opacity = '0.7';
         });
+
+        const comingSoonModal = document.getElementById('coming-soon-modal');
+        document.querySelectorAll('.teaser-card').forEach(card => card.addEventListener('click', () => openModal(comingSoonModal)));
+
+        const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+        if (scrollToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) scrollToTopBtn.classList.add('show');
+                else scrollToTopBtn.classList.remove('show');
+            });
+            scrollToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        const bookmarkBtn = document.getElementById('bookmark-btn');
+        const bookmarkTooltip = document.getElementById('bookmark-tooltip');
+        
+        if (bookmarkBtn && bookmarkTooltip) {
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+            if (isMobile) bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
+            else if(navigator.userAgent.includes("Mac")) bookmarkTooltip.innerHTML = `Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar.`;
+            
+            bookmarkBtn.addEventListener('click', () => {
+                bookmarkTooltip.classList.add('show');
+                setTimeout(() => bookmarkTooltip.classList.remove('show'), 3000);
+            });
+        }
+
+        // --- LÓGICA DE LOS NUEVOS BOTONES DEL MENÚ ---
+        const comunidadBtn = document.getElementById('comunidad-btn');
+        const recursosBtn = document.getElementById('recursos-btn');
+        const meditacionBtn = document.getElementById('meditacion-btn');
+        
+        const comunidadModal = document.getElementById('comunidad-modal');
+        const recursosModal = document.getElementById('recursos-modal');
+        const meditacionModal = document.getElementById('meditacion-modal');
+
+        comunidadBtn.addEventListener('click', () => openModal(comunidadModal));
+        recursosBtn.addEventListener('click', () => openModal(recursosModal));
+        meditacionBtn.addEventListener('click', () => openModal(meditacionModal));
+
     </script>
 </body>
 </html>
