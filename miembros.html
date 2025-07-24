@@ -96,6 +96,7 @@
             text-align: left;
             font-size: 0.8rem;
         }
+        /* CORRECCIÓN: Mostrar tooltip al hacer focus (para móvil) o hover (escritorio) */
         .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip {
             opacity: 1;
             visibility: visible;
@@ -105,28 +106,24 @@
         .streak-tooltip p strong { color: #fbf5e2; }
         .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
 
-        /* Posicionamiento del tooltip en móvil (barra superior y menú abierto) */
-        #mobile-streak-container .streak-tooltip { top: 100%; right: 0; margin-top: 10px; }
-        #sidebar .streak-container .streak-tooltip { top: 100%; left: 0; margin-top: 10px; }
-        
-        /* Posicionamiento del tooltip en escritorio */
-        @media (min-width: 768px) {
-            #sidebar .streak-container .streak-tooltip {
-                top: 50%;
-                left: 100%;
-                transform: translateY(-50%);
-                margin-left: 10px;
-                margin-top: 0;
-            }
+        /* CORRECCIÓN: Posicionamiento del tooltip en móvil */
+        #mobile-streak-counter + .streak-tooltip {
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+        }
+        /* CORRECCIÓN: Posicionamiento del tooltip en escritorio */
+        #sidebar-streak-counter + .streak-tooltip {
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            margin-left: 10px;
         }
 
-        #sidebar-streak-counter, #mobile-streak-counter {
-            display: flex; align-items: center; gap: 0.75rem; 
-            font-weight: 700; border-radius: 9999px;
+        #sidebar-streak-counter {
+            display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem;
+            font-weight: 700; border-radius: 0.5rem;
         }
-        #sidebar-streak-counter { padding: 0.75rem 1.5rem; margin-top: 1.5rem; }
-        #mobile-streak-counter { padding: 0.25rem 0.75rem; }
-
         #sidebar-streak-counter .fa-fire, #mobile-streak-counter .fa-fire { transition: all 0.5s ease; }
         
         .streak-level-0 .fa-fire { color: #4a5568; }
@@ -380,12 +377,9 @@
                         <span id="sidebar-streak-days">0</span>
                         <span>días de racha</span>
                     </div>
-                    <i class="fas fa-info-circle text-xs text-gray-500 ml-auto"></i>
                 </div>
                 <div class="streak-tooltip">
                     <h4>Niveles de la Llama</h4>
-                    <p>Tu racha representa los días consecutivos poniendo en práctica las lecciones del curso.</p>
-                    <hr>
                     <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
                     <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
                     <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
@@ -439,21 +433,19 @@
         <!-- CORRECCIÓN: Margen izquierdo ajustado a ml-72 -->
         <div id="page-content" class="flex-1 md:ml-72">
             <!-- Botón Hamburguesa para Móvil -->
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-50">
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
                 <!-- CONTADOR DE RACHA PARA MÓVIL -->
-                <div id="mobile-streak-container" class="streak-container" tabindex="0">
-                    <div id="mobile-streak-counter" style="display: none;">
+                <div class="streak-container" tabindex="0">
+                    <div id="mobile-streak-counter" class="flex items-center gap-2 text-lg font-bold" style="display: none;">
                         <i class="fas fa-fire"></i>
                         <span id="mobile-streak-days">0</span>
                     </div>
                     <div class="streak-tooltip">
                         <h4>Niveles de la Llama</h4>
-                        <p>Tu racha representa los días consecutivos poniendo en práctica las lecciones del curso.</p>
-                        <hr>
                         <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
                         <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
                         <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
@@ -701,7 +693,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firestore.js";
+        import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
