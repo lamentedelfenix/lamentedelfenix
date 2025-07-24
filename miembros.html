@@ -84,7 +84,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 1.5rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem; /* Margen superior añadido */
             font-weight: 700;
             color: #f6ad55; /* Naranja para la llama */
             background-color: rgba(246, 173, 85, 0.1);
@@ -323,7 +323,15 @@
                 <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
                 <span class="text-2xl font-extrabold">Miembro Fénix</span>
             </a>
-            <nav>
+            <!-- CONTADOR DE RACHA EN EL MENÚ -->
+            <div id="sidebar-streak-counter" class="mx-4" style="display: none;">
+                <i class="fas fa-fire"></i>
+                <div>
+                    <span id="sidebar-streak-days">0</span>
+                    <span>días de racha</span>
+                </div>
+            </div>
+            <nav class="mt-4">
                 <a href="./miembros.html" class="sidebar-link active">
                     <i class="fas fa-home"></i>
                     <span>Panel Principal</span>
@@ -340,14 +348,6 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
-                <!-- CONTADOR DE RACHA EN EL MENÚ -->
-                <div id="sidebar-streak-counter" class="px-4" style="display: none;">
-                    <i class="fas fa-fire"></i>
-                    <div>
-                        <span id="sidebar-streak-days">0</span>
-                        <span>días de racha</span>
-                    </div>
-                </div>
                  <!-- NUEVOS ENLACES DEL MENÚ -->
                 <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
@@ -405,7 +405,8 @@
             <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10" style="display: none;">
                 <header class="mb-16 flex flex-col items-center gap-6">
                     <div class="banner-container">
-                        <img src="https://i.imgur.com/L2gwqzH.png" alt="Banner de la Membresía" class="w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
+                        <!-- BANNER ACTUALIZADO -->
+                        <img src="https://i.imgur.com/KgQlZvg.png" alt="Banner de la Membresía" class="w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
                     </div>
                 </header>
 
