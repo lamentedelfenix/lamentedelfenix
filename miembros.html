@@ -323,7 +323,6 @@
         #bookmark-tooltip { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background-color: #0c2f5b; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, bottom 0.3s; z-index: 100; }
         #bookmark-tooltip.show { opacity: 1; visibility: visible; bottom: 3rem; }
 
-        /* MODIFICADO: Banner con resplandor estático */
         .banner-container img {
             border-radius: 0.5rem;
             filter: drop-shadow(0 0 12px rgba(0, 188, 212, 0.8));
@@ -913,15 +912,13 @@
             });
         };
 
+        // MODIFICADO: Función displayLesson para no mostrar el número de lección
         window.displayLesson = function(lesson) {
             if (!lesson || !lesson[Object.keys(lesson)[1]]) return;
             const [lessonNum, phrase, explanation, exercise] = Object.values(lesson);
             
             lessonContainer.innerHTML = `
-                <h4 id="lesson-number" class="text-sm font-bold tracking-widest uppercase" style="color: #f59e0b; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
-                    ${lessonNum ? `Lección ${lessonNum}` : 'Concepto Clave'}
-                </h4>
-                <p id="lesson-phrase" class="text-xl md:text-2xl mt-2" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+                <p id="lesson-phrase" class="text-xl md:text-2xl" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
                     <strong>“${phrase}”</strong>
                 </p>
                 <p id="lesson-explanation" class="text-lg mt-4" style="opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
