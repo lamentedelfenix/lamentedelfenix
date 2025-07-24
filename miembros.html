@@ -96,7 +96,6 @@
             text-align: left;
             font-size: 0.8rem;
         }
-        /* CORRECCIÓN: Mostrar tooltip al hacer focus (para móvil) o hover (escritorio) */
         .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip {
             opacity: 1;
             visibility: visible;
@@ -106,13 +105,11 @@
         .streak-tooltip p strong { color: #fbf5e2; }
         .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
 
-        /* Posicionamiento del tooltip en móvil (barra superior) */
         #mobile-streak-counter + .streak-tooltip {
             top: 100%;
             right: 0;
             margin-top: 10px;
         }
-        /* Posicionamiento del tooltip en escritorio (barra lateral) */
         #sidebar-streak-counter + .streak-tooltip {
             top: 50%;
             left: 100%;
@@ -120,7 +117,6 @@
             margin-left: 10px;
         }
 
-        /* CORRECCIÓN ADICIONAL: Tooltip de la racha en el menú lateral para móviles */
         @media (max-width: 767px) {
             #sidebar-streak-counter + .streak-tooltip {
                 top: 100%;
@@ -129,7 +125,7 @@
                 right: auto;
                 margin-left: 0;
                 margin-top: 10px;
-                width: 250px; /* Ajustar ancho para que no se salga */
+                width: 250px;
             }
         }
 
@@ -300,11 +296,11 @@
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
         
         #share-modal .modal-content {
-            max-width: 90%; /* Ancho relativo para móviles */
+            max-width: 90%;
         }
         @media (min-width: 640px) {
             #share-modal .modal-content {
-                max-width: 700px; /* Ancho fijo para PC */
+                max-width: 700px;
             }
         }
 
@@ -368,6 +364,31 @@
                 box-shadow: 0 0 30px 7px rgba(0, 188, 212, 0.5);
             }
         }
+        
+        /* MODIFICADO: Animación con pulso más pronunciado */
+        @keyframes ember-effect-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
+                        drop-shadow(0 0 3px rgba(229, 62, 62, 0.4));
+                transform: scale(1.0);
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) 
+                        drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) 
+                        drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
+                transform: scale(1.12);
+            }
+        }
+
+        /* MODIFICADO: Animación ralentizada un 50% más */
+        .logo-glow {
+            animation: ember-effect-glow 3.6s infinite ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo-glow:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 14px #f6ad55);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -377,13 +398,13 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <!-- Ancho del menú aumentado a w-72 -->
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
-                <span class="text-2xl font-extrabold">Miembro Fénix</span>
+                <!-- Logo for desktop -->
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+                <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <!-- CONTADOR DE RACHA EN EL MENÚ -->
+            <!-- Streak counter in menu -->
             <div class="streak-container mx-4" tabindex="0">
                 <div id="sidebar-streak-counter" style="display: none;">
                     <i class="fas fa-fire"></i>
@@ -400,7 +421,6 @@
                     <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                     <hr>
                     <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
-                    <!-- CAMBIO: Texto añadido -->
                     <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                 </div>
             </div>
@@ -421,7 +441,6 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
-                 <!-- NUEVOS ENLACES DEL MENÚ -->
                 <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
                     <i class="fas fa-users"></i>
@@ -445,19 +464,17 @@
             </div>
         </aside>
 
-        <!-- Contenido Principal -->
-        <!-- Margen izquierdo ajustado a ml-72 -->
+        <!-- Main Content -->
         <div id="page-content" class="flex-1 md:ml-72">
-            <!-- Botón Hamburguesa para Móvil -->
-            <!-- CAMBIO: z-index aumentado para que el tooltip de la racha se vea sobre el ticker -->
+            <!-- Mobile Hamburger Button -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
-                    <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
-                    <span class="text-xl font-extrabold">Miembro Fénix</span>
+                    <!-- Logo for mobile -->
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
+                    <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
                 </a>
-                <!-- CONTADOR DE RACHA PARA MÓVIL -->
+                <!-- Mobile streak counter -->
                 <div class="streak-container" tabindex="0">
-                    <!-- CAMBIO: Clases de estilo para hacerlo redondeado y con más espacio -->
                     <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
                         <i class="fas fa-fire"></i>
                         <span id="mobile-streak-days">0</span>
@@ -470,7 +487,6 @@
                         <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                         <hr>
                         <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
-                        <!-- CAMBIO: Texto añadido -->
                         <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                     </div>
                 </div>
@@ -494,7 +510,6 @@
             <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10" style="display: none;">
                 <header class="mb-16 flex flex-col items-center gap-6">
                     <div class="banner-container">
-                        <!-- BANNER ACTUALIZADO -->
                         <img src="https://i.imgur.com/KgQlZvg.png" alt="Banner de la Membresía" class="w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
                     </div>
                 </header>
@@ -537,7 +552,6 @@
                     </div>
                 </section>
 
-                <!-- NUEVA SECCIÓN DEL LIBRO -->
                 <hr class="my-28 section-divider">
                 <section>
                     <h2 class="text-3xl font-bold mb-6 text-center">
@@ -557,20 +571,20 @@
                 <section>
                      <h2 class="text-3xl font-bold mb-6 text-center">🤖 Herramientas de Estudio</h2>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-2xl font-bold mb-2">Plataforma de Investigación</h3>
-                                <p class="mb-4 max-w-xl mx-auto">Tu espacio para explorar, consultar dudas e investigar en profundidad "Un Curso de Milagros".</p>
-                            </div>
-                            <div class="inline-block tool-button tool-button-cyan self-center mt-4">Cómo Empezar</div>
-                        </a>
-                        <a href="./herramienta-ia.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-2xl font-bold mb-2">Asistente de Claridad (IA)</h3>
-                                <p class="mb-4 max-w-xl mx-auto">Obtén explicaciones de conceptos y oraciones personalizadas basadas en el curso al instante.</p>
-                            </div>
-                            <div class="inline-block tool-button tool-button-pink self-center mt-4">Acceder al Asistente</div>
-                        </a>
+                         <a href="./instrucciones.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
+                             <div>
+                                 <h3 class="text-2xl font-bold mb-2">Plataforma de Investigación</h3>
+                                 <p class="mb-4 max-w-xl mx-auto">Tu espacio para explorar, consultar dudas e investigar en profundidad "Un Curso de Milagros".</p>
+                             </div>
+                             <div class="inline-block tool-button tool-button-cyan self-center mt-4">Cómo Empezar</div>
+                         </a>
+                         <a href="./herramienta-ia.html" class="highlight-card p-6 rounded-lg block no-underline text-center flex flex-col justify-between">
+                             <div>
+                                 <h3 class="text-2xl font-bold mb-2">Asistente de Claridad (IA)</h3>
+                                 <p class="mb-4 max-w-xl mx-auto">Obtén explicaciones de conceptos y oraciones personalizadas basadas en el curso al instante.</p>
+                             </div>
+                             <div class="inline-block tool-button tool-button-pink self-center mt-4">Acceder al Asistente</div>
+                         </a>
                      </div>
                 </section>
 
@@ -624,7 +638,7 @@
         </div>
     </div>
 
-    <!-- MODALES -->
+    <!-- Modals -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
@@ -658,7 +672,6 @@
         </div>
     </div>
 
-    <!-- Modal para Compartir -->
     <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
@@ -689,7 +702,7 @@
     </button>
 
     <script>
-        // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
+        // Background animation script
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -727,7 +740,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- MANEJO DE LA BARRA LATERAL ---
+        // Sidebar handling
         const sidebar = document.getElementById('sidebar');
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
@@ -743,8 +756,6 @@
         if (sidebarBackdrop) {
             sidebarBackdrop.addEventListener('click', toggleSidebar);
         }
-        // --- FIN MANEJO BARRA LATERAL ---
-
 
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
@@ -759,7 +770,7 @@
         let allLessons = [];
         let startAnimation;
 
-        // --- LÓGICA DE MODALES (UNIFICADA) ---
+        // Unified modal logic
         const allModals = document.querySelectorAll('.modal-overlay');
         function openModal(modal) {
             if (modal) modal.classList.add('show');
@@ -789,7 +800,7 @@
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
                 
-                // Escuchar cambios en el progreso para la racha
+                // Listen for progress changes for the streak
                 const appId = 'ucdm-tracker-app-v2';
                 const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
                 onSnapshot(progressDocRef, (docSnap) => {
@@ -808,7 +819,6 @@
                         currentStreak = 0;
                     }
                     
-                    // Lógica para aplicar clases de nivel de racha
                     let streakLevel = 0;
                     if (currentStreak > 0) streakLevel = 1;
                     if (currentStreak >= 7) streakLevel = 2;
@@ -853,10 +863,10 @@
             const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgJn05SkzONj1pCuB6pmJUnJcErDBDCuRd8MaC5m3uLmV3KSs-X1wFqxngdcv50_vymFlnmx4rUdcT/pub?gid=0&single=true&output=csv';
             try {
                 const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error(`Error al cargar el CSV: ${response.statusText}`);
+                if (!response.ok) throw new Error(`Error loading CSV: ${response.statusText}`);
                 return parseCSV(await response.text());
             } catch (error) {
-                console.error("Error crítico al obtener los mensajes:", error);
+                console.error("Critical error fetching messages:", error);
                 return []; 
             }
         }
@@ -975,15 +985,15 @@
 
                         if (isMobile && navigator.share) {
                              navigator.share({
-                                files: filesArray,
-                                title: 'Mensaje del Día',
-                                text: 'Un mensaje de La Mente del Fénix',
-                            }).catch(err => {
-                                console.error("Share API error:", err);
-                                sharePreviewImage.src = dataUrl;
-                                downloadShareImageLink.href = dataUrl;
-                                openModal(shareModal);
-                            });
+                                 files: filesArray,
+                                 title: 'Mensaje del Día',
+                                 text: 'Un mensaje de La Mente del Fénix',
+                             }).catch(err => {
+                                 console.error("Share API error:", err);
+                                 sharePreviewImage.src = dataUrl;
+                                 downloadShareImageLink.href = dataUrl;
+                                 openModal(shareModal);
+                             });
                         } else {
                             sharePreviewImage.src = dataUrl;
                             downloadShareImageLink.href = dataUrl;
@@ -1033,7 +1043,7 @@
             });
         }
 
-        // --- LÓGICA DE LOS NUEVOS BOTONES DEL MENÚ ---
+        // Menu buttons logic
         const comunidadBtn = document.getElementById('comunidad-btn');
         const recursosBtn = document.getElementById('recursos-btn');
         const meditacionBtn = document.getElementById('meditacion-btn');
