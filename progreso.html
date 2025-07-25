@@ -1608,9 +1608,10 @@
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    size: Math.random() * 1.5 + 0.5,
-                    // Velocidad ajustada para un movimiento más pausado
-                    speed: Math.random() * 0.2 + 0.05,
+                    // Tamaño de partícula aumentado
+                    size: Math.random() * 2.0 + 0.8,
+                    // Velocidad de partícula disminuida drásticamente
+                    speed: Math.random() * 0.1 + 0.05,
                     color: `rgba(251, 245, 226, ${Math.random() * 0.5 + 0.3})`
                 });
             }
