@@ -21,6 +21,9 @@
             overflow-x: hidden;
             opacity: 0; /* Oculto por defecto para evitar parpadeo */
         }
+        body.modal-open {
+            overflow: hidden;
+        }
 
         #background-canvas {
             position: fixed;
@@ -91,7 +94,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
-            z-index: 1030; /* Aumentado para estar sobre el ticker */
+            z-index: 1030;
             pointer-events: none;
             text-align: left;
             font-size: 0.8rem;
@@ -120,7 +123,6 @@
             color: #fbf5e2;
         }
 
-
         #mobile-streak-counter + .streak-tooltip {
             top: 100%;
             right: 0;
@@ -144,7 +146,6 @@
                 width: 250px;
             }
         }
-
 
         #sidebar-streak-counter {
             display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem;
@@ -305,17 +306,36 @@
         #auth-message h1 { color: #ef4444; }
         #auth-message p { color: #fbf5e2; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(5px); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 1000; padding: 1rem; 
+            opacity: 0; visibility: hidden; 
+            transition: opacity 0.3s ease; 
+        }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { background-color: #0c1427; border: 1px solid rgba(255,255,255,0.2); padding: 2.5rem; border-radius: 0.75rem; max-width: 500px; width: 100%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
+        .modal-content { 
+            background-color: #0c1427; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 2.5rem; 
+            border-radius: 0.75rem; 
+            max-width: 500px; 
+            width: 100%; 
+            text-align: center; 
+            transform: scale(0.9); 
+            transition: transform 0.3s ease; 
+            position: relative; 
+        }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
         
-        #share-modal .modal-content {
+        #share-modal .modal-content, #recursos-modal .modal-content {
             max-width: 90%;
         }
         @media (min-width: 640px) {
-            #share-modal .modal-content {
+            #share-modal .modal-content, #recursos-modal .modal-content {
                 max-width: 700px;
             }
         }
@@ -323,7 +343,6 @@
         #bookmark-tooltip { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background-color: #0c2f5b; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, bottom 0.3s; z-index: 100; }
         #bookmark-tooltip.show { opacity: 1; visibility: visible; bottom: 3rem; }
 
-        /* MODIFICADO: Banner sin efectos */
         .banner-container img {
             border-radius: 0.5rem;
         }
@@ -409,11 +428,9 @@
 
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                <!-- Logo for desktop -->
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <!-- Streak counter in menu -->
             <div class="streak-container mx-4" tabindex="0">
                 <div id="sidebar-streak-counter" style="display: none;">
                     <i class="fas fa-fire"></i>
@@ -479,11 +496,9 @@
             <!-- Mobile Hamburger Button -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
-                    <!-- Logo for mobile -->
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
                 </a>
-                <!-- Mobile streak counter -->
                 <div class="streak-container" tabindex="0">
                     <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
                         <i class="fas fa-fire"></i>
@@ -656,8 +671,8 @@
             <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
             <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
             <div class="flex justify-center gap-4">
-                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
             </div>
         </div>
     </div>
@@ -666,9 +681,9 @@
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
             <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
-            <div class="grid grid-cols-1 gap-6">
-                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
-                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline">Ver Recursos</div></a>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline">Reservar Sesión</div></a>
             </div>
         </div>
     </div>
@@ -726,10 +741,21 @@
         }
         function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
         function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
-        window.addEventListener('resize', () => { clearTimeout(window.resizeLag); window.resizeLag = setTimeout(() => { resizeCanvas(); initParticles(); }, 500); });
-        const resizeObserver = new ResizeObserver(() => { resizeCanvas(); initParticles(); });
-        resizeObserver.observe(document.body);
-        resizeCanvas(); initParticles(); animateParticles();
+        
+        const resizeObserver = new ResizeObserver(() => {
+            clearTimeout(window.resizeLag);
+            window.resizeLag = setTimeout(() => {
+                resizeCanvas(); 
+                initParticles();
+            }, 250);
+        });
+        
+        window.addEventListener('load', () => {
+             resizeCanvas(); 
+             initParticles(); 
+             animateParticles();
+             resizeObserver.observe(document.body);
+        });
     </script>
 
     <script type="module">
@@ -761,12 +787,8 @@
             sidebarBackdrop.classList.toggle('show');
         }
 
-        if (hamburgerBtn) {
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-        }
-        if (sidebarBackdrop) {
-            sidebarBackdrop.addEventListener('click', toggleSidebar);
-        }
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
 
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
@@ -781,20 +803,57 @@
         let allLessons = [];
         let startAnimation;
 
-        // Unified modal logic
+        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA) ---
         const allModals = document.querySelectorAll('.modal-overlay');
-        function openModal(modal) {
-            if (modal) modal.classList.add('show');
-        }
+
         function closeModal(modal) {
-            if (modal) modal.classList.remove('show');
+            if (!modal) return;
+            modal.classList.remove('show');
+
+            // Detener video de YouTube si existe
+            const iframe = modal.querySelector('iframe');
+            if (iframe && iframe.src.includes('youtube')) {
+                const videoSrc = iframe.src;
+                iframe.src = ''; // Limpiar el src para detener el video
+                iframe.src = videoSrc;
+            }
+            
+            // Si no quedan más modales abiertos, permitir el scroll del body
+            setTimeout(() => {
+                if (document.querySelectorAll('.modal-overlay.show').length === 0) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300); // Esperar a que termine la transición de opacidad
         }
+
+        function openModal(modalToOpen) {
+            if (!modalToOpen) return;
+            
+            // Cierra todos los demás modales
+            allModals.forEach(modal => {
+                if (modal !== modalToOpen && modal.classList.contains('show')) {
+                    closeModal(modal);
+                }
+            });
+
+            // Abre el modal solicitado
+            document.body.classList.add('modal-open');
+            modalToOpen.classList.add('show');
+        }
+
+        // Listeners para cerrar modales
         allModals.forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) closeModal(modal);
             });
             const closeBtn = modal.querySelector('.modal-close-btn');
             if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                document.querySelectorAll('.modal-overlay.show').forEach(closeModal);
+            }
         });
 
         onAuthStateChanged(auth, async (user) => {
@@ -811,7 +870,6 @@
                     welcomeTitle.innerHTML = `Bienvenido/a, <span class="text-brand-pink">${user.email}</span>`;
                 }
                 
-                // Listen for progress changes for the streak
                 const appId = 'ucdm-tracker-app-v2';
                 const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
                 onSnapshot(progressDocRef, (docSnap) => {
@@ -959,12 +1017,15 @@
             checkButtonAnimation();
         }
 
-        const shareModal = document.getElementById('share-modal');
         const shareLessonBtn = document.getElementById('share-lesson-btn');
+        shareLessonBtn.addEventListener('click', () => openModal(document.getElementById('share-modal')));
+
         const sharePreviewImage = document.getElementById('share-preview-image');
         const downloadShareImageLink = document.getElementById('download-share-image');
-
-        shareLessonBtn.addEventListener('click', () => {
+        
+        document.getElementById('share-modal').addEventListener('click', (e) => {
+           if(e.target === document.getElementById('share-modal')) return; // Evitar que se regenere al hacer clic dentro
+           
             const clone = lessonContainer.cloneNode(true);
             clone.style.position = 'absolute';
             clone.style.left = '-9999px';
@@ -986,29 +1047,8 @@
                 html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
                     document.body.removeChild(clone);
                     const dataUrl = canvas.toDataURL('image/png');
-                    
-                    canvas.toBlob(blob => {
-                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                        const filesArray = [new File([blob], 'mensaje-del-dia.png', { type: 'image/png' })];
-
-                        if (isMobile && navigator.share) {
-                             navigator.share({
-                                 files: filesArray,
-                                 title: 'Mensaje del Día',
-                                 text: 'Un mensaje de La Mente del Fénix',
-                             }).catch(err => {
-                                 console.error("Share API error:", err);
-                                 sharePreviewImage.src = dataUrl;
-                                 downloadShareImageLink.href = dataUrl;
-                                 openModal(shareModal);
-                             });
-                        } else {
-                            sharePreviewImage.src = dataUrl;
-                            downloadShareImageLink.href = dataUrl;
-                            openModal(shareModal);
-                        }
-                    }, 'image/png');
-
+                    sharePreviewImage.src = dataUrl;
+                    downloadShareImageLink.href = dataUrl;
                 }).catch(err => {
                     console.error("Error generating canvas:", err);
                     document.body.removeChild(clone);
@@ -1060,9 +1100,9 @@
         const recursosModal = document.getElementById('recursos-modal');
         const meditacionModal = document.getElementById('meditacion-modal');
 
-        comunidadBtn.addEventListener('click', () => openModal(comunidadModal));
-        recursosBtn.addEventListener('click', () => openModal(recursosModal));
-        meditacionBtn.addEventListener('click', () => openModal(meditacionModal));
+        comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
+        recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
+        meditacionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(meditacionModal); });
 
         document.querySelectorAll('.streak-tooltip-close').forEach(button => {
             button.addEventListener('click', (e) => {
