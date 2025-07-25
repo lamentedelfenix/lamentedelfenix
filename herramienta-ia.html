@@ -252,6 +252,18 @@
                 </button>
             </div>
             
+            <!-- Contenedor de Avisos -->
+            <div id="warnings-container" class="p-4 md:px-6 md:pt-6 space-y-4" style="display: none;">
+                <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
+                    <strong class="font-bold"><i class="fas fa-exclamation-triangle mr-2"></i>Nota sobre el Servicio:</strong>
+                    <span class="block sm:inline ml-1">En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.</span>
+                </div>
+                <div class="bg-sky-900/50 border border-sky-700 text-sky-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
+                    <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong>
+                    <span class="block sm:inline ml-1">Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.</span>
+                </div>
+            </div>
+
             <div class="flex-grow">
                 <div id="iframe-container" style="display: none;">
                     <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/"></iframe>
@@ -333,6 +345,7 @@
         // --- MANEJO DE CONTENIDO Y RACHA ---
         const iframeContainer = document.getElementById('iframe-container');
         const authContainer = document.getElementById('auth-container');
+        const warningsContainer = document.getElementById('warnings-container');
         const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
         const sidebarStreakDays = document.getElementById('sidebar-streak-days');
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
@@ -341,6 +354,7 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 iframeContainer.style.display = 'block';
+                warningsContainer.style.display = 'block';
                 authContainer.style.display = 'none';
 
                 const appId = 'ucdm-tracker-app-v2';
@@ -386,6 +400,7 @@
 
             } else {
                 iframeContainer.style.display = 'none';
+                warningsContainer.style.display = 'none';
                 authContainer.style.display = 'flex';
             }
         });
