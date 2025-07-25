@@ -60,6 +60,7 @@
             margin: 0.25rem 0;
             transition: background-color 0.2s ease, color 0.2s ease;
             text-decoration: none;
+            cursor: pointer;
         }
         .sidebar-link:hover {
             background-color: rgba(0, 188, 212, 0.1);
@@ -84,6 +85,28 @@
         #sidebar-backdrop.show {
             opacity: 1;
             visibility: visible;
+        }
+        
+        .logo-glow {
+            animation: ember-effect-glow 3.6s infinite ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo-glow:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 14px #f6ad55);
+        }
+        @keyframes ember-effect-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
+                        drop-shadow(0 0 3px rgba(229, 62, 62, 0.4));
+                transform: scale(1.0);
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) 
+                        drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) 
+                        drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
+                transform: scale(1.12);
+            }
         }
         
         /* --- ESTILOS DE RACHA --- */
@@ -599,33 +622,45 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
-            <div>
-                <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                    <i class="fas fa-feather-alt text-2xl text-cyan-400"></i>
-                    <span class="text-2xl font-extrabold">Miembro Fénix</span>
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
+            <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
+                <!-- Logo for desktop -->
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+                <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+            </a>
+            <nav class="mt-10">
+                <a href="./miembros.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>Panel Principal</span>
                 </a>
-                <nav class="mt-10">
-                    <a href="./miembros.html" class="sidebar-link">
-                        <i class="fas fa-home"></i>
-                        <span>Panel Principal</span>
-                    </a>
-                    <a href="./progreso.html" class="sidebar-link active">
-                        <i class="fas fa-tasks"></i>
-                        <span>Mi Progreso</span>
-                    </a>
-                    <a href="./inspiracion.html" class="sidebar-link">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Inspiración</span>
-                    </a>
-                    <a href="./herramienta-ia.html" class="sidebar-link">
-                        <i class="fas fa-robot"></i>
-                        <span>Asistente IA</span>
-                    </a>
-                </nav>
-            </div>
+                <a href="./progreso.html" class="sidebar-link active">
+                    <i class="fas fa-tasks"></i>
+                    <span>Mi Progreso</span>
+                </a>
+                <a href="./inspiracion.html" class="sidebar-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Inspiración</span>
+                </a>
+                <a href="./herramienta-ia.html" class="sidebar-link">
+                    <i class="fas fa-robot"></i>
+                    <span>Asistente IA</span>
+                </a>
+                <hr class="border-gray-700 my-4">
+                <a id="comunidad-btn" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>Comunidad</span>
+                </a>
+                <a id="recursos-btn" class="sidebar-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Recursos</span>
+                </a>
+                <a id="meditacion-btn" class="sidebar-link">
+                    <i class="fas fa-headphones"></i>
+                    <span>Meditación</span>
+                </a>
+            </nav>
             <div class="px-4 py-2 mt-auto">
-                <hr class="border-t-2 border-gray-700 mb-4">
+                <hr class="border-gray-700 mb-4">
                 <button id="logout-btn" class="w-full sidebar-link text-left">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Cerrar Sesión</span>
@@ -633,10 +668,10 @@
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col md:ml-64">
+        <div class="flex-1 flex flex-col md:ml-72">
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-40">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
-                    <i class="fas fa-feather-alt text-xl text-cyan-400"></i>
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
                 <button id="hamburger-btn" class="text-white focus:outline-none">
