@@ -17,6 +17,9 @@
             color: #fbf5e2;
             overflow-x: hidden;
         }
+        body.modal-open {
+            overflow: hidden;
+        }
 
         #background-canvas {
             position: fixed;
@@ -140,13 +143,13 @@
             font-weight: bold;
         }
         .btn:hover { 
-            background-color: rgba(233, 30, 99, 0.2);
-            box-shadow: 0 0 15px rgba(233, 30, 99, 0.5);
+            background-color: var(--glow-color-bg);
+            box-shadow: 0 0 15px var(--glow-color);
         }
 
-        /* --- ESTILOS PARA MODAL DE AVISOS --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
+        /* --- ESTILOS PARA MODALES --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.show { display: flex; opacity: 1; visibility: visible; }
         .modal-content { background-color: #0c1427; border: 1px solid rgba(255,255,255,0.2); padding: 2.5rem; border-radius: 0.75rem; max-width: 500px; width: 100%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
@@ -172,6 +175,26 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
         }
+        
+        /* --- ESTILOS PARA MODALES DEL MENÚ --- */
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: #fbf5e2;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3);
+            border: 1px solid rgba(0, 188, 212, 0.5);
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); border-color: #e91e63; background-color: transparent; }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); border-color: #00bcd4; background-color: transparent; }
+        .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .text-brand-pink { color: #e91e63; }
     </style>
 </head>
 <body>
@@ -315,6 +338,40 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modals del Menú -->
+    <div id="comunidad-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
+            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <div class="flex justify-center gap-4">
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="recursos-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
+            <div class="grid grid-cols-1 gap-6">
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Ver Recursos</div></a>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center">Reservar Sesión</div></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="meditacion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="font-bold mb-4 text-xl"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3>
+            <div class="youtube-container">
+                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
@@ -445,13 +502,13 @@
         });
         
         // Lógica para el modal de avisos
-        openWarningsBtn.addEventListener('click', () => {
-            warningsModal.classList.add('show');
+        if(openWarningsBtn) openWarningsBtn.addEventListener('click', () => {
+            if(warningsModal) warningsModal.classList.add('show');
         });
-        closeWarningsBtn.addEventListener('click', () => {
-            warningsModal.classList.remove('show');
+        if(closeWarningsBtn) closeWarningsBtn.addEventListener('click', () => {
+            if(warningsModal) warningsModal.classList.remove('show');
         });
-        warningsModal.addEventListener('click', (e) => {
+        if(warningsModal) warningsModal.addEventListener('click', (e) => {
             if (e.target === warningsModal) {
                 warningsModal.classList.remove('show');
             }
@@ -468,6 +525,59 @@
                 }
             });
         });
+
+        // --- MANEJO DE MODALES DEL MENÚ ---
+        const comunidadBtn = document.getElementById('comunidad-btn');
+        const recursosBtn = document.getElementById('recursos-btn');
+        const meditacionBtn = document.getElementById('meditacion-btn');
+
+        const comunidadModal = document.getElementById('comunidad-modal');
+        const recursosModal = document.getElementById('recursos-modal');
+        const meditacionModal = document.getElementById('meditacion-modal');
+
+        const menuModals = [comunidadModal, recursosModal, meditacionModal, warningsModal];
+
+        function openMenuModal(modal) {
+            if (modal) {
+                document.body.classList.add('modal-open');
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('show'), 10);
+            }
+        }
+
+        function closeMenuModal(modal) {
+            if (modal) {
+                document.body.classList.remove('modal-open');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    const iframe = modal.querySelector('iframe');
+                    if (iframe) {
+                        const iframeSrc = iframe.src;
+                        iframe.src = iframeSrc; 
+                    }
+                }, 300);
+            }
+        }
+
+        menuModals.forEach(modal => {
+            if(modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeMenuModal(modal);
+                    }
+                });
+                const closeBtn = modal.querySelector('.modal-close-btn');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => closeMenuModal(modal));
+                }
+            }
+        });
+
+        if(comunidadBtn) comunidadBtn.addEventListener('click', () => openMenuModal(comunidadModal));
+        if(recursosBtn) recursosBtn.addEventListener('click', () => openMenuModal(recursosModal));
+        if(meditacionBtn) meditacionBtn.addEventListener('click', () => openMenuModal(meditacionModal));
+
     </script>
 
 </body>
