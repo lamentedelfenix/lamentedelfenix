@@ -143,6 +143,35 @@
             background-color: rgba(233, 30, 99, 0.2);
             box-shadow: 0 0 15px rgba(233, 30, 99, 0.5);
         }
+
+        /* --- ESTILOS PARA MODAL DE AVISOS --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { background-color: #0c1427; border: 1px solid rgba(255,255,255,0.2); padding: 2.5rem; border-radius: 0.75rem; max-width: 500px; width: 100%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; position: relative; }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
+
+        #open-warnings-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            background-color: rgba(233, 30, 99, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none; /* Oculto por defecto */
+        }
+        #open-warnings-btn:hover {
+            background-color: #e91e63;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -245,20 +274,9 @@
             </div>
             
             <div class="flex-1 overflow-y-auto">
-                <div id="logged-in-content" style="display: none;">
-                    <div class="h-[80vh] p-4 md:p-6">
+                <div id="logged-in-content" class="h-full flex flex-col" style="display: none;">
+                    <div class="flex-grow p-4 md:p-6">
                         <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg"></iframe>
-                    </div>
-                    <!-- Contenedor de Avisos como texto simple -->
-                    <div id="warnings-container" class="p-4 md:px-6 md:pb-6 space-y-3 text-sm text-center">
-                        <p class="text-yellow-400">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>Nota sobre el Servicio:</strong> En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.
-                        </p>
-                        <p class="text-sky-300">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            <strong>Recordatorio Importante:</strong> Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.
-                        </p>
                     </div>
                 </div>
 
@@ -271,6 +289,29 @@
                         </a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de Avisos -->
+    <button id="open-warnings-btn">
+        <i class="fas fa-exclamation-circle mr-2"></i>AVISOS
+    </button>
+
+    <!-- Modal de Avisos -->
+    <div id="warnings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="close-warnings-btn" class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-6 text-yellow-400">Avisos Importantes</h3>
+            <div class="space-y-4 text-left">
+                <p class="text-yellow-200">
+                    <strong class="font-bold"><i class="fas fa-server mr-2"></i>Nota sobre el Servicio:</strong><br>
+                    En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.
+                </p>
+                <p class="text-sky-200">
+                    <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong><br>
+                    Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.
+                </p>
             </div>
         </div>
     </div>
@@ -337,18 +378,23 @@
              signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
         });
 
-        // --- MANEJO DE CONTENIDO Y RACHA ---
+        // --- MANEJO DE CONTENIDO, RACHA Y MODAL DE AVISOS ---
         const loggedInContent = document.getElementById('logged-in-content');
         const authContainer = document.getElementById('auth-container');
         const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
         const sidebarStreakDays = document.getElementById('sidebar-streak-days');
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
         const mobileStreakDays = document.getElementById('mobile-streak-days');
+        
+        const openWarningsBtn = document.getElementById('open-warnings-btn');
+        const warningsModal = document.getElementById('warnings-modal');
+        const closeWarningsBtn = document.getElementById('close-warnings-btn');
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                loggedInContent.style.display = 'block';
+                loggedInContent.style.display = 'flex';
                 authContainer.style.display = 'none';
+                openWarningsBtn.style.display = 'inline-flex';
 
                 const appId = 'ucdm-tracker-app-v2';
                 const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
@@ -394,9 +440,23 @@
             } else {
                 loggedInContent.style.display = 'none';
                 authContainer.style.display = 'flex';
+                openWarningsBtn.style.display = 'none';
             }
         });
         
+        // Lógica para el modal de avisos
+        openWarningsBtn.addEventListener('click', () => {
+            warningsModal.classList.add('show');
+        });
+        closeWarningsBtn.addEventListener('click', () => {
+            warningsModal.classList.remove('show');
+        });
+        warningsModal.addEventListener('click', (e) => {
+            if (e.target === warningsModal) {
+                warningsModal.classList.remove('show');
+            }
+        });
+
         document.querySelectorAll('.streak-tooltip-close').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
