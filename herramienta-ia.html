@@ -249,15 +249,16 @@
                     <div class="h-[80vh] p-4 md:p-6">
                         <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg"></iframe>
                     </div>
-                    <div id="warnings-container" class="p-4 md:px-6 md:pb-6 space-y-4">
-                        <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
-                            <strong class="font-bold"><i class="fas fa-exclamation-triangle mr-2"></i>Nota sobre el Servicio:</strong>
-                            <span class="block sm:inline ml-1">En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.</span>
-                        </div>
-                        <div class="bg-sky-900/50 border border-sky-700 text-sky-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
-                            <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong>
-                            <span class="block sm:inline ml-1">Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.</span>
-                        </div>
+                    <!-- Contenedor de Avisos como texto simple -->
+                    <div id="warnings-container" class="p-4 md:px-6 md:pb-6 space-y-3 text-sm">
+                        <p class="text-yellow-400">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Nota sobre el Servicio:</strong> En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.
+                        </p>
+                        <p class="text-sky-300">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <strong>Recordatorio Importante:</strong> Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.
+                        </p>
                     </div>
                 </div>
 
