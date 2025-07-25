@@ -118,14 +118,6 @@
         @keyframes flame-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
         @keyframes ember-rise { 0% { box-shadow: 0 0 10px 0px #fde68a; } 50% { box-shadow: 0 -15px 20px 5px rgba(253, 230, 138, 0); } 100% { box-shadow: 0 0 10px 0px #fde68a; } }
 
-        #iframe-container, #auth-container {
-            height: 100%;
-        }
-        #tool-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
         .auth-message-container {
             display: none;
             flex-direction: column;
@@ -252,29 +244,31 @@
                 </button>
             </div>
             
-            <div class="flex-grow">
-                <div id="iframe-container" style="display: none;">
-                    <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/"></iframe>
+            <div class="flex-1 overflow-y-auto">
+                <div id="logged-in-content" style="display: none;">
+                    <div class="h-[80vh] p-4 md:p-6">
+                        <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg"></iframe>
+                    </div>
+                    <div id="warnings-container" class="p-4 md:px-6 md:pb-6 space-y-4">
+                        <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
+                            <strong class="font-bold"><i class="fas fa-exclamation-triangle mr-2"></i>Nota sobre el Servicio:</strong>
+                            <span class="block sm:inline ml-1">En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.</span>
+                        </div>
+                        <div class="bg-sky-900/50 border border-sky-700 text-sky-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
+                            <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong>
+                            <span class="block sm:inline ml-1">Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="auth-container" class="auth-message-container">
-                    <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
-                    <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para usar esta herramienta.</p>
-                    <a href="./login.html" class="btn">
-                        Ir a Iniciar Sesión
-                    </a>
-                </div>
-            </div>
-
-            <!-- Contenedor de Avisos -->
-            <div id="warnings-container" class="p-4 md:px-6 md:pb-6 space-y-4" style="display: none;">
-                <div class="bg-yellow-900/50 border border-yellow-700 text-yellow-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
-                    <strong class="font-bold"><i class="fas fa-exclamation-triangle mr-2"></i>Nota sobre el Servicio:</strong>
-                    <span class="block sm:inline ml-1">En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.</span>
-                </div>
-                <div class="bg-sky-900/50 border border-sky-700 text-sky-200 px-4 py-3 rounded-lg relative text-sm" role="alert">
-                    <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong>
-                    <span class="block sm:inline ml-1">Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.</span>
+                <div id="auth-container" class="auth-message-container flex items-center justify-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                        <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para usar esta herramienta.</p>
+                        <a href="./login.html" class="btn">
+                            Ir a Iniciar Sesión
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -343,9 +337,8 @@
         });
 
         // --- MANEJO DE CONTENIDO Y RACHA ---
-        const iframeContainer = document.getElementById('iframe-container');
+        const loggedInContent = document.getElementById('logged-in-content');
         const authContainer = document.getElementById('auth-container');
-        const warningsContainer = document.getElementById('warnings-container');
         const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
         const sidebarStreakDays = document.getElementById('sidebar-streak-days');
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
@@ -353,8 +346,7 @@
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                iframeContainer.style.display = 'block';
-                warningsContainer.style.display = 'block';
+                loggedInContent.style.display = 'block';
                 authContainer.style.display = 'none';
 
                 const appId = 'ucdm-tracker-app-v2';
@@ -399,8 +391,7 @@
                 });
 
             } else {
-                iframeContainer.style.display = 'none';
-                warningsContainer.style.display = 'none';
+                loggedInContent.style.display = 'none';
                 authContainer.style.display = 'flex';
             }
         });
