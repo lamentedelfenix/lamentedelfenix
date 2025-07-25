@@ -15,7 +15,6 @@
             --brand-gold: #ffd700;
             --brand-pink: #e91e63;
             --brand-cyan: #00bcd4;
-            /* THEME CHANGE: From light to dark */
             --bg-main: #0c1427;
             --text-main: #fbf5e2;
             --text-muted: #a7b3ce;
@@ -135,10 +134,58 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- ESTILOS MODALES (UNIFICADOS) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; padding: 1rem;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease;
+            overscroll-behavior: contain;
+        }
+        .modal-overlay.show {
+            opacity: 1; visibility: visible;
+        }
+        .modal-content {
+            background-color: #0c1427; 
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            width: 100%; 
+            transform: scale(0.9); 
+            transition: transform 0.3s ease; 
+            position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem;
+            color: #9ca3af; cursor: pointer; line-height: 1; z-index: 10;
+        }
+        /* Estilo para modales de lecciones (complejos) */
+        .lesson-modal-content {
+            padding: 2rem; 
+            max-width: 600px; 
+            max-height: 90vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+        /* Estilo para modales de menú (simples) */
+        .simple-modal-content {
+            padding: 2.5rem;
+            max-width: 500px;
+            text-align: center;
+        }
+        #recursos-modal .simple-modal-content {
+            max-width: 700px;
+        }
+        
         /* --- ESTILOS MODAL DE LOGRO --- */
         #achievement-modal .modal-content {
             background: radial-gradient(circle, rgba(20, 36, 68, 0.95) 0%, rgba(12, 20, 39, 0.98) 100%);
             text-align: center;
+            max-width: 500px;
+            padding: 2.5rem;
         }
         #achievement-modal-icon {
             font-size: 5rem;
@@ -166,14 +213,8 @@
             animation: confetti-fall 3s ease-out forwards;
         }
         @keyframes confetti-fall {
-            0% {
-                transform: translateY(-10vh) rotateZ(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) rotateZ(720deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-10vh) rotateZ(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotateZ(720deg); opacity: 0; }
         }
 
         /* --- PROGRESS BAR STYLES --- */
@@ -217,21 +258,6 @@
         }
 
         /* --- ACHIEVEMENTS SHELF STYLES --- */
-        #fireworks-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 5000;
-            overflow: hidden;
-        }
-        .firework-particle {
-            position: absolute;
-            width: 5px; height: 5px; border-radius: 50%;
-            opacity: 0;
-            animation: firework-burst 1.2s ease-out forwards;
-        }
-        @keyframes firework-burst {
-            0% { opacity: 1; transform: scale(0.3); }
-            100% { opacity: 0; transform: scale(1) translate(var(--x-end), var(--y-end)); }
-        }
         .achievements-container {
             margin-top: 2.5rem;
             padding: 1.5rem;
@@ -343,40 +369,6 @@
         @keyframes draw-line {
             from { transform: translate(-50%, -50%) rotate(-45deg) scaleX(0); }
             to { transform: translate(-50%, -50%) rotate(-45deg) scaleX(1); }
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1000; padding: 1rem;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s 0.3s;
-            overscroll-behavior: contain;
-        }
-        .modal-overlay.show {
-            opacity: 1; visibility: visible;
-            transition: opacity 0.3s ease, visibility 0s;
-        }
-        .modal-content {
-            background-color: #0c1427; 
-            border: 1px solid var(--border-color);
-            padding: 2rem; 
-            border-radius: 0.75rem;
-            max-width: 600px; 
-            width: 100%; 
-            max-height: 90vh;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            transform: scale(0.9); 
-            transition: transform 0.3s ease; 
-            position: relative;
-        }
-        .modal-overlay.show .modal-content { transform: scale(1); }
-        .modal-close-btn {
-            position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
-            color: #9ca3af; cursor: pointer; line-height: 1; z-index: 10;
         }
         
         .modal-header-section { grid-row: 1; }
@@ -528,6 +520,42 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        /* --- ESTILOS PARA MODALES DEL MENÚ (AÑADIDO) --- */
+        .btn { 
+            position: relative; 
+            z-index: 1; 
+            overflow: hidden; 
+            transition: all 0.3s ease; 
+            border: 1px solid transparent;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); background-color: transparent; border-color: #e91e63; }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); background-color: transparent; border-color: #00bcd4; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--glow-color);
+            background-color: var(--glow-color-bg);
+        }
+        .card { 
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
+            border: 1px solid rgba(0, 188, 212, 0.5);
+        }
+        .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
         @media (max-width: 768px) {
             .carousel-nav-btn {
                 display: none;
@@ -535,7 +563,7 @@
             .slide-content-wrapper {
                 padding: 0 1rem;
             }
-            .modal-content {
+            .lesson-modal-content {
                 padding: 1.5rem 0.5rem;
             }
             .modal-close-btn {
@@ -570,11 +598,10 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-bonus-reached-2065.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="fireworks-container"></div>
-
     <!-- MODAL DE LOGRO ESPECTACULAR -->
     <div id="achievement-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="achievement-modal-title">
-        <div class="modal-content relative">
+        <div class="modal-content simple-modal-content">
+            <span class="modal-close-btn">&times;</span>
             <div id="confetti-container"></div>
             <h2 id="achievement-modal-title" class="text-3xl font-bold text-brand-cyan mb-4">¡Logro Desbloqueado!</h2>
             <i id="achievement-modal-icon" class="fas fa-star mb-4"></i>
@@ -585,7 +612,7 @@
 
     <!-- Modal para Lecciones e Introducciones -->
     <div id="item-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-item-title">
-        <div class="modal-content">
+        <div class="modal-content lesson-modal-content">
             <button id="modal-close" class="modal-close-btn" aria-label="Cerrar modal">&times;</button>
             <div class="modal-header-section">
                 <h3 id="modal-item-header" class="text-sm font-bold tracking-widest uppercase mb-2"></h3>
@@ -609,7 +636,8 @@
 
     <!-- Modal de Confirmación -->
     <div id="confirm-modal" class="modal-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
-        <div class="modal-content">
+        <div class="modal-content simple-modal-content">
+            <span class="modal-close-btn">&times;</span>
             <h3 id="confirm-title" class="text-xl font-bold text-center mb-4">Confirmar Acción</h3>
             <p id="confirm-message" class="text-center mb-8"></p>
             <div class="flex justify-center gap-4">
@@ -624,7 +652,6 @@
 
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                <!-- Logo for desktop -->
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
@@ -683,7 +710,6 @@
                 <div class="max-w-4xl mx-auto p-4 md:p-8">
                     <header class="mb-8 text-center">
                         <h1 id="user-title" class="text-4xl md:text-5xl font-bold mb-4">Mi Progreso en las Lecciones</h1>
-                        <!-- CONTADOR DE RACHA -->
                         <div id="streak-counter" class="text-xl mt-2">
                             <i class="fas fa-fire"></i>
                             <span id="streak-days">0</span>
@@ -748,6 +774,53 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modals del Menú -->
+    <div id="comunidad-modal" class="modal-overlay">
+        <div class="modal-content simple-modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
+            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <div class="flex justify-center gap-4">
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="recursos-modal" class="modal-overlay">
+        <div class="modal-content simple-modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
+                        <p class="mb-4 text-sm">Grabaciones, guías y recursos exclusivos.</p>
+                    </div>
+                    <div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</div>
+                </a>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
+                        <p class="mb-4 text-sm">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                    </div>
+                    <div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="meditacion-modal" class="modal-overlay">
+        <div class="modal-content simple-modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="font-bold mb-4 text-xl text-center"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span><br>Guiada para Empezar el Día</h3>
+            <div class="youtube-container">
+                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -797,13 +870,11 @@
         const userTitle = document.getElementById('user-title');
         const soundEffect = document.getElementById('completion-sound');
         const milestoneSound = document.getElementById('milestone-sound');
-        const fireworksContainer = document.getElementById('fireworks-container');
         
         const itemModal = document.getElementById('item-modal');
         const modalCloseBtn = document.getElementById('modal-close');
         const modalItemHeader = document.getElementById('modal-item-header');
         const modalItemTitle = document.getElementById('modal-item-title');
-        const modalItemContent = document.getElementById('modal-item-content');
         const modalCompleteBtn = document.getElementById('modal-complete-btn');
 
         const confirmModal = document.getElementById('confirm-modal');
@@ -811,15 +882,12 @@
         const confirmYesBtn = document.getElementById('confirm-yes-btn');
         const confirmNoBtn = document.getElementById('confirm-no-btn');
         
-        // Elementos de racha y logros
         const streakCounterEl = document.getElementById('streak-counter');
         const streakDaysEl = document.getElementById('streak-days');
         const achievementModal = document.getElementById('achievement-modal');
-        const achievementModalCloseBtn = document.getElementById('achievement-modal-close');
         const achievementModalIcon = document.getElementById('achievement-modal-icon');
         const achievementModalText = document.getElementById('achievement-modal-text');
         const confettiContainer = document.getElementById('confetti-container');
-
 
         const paragraphSlider = itemModal.querySelector('.paragraph-slider');
         const prevBtn = itemModal.querySelector('.carousel-nav-btn.prev');
@@ -861,7 +929,6 @@
         const simpleSeparatorPoints = [90, 120, 150];
 
         // --- Core Functions ---
-
         async function fetchAndRenderCourse() {
             if (courseHasBeenRendered) return;
             
@@ -875,7 +942,6 @@
                 }
 
                 const rawItems = courseDocSnap.data().items || [];
-                
                 rawItems.sort((a, b) => (a.order || 0) - (b.order || 0));
 
                 const courseItems = [];
@@ -950,7 +1016,6 @@
             achievements = [...potentialAchievements, finalTrophy];
         }
 
-
         function renderAchievements() {
             achievementsShelf.innerHTML = '';
             achievements.forEach(ach => {
@@ -1013,8 +1078,7 @@
 
                     button.innerHTML = `<span>${buttonTitle}</span><div class="flex items-center gap-2"><span class="text-xs font-semibold opacity-80">Ver</span><i class="fas fa-eye icon"></i></div>`;
                     button.addEventListener('click', () => {
-                        openItemModal(itemId);
-                        openModal(itemModal);
+                        openModal(itemModal, itemId);
                     });
                     
                     courseContentContainer.appendChild(button);
@@ -1036,8 +1100,7 @@
                     lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
                     lessonItem.addEventListener('click', () => {
-                        openItemModal(itemId);
-                        openModal(itemModal);
+                        openModal(itemModal, itemId);
                     });
                     currentGrid.appendChild(lessonItem);
 
@@ -1083,12 +1146,10 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         completedItems = new Set(data.completed || []);
-                        // Cargar datos de racha
                         userData.currentStreak = data.currentStreak || 0;
                         userData.lastCompletedDate = data.lastCompletedDate || null;
 
                     } else {
-                        // Si no existe, lo creamos con valores iniciales
                         const initialData = { completed: [], currentStreak: 0, lastCompletedDate: null };
                         setDoc(progressDocRef, initialData).catch(err => console.error("Error creating progress doc:", err));
                     }
@@ -1137,7 +1198,7 @@
             const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
 
             if (userData.lastCompletedDate !== today && userData.lastCompletedDate !== yesterday) {
-                userData.currentStreak = 0; // La racha se rompió
+                userData.currentStreak = 0;
             }
 
             streakDaysEl.textContent = userData.currentStreak;
@@ -1158,7 +1219,7 @@
                         achElement.classList.add('unlocked');
                         if (justUpdated) {
                             achElement.classList.add('just-unlocked');
-                            showAchievementModal(ach); // Mostrar el nuevo modal
+                            openModal(achievementModal);
                             setTimeout(() => achElement.classList.remove('just-unlocked'), 800);
                         }
                     }
@@ -1181,7 +1242,7 @@
                                 .find(item => item.type === 'section_intro' || item.title.toLowerCase().includes('introducción'));
             
             const allSeparators = { ...titledSeparators };
-            simpleSeparatorPoints.forEach(p => allSeparators[p] = ''); // Add simple separators to the check list
+            simpleSeparatorPoints.forEach(p => allSeparators[p] = '');
 
             for (const key in allSeparators) {
                 const separatorEl = document.getElementById(`separator-${key}`);
@@ -1222,20 +1283,6 @@
         }
 
         // --- Modal & Carousel Handling ---
-
-        function openModal(modal) {
-            initializeAudio();
-            document.body.classList.add('modal-open');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
-        }
-
-        function closeModal(modal) {
-            document.body.classList.remove('modal-open');
-            modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-
         function openItemModal(itemId) {
             currentItemId = itemId;
             const item = allItemsMap.get(itemId);
@@ -1314,35 +1361,32 @@
 
             const updates = { completed: [...newCompletedSet] };
             
-            // Lógica de racha solo al completar, no al desmarcar
             if (justCompleted) {
                 const today = new Date().toISOString().slice(0, 10);
-                if (userData.lastCompletedDate !== today) { // Solo actualizar racha una vez al día
+                if (userData.lastCompletedDate !== today) {
                     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
                     if (userData.lastCompletedDate === yesterday) {
-                        updates.currentStreak = (userData.currentStreak || 0) + 1; // Continuar racha
+                        updates.currentStreak = (userData.currentStreak || 0) + 1;
                     } else {
-                        updates.currentStreak = 1; // Nueva racha
+                        updates.currentStreak = 1;
                     }
                     updates.lastCompletedDate = today;
                 }
             }
 
             try {
-                // Usar updateDoc para no sobreescribir el documento si solo se añade un campo
                 await updateDoc(progressDocRef, updates);
             } catch (error) {
                 console.error("Error updating progress:", error);
-                showConfirmation(`Hubo un error al guardar tu progreso.`);
+                openModal(confirmModal, 'Hubo un error al guardar tu progreso.');
             }
             closeModal(itemModal);
         }
 
         function handleResetProgress() {
-            showConfirmation('¿Estás seguro de que quieres reiniciar todo tu progreso? Esta acción no se puede deshacer.', async () => {
+            openModal(confirmModal, '¿Estás seguro de que quieres reiniciar todo tu progreso? Esta acción no se puede deshacer.', async () => {
                 if (progressDocRef) {
                     try {
-                        // Reiniciar todo
                         await setDoc(progressDocRef, { completed: [], currentStreak: 0, lastCompletedDate: null });
                         achievedMilestones.clear();
                     } catch (error) {
@@ -1352,22 +1396,7 @@
             });
         }
 
-        function showConfirmation(message, onConfirm) {
-            confirmMessage.textContent = message;
-            confirmCallback = onConfirm;
-            openModal(confirmModal);
-        }
-
         // --- Effects ---
-
-        function showAchievementModal(achievement) {
-            achievementModalIcon.className = `fas ${achievement.icon} mb-4`;
-            achievementModalText.innerHTML = achievement.title;
-            openModal(achievementModal);
-            triggerConfetti();
-            playMilestoneSound();
-        }
-        
         function triggerConfetti() {
             confettiContainer.innerHTML = '';
             const colors = ['#ffd700', '#e91e63', '#00bcd4', '#ffffff'];
@@ -1381,7 +1410,6 @@
                 confettiContainer.appendChild(confetti);
             }
         }
-
 
         function initializeAudio() {
             if (audioInitialized) return;
@@ -1406,41 +1434,113 @@
         
         // --- Event Listeners ---
         modalCloseBtn.addEventListener('click', () => closeModal(itemModal));
-        itemModal.addEventListener('click', (e) => { if (e.target === itemModal) closeModal(itemModal) });
         modalCompleteBtn.addEventListener('click', handleMarkComplete);
         
-        achievementModalCloseBtn.addEventListener('click', () => closeModal(achievementModal));
-        achievementModal.addEventListener('click', (e) => { if(e.target === achievementModal) closeModal(achievementModal) });
-
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeModal(confirmModal);
             confirmCallback = null;
         });
-        confirmNoBtn.addEventListener('click', () => closeModal(confirmModal));
+        
         resetBtn.addEventListener('click', handleResetProgress);
 
         prevBtn.addEventListener('click', showPrevParagraph);
         nextBtn.addEventListener('click', showNextParagraph);
         
-        modalItemContent.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-        modalItemContent.addEventListener('touchend', (e) => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
-
-        function handleSwipe() {
+        itemModal.querySelector('.paragraph-carousel-container').addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        itemModal.querySelector('.paragraph-carousel-container').addEventListener('touchend', (e) => { 
+            touchEndX = e.changedTouches[0].screenX; 
             if (touchEndX < touchStartX - 50) showNextParagraph();
             if (touchEndX > touchStartX + 50) showPrevParagraph();
+        });
+
+        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA) ---
+        const allModals = document.querySelectorAll('.modal-overlay');
+
+        function closeModal(modal) {
+            if (!modal) return;
+            modal.classList.remove('show');
+
+            const iframe = modal.querySelector('iframe');
+            if (iframe && iframe.src.includes('youtube')) {
+                const videoSrc = iframe.src;
+                iframe.src = ''; 
+                iframe.src = videoSrc;
+            }
+            
+            setTimeout(() => {
+                if (document.querySelectorAll('.modal-overlay.show').length === 0) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300); // Esperar a que termine la transición
         }
+
+        function openModal(modalToOpen, data) {
+            if (!modalToOpen) return;
+            
+            allModals.forEach(modal => {
+                if (modal !== modalToOpen && modal.classList.contains('show')) {
+                    closeModal(modal);
+                }
+            });
+
+            if (modalToOpen === itemModal) openItemModal(data);
+            if (modalToOpen === achievementModal) {
+                 achievementModalIcon.className = `fas ${data.icon} mb-4`;
+                 achievementModalText.innerHTML = data.title;
+                 triggerConfetti();
+                 playMilestoneSound();
+            }
+            if (modalToOpen === confirmModal) {
+                confirmMessage.textContent = data;
+                confirmCallback = arguments[2] || null;
+            }
+
+            document.body.classList.add('modal-open');
+            modalToOpen.classList.add('show');
+            
+            if (typeof initializeAudio === 'function') {
+                initializeAudio();
+            }
+        }
+
+        allModals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                document.querySelectorAll('.modal-overlay.show').forEach(closeModal);
+            }
+        });
+        
+        const comunidadBtn = document.getElementById('comunidad-btn');
+        const recursosBtn = document.getElementById('recursos-btn');
+        const meditacionBtn = document.getElementById('meditacion-btn');
+        
+        const comunidadModal = document.getElementById('comunidad-modal');
+        const recursosModal = document.getElementById('recursos-modal');
+        const meditacionModal = document.getElementById('meditacion-modal');
+
+        if(comunidadBtn) comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
+        if(recursosBtn) recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
+        if(meditacionBtn) meditacionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(meditacionModal); });
 
     </script>
     
     <script>
+        // Script de animación del fondo
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, particles;
 
         function setup() {
             width = window.innerWidth;
-            height = window.innerHeight;
+            height = document.body.scrollHeight;
             canvas.width = width;
             canvas.height = height;
             particles = [];
@@ -1471,11 +1571,20 @@
             });
             requestAnimationFrame(draw);
         }
-
-        window.addEventListener('resize', setup);
         
-        setup();
-        draw();
+        const resizeObserver = new ResizeObserver(() => {
+            clearTimeout(window.resizeLag);
+            window.resizeLag = setTimeout(() => {
+                setup();
+            }, 250);
+        });
+        
+        window.addEventListener('load', () => {
+            setup();
+            draw();
+            resizeObserver.observe(document.body);
+        });
+
     </script>
 </body>
 </html>
