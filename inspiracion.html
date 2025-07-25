@@ -257,13 +257,11 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <!-- Barra de Navegación Lateral -->
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
              <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <!-- Streak counter in menu -->
             <div class="streak-container mx-4" tabindex="0">
                 <div id="sidebar-streak-counter" style="display: none;">
                     <i class="fas fa-fire"></i>
@@ -324,15 +322,12 @@
             </div>
         </aside>
 
-        <!-- Contenido Principal -->
         <div class="flex-1 md:ml-72">
-            <!-- Botón Hamburguesa para Móvil -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
                 </a>
-                <!-- Mobile streak counter -->
                 <div class="streak-container" tabindex="0">
                     <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
                         <i class="fas fa-fire"></i>
@@ -405,78 +400,19 @@
     </div>
 
     <script>
-        // --- SCRIPT PARA ANIMACIÓN DE FONDO CALMADO ---
+        // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = document.body.scrollHeight; // Change to scrollHeight
-        }
-
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
         class Particle {
-            constructor(x, y, dirX, dirY, size, color) {
-                this.x = x; this.y = y; this.dirX = dirX; this.dirY = dirY;
-                this.size = size; this.color = color;
-                this.baseAlpha = Math.random() * 0.4 + 0.1;
-                this.alpha = 0; this.alphaSpeed = Math.random() * 0.01 + 0.002;
-                this.fadingIn = true;
-            }
-
-            draw() {
-                ctx.beginPath();
-                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-                gradient.addColorStop(0, `rgba(${this.color}, ${this.alpha})`);
-                gradient.addColorStop(1, `rgba(${this.color}, 0)`);
-                ctx.fillStyle = gradient;
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            update() {
-                this.x += this.dirX; this.y += this.dirY;
-                if (this.fadingIn) {
-                    if (this.alpha < this.baseAlpha) this.alpha += this.alphaSpeed;
-                    else this.fadingIn = false;
-                } else {
-                    if (this.alpha > 0) this.alpha -= this.alphaSpeed;
-                    else {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.fadingIn = true;
-                    }
-                }
-                if (this.x > canvas.width + this.size) this.x = -this.size;
-                if (this.x < -this.size) this.x = canvas.width + this.size;
-                if (this.y > canvas.height + this.size) this.y = -this.size;
-                if (this.y < -this.size) this.y = canvas.height + this.size;
-                this.draw();
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-
-        function initParticles() {
-            particles = [];
-            const colors = ['233, 30, 99', '0, 188, 212', '251, 191, 36'];
-            const numberOfParticles = (canvas.width * canvas.height) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                const size = Math.random() * 40 + 20;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const dirX = (Math.random() - 0.5) * 0.1;
-                const dirY = (Math.random() - 0.5) * 0.1;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particles.push(new Particle(x, y, dirX, dirY, size, color));
-            }
-        }
-
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-            }
-        }
+        function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
         
         const resizeObserver = new ResizeObserver(() => {
             resizeCanvas();
