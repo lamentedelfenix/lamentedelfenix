@@ -500,6 +500,8 @@
         function createPlayerHTML(video) {
             const isSeen = seenVideoIds.has(video.id);
             const vimeoHash = video.vimeoHash || '';
+            
+            // CORRECCIÓN: Construir la URL condicionalmente
             let vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?title=0&byline=0&portrait=0`;
             if (vimeoHash) {
                 vimeoUrl += `&h=${vimeoHash}`;
