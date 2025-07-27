@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso en Vídeo - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #0c1427;
+            --brand-gold: #ffd700;
+            --brand-pink: #e91e63;
+            --brand-cyan: #00bcd4;
+            --bg-main: #0c1427;
+            --text-main: #fbf5e2;
+            --text-muted: #a7b3ce;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: opacity 0.3s ease-in-out;
+            overflow-x: hidden;
+            opacity: 0; /* Oculto por defecto */
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* --- ESTILOS BARRA LATERAL --- */
+        #sidebar {
+            background-color: #080f1e;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1010;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-muted);
+            border-radius: 0.5rem;
+            margin: 0.25rem 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar-link:hover {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: var(--text-main);
+        }
+        .sidebar-link.active {
+            background-color: var(--brand-cyan);
+            color: var(--brand-blue);
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+        .sidebar-link i {
+            width: 2rem;
+            text-align: center;
+        }
+        #sidebar-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1005;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .logo-glow {
+            animation: ember-effect-glow 3.6s infinite ease-in-out;
+        }
+        @keyframes ember-effect-glow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)); }
+            50% { filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)); }
+        }
+
+        /* --- ESTILOS DE LA PÁGINA DE CURSO --- */
+        #video-list-container {
+            height: calc(100vh - 8rem); /* Ajustar altura para scroll */
+            overflow-y: auto;
+        }
+        /* Estilo para la barra de scroll */
+        #video-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #video-list-container::-webkit-scrollbar-track {
+            background: #080f1e;
+        }
+        #video-list-container::-webkit-scrollbar-thumb {
+            background-color: var(--brand-cyan);
+            border-radius: 10px;
+            border: 2px solid #080f1e;
+        }
+
+        .video-list-item {
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .video-list-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left-color: var(--brand-pink);
+        }
+        .video-list-item.active {
+            background-color: rgba(0, 188, 212, 0.15);
+            border-left-color: var(--brand-cyan);
+            font-weight: 700;
+        }
+        .video-list-item.seen .fa-check-circle {
+            color: var(--brand-gold);
+            opacity: 1;
+        }
+
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Proporción 16:9 */
+            height: 0;
+            background-color: #000;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .video-player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .btn-action {
+            background-color: var(--brand-pink);
+            color: white;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-action:hover {
+            background-color: #c2185b;
+            transform: translateY(-2px);
+        }
+        .btn-action.completed {
+            background-color: #4caf50; /* Verde */
+            cursor: default;
+        }
+        .btn-action.completed:hover {
+            background-color: #43a047;
+            transform: none;
+        }
+        .btn-nav {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        .btn-nav:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: var(--brand-cyan);
+        }
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(5px); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 1000; padding: 1rem; 
+            opacity: 0; visibility: hidden; 
+            transition: opacity 0.3s ease; 
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { 
+            background-color: #0c1427; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 2.5rem; 
+            border-radius: 0.75rem; 
+            max-width: 500px; 
+            width: 100%; 
+            text-align: center; 
+            transform: scale(0.9); 
+            transition: transform 0.3s ease; 
+            position: relative; 
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <canvas id="background-canvas"></canvas>
+    
+    <div class="relative min-h-screen md:flex">
+        <div id="sidebar-backdrop"></div>
+
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col h-screen">
+            <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+                <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+            </a>
+            <nav class="mt-10 flex-grow">
+                <a href="./miembros.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>Panel Principal</span>
+                </a>
+                <a href="./progreso.html" class="sidebar-link">
+                    <i class="fas fa-tasks"></i>
+                    <span>Mi Progreso</span>
+                </a>
+                <!-- NUEVO ENLACE ACTIVO -->
+                <a href="./curso.html" class="sidebar-link active">
+                    <i class="fas fa-video"></i>
+                    <span>Curso en Vídeo</span>
+                </a>
+                <a href="./inspiracion.html" class="sidebar-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Inspiración</span>
+                </a>
+                <a href="./herramienta-ia.html" class="sidebar-link">
+                    <i class="fas fa-robot"></i>
+                    <span>Asistente IA</span>
+                </a>
+                <hr class="border-gray-700 my-4">
+                <a id="comunidad-btn" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>Comunidad</span>
+                </a>
+                <a id="recursos-btn" class="sidebar-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Recursos</span>
+                </a>
+            </nav>
+            <div class="px-4 py-2">
+                <hr class="border-gray-700 mb-4">
+                <button id="logout-btn" class="w-full sidebar-link text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <div id="page-content" class="flex-1">
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
+                <a href="./miembros.html" class="text-white flex items-center space-x-2">
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
+                    <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+                </a>
+                <button id="hamburger-btn" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <main id="main-content" class="p-4 md:p-8" style="display: none;">
+                <header class="mb-8">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Curso en Vídeo</h1>
+                    <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Columna Izquierda: Lista de Vídeos -->
+                    <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg">
+                        <h2 class="text-xl font-bold mb-4">Contenido del Curso</h2>
+                        <div id="video-list-container">
+                            <ul id="video-list" class="space-y-2">
+                                <!-- La lista de vídeos se generará aquí con JavaScript -->
+                                <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Reproductor y Detalles -->
+                    <div class="lg:col-span-2">
+                        <div id="video-player-area">
+                            <div class="video-player-container shadow-lg shadow-cyan-500/10">
+                                <iframe id="vimeo-player" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="mt-6">
+                                <h2 id="video-title" class="text-3xl font-bold text-brand-cyan">Selecciona un vídeo para empezar</h2>
+                                <p id="video-description" class="mt-4 text-gray-300 leading-relaxed">La descripción del vídeo aparecerá aquí.</p>
+                            </div>
+
+                            <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+                                <button id="mark-seen-btn" class="btn-action font-bold py-3 px-6 rounded-lg w-full sm:w-auto flex-grow disabled:opacity-50" disabled>
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    <span id="mark-seen-text">Marcar como visto</span>
+                                </button>
+                                <div class="flex gap-4 w-full sm:w-auto">
+                                    <button id="prev-video-btn" class="btn-nav font-bold py-3 px-6 rounded-lg w-full" disabled>
+                                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                                    </button>
+                                    <button id="next-video-btn" class="btn-nav font-bold py-3 px-6 rounded-lg w-full" disabled>
+                                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
+                <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
+                <a href="./login.html" class="mt-8 inline-block btn-action font-bold py-3 px-6 rounded-lg">
+                    Ir a Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales (copiados para consistencia) -->
+    <div id="comunidad-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">×</span>
+            <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
+            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <div class="flex justify-center gap-4">
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn-action font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn-nav font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+            </div>
+        </div>
+    </div>
+    <div id="recursos-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">×</span>
+            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
+            <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn-action font-bold py-3 px-6 rounded-lg no-underline">Ver Recursos en Drive</a>
+        </div>
+    </div>
+
+    <script>
+        // Background animation script
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+        class Particle {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
+        
+        const resizeObserver = new ResizeObserver(() => {
+            clearTimeout(window.resizeLag);
+            window.resizeLag = setTimeout(() => {
+                resizeCanvas(); 
+                initParticles();
+            }, 250);
+        });
+        
+        window.addEventListener('load', () => {
+             resizeCanvas(); 
+             initParticles(); 
+             animateParticles();
+             resizeObserver.observe(document.body);
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.appspot.com",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- ELEMENTOS DEL DOM ---
+        const mainContent = document.getElementById('main-content');
+        const authMessage = document.getElementById('auth-message');
+        const videoList = document.getElementById('video-list');
+        const vimeoPlayer = document.getElementById('vimeo-player');
+        const videoTitle = document.getElementById('video-title');
+        const videoDescription = document.getElementById('video-description');
+        const markSeenBtn = document.getElementById('mark-seen-btn');
+        const markSeenText = document.getElementById('mark-seen-text');
+        const prevVideoBtn = document.getElementById('prev-video-btn');
+        const nextVideoBtn = document.getElementById('next-video-btn');
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // --- ESTADO DE LA APLICACIÓN ---
+        let currentUser = null;
+        let activeVideoId = null;
+        let courseVideos = []; 
+        let seenVideoIds = new Set();
+        let progressDocRef = null;
+
+        // --- LÓGICA DE CARGA DE DATOS ---
+        async function fetchVideosFromFirestore() {
+            try {
+                const docRef = doc(db, "course_data", "videos");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists() && docSnap.data().videoList) {
+                    const videos = docSnap.data().videoList;
+                    videos.sort((a, b) => a.id - b.id);
+                    return videos;
+                } else {
+                    console.log("No se encontró el documento de vídeos o está vacío.");
+                    videoList.innerHTML = `<li class="p-4 text-center text-yellow-400">No se encontraron vídeos. Sigue las instrucciones para añadirlos en Firebase.</li>`;
+                    return [];
+                }
+            } catch (error) {
+                console.error("Error fetching videos from Firestore:", error);
+                videoList.innerHTML = `<li class="p-4 text-center text-red-400">Error al cargar los vídeos.</li>`;
+                return [];
+            }
+        }
+
+        // --- LÓGICA DE AUTENTICACIÓN Y ARRANQUE ---
+        onAuthStateChanged(auth, async (user) => {
+            document.body.style.opacity = '1';
+            if (user) {
+                currentUser = user;
+                mainContent.style.display = 'block';
+                authMessage.style.display = 'none';
+                
+                const appId = 'ucdm-tracker-app-v2';
+                progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'videos');
+                
+                courseVideos = await fetchVideosFromFirestore();
+                if (courseVideos.length === 0) return;
+
+                await loadUserProgress();
+                renderVideoList();
+
+                const firstUnseenVideo = courseVideos.find(v => !seenVideoIds.has(v.id));
+                if (firstUnseenVideo) {
+                    loadVideo(firstUnseenVideo.id);
+                } else {
+                    loadVideo(courseVideos[0].id);
+                }
+
+            } else {
+                currentUser = null;
+                mainContent.style.display = 'none';
+                authMessage.style.display = 'block';
+            }
+        });
+
+        async function loadUserProgress() {
+            try {
+                const docSnap = await getDoc(progressDocRef);
+                if (docSnap.exists()) {
+                    seenVideoIds = new Set(docSnap.data().completed || []);
+                } else {
+                    seenVideoIds = new Set();
+                }
+            } catch (error) {
+                console.error("Error loading user progress:", error);
+                seenVideoIds = new Set();
+            }
+        }
+
+        function renderVideoList() {
+            videoList.innerHTML = '';
+            if (courseVideos.length === 0) return;
+
+            courseVideos.forEach(video => {
+                const isSeen = seenVideoIds.has(video.id);
+                const li = document.createElement('li');
+                li.className = `video-list-item p-4 cursor-pointer flex items-center justify-between ${isSeen ? 'seen' : ''}`;
+                li.dataset.videoId = video.id;
+                li.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="text-gray-500 font-bold w-8">${video.id}.</span>
+                        <span>${video.title}</span>
+                    </div>
+                    <i class="fas fa-check-circle text-gray-600 opacity-0 transition-opacity"></i>
+                `;
+                li.addEventListener('click', () => loadVideo(video.id));
+                videoList.appendChild(li);
+            });
+        }
+
+        function loadVideo(videoId) {
+            const video = courseVideos.find(v => v.id === videoId);
+            if (!video) return;
+
+            activeVideoId = video.id;
+
+            // El hash ahora se lee dinámicamente desde el objeto del vídeo en Firebase.
+            const vimeoHash = video.vimeoHash || '';
+            if (!vimeoHash) {
+                console.warn(`El vídeo "${video.title}" no tiene un vimeoHash en Firebase. Podría no ser visible si es privado.`);
+            }
+            vimeoPlayer.src = `https://player.vimeo.com/video/${video.vimeoId}?h=${vimeoHash}&title=0&byline=0&portrait=0`;
+            
+            videoTitle.textContent = video.title;
+            videoDescription.textContent = video.description;
+
+            updateActiveListItem(videoId);
+            updateButtonsState(videoId);
+        }
+
+        function updateActiveListItem(videoId) {
+            document.querySelectorAll('.video-list-item').forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.dataset.videoId) === videoId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function updateButtonsState(videoId) {
+            const isSeen = seenVideoIds.has(videoId);
+            markSeenBtn.disabled = false;
+            markSeenBtn.classList.toggle('completed', isSeen);
+            markSeenText.textContent = isSeen ? 'Marcado como visto' : 'Marcar como visto';
+
+            const currentIndex = courseVideos.findIndex(v => v.id === videoId);
+            prevVideoBtn.disabled = currentIndex === 0;
+            nextVideoBtn.disabled = currentIndex === courseVideos.length - 1;
+        }
+
+        async function toggleSeenStatus() {
+            if (!activeVideoId || !progressDocRef) return;
+            
+            markSeenBtn.disabled = true;
+            const isCurrentlySeen = seenVideoIds.has(activeVideoId);
+
+            try {
+                if (isCurrentlySeen) {
+                    await updateDoc(progressDocRef, {
+                        completed: arrayRemove(activeVideoId)
+                    });
+                    seenVideoIds.delete(activeVideoId);
+                } else {
+                    await setDoc(progressDocRef, {
+                        completed: arrayUnion(activeVideoId)
+                    }, { merge: true });
+                    seenVideoIds.add(activeVideoId);
+                }
+                
+                renderVideoList();
+                updateActiveListItem(activeVideoId);
+                updateButtonsState(activeVideoId);
+
+            } catch (error) {
+                console.error("Error updating progress:", error);
+                alert("Hubo un error al guardar tu progreso. Inténtalo de nuevo.");
+            } finally {
+                markSeenBtn.disabled = false;
+            }
+        }
+
+        function navigateVideo(direction) {
+            const currentIndex = courseVideos.findIndex(v => v.id === activeVideoId);
+            const newIndex = currentIndex + direction;
+
+            if (newIndex >= 0 && newIndex < courseVideos.length) {
+                loadVideo(courseVideos[newIndex].id);
+            }
+        }
+
+        // --- MANEJO DE LA INTERFAZ (SIDEBAR, MODALES) ---
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+        if (logoutBtn) logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+        });
+
+        // Event Listeners para los botones
+        markSeenBtn.addEventListener('click', toggleSeenStatus);
+        prevVideoBtn.addEventListener('click', () => navigateVideo(-1));
+        nextVideoBtn.addEventListener('click', () => navigateVideo(1));
+
+        // Lógica de Modales
+        const allModals = document.querySelectorAll('.modal-overlay');
+        function openModal(modal) {
+            if (modal) {
+                document.body.classList.add('modal-open');
+                modal.classList.add('show');
+            }
+        }
+        function closeModal(modal) {
+            if (modal) {
+                document.body.classList.remove('modal-open');
+                modal.classList.remove('show');
+            }
+        }
+        allModals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+        });
+        document.getElementById('comunidad-btn')?.addEventListener('click', () => openModal(document.getElementById('comunidad-modal')));
+        document.getElementById('recursos-btn')?.addEventListener('click', () => openModal(document.getElementById('recursos-modal')));
+
+    </script>
+</body>
+</html>
