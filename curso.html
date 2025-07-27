@@ -178,7 +178,8 @@
             background-color: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(5px); 
             display: flex; align-items: center; justify-content: center; 
-            z-index: 1000; padding: 1rem; 
+            z-index: 1020; /* CORREGIDO: Aumentado para estar por encima de todo */
+            padding: 1rem; 
             opacity: 0; visibility: hidden; 
             transition: opacity 0.3s ease; 
         }
@@ -507,7 +508,6 @@
 
             activeVideoId = video.id;
 
-            // El hash ahora se lee dinámicamente desde el objeto del vídeo en Firebase.
             const vimeoHash = video.vimeoHash || '';
             if (!vimeoHash) {
                 console.warn(`El vídeo "${video.title}" no tiene un vimeoHash en Firebase. Podría no ser visible si es privado.`);
@@ -573,7 +573,7 @@
         }
 
         function navigateVideo(direction) {
-            const currentIndex = courseVideos.findIndex(v => v.id === activeVideoId);
+            const currentIndex = courseVideos.findIndex(v => v.id === videoId);
             const newIndex = currentIndex + direction;
 
             if (newIndex >= 0 && newIndex < courseVideos.length) {
@@ -598,29 +598,54 @@
         prevVideoBtn.addEventListener('click', () => navigateVideo(-1));
         nextVideoBtn.addEventListener('click', () => navigateVideo(1));
 
-        // Lógica de Modales
+        // Lógica de Modales (Mejorada)
         const allModals = document.querySelectorAll('.modal-overlay');
-        function openModal(modal) {
-            if (modal) {
-                document.body.classList.add('modal-open');
-                modal.classList.add('show');
-            }
-        }
+
         function closeModal(modal) {
-            if (modal) {
-                document.body.classList.remove('modal-open');
-                modal.classList.remove('show');
-            }
+            if (!modal) return;
+            modal.classList.remove('show');
+            
+            setTimeout(() => {
+                const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains('show'));
+                if (!isAnyModalOpen) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
         }
+
+        function openModal(modalToOpen) {
+            if (!modalToOpen) return;
+            
+            allModals.forEach(modal => {
+                if (modal !== modalToOpen && modal.classList.contains('show')) {
+                    closeModal(modal);
+                }
+            });
+
+            document.body.classList.add('modal-open');
+            modalToOpen.classList.add('show');
+        }
+        
         allModals.forEach(modal => {
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal(modal);
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
             });
             const closeBtn = modal.querySelector('.modal-close-btn');
-            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => closeModal(modal));
+            }
         });
-        document.getElementById('comunidad-btn')?.addEventListener('click', () => openModal(document.getElementById('comunidad-modal')));
-        document.getElementById('recursos-btn')?.addEventListener('click', () => openModal(document.getElementById('recursos-modal')));
+
+        document.getElementById('comunidad-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(document.getElementById('comunidad-modal'));
+        });
+        document.getElementById('recursos-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(document.getElementById('recursos-modal'));
+        });
 
     </script>
 </body>
