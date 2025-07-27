@@ -84,7 +84,6 @@
             visibility: visible;
         }
         
-        /* --- CORRECCIÓN 1: Animación del logo --- */
         @keyframes ember-effect-glow {
             0%, 100% {
                 filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
@@ -154,7 +153,6 @@
             height: 100%;
         }
         
-        /* --- CORRECCIÓN 3: Estilos para el acordeón móvil --- */
         .video-content-panel {
             max-height: 0;
             overflow: hidden;
@@ -162,7 +160,7 @@
             padding: 0 1rem;
         }
         .video-list-item.active .video-content-panel {
-            max-height: 1000px; /* Suficientemente grande para el contenido */
+            max-height: 1000px;
             padding: 1.5rem 1rem;
         }
 
@@ -174,6 +172,7 @@
         .btn-nav:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.2); border-color: var(--brand-cyan); }
         .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; }
         
+        /* --- ESTILOS MODALES (CORREGIDOS) --- */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-color: rgba(0, 0, 0, 0.7); 
@@ -199,6 +198,31 @@
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
+        
+        .btn { 
+            position: relative; z-index: 1; overflow: hidden; 
+            transition: all 0.3s ease; border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center; color: white;
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); background-color: transparent; border-color: #e91e63; }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); background-color: transparent; border-color: #00bcd4; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--glow-color);
+            background-color: var(--glow-color-bg);
+        }
+        .card { 
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
+            border: 1px solid rgba(0, 188, 212, 0.5);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -243,6 +267,10 @@
                     <i class="fas fa-folder-open"></i>
                     <span>Recursos</span>
                 </a>
+                <a id="sesion-btn" class="sidebar-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Sesión 1 a 1</span>
+                </a>
             </nav>
             <div class="px-4 py-2">
                 <hr class="border-gray-700 mb-4">
@@ -270,10 +298,8 @@
                     <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
                 </header>
                 
-                <!-- CORRECCIÓN 2: Contenedor para centrar en escritorio -->
                 <div class="max-w-7xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Columna Izquierda: Lista de Vídeos / Acordeón en móvil -->
                         <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg">
                             <h2 class="text-xl font-bold mb-4">Contenido del Curso</h2>
                             <div id="video-list-container" class="lg:h-auto">
@@ -283,10 +309,7 @@
                             </div>
                         </div>
 
-                        <!-- Columna Derecha: Reproductor (solo en escritorio) -->
-                        <div class="hidden lg:block lg:col-span-2" id="desktop-player-wrapper">
-                            <!-- El contenido se generará aquí con JS -->
-                        </div>
+                        <div class="hidden lg:block lg:col-span-2" id="desktop-player-wrapper"></div>
                     </div>
                 </div>
             </main>
@@ -308,16 +331,34 @@
             <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
             <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
             <div class="flex justify-center gap-4">
-                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn-action font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn-nav font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
             </div>
         </div>
     </div>
     <div id="recursos-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
-            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
-            <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn-action font-bold py-3 px-6 rounded-lg no-underline">Ver Recursos en Drive</a>
+            <h3 class="text-2xl font-bold mb-4">Recursos</h3>
+            <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
+                    <p class="mb-4">Grabaciones, guías y recursos exclusivos.</p>
+                </div>
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</a>
+            </div>
+        </div>
+    </div>
+    <div id="sesion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">×</span>
+             <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
+                    <p class="mb-4">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                </div>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</a>
+            </div>
         </div>
     </div>
 
@@ -490,11 +531,9 @@
 
             activeVideoId = video.id;
             
-            // Populate desktop player
             desktopPlayerWrapper.innerHTML = createPlayerHTML(video);
             updateButtonsState(desktopPlayerWrapper, videoId);
             
-            // Handle mobile accordion
             document.querySelectorAll('.video-list-item').forEach(item => {
                 const contentPanel = item.querySelector('.video-content-panel');
                 if (parseInt(item.dataset.videoId) === videoId) {
@@ -505,7 +544,7 @@
                     }
                 } else {
                     item.classList.remove('active');
-                    contentPanel.innerHTML = ''; // Clear content to stop video
+                    contentPanel.innerHTML = '';
                 }
             });
             updateActiveListItemVisuals(videoId);
@@ -543,8 +582,8 @@
                     await setDoc(progressDocRef, { completed: arrayUnion(videoId) }, { merge: true });
                     seenVideoIds.add(videoId);
                 }
-                renderVideoList(); // Re-render to update seen status icon
-                loadVideo(videoId); // Reload current video to update button state
+                renderVideoList();
+                loadVideo(videoId);
             } catch (error) {
                 console.error("Error updating progress:", error);
                 alert("Hubo un error al guardar tu progreso.");
@@ -592,6 +631,7 @@
         });
         document.getElementById('comunidad-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('comunidad-modal')); });
         document.getElementById('recursos-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('recursos-modal')); });
+        document.getElementById('sesion-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('sesion-modal')); });
     </script>
 </body>
 </html>
