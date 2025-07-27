@@ -498,11 +498,16 @@
         }
 
         function createPlayerHTML(video) {
-            const vimeoHash = video.vimeoHash || '';
             const isSeen = seenVideoIds.has(video.id);
+            const vimeoHash = video.vimeoHash || '';
+            let vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?title=0&byline=0&portrait=0`;
+            if (vimeoHash) {
+                vimeoUrl += `&h=${vimeoHash}`;
+            }
+            
             return `
                 <div class="video-player-container shadow-lg shadow-cyan-500/10">
-                    <iframe src="https://player.vimeo.com/video/${video.vimeoId}?h=${vimeoHash}&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="${vimeoUrl}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="mt-6">
                     <h2 class="text-3xl font-bold text-brand-cyan">${video.title}</h2>
