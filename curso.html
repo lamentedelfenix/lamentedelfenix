@@ -83,44 +83,54 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        /* --- CORRECCIÓN 1: Animación del logo --- */
+        @keyframes ember-effect-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
+                        drop-shadow(0 0 3px rgba(229, 62, 62, 0.4));
+                transform: scale(1.0);
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) 
+                        drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) 
+                        drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
+                transform: scale(1.12);
+            }
+        }
         .logo-glow {
             animation: ember-effect-glow 3.6s infinite ease-in-out;
+            transition: transform 0.3s ease-in-out;
         }
-        @keyframes ember-effect-glow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)); }
-            50% { filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)); }
+        .logo-glow:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 14px #f6ad55);
         }
 
         /* --- ESTILOS DE LA PÁGINA DE CURSO --- */
         #video-list-container {
-            height: calc(100vh - 8rem); /* Ajustar altura para scroll */
+            height: calc(100vh - 8rem);
             overflow-y: auto;
         }
-        /* Estilo para la barra de scroll */
-        #video-list-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        #video-list-container::-webkit-scrollbar-track {
-            background: #080f1e;
-        }
-        #video-list-container::-webkit-scrollbar-thumb {
-            background-color: var(--brand-cyan);
-            border-radius: 10px;
-            border: 2px solid #080f1e;
-        }
+        #video-list-container::-webkit-scrollbar { width: 8px; }
+        #video-list-container::-webkit-scrollbar-track { background: #080f1e; }
+        #video-list-container::-webkit-scrollbar-thumb { background-color: var(--brand-cyan); border-radius: 10px; border: 2px solid #080f1e; }
 
         .video-list-item {
             border-left: 4px solid transparent;
             transition: all 0.2s ease-in-out;
         }
-        .video-list-item:hover {
+        .video-list-item-header {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .video-list-item:hover .video-list-item-header {
             background-color: rgba(255, 255, 255, 0.05);
-            border-left-color: var(--brand-pink);
+        }
+        .video-list-item.active .video-list-item-header {
+            background-color: rgba(0, 188, 212, 0.15);
         }
         .video-list-item.active {
-            background-color: rgba(0, 188, 212, 0.15);
             border-left-color: var(--brand-cyan);
-            font-weight: 700;
         }
         .video-list-item.seen .fa-check-circle {
             color: var(--brand-gold);
@@ -130,7 +140,7 @@
         .video-player-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* Proporción 16:9 */
+            padding-bottom: 56.25%; /* 16:9 */
             height: 0;
             background-color: #000;
             border-radius: 0.5rem;
@@ -144,41 +154,32 @@
             height: 100%;
         }
         
-        .btn-action {
-            background-color: var(--brand-pink);
-            color: white;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+        /* --- CORRECCIÓN 3: Estilos para el acordeón móvil --- */
+        .video-content-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1rem;
         }
-        .btn-action:hover {
-            background-color: #c2185b;
-            transform: translateY(-2px);
+        .video-list-item.active .video-content-panel {
+            max-height: 1000px; /* Suficientemente grande para el contenido */
+            padding: 1.5rem 1rem;
         }
-        .btn-action.completed {
-            background-color: #4caf50; /* Verde */
-            cursor: default;
-        }
-        .btn-action.completed:hover {
-            background-color: #43a047;
-            transform: none;
-        }
-        .btn-nav {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-color);
-        }
-        .btn-nav:hover:not(:disabled) {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-color: var(--brand-cyan);
-        }
-        .btn-nav:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+
+        .btn-action { background-color: var(--brand-pink); color: white; transition: background-color 0.3s ease, transform 0.2s ease; }
+        .btn-action:hover { background-color: #c2185b; transform: translateY(-2px); }
+        .btn-action.completed { background-color: #4caf50; cursor: default; }
+        .btn-action.completed:hover { background-color: #43a047; transform: none; }
+        .btn-nav { background-color: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); }
+        .btn-nav:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.2); border-color: var(--brand-cyan); }
+        .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; }
+        
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-color: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(5px); 
             display: flex; align-items: center; justify-content: center; 
-            z-index: 1020; /* CORREGIDO: Aumentado para estar por encima de todo */
+            z-index: 1020;
             padding: 1rem; 
             opacity: 0; visibility: hidden; 
             transition: opacity 0.3s ease; 
@@ -221,7 +222,6 @@
                     <i class="fas fa-tasks"></i>
                     <span>Mi Progreso</span>
                 </a>
-                <!-- NUEVO ENLACE ACTIVO -->
                 <a href="./curso.html" class="sidebar-link active">
                     <i class="fas fa-video"></i>
                     <span>Curso en Vídeo</span>
@@ -269,44 +269,23 @@
                     <h1 class="text-4xl md:text-5xl font-bold mb-2">Curso en Vídeo</h1>
                     <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
                 </header>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Columna Izquierda: Lista de Vídeos -->
-                    <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg">
-                        <h2 class="text-xl font-bold mb-4">Contenido del Curso</h2>
-                        <div id="video-list-container">
-                            <ul id="video-list" class="space-y-2">
-                                <!-- La lista de vídeos se generará aquí con JavaScript -->
-                                <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
-                            </ul>
+                
+                <!-- CORRECCIÓN 2: Contenedor para centrar en escritorio -->
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Columna Izquierda: Lista de Vídeos / Acordeón en móvil -->
+                        <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg">
+                            <h2 class="text-xl font-bold mb-4">Contenido del Curso</h2>
+                            <div id="video-list-container" class="lg:h-auto">
+                                <ul id="video-list" class="space-y-2">
+                                    <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Columna Derecha: Reproductor y Detalles -->
-                    <div class="lg:col-span-2">
-                        <div id="video-player-area">
-                            <div class="video-player-container shadow-lg shadow-cyan-500/10">
-                                <iframe id="vimeo-player" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="mt-6">
-                                <h2 id="video-title" class="text-3xl font-bold text-brand-cyan">Selecciona un vídeo para empezar</h2>
-                                <p id="video-description" class="mt-4 text-gray-300 leading-relaxed">La descripción del vídeo aparecerá aquí.</p>
-                            </div>
-
-                            <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
-                                <button id="mark-seen-btn" class="btn-action font-bold py-3 px-6 rounded-lg w-full sm:w-auto flex-grow disabled:opacity-50" disabled>
-                                    <i class="fas fa-check-circle mr-2"></i>
-                                    <span id="mark-seen-text">Marcar como visto</span>
-                                </button>
-                                <div class="flex gap-4 w-full sm:w-auto">
-                                    <button id="prev-video-btn" class="btn-nav font-bold py-3 px-6 rounded-lg w-full" disabled>
-                                        <i class="fas fa-arrow-left mr-2"></i> Anterior
-                                    </button>
-                                    <button id="next-video-btn" class="btn-nav font-bold py-3 px-6 rounded-lg w-full" disabled>
-                                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <!-- Columna Derecha: Reproductor (solo en escritorio) -->
+                        <div class="hidden lg:block lg:col-span-2" id="desktop-player-wrapper">
+                            <!-- El contenido se generará aquí con JS -->
                         </div>
                     </div>
                 </div>
@@ -322,7 +301,7 @@
         </div>
     </div>
 
-    <!-- Modales (copiados para consistencia) -->
+    <!-- Modales -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
@@ -347,7 +326,6 @@
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
         class Particle {
             constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
@@ -356,21 +334,11 @@
         }
         function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
         function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
-        
         const resizeObserver = new ResizeObserver(() => {
             clearTimeout(window.resizeLag);
-            window.resizeLag = setTimeout(() => {
-                resizeCanvas(); 
-                initParticles();
-            }, 250);
+            window.resizeLag = setTimeout(() => { resizeCanvas(); initParticles(); }, 250);
         });
-        
-        window.addEventListener('load', () => {
-             resizeCanvas(); 
-             initParticles(); 
-             animateParticles();
-             resizeObserver.observe(document.body);
-        });
+        window.addEventListener('load', () => { resizeCanvas(); initParticles(); animateParticles(); resizeObserver.observe(document.body); });
     </script>
 
     <script type="module">
@@ -391,42 +359,31 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- ELEMENTOS DEL DOM ---
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
         const videoList = document.getElementById('video-list');
-        const vimeoPlayer = document.getElementById('vimeo-player');
-        const videoTitle = document.getElementById('video-title');
-        const videoDescription = document.getElementById('video-description');
-        const markSeenBtn = document.getElementById('mark-seen-btn');
-        const markSeenText = document.getElementById('mark-seen-text');
-        const prevVideoBtn = document.getElementById('prev-video-btn');
-        const nextVideoBtn = document.getElementById('next-video-btn');
+        const desktopPlayerWrapper = document.getElementById('desktop-player-wrapper');
         const sidebar = document.getElementById('sidebar');
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const logoutBtn = document.getElementById('logout-btn');
 
-        // --- ESTADO DE LA APLICACIÓN ---
         let currentUser = null;
         let activeVideoId = null;
         let courseVideos = []; 
         let seenVideoIds = new Set();
         let progressDocRef = null;
 
-        // --- LÓGICA DE CARGA DE DATOS ---
         async function fetchVideosFromFirestore() {
             try {
                 const docRef = doc(db, "course_data", "videos");
                 const docSnap = await getDoc(docRef);
-
                 if (docSnap.exists() && docSnap.data().videoList) {
                     const videos = docSnap.data().videoList;
                     videos.sort((a, b) => a.id - b.id);
                     return videos;
                 } else {
-                    console.log("No se encontró el documento de vídeos o está vacío.");
-                    videoList.innerHTML = `<li class="p-4 text-center text-yellow-400">No se encontraron vídeos. Sigue las instrucciones para añadirlos en Firebase.</li>`;
+                    videoList.innerHTML = `<li class="p-4 text-center text-yellow-400">No se encontraron vídeos.</li>`;
                     return [];
                 }
             } catch (error) {
@@ -436,7 +393,6 @@
             }
         }
 
-        // --- LÓGICA DE AUTENTICACIÓN Y ARRANQUE ---
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
             if (user) {
@@ -454,12 +410,10 @@
                 renderVideoList();
 
                 const firstUnseenVideo = courseVideos.find(v => !seenVideoIds.has(v.id));
-                if (firstUnseenVideo) {
-                    loadVideo(firstUnseenVideo.id);
-                } else {
-                    loadVideo(courseVideos[0].id);
+                const videoToLoad = firstUnseenVideo || courseVideos[0];
+                if (videoToLoad) {
+                    loadVideo(videoToLoad.id);
                 }
-
             } else {
                 currentUser = null;
                 mainContent.style.display = 'none';
@@ -472,12 +426,9 @@
                 const docSnap = await getDoc(progressDocRef);
                 if (docSnap.exists()) {
                     seenVideoIds = new Set(docSnap.data().completed || []);
-                } else {
-                    seenVideoIds = new Set();
                 }
             } catch (error) {
                 console.error("Error loading user progress:", error);
-                seenVideoIds = new Set();
             }
         }
 
@@ -488,18 +439,49 @@
             courseVideos.forEach(video => {
                 const isSeen = seenVideoIds.has(video.id);
                 const li = document.createElement('li');
-                li.className = `video-list-item p-4 cursor-pointer flex items-center justify-between ${isSeen ? 'seen' : ''}`;
+                li.className = `video-list-item rounded-lg overflow-hidden ${isSeen ? 'seen' : ''}`;
                 li.dataset.videoId = video.id;
                 li.innerHTML = `
-                    <div class="flex items-center">
-                        <span class="text-gray-500 font-bold w-8">${video.id}.</span>
-                        <span>${video.title}</span>
+                    <div class="video-list-item-header p-4 cursor-pointer flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-gray-500 font-bold w-8">${video.id}.</span>
+                            <span>${video.title}</span>
+                        </div>
+                        <i class="fas fa-check-circle text-gray-600 opacity-0 transition-opacity"></i>
                     </div>
-                    <i class="fas fa-check-circle text-gray-600 opacity-0 transition-opacity"></i>
+                    <div class="video-content-panel lg:hidden"></div>
                 `;
-                li.addEventListener('click', () => loadVideo(video.id));
+                li.querySelector('.video-list-item-header').addEventListener('click', () => loadVideo(video.id));
                 videoList.appendChild(li);
             });
+        }
+
+        function createPlayerHTML(video) {
+            const vimeoHash = video.vimeoHash || '';
+            const isSeen = seenVideoIds.has(video.id);
+            return `
+                <div class="video-player-container shadow-lg shadow-cyan-500/10">
+                    <iframe src="https://player.vimeo.com/video/${video.vimeoId}?h=${vimeoHash}&title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="mt-6">
+                    <h2 class="text-3xl font-bold text-brand-cyan">${video.title}</h2>
+                    <p class="mt-4 text-gray-300 leading-relaxed">${video.description}</p>
+                </div>
+                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+                    <button data-video-id="${video.id}" class="btn-action font-bold py-3 px-6 rounded-lg w-full sm:w-auto flex-grow ${isSeen ? 'completed' : ''}">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>${isSeen ? 'Marcado como visto' : 'Marcar como visto'}</span>
+                    </button>
+                    <div class="flex gap-4 w-full sm:w-auto">
+                        <button data-direction="-1" class="btn-nav font-bold py-3 px-6 rounded-lg w-full">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button data-direction="1" class="btn-nav font-bold py-3 px-6 rounded-lg w-full">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
         function loadVideo(videoId) {
@@ -507,146 +489,109 @@
             if (!video) return;
 
             activeVideoId = video.id;
-
-            const vimeoHash = video.vimeoHash || '';
-            if (!vimeoHash) {
-                console.warn(`El vídeo "${video.title}" no tiene un vimeoHash en Firebase. Podría no ser visible si es privado.`);
-            }
-            vimeoPlayer.src = `https://player.vimeo.com/video/${video.vimeoId}?h=${vimeoHash}&title=0&byline=0&portrait=0`;
             
-            videoTitle.textContent = video.title;
-            videoDescription.textContent = video.description;
-
-            updateActiveListItem(videoId);
-            updateButtonsState(videoId);
+            // Populate desktop player
+            desktopPlayerWrapper.innerHTML = createPlayerHTML(video);
+            updateButtonsState(desktopPlayerWrapper, videoId);
+            
+            // Handle mobile accordion
+            document.querySelectorAll('.video-list-item').forEach(item => {
+                const contentPanel = item.querySelector('.video-content-panel');
+                if (parseInt(item.dataset.videoId) === videoId) {
+                    if (!item.classList.contains('active')) {
+                        contentPanel.innerHTML = createPlayerHTML(video);
+                        updateButtonsState(contentPanel, videoId);
+                        item.classList.add('active');
+                    }
+                } else {
+                    item.classList.remove('active');
+                    contentPanel.innerHTML = ''; // Clear content to stop video
+                }
+            });
+            updateActiveListItemVisuals(videoId);
         }
 
-        function updateActiveListItem(videoId) {
+        function updateActiveListItemVisuals(videoId) {
             document.querySelectorAll('.video-list-item').forEach(item => {
-                item.classList.remove('active');
-                if (parseInt(item.dataset.videoId) === videoId) {
-                    item.classList.add('active');
-                }
+                item.classList.toggle('active-visual', parseInt(item.dataset.videoId) === videoId);
             });
         }
 
-        function updateButtonsState(videoId) {
-            const isSeen = seenVideoIds.has(videoId);
-            markSeenBtn.disabled = false;
-            markSeenBtn.classList.toggle('completed', isSeen);
-            markSeenText.textContent = isSeen ? 'Marcado como visto' : 'Marcar como visto';
+        function updateButtonsState(container, videoId) {
+            const markBtn = container.querySelector('.btn-action');
+            markBtn.addEventListener('click', () => toggleSeenStatus(videoId));
 
+            const navBtns = container.querySelectorAll('.btn-nav');
             const currentIndex = courseVideos.findIndex(v => v.id === videoId);
-            prevVideoBtn.disabled = currentIndex === 0;
-            nextVideoBtn.disabled = currentIndex === courseVideos.length - 1;
+            navBtns[0].disabled = currentIndex === 0;
+            navBtns[1].disabled = currentIndex === courseVideos.length - 1;
+            navBtns.forEach(btn => btn.addEventListener('click', (e) => {
+                const direction = parseInt(e.currentTarget.dataset.direction);
+                navigateVideo(direction);
+            }));
         }
 
-        async function toggleSeenStatus() {
-            if (!activeVideoId || !progressDocRef) return;
+        async function toggleSeenStatus(videoId) {
+            if (!videoId || !progressDocRef) return;
             
-            markSeenBtn.disabled = true;
-            const isCurrentlySeen = seenVideoIds.has(activeVideoId);
-
+            const isCurrentlySeen = seenVideoIds.has(videoId);
             try {
                 if (isCurrentlySeen) {
-                    await updateDoc(progressDocRef, {
-                        completed: arrayRemove(activeVideoId)
-                    });
-                    seenVideoIds.delete(activeVideoId);
+                    await updateDoc(progressDocRef, { completed: arrayRemove(videoId) });
+                    seenVideoIds.delete(videoId);
                 } else {
-                    await setDoc(progressDocRef, {
-                        completed: arrayUnion(activeVideoId)
-                    }, { merge: true });
-                    seenVideoIds.add(activeVideoId);
+                    await setDoc(progressDocRef, { completed: arrayUnion(videoId) }, { merge: true });
+                    seenVideoIds.add(videoId);
                 }
-                
-                renderVideoList();
-                updateActiveListItem(activeVideoId);
-                updateButtonsState(activeVideoId);
-
+                renderVideoList(); // Re-render to update seen status icon
+                loadVideo(videoId); // Reload current video to update button state
             } catch (error) {
                 console.error("Error updating progress:", error);
-                alert("Hubo un error al guardar tu progreso. Inténtalo de nuevo.");
-            } finally {
-                markSeenBtn.disabled = false;
+                alert("Hubo un error al guardar tu progreso.");
             }
         }
 
         function navigateVideo(direction) {
-            const currentIndex = courseVideos.findIndex(v => v.id === videoId);
+            const currentIndex = courseVideos.findIndex(v => v.id === activeVideoId);
             const newIndex = currentIndex + direction;
-
             if (newIndex >= 0 && newIndex < courseVideos.length) {
                 loadVideo(courseVideos[newIndex].id);
             }
         }
 
-        // --- MANEJO DE LA INTERFAZ (SIDEBAR, MODALES) ---
         function toggleSidebar() {
             sidebar.classList.toggle('-translate-x-full');
             sidebarBackdrop.classList.toggle('show');
         }
-
         if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
         if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
-        if (logoutBtn) logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
-        });
+        if (logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error));
 
-        // Event Listeners para los botones
-        markSeenBtn.addEventListener('click', toggleSeenStatus);
-        prevVideoBtn.addEventListener('click', () => navigateVideo(-1));
-        nextVideoBtn.addEventListener('click', () => navigateVideo(1));
-
-        // Lógica de Modales (Mejorada)
         const allModals = document.querySelectorAll('.modal-overlay');
-
         function closeModal(modal) {
             if (!modal) return;
             modal.classList.remove('show');
-            
             setTimeout(() => {
-                const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains('show'));
-                if (!isAnyModalOpen) {
+                if (!Array.from(allModals).some(m => m.classList.contains('show'))) {
                     document.body.classList.remove('modal-open');
                 }
             }, 300);
         }
-
         function openModal(modalToOpen) {
             if (!modalToOpen) return;
-            
             allModals.forEach(modal => {
-                if (modal !== modalToOpen && modal.classList.contains('show')) {
-                    closeModal(modal);
-                }
+                if (modal !== modalToOpen && modal.classList.contains('show')) closeModal(modal);
             });
-
             document.body.classList.add('modal-open');
             modalToOpen.classList.add('show');
         }
-        
         allModals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
-            });
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
             const closeBtn = modal.querySelector('.modal-close-btn');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => closeModal(modal));
-            }
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
         });
-
-        document.getElementById('comunidad-btn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(document.getElementById('comunidad-modal'));
-        });
-        document.getElementById('recursos-btn')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(document.getElementById('recursos-modal'));
-        });
-
+        document.getElementById('comunidad-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('comunidad-modal')); });
+        document.getElementById('recursos-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('recursos-modal')); });
     </script>
 </body>
 </html>
