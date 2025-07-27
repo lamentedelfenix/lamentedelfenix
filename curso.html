@@ -499,11 +499,11 @@
 
         function createPlayerHTML(video) {
             const isSeen = seenVideoIds.has(video.id);
-            const vimeoHash = video.vimeoHash || '';
+            const vimeoHash = video.vimeoHash; // No usar '|| ""' aquí
             
-            // CORRECCIÓN: Construir la URL condicionalmente
+            // CORRECCIÓN DEFINITIVA: Construir la URL solo con el hash si existe de verdad.
             let vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?title=0&byline=0&portrait=0`;
-            if (vimeoHash) {
+            if (vimeoHash && vimeoHash.trim() !== '') {
                 vimeoUrl += `&h=${vimeoHash}`;
             }
             
