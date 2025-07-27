@@ -186,17 +186,16 @@
             border-radius: 0.5rem; 
         }
         
-        /* ESTILO PARA EL NUEVO CONTENEDOR DE PRÓXIMA LECCIÓN */
         #next-lesson-container {
             background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(233, 30, 99, 0.1));
             border: 1px solid rgba(0, 188, 212, 0.5);
             border-radius: 0.75rem;
             padding: 1.5rem 2rem;
-            margin-top: -8rem; /* Ajusta este valor para acercarlo al título */
+            margin-top: -8rem;
             margin-bottom: 5rem;
             text-align: center;
             box-shadow: 0 0 30px rgba(0, 188, 212, 0.2);
-            display: none; /* Oculto hasta que se carguen los datos */
+            display: none;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
@@ -327,7 +326,8 @@
             background-color: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(5px); 
             display: flex; align-items: center; justify-content: center; 
-            z-index: 1000; padding: 1rem; 
+            z-index: 1020; /* Aumentado para estar por encima de todo */
+            padding: 1rem; 
             opacity: 0; visibility: hidden; 
             transition: opacity 0.3s ease; 
         }
@@ -467,7 +467,7 @@
                     <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                 </div>
             </div>
-            <nav class="mt-4">
+            <nav class="mt-4 flex-grow">
                 <a href="./miembros.html" class="sidebar-link active">
                     <i class="fas fa-home"></i>
                     <span>Panel Principal</span>
@@ -475,6 +475,10 @@
                 <a href="./progreso.html" class="sidebar-link">
                     <i class="fas fa-tasks"></i>
                     <span>Mi Progreso</span>
+                </a>
+                <a href="./curso.html" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Curso en Vídeo</span>
                 </a>
                 <a href="./inspiracion.html" class="sidebar-link">
                     <i class="fas fa-lightbulb"></i>
@@ -492,10 +496,6 @@
                 <a id="recursos-btn" class="sidebar-link">
                     <i class="fas fa-folder-open"></i>
                     <span>Recursos</span>
-                </a>
-                <a id="meditacion-btn" class="sidebar-link">
-                    <i class="fas fa-headphones"></i>
-                    <span>Meditación</span>
                 </a>
             </nav>
             <div class="px-4 py-2 mt-auto">
@@ -702,16 +702,6 @@
         </div>
     </div>
 
-    <div id="meditacion-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="modal-close-btn">×</span>
-            <h3 class="font-bold mb-4 text-xl"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3>
-            <div class="youtube-container">
-                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
     <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
@@ -825,45 +815,38 @@
         function closeModal(modal) {
             if (!modal) return;
             modal.classList.remove('show');
-
-            // Detener video de YouTube si existe
-            const iframe = modal.querySelector('iframe');
-            if (iframe && iframe.src.includes('youtube')) {
-                const videoSrc = iframe.src;
-                iframe.src = ''; // Limpiar el src para detener el video
-                iframe.src = videoSrc;
-            }
             
-            // Si no quedan más modales abiertos, permitir el scroll del body
             setTimeout(() => {
-                if (document.querySelectorAll('.modal-overlay.show').length === 0) {
+                const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains('show'));
+                if (!isAnyModalOpen) {
                     document.body.classList.remove('modal-open');
                 }
-            }, 300); // Esperar a que termine la transición de opacidad
+            }, 300);
         }
 
         function openModal(modalToOpen) {
             if (!modalToOpen) return;
             
-            // Cierra todos los demás modales
             allModals.forEach(modal => {
                 if (modal !== modalToOpen && modal.classList.contains('show')) {
                     closeModal(modal);
                 }
             });
 
-            // Abre el modal solicitado
             document.body.classList.add('modal-open');
             modalToOpen.classList.add('show');
         }
-
-        // Listeners para cerrar modales
+        
         allModals.forEach(modal => {
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal(modal);
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
             });
             const closeBtn = modal.querySelector('.modal-close-btn');
-            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => closeModal(modal));
+            }
         });
         
         document.addEventListener('keydown', (e) => {
@@ -879,7 +862,6 @@
                 const courseDocSnap = await getDoc(courseDocRef);
                 if (courseDocSnap.exists()) {
                     const items = courseDocSnap.data().items || [];
-                    // Filtrar solo los ítems que son parte de la progresión y ordenarlos
                     allCourseItems = items
                         .filter(item => item.type !== 'concept')
                         .sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -894,7 +876,6 @@
         function displayNextLessonInfo(completedItemsSet) {
             if (!allCourseItems.length || !nextLessonContainer) return;
 
-            // Encontrar la primera lección que no está en el set de completadas
             const nextLesson = allCourseItems.find(item => {
                 const itemId = item.number ? String(item.number) : item.id;
                 return !completedItemsSet.has(itemId);
@@ -910,7 +891,6 @@
                     </a>
                 `;
             } else {
-                // Todas las lecciones han sido completadas
                 nextLessonContainer.innerHTML = `
                     <i class="fas fa-trophy text-4xl text-yellow-400 mb-2"></i>
                     <h3 class="text-2xl font-bold text-yellow-400">¡Felicidades!</h3>
@@ -928,7 +908,6 @@
                 authMessage.style.display = 'none';
                 if(notificationTicker) notificationTicker.classList.add('show');
 
-                // Cargar datos del usuario y estructura del curso en paralelo
                 const userDocSnap = await getDoc(doc(db, "users", user.uid));
                 await fetchCourseStructure();
 
@@ -953,7 +932,6 @@
                         completedItemsSet = new Set(data.completed || []);
                     }
                     
-                    // Lógica para la racha (streak)
                     const today = new Date().toISOString().slice(0, 10);
                     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
 
@@ -983,7 +961,6 @@
                         mobileStreakCounter.style.display = 'flex';
                     }
 
-                    // Llamar a la función para mostrar la próxima lección
                     displayNextLessonInfo(completedItemsSet);
                 });
 
@@ -1099,7 +1076,7 @@
         const downloadShareImageLink = document.getElementById('download-share-image');
         
         document.getElementById('share-modal').addEventListener('click', (e) => {
-           if(e.target === document.getElementById('share-modal')) return; // Evitar que se regenere al hacer clic dentro
+           if(e.target === document.getElementById('share-modal')) return;
            
             const clone = lessonContainer.cloneNode(true);
             clone.style.position = 'absolute';
@@ -1169,15 +1146,12 @@
         // Menu buttons logic
         const comunidadBtn = document.getElementById('comunidad-btn');
         const recursosBtn = document.getElementById('recursos-btn');
-        const meditacionBtn = document.getElementById('meditacion-btn');
         
         const comunidadModal = document.getElementById('comunidad-modal');
         const recursosModal = document.getElementById('recursos-modal');
-        const meditacionModal = document.getElementById('meditacion-modal');
 
         comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
         recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
-        meditacionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(meditacionModal); });
 
         document.querySelectorAll('.streak-tooltip-close').forEach(button => {
             button.addEventListener('click', (e) => {
