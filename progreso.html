@@ -134,13 +134,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- ESTILOS MODALES (UNIFICADOS) --- */
+        /* --- ESTILOS MODALES (UNIFICADOS Y CORREGIDOS) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             display: flex; align-items: center; justify-content: center;
-            z-index: 1000; padding: 1rem;
+            z-index: 1020; /* Aumentado para estar por encima del menú */
+            padding: 1rem;
             opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease;
             overscroll-behavior: contain;
@@ -1515,7 +1516,7 @@
             if (touchEndX > touchStartX + 50) showPrevParagraph();
         });
 
-        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA) ---
+        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA Y MEJORADA) ---
         const allModals = document.querySelectorAll('.modal-overlay');
 
         function closeModal(modal) {
@@ -1533,12 +1534,17 @@
                 if (document.querySelectorAll('.modal-overlay.show').length === 0) {
                     document.body.classList.remove('modal-open');
                 }
-            }, 300); // Esperar a que termine la transición
+            }, 300);
         }
 
         function openModal(modalToOpen, data) {
             if (!modalToOpen) return;
             
+            // Si el menú lateral está abierto en móvil, ciérralo primero
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+
             allModals.forEach(modal => {
                 if (modal !== modalToOpen && modal.classList.contains('show')) {
                     closeModal(modal);
