@@ -175,28 +175,6 @@
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
         
-        #open-warnings-btn {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 1000;
-            background-color: rgba(233, 30, 99, 0.8);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 0.75rem 1.5rem;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: none; /* Oculto por defecto */
-        }
-        #open-warnings-btn:hover {
-            background-color: #e91e63;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
-        }
-        
         /* --- ESTILOS PARA MODALES DEL MENÚ --- */
         .card {
             background-color: rgba(255, 255, 255, 0.05);
@@ -212,6 +190,38 @@
             border: 1px solid rgba(0, 188, 212, 0.5);
         }
         .text-brand-pink { color: #e91e63; }
+        
+        /* --- NUEVOS ESTILOS PARA BOTÓN DE AVISOS Y BANNER --- */
+        .tool-header {
+            border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+            background: linear-gradient(180deg, rgba(12, 20, 39, 0.5) 0%, rgba(12, 20, 39, 0) 100%);
+        }
+
+        #open-warnings-btn {
+            background-color: transparent;
+            border: 1px solid #f6ad55;
+            color: #f6ad55;
+            transition: all 0.3s ease;
+        }
+        #open-warnings-btn:hover {
+            background-color: rgba(246, 173, 85, 0.1);
+            box-shadow: 0 0 15px rgba(246, 173, 85, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* --- ANIMACIÓN DE BANNER MEJORADA --- */
+        .pulsating-banner {
+            animation: pulsating-glow-strong 3s infinite ease-in-out;
+            border-radius: 0.75rem; /* Asegura que el glow siga los bordes redondeados */
+        }
+        @keyframes pulsating-glow-strong {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 188, 212, 0.7), 0 0 30px rgba(233, 30, 99, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 188, 212, 1), 0 0 70px rgba(0, 188, 212, 0.7);
+            }
+        }
     </style>
 </head>
 <body>
@@ -317,10 +327,26 @@
                 </button>
             </div>
             
-            <div class="flex-1 overflow-y-auto">
+            <div id="main-scroll-container" class="flex-1 overflow-y-auto">
                 <div id="logged-in-content" class="h-full flex flex-col" style="display: none;">
-                    <div class="flex-grow p-4 md:p-6">
-                        <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg"></iframe>
+                    
+                    <!-- INICIO: HEADER MEJORADO -->
+                    <header class="tool-header text-center p-6">
+                        <div class="pulsating-banner inline-block mb-6">
+                           <img src="https://i.imgur.com/JOeaWYI.png" alt="Banner de Inspiración y Conocimiento" class="max-w-full h-auto mx-auto rounded-lg" style="max-width: 500px;" onerror="this.onerror=null;this.src='https://placehold.co/500x125/0c2f5b/fbf5e2?text=Asistente+IA';">
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-white">Asistente de Claridad IA</h1>
+                        <p class="text-lg text-gray-300 max-w-2xl mx-auto mt-4">
+                            Tu compañero para profundizar en "Un Curso de Milagros". Pide explicaciones, resúmenes o crea afirmaciones personalizadas.
+                        </p>
+                        <button id="open-warnings-btn" class="btn mt-6">
+                            <i class="fas fa-exclamation-circle mr-2"></i>Avisos Importantes
+                        </button>
+                    </header>
+                    <!-- FIN: HEADER MEJORADO -->
+
+                    <div class="flex-grow p-4 md:p-6 pt-0">
+                        <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg shadow-2xl shadow-cyan-500/10"></iframe>
                     </div>
                 </div>
 
@@ -336,11 +362,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Botón de Avisos -->
-    <button id="open-warnings-btn">
-        <i class="fas fa-exclamation-circle mr-2"></i>AVISOS
-    </button>
 
     <!-- Modals -->
     <div id="warnings-modal" class="modal-overlay">
@@ -480,8 +501,7 @@
             if (user) {
                 loggedInContent.style.display = 'flex';
                 authContainer.style.display = 'none';
-                document.getElementById('open-warnings-btn').style.display = 'inline-flex';
-
+                
                 const appId = 'ucdm-tracker-app-v2';
                 const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
                 onSnapshot(progressDocRef, (docSnap) => {
@@ -526,7 +546,6 @@
             } else {
                 loggedInContent.style.display = 'none';
                 authContainer.style.display = 'flex';
-                document.getElementById('open-warnings-btn').style.display = 'none';
             }
         });
         
@@ -603,6 +622,24 @@
         if(recursosBtn) recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
         if(sesionBtn) sesionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(sesionModal); });
         if(openWarningsBtn) openWarningsBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(warningsModal); });
+
+        // --- LÓGICA DE SCROLL AUTOMÁTICO ---
+        const toolIframe = document.getElementById('tool-iframe');
+        const scrollContainer = document.getElementById('main-scroll-container');
+
+        window.addEventListener('blur', () => {
+            // Un pequeño retraso para asegurar que el activeElement se haya actualizado
+            setTimeout(() => {
+                if (document.activeElement === toolIframe) {
+                    // El usuario ha hecho clic dentro del iframe.
+                    // Desplaza el contenedor hacia abajo para revelar el área de respuesta.
+                    scrollContainer.scrollTo({
+                        top: scrollContainer.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        });
 
     </script>
 
