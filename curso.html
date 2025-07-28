@@ -106,6 +106,65 @@
             filter: drop-shadow(0 0 14px #f6ad55);
         }
 
+        /* --- ESTILOS DE RACHA EVOLUTIVA --- */
+        .streak-container { position: relative; cursor: pointer; }
+        .streak-tooltip {
+            position: absolute;
+            background-color: #1a2a44;
+            color: #fbf5e2;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1030;
+            pointer-events: none;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip, .streak-container:focus-within .streak-tooltip {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .streak-tooltip h4 { font-weight: 800; color: #f6ad55; margin-bottom: 0.5rem; }
+        .streak-tooltip p { font-size: 0.75rem; line-height: 1.5; color: #a7b3ce; }
+        .streak-tooltip p strong { color: #fbf5e2; }
+        .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+        .streak-tooltip-close {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.5rem;
+            font-size: 1.75rem;
+            color: #a7b3ce;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+        .streak-tooltip-close:hover { color: #fbf5e2; }
+        #mobile-streak-counter + .streak-tooltip { top: 100%; right: 0; margin-top: 10px; }
+        #sidebar-streak-counter + .streak-tooltip { top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; }
+        @media (max-width: 767px) {
+            #sidebar-streak-counter + .streak-tooltip { top: 100%; left: 50%; transform: translateX(-50%); right: auto; margin-left: 0; margin-top: 10px; width: 250px; }
+        }
+        #sidebar-streak-counter { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem; font-weight: 700; border-radius: 0.5rem; }
+        #sidebar-streak-counter .fa-fire, #mobile-streak-counter .fa-fire { transition: all 0.5s ease; }
+        .streak-level-0 .fa-fire { color: #4a5568; }
+        .streak-level-1 { color: #f6ad55; background-color: rgba(246, 173, 85, 0.1); border: 1px solid rgba(246, 173, 85, 0.3); }
+        .streak-level-1 .fa-fire { animation: flame-flicker 1.5s infinite ease-in-out; text-shadow: 0 0 8px #f6ad55; }
+        .streak-level-2 { color: #f687b3; background-color: rgba(246, 135, 179, 0.1); border: 1px solid rgba(246, 135, 179, 0.3); }
+        .streak-level-2 .fa-fire { animation: flame-flicker-strong 1s infinite ease-in-out; text-shadow: 0 0 12px #f687b3; }
+        .streak-level-3 { color: #e53e3e; background-color: rgba(229, 62, 62, 0.1); border: 1px solid rgba(229, 62, 62, 0.3); }
+        .streak-level-3 .fa-fire { animation: flame-pulse 1.2s infinite ease-in-out; text-shadow: 0 0 16px #e53e3e; }
+        .streak-level-4 { color: #fde68a; background-color: rgba(253, 230, 138, 0.1); border: 1px solid rgba(253, 230, 138, 0.3); }
+        .streak-level-4 .fa-fire { animation: flame-pulse 1s infinite ease-in-out, ember-rise 3s infinite linear; text-shadow: 0 0 20px #fde68a; }
+        @keyframes flame-flicker { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(1.1) rotate(2deg); } }
+        @keyframes flame-flicker-strong { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.15) rotate(3deg); } }
+        @keyframes flame-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
+        @keyframes ember-rise { 0% { box-shadow: 0 0 10px 0px #fde68a; } 50% { box-shadow: 0 -15px 20px 5px rgba(253, 230, 138, 0); } 100% { box-shadow: 0 0 10px 0px #fde68a; } }
+
         /* --- ESTILOS DE LA PÁGINA DE CURSO --- */
         #video-list-container {
             height: calc(100vh - 8rem);
@@ -172,7 +231,6 @@
         .btn-nav:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.2); border-color: var(--brand-cyan); }
         .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        /* --- ESTILOS MODALES (CORREGIDOS) --- */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-color: rgba(0, 0, 0, 0.7); 
@@ -237,7 +295,26 @@
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <nav class="mt-10 flex-grow">
+            <div class="streak-container mx-4" tabindex="0">
+                <div id="sidebar-streak-counter" style="display: none;">
+                    <i class="fas fa-fire"></i>
+                    <div>
+                        <span id="sidebar-streak-days">0</span>
+                        <span>días de racha</span>
+                    </div>
+                </div>
+                <div class="streak-tooltip">
+                    <span class="streak-tooltip-close">×</span>
+                    <h4>Niveles de la Llama</h4>
+                    <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                    <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                    <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                    <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                    <hr>
+                    <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                </div>
+            </div>
+            <nav class="mt-4 flex-grow">
                 <a href="./miembros.html" class="sidebar-link">
                     <i class="fas fa-home"></i>
                     <span>Panel Principal</span>
@@ -287,6 +364,22 @@
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
                 </a>
+                <div class="streak-container" tabindex="0">
+                    <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
+                        <i class="fas fa-fire"></i>
+                        <span id="mobile-streak-days">0</span>
+                    </div>
+                    <div class="streak-tooltip">
+                        <span class="streak-tooltip-close">×</span>
+                        <h4>Niveles de la Llama</h4>
+                        <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                        <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                        <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                        <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                        <hr>
+                        <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                    </div>
+                </div>
                 <button id="hamburger-btn" class="text-white focus:outline-none">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
@@ -385,7 +478,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
@@ -408,6 +501,10 @@
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const logoutBtn = document.getElementById('logout-btn');
+        const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
+        const sidebarStreakDays = document.getElementById('sidebar-streak-days');
+        const mobileStreakCounter = document.getElementById('mobile-streak-counter');
+        const mobileStreakDays = document.getElementById('mobile-streak-days');
 
         let currentUser = null;
         let activeVideoId = null;
@@ -443,24 +540,65 @@
                 
                 const appId = 'ucdm-tracker-app-v2';
                 progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'videos');
+                const mainProgressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
                 
                 courseVideos = await fetchVideosFromFirestore();
-                if (courseVideos.length === 0) return;
-
-                await loadUserProgress();
-                renderVideoList();
-
-                const firstUnseenVideo = courseVideos.find(v => !seenVideoIds.has(v.id));
-                const videoToLoad = firstUnseenVideo || courseVideos[0];
-                if (videoToLoad) {
-                    loadVideo(videoToLoad.id);
+                if (courseVideos.length > 0) {
+                    await loadUserProgress();
+                    renderVideoList();
+                    const firstUnseenVideo = courseVideos.find(v => !seenVideoIds.has(v.id));
+                    const videoToLoad = firstUnseenVideo || courseVideos[0];
+                    if (videoToLoad) {
+                        loadVideo(videoToLoad.id);
+                    }
                 }
+
+                onSnapshot(mainProgressDocRef, (docSnap) => {
+                    let currentStreak = 0;
+                    let lastCompletedDate = null;
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        currentStreak = data.currentStreak || 0;
+                        lastCompletedDate = data.lastCompletedDate || null;
+                    }
+                    const today = new Date().toISOString().slice(0, 10);
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+                    if (lastCompletedDate !== today && lastCompletedDate !== yesterday) {
+                        currentStreak = 0;
+                    }
+                    updateStreakCounters(currentStreak);
+                });
+
             } else {
                 currentUser = null;
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
             }
         });
+
+        function updateStreakCounters(currentStreak) {
+            let streakLevel = 0;
+            if (currentStreak > 0) streakLevel = 1;
+            if (currentStreak >= 7) streakLevel = 2;
+            if (currentStreak >= 30) streakLevel = 3;
+            if (currentStreak >= 90) streakLevel = 4;
+
+            [sidebarStreakCounter, mobileStreakCounter].forEach(counter => {
+                if (counter) {
+                    counter.className = counter.className.replace(/streak-level-\d+/g, '');
+                    counter.classList.add(`streak-level-${streakLevel}`);
+                }
+            });
+
+            if (sidebarStreakDays) {
+                sidebarStreakDays.textContent = currentStreak;
+                sidebarStreakCounter.style.display = 'flex';
+            }
+            if (mobileStreakDays) {
+                mobileStreakDays.textContent = currentStreak;
+                mobileStreakCounter.style.display = 'flex';
+            }
+        }
 
         async function loadUserProgress() {
             try {
@@ -499,9 +637,8 @@
 
         function createPlayerHTML(video) {
             const isSeen = seenVideoIds.has(video.id);
-            const vimeoHash = video.vimeoHash; // No usar '|| ""' aquí
+            const vimeoHash = video.vimeoHash;
             
-            // CORRECCIÓN DEFINITIVA: Construir la URL solo con el hash si existe de verdad.
             let vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?title=0&byline=0&portrait=0`;
             if (vimeoHash && vimeoHash.trim() !== '') {
                 vimeoUrl += `&h=${vimeoHash}`;
@@ -559,7 +696,7 @@
 
         function updateActiveListItemVisuals(videoId) {
             document.querySelectorAll('.video-list-item').forEach(item => {
-                item.classList.toggle('active-visual', parseInt(item.dataset.videoId) === videoId);
+                item.classList.toggle('active', parseInt(item.dataset.videoId) === videoId);
             });
         }
 
