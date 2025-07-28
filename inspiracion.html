@@ -194,7 +194,8 @@
             background-color: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(5px); 
             display: flex; align-items: center; justify-content: center; 
-            z-index: 1000; padding: 1rem; 
+            z-index: 1020; /* Aumentado para estar por encima del menú */
+            padding: 1rem; 
             opacity: 0; visibility: hidden; 
             transition: opacity 0.3s ease; 
         }
@@ -226,14 +227,6 @@
             display: flex; align-items: center; justify-content: center;
             border: 2px solid #080f1e;
         }
-        #recursos-modal .modal-content {
-            max-width: 90%;
-        }
-        @media (min-width: 640px) {
-            #recursos-modal .modal-content {
-                max-width: 700px;
-            }
-        }
         
         .video-embed-container {
             position: relative; padding-bottom: 56.25%; height: 0;
@@ -243,8 +236,6 @@
         .video-embed-container iframe {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         }
-        .youtube-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
-        .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         .loader {
             width: 50px; aspect-ratio: 1; border-radius: 50%;
@@ -326,11 +317,11 @@
                     <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
                     <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                     <hr>
-                    <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
-                    <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                    <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                 </div>
             </div>
-            <nav class="mt-4">
+            <!-- INICIO: NAVEGACIÓN ACTUALIZADA -->
+            <nav class="mt-4 flex-grow">
                 <a href="./miembros.html" class="sidebar-link">
                     <i class="fas fa-home"></i>
                     <span>Panel Principal</span>
@@ -338,6 +329,10 @@
                 <a href="./progreso.html" class="sidebar-link">
                     <i class="fas fa-tasks"></i>
                     <span>Mi Progreso</span>
+                </a>
+                <a href="./curso.html" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Curso en Vídeo</span>
                 </a>
                 <a href="./inspiracion.html" class="sidebar-link active">
                     <i class="fas fa-lightbulb"></i>
@@ -356,11 +351,12 @@
                     <i class="fas fa-folder-open"></i>
                     <span>Recursos</span>
                 </a>
-                <a id="meditacion-btn" class="sidebar-link">
-                    <i class="fas fa-headphones"></i>
-                    <span>Meditación</span>
+                <a id="sesion-btn" class="sidebar-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Sesión 1 a 1</span>
                 </a>
             </nav>
+            <!-- FIN: NAVEGACIÓN ACTUALIZADA -->
             <div class="px-4 py-2 mt-auto">
                 <hr class="border-gray-700 mb-4">
                 <button id="logout-btn" class="w-full sidebar-link text-left">
@@ -389,8 +385,7 @@
                         <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
                         <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
                         <hr>
-                        <p>¡Al llegar a los <strong>370 días</strong>, te espera un premio sorpresa!</p>
-                        <p class="mt-2">Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                        <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                     </div>
                 </div>
                 <button id="hamburger-btn" class="text-white focus:outline-none">
@@ -448,6 +443,7 @@
         </div>
     </div>
     
+    <!-- INICIO: MODALES ACTUALIZADOS -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
@@ -463,23 +459,30 @@
     <div id="recursos-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
-            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3><p class="mb-4">Grabaciones, guías y recursos exclusivos.</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline">Ver Recursos</div></a>
-                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col"><div class="flex-grow"><h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3><p class="mb-4">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p></div><div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline">Reservar Sesión</div></a>
+            <h3 class="text-2xl font-bold mb-4">Recursos</h3>
+            <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
+                    <p class="mb-4">Grabaciones, guías y recursos exclusivos.</p>
+                </div>
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</a>
             </div>
         </div>
     </div>
-
-    <div id="meditacion-modal" class="modal-overlay">
+    
+    <div id="sesion-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
-            <h3 class="font-bold mb-4 text-xl"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span> Guiada para Empezar el Día</h3>
-            <div class="youtube-container">
-                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+             <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
+                    <p class="mb-4">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                </div>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</a>
             </div>
         </div>
     </div>
+    <!-- FIN: MODALES ACTUALIZADOS -->
 
     <script>
         // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
@@ -811,7 +814,7 @@
             });
         });
         
-        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA) ---
+        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA Y MEJORADA) ---
         const allModals = document.querySelectorAll('.modal-overlay');
 
         function closeModal(modal) {
@@ -835,6 +838,11 @@
         function openModal(modalToOpen) {
             if (!modalToOpen) return;
             
+            // Si el menú lateral está abierto en móvil, ciérralo primero
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+
             allModals.forEach(modal => {
                 if (modal !== modalToOpen && modal.classList.contains('show')) {
                     closeModal(modal);
@@ -859,17 +867,18 @@
             }
         });
         
+        // --- LÓGICA DE BOTONES DE MENÚ ACTUALIZADA ---
         const comunidadBtn = document.getElementById('comunidad-btn');
         const recursosBtn = document.getElementById('recursos-btn');
-        const meditacionBtn = document.getElementById('meditacion-btn');
+        const sesionBtn = document.getElementById('sesion-btn');
         
         const comunidadModal = document.getElementById('comunidad-modal');
         const recursosModal = document.getElementById('recursos-modal');
-        const meditacionModal = document.getElementById('meditacion-modal');
+        const sesionModal = document.getElementById('sesion-modal');
 
         if(comunidadBtn) comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
         if(recursosBtn) recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
-        if(meditacionBtn) meditacionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(meditacionModal); });
+        if(sesionBtn) sesionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(sesionModal); });
         
     </script>
 </body>
