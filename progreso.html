@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-ar">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimiento de Lecciones - UCDM</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -671,7 +671,8 @@
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <nav class="mt-10">
+            <!-- INICIO: NAVEGACIÓN ACTUALIZADA -->
+            <nav class="mt-4 flex-grow">
                 <a href="./miembros.html" class="sidebar-link">
                     <i class="fas fa-home"></i>
                     <span>Panel Principal</span>
@@ -679,6 +680,10 @@
                 <a href="./progreso.html" class="sidebar-link active">
                     <i class="fas fa-tasks"></i>
                     <span>Mi Progreso</span>
+                </a>
+                <a href="./curso.html" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Curso en Vídeo</span>
                 </a>
                 <a href="./inspiracion.html" class="sidebar-link">
                     <i class="fas fa-lightbulb"></i>
@@ -697,11 +702,12 @@
                     <i class="fas fa-folder-open"></i>
                     <span>Recursos</span>
                 </a>
-                <a id="meditacion-btn" class="sidebar-link">
-                    <i class="fas fa-headphones"></i>
-                    <span>Meditación</span>
+                <a id="sesion-btn" class="sidebar-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Sesión 1 a 1</span>
                 </a>
             </nav>
+            <!-- FIN: NAVEGACIÓN ACTUALIZADA -->
             <div class="px-4 py-2 mt-auto">
                 <hr class="border-gray-700 mb-4">
                 <button id="logout-btn" class="w-full sidebar-link text-left">
@@ -791,6 +797,7 @@
         </div>
     </div>
     
+    <!-- INICIO: MODALES ACTUALIZADOS -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content simple-modal-content">
             <span class="modal-close-btn">×</span>
@@ -806,35 +813,30 @@
     <div id="recursos-modal" class="modal-overlay">
         <div class="modal-content simple-modal-content">
             <span class="modal-close-btn">×</span>
-            <h3 class="text-2xl font-bold mb-4">Recursos y Sesiones</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
-                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
-                        <p class="mb-4 text-sm">Grabaciones, guías y recursos exclusivos.</p>
-                    </div>
-                    <div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</div>
-                </a>
-                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="card p-6 rounded-lg block no-underline flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
-                        <p class="mb-4 text-sm">Reserva tu sesión. <br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
-                    </div>
-                    <div class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</div>
-                </a>
+            <h3 class="text-2xl font-bold mb-4">Recursos</h3>
+            <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
+                    <p class="mb-4">Grabaciones, guías y recursos exclusivos.</p>
+                </div>
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</a>
             </div>
         </div>
     </div>
-
-    <div id="meditacion-modal" class="modal-overlay">
+    
+    <div id="sesion-modal" class="modal-overlay">
         <div class="modal-content simple-modal-content">
             <span class="modal-close-btn">×</span>
-            <h3 class="font-bold mb-4 text-xl text-center"><span class="text-brand-pink font-extrabold">MEDITACIÓN</span><br>Guiada para Empezar el Día</h3>
-            <div class="youtube-container">
-                <iframe src="https://www.youtube.com/embed/QM5TB8r-ryI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+             <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
+                    <p class="mb-4">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                </div>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</a>
             </div>
         </div>
     </div>
+    <!-- FIN: MODALES ACTUALIZADOS -->
 
 
     <script type="module">
@@ -1577,17 +1579,18 @@
             }
         });
         
+        // --- LÓGICA DE BOTONES DE MENÚ ACTUALIZADA ---
         const comunidadBtn = document.getElementById('comunidad-btn');
         const recursosBtn = document.getElementById('recursos-btn');
-        const meditacionBtn = document.getElementById('meditacion-btn');
+        const sesionBtn = document.getElementById('sesion-btn');
         
         const comunidadModal = document.getElementById('comunidad-modal');
         const recursosModal = document.getElementById('recursos-modal');
-        const meditacionModal = document.getElementById('meditacion-modal');
+        const sesionModal = document.getElementById('sesion-modal');
 
         if(comunidadBtn) comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
         if(recursosBtn) recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
-        if(meditacionBtn) meditacionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(meditacionModal); });
+        if(sesionBtn) sesionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(sesionModal); });
 
     </script>
     
