@@ -20,7 +20,7 @@
             color: #fbf5e2;
             transition: opacity 0.3s ease-in-out;
             overflow-x: hidden;
-            opacity: 0; /* Oculto por defecto para evitar parpadeo */
+            opacity: 0;
         }
         body.modal-open {
             overflow: hidden;
@@ -104,7 +104,7 @@
             filter: drop-shadow(0 0 14px #f6ad55);
         }
 
-        /* --- ESTILOS DE RACHA EVOLUTIVA (AÑADIDOS) --- */
+        /* --- ESTILOS DE RACHA EVOLUTIVA --- */
         .streak-container { position: relative; cursor: pointer; }
         .streak-tooltip {
             position: absolute; background-color: #1a2a44; color: #fbf5e2;
@@ -162,17 +162,37 @@
         .btn:hover { transform: translateY(-2px); box-shadow: 0 0 20px var(--glow-color); background-color: var(--glow-color-bg); }
         
         h1, h2, h3, h4 { color: #fbf5e2; }
-        p { color: #a7b3ce; }
+        p, li { color: #a7b3ce; }
 
-        /* Estilos específicos de la página de instrucciones */
+        /* --- ESTILOS CORREGIDOS PARA "AVISOS IMPORTANTES" --- */
         .alert-box {
-            background-color: rgba(253, 230, 138, 0.05);
-            border-left: 4px solid #fde68a;
+            background-color: rgba(0, 188, 212, 0.1); /* Fondo azulado sutil */
+            border-left: 4px solid #00bcd4; /* Borde azulado más intenso */
             color: #fbf5e2;
         }
-        .alert-box a { color: #60a5fa; }
-        .alert-box a:hover { text-decoration: underline; }
-        .alert-box code { background-color: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #fde68a; }
+        .alert-box strong {
+            color: #fbf5e2; /* Texto en negrita más claro */
+        }
+        .alert-box a { 
+            color: #81d4fa; /* Enlaces en un azul claro */
+        }
+        .alert-box a:hover { 
+            color: #fbf5e2;
+            text-decoration: underline; 
+        }
+        .alert-box code { 
+            background-color: rgba(0,0,0,0.4); 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            color: #81d4fa; 
+        }
+        .alert-box .bg-green-500 {
+             background-color: #009688; /* Botón de acceso a Gmail en un verde azulado */
+        }
+        .alert-box .bg-green-500:hover {
+             background-color: #00796b;
+        }
 
         .step-icon {
             background-color: #00bcd4;
@@ -211,7 +231,6 @@
         }
         .zoomable-image:hover { transform: scale(1.03); }
 
-        /* Lightbox styles */
         .lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
@@ -223,7 +242,6 @@
         .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); cursor: grab; }
         .lightbox .close-btn { position: absolute; top: 20px; right: 30px; font-size: 3rem; color: white; cursor: pointer; line-height: 1; }
         
-        /* --- ESTILOS DE MODALES --- */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-color: rgba(0, 0, 0, 0.7); 
@@ -250,8 +268,20 @@
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
         
-        #auth-message h1 { color: #ef4444; }
-        #auth-message p { color: #fbf5e2; }
+        /* --- ESTILOS CORREGIDOS PARA EL FOOTER --- */
+        .contact-link { position: relative; text-decoration: none; padding-bottom: 5px; }
+        .contact-link > * { transition: color 0.4s ease; }
+        .contact-link.email-link > * { color: #a7b3ce; }
+        .contact-link.instagram-link > * { color: #a7b3ce; }
+        .contact-link:hover > * { color: #00bcd4; }
+        .contact-link.instagram-link:hover > * { color: #e91e63; }
+        .contact-link::after {
+            content: ''; position: absolute; width: 100%; height: 2px;
+            bottom: 0; left: 0; background-color: #00bcd4;
+            transform: scaleX(0); transform-origin: bottom right; transition: transform 0.4s ease-out;
+        }
+        .contact-link.instagram-link::after { background-color: #e91e63; }
+        .contact-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
     </style>
 </head>
 <body class="antialiased">
@@ -266,14 +296,12 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <!-- Menú Lateral -->
         <aside id="sidebar" class="w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
             
-            <!-- Racha Evolutiva (AÑADIDO) -->
             <div class="streak-container mx-4" tabindex="0">
                 <div id="sidebar-streak-counter" style="display: none;">
                     <i class="fas fa-fire"></i>
@@ -343,14 +371,11 @@
             </div>
         </aside>
 
-        <!-- Contenido de la página -->
         <div id="page-content" class="flex-1 md:ml-72">
-            <!-- Cabecera para móvil -->
             <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                 </a>
-                <!-- Racha Evolutiva Móvil (AÑADIDO) -->
                 <div class="streak-container" tabindex="0">
                     <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
                         <i class="fas fa-fire"></i>
@@ -372,8 +397,7 @@
                 </button>
             </div>
 
-            <!-- Contenido principal -->
-            <div id="main-content" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10" style="display: none;">
+            <div id="main-content" style="display: none;" class="max-w-4xl mx-auto p-4 md:p-8 relative z-10">
                 
                 <header class="mb-12">
                     <img src="https://i.imgur.com/f9UtwMK.png" alt="Banner de la Membresía" class="w-full h-auto rounded-lg shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/1024x256/0c1427/fbf5e2?text=Banner+Membres%C3%ADa';">
@@ -382,7 +406,7 @@
                 <section class="mb-16">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4 text-center">Cómo Usar la Plataforma Inteligente</h1>
                     <p class="text-lg max-w-3xl mx-auto text-center mb-8">
-                        Esta plataforma es tu asistente personal para estudiar Un Curso de Milagros. Puedes hacerle preguntas en lenguaje natural y te responderá basándose <span class="highlight-word">únicamente</span> en el contenido del libro y en las notas adicionales que he preparado.
+                        Accederás a un espacio de estudio avanzado diseñado para explorar en profundidad "Un Curso de Milagros". Esta herramienta de inteligencia artificial te permite dialogar directamente con el texto, hacer preguntas complejas, aclarar conceptos y descubrir conexiones. Está alimentada <span class="highlight-word">únicamente</span> con el contenido del libro y notas de estudio adicionales para garantizar la fidelidad a la enseñanza original.
                     </p>
 
                     <div class="text-center mb-16">
@@ -392,7 +416,7 @@
                     </div>
 
                     <div class="space-y-20">
-                        <!-- Paso 1 -->
+                        <!-- Step 1 -->
                         <div class="flex flex-col items-center sm:flex-row sm:items-start gap-6 fade-in-on-scroll">
                             <div class="step-icon">1</div>
                             <div class="w-full text-center sm:text-left">
@@ -415,7 +439,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Paso 2 -->
+                        <!-- Step 2 -->
                         <div class="flex flex-col items-center sm:flex-row sm:items-start gap-6 fade-in-on-scroll">
                             <div class="step-icon">2</div>
                             <div class="w-full text-center sm:text-left">
@@ -432,7 +456,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Paso 3 -->
+                        <!-- Step 3 -->
                         <div class="flex flex-col items-center sm:flex-row sm:items-start gap-6 fade-in-on-scroll">
                             <div class="step-icon">3</div>
                             <div class="w-full text-center sm:text-left">
@@ -443,7 +467,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Paso 4 -->
+                        <!-- Step 4 -->
                         <div class="flex flex-col items-center sm:flex-row sm:items-start gap-6 fade-in-on-scroll">
                             <div class="step-icon">4</div>
                             <div class="w-full text-center sm:text-left">
@@ -456,18 +480,20 @@
 
                 <section class="mb-16">
                      <div class="alert-box p-4 rounded-lg">
-                        <h4 class="font-bold text-lg mb-2 text-yellow-300">Avisos Importantes</h4>
+                        <h4 class="font-bold text-lg mb-2 text-fbf5e2">Avisos Importantes</h4>
                         <ul class="list-disc list-inside space-y-4">
                             <li>
                                 <strong>Necesitas una cuenta de Gmail:</strong> Por limitaciones de la plataforma, el acceso solo se puede conceder a correos <code>@gmail.com</code>. Si no tienes una, puedes crear una en menos de un minuto <a href="https://accounts.google.com/signup" target="_blank" class="font-semibold">aquí</a>.
-                                <a href="https://forms.gle/6PKqmLBqHAqWEjzY8" target="_blank" class="mt-2 inline-block bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors no-underline">
-                                    <i class="fas fa-paper-plane mr-2"></i>Ya tengo mi Gmail, solicitar acceso
-                                </a>
+                                <div class="mt-3">
+                                    <a href="https://forms.gle/6PKqmLBqHAqWEjzY8" target="_blank" class="inline-block bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors no-underline">
+                                        <i class="fas fa-paper-plane mr-2"></i>Ya tengo mi Gmail, solicitar acceso
+                                    </a>
+                                </div>
                             </li>
                             <li><strong>¿No puedes entrar?</strong> Si ya te registraste con un @gmail.com y al ir a la plataforma no te lleva directamente a la interfaz del punto 1, puede ser por dos motivos:
                                 <ol class="list-decimal list-inside pl-4 mt-1">
                                     <li>Que aún no se ha autorizado tu email.</li>
-                                    <li>Que estás entrando desde un email distinto al que te registraste. Podrás comprobarlo en el círculo de la esquina superior derecha.</li>
+                                    <li>Que estás entrando desde un @gmail distinto desde con el que solicitaste acceso. Podrás comprobarlo en el círculo de la esquina superior derecha.</li>
                                 </ol>
                             </li>
                         </ul>
@@ -480,19 +506,18 @@
                     </a>
                 </section>
 
-                <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-700 text-center">
-                     <h4 class="font-bold text-lg mb-4">¿Sigues teniendo problemas?</h4>
+                <footer class="mt-20 py-8 border-t border-gray-700 text-center">
+                     <h4 class="font-bold text-lg mb-4">¿Necesitas ayuda?</h4>
                      <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
-                        <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-300 no-underline">
-                            <i class="fas fa-envelope text-2xl"></i>
-                            <span>lamentedelfenix@gmail.com</span>
-                        </a>
-                        <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link flex items-center gap-2 text-pink-400 no-underline">
-                            <i class="fab fa-instagram text-2xl"></i>
-                            <span>@darioarrigazzi</span>
-                        </a>
+                         <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 no-underline">
+                             <i class="fas fa-envelope text-2xl"></i>
+                             <span>lamentedelfenix@gmail.com</span>
+                         </a>
+                         <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link instagram-link flex items-center gap-2 no-underline">
+                             <i class="fab fa-instagram text-2xl"></i>
+                             <span>@darioarrigazzi</span>
+                         </a>
                      </div>
-                     <p class="text-sm text-gray-500 mt-8">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
                 </footer>
             </div>
             
@@ -503,10 +528,10 @@
                     Ir a Iniciar Sesión
                 </a>
             </div>
+
         </div>
     </div>
     
-    <!-- INICIO: MODALES -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
@@ -545,7 +570,6 @@
             </div>
         </div>
     </div>
-    <!-- FIN: MODALES -->
 
     <script>
         // Script de fondo animado
@@ -595,9 +619,9 @@
             const sidebar = document.getElementById('sidebar');
             const hamburgerBtn = document.getElementById('hamburger-btn');
             const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+            const logoutBtn = document.getElementById('logout-btn');
             const mainContent = document.getElementById('main-content');
             const authMessage = document.getElementById('auth-message');
-            const logoutBtn = document.getElementById('logout-btn');
 
             function toggleSidebar() {
                 sidebar.classList.toggle('-translate-x-full');
@@ -612,21 +636,21 @@
                 });
             }
 
+            // Lógica de autenticación reactivada
             onAuthStateChanged(auth, (user) => {
                 document.body.style.opacity = '1';
                 if (user) {
                     mainContent.style.display = 'block';
                     authMessage.style.display = 'none';
-                    // Iniciar seguimiento de racha para el usuario logueado
                     setupStreakListener(user.uid);
                 } else {
                     mainContent.style.display = 'none';
                     authMessage.style.display = 'block';
                 }
             });
-            
-            // --- LÓGICA DE RACHA (AÑADIDA) ---
+
             function setupStreakListener(userId) {
+                if (!userId) return;
                 const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
                 const sidebarStreakDays = document.getElementById('sidebar-streak-days');
                 const mobileStreakCounter = document.getElementById('mobile-streak-counter');
@@ -643,8 +667,6 @@
                         const today = new Date().toISOString().slice(0, 10);
                         const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
                         
-                        // Si la última fecha completada es hoy o ayer, la racha continúa.
-                        // Si no, se resetea a 0 (a menos que hoy sea el primer día).
                         if (lastCompletedDate === today || lastCompletedDate === yesterday) {
                             currentStreak = data.currentStreak || 0;
                         } else {
@@ -676,7 +698,6 @@
                 });
             }
 
-            // --- LÓGICA DE MODALES ---
             const allModals = document.querySelectorAll('.modal-overlay');
 
             function closeModal(modal) {
@@ -723,7 +744,6 @@
                 openModal(document.getElementById('sesion-modal')); 
             });
 
-            // --- FUNCIONALIDAD DE LA PÁGINA DE INSTRUCCIONES ---
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const closeLightboxBtn = document.getElementById('close-lightbox');
