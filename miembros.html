@@ -442,7 +442,8 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
+        <!-- El sidebar ahora está oculto por defecto con style="display: none;" -->
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen" style="display: none;">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
@@ -512,8 +513,9 @@
             </div>
         </aside>
 
-        <div id="page-content" class="flex-1 md:ml-72">
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
+        <div id="page-content" class="flex-1">
+            <!-- La cabecera móvil ahora tiene un ID y está oculta por defecto -->
+            <div id="mobile-header" class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]" style="display: none;">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
@@ -803,21 +805,14 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Sidebar handling
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarBackdrop.classList.toggle('show');
-        }
-
-        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
-
+        const mobileHeader = document.getElementById('mobile-header');
+        const pageContent = document.getElementById('page-content');
         const mainContent = document.getElementById('main-content');
         const authMessage = document.getElementById('auth-message');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const notificationTicker = document.getElementById('notification-ticker');
         const welcomeTitle = document.getElementById('welcome-title');
         const lessonContainer = document.getElementById('daily-lesson-container');
@@ -831,13 +826,19 @@
         let allCourseItems = [];
         let startAnimation;
 
+        // --- LÓGICA DE LA BARRA LATERAL MÓVIL ---
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
+        }
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+
         // --- LÓGICA UNIFICADA DE MODALES ---
         const allModals = document.querySelectorAll('.modal-overlay');
-
         function closeModal(modal) {
             if (!modal) return;
             modal.classList.remove('show');
-            
             setTimeout(() => {
                 const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains('show'));
                 if (!isAnyModalOpen) {
@@ -848,27 +849,21 @@
 
         function openModal(modalToOpen) {
             if (!modalToOpen) return;
-            
             allModals.forEach(modal => {
                 if (modal !== modalToOpen && modal.classList.contains('show')) {
                     closeModal(modal);
                 }
             });
-
             document.body.classList.add('modal-open');
             modalToOpen.classList.add('show');
         }
         
         allModals.forEach(modal => {
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal(modal);
-                }
+                if (e.target === modal) closeModal(modal);
             });
             const closeBtn = modal.querySelector('.modal-close-btn');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => closeModal(modal));
-            }
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
         });
         
         document.addEventListener('keydown', (e) => {
@@ -877,7 +872,7 @@
             }
         });
 
-        // ========= INICIO: LÓGICA PARA LA PRÓXIMA LECCIÓN =========
+        // --- LÓGICA PARA LA PRÓXIMA LECCIÓN ---
         async function fetchCourseStructure() {
             try {
                 const courseDocRef = doc(db, "course", "courseStructure");
@@ -921,13 +916,17 @@
             }
             nextLessonContainer.style.display = 'flex';
         }
-        // ========= FIN: LÓGICA PARA LA PRÓXIMA LECCIÓN =========
 
+        // --- LÓGICA DE AUTENTICACIÓN Y VISIBILIDAD ---
         onAuthStateChanged(auth, async (user) => {
-            document.body.style.opacity = '1';
+            document.body.style.opacity = '1'; // Muestra el body para evitar parpadeo
             if (user) {
+                // --- USUARIO AUTENTICADO ---
+                sidebar.style.display = 'flex';
+                mobileHeader.style.display = 'flex';
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
+                pageContent.classList.add('md:ml-72'); // Añade margen para el sidebar en desktop
                 if(notificationTicker) notificationTicker.classList.add('show');
 
                 const userDocSnap = await getDoc(doc(db, "users", user.uid));
@@ -996,8 +995,12 @@
                     lessonContainer.innerHTML = '<p class="text-lg text-red-400">No se pudieron cargar los mensajes.</p>';
                 }
             } else {
+                // --- USUARIO NO AUTENTICADO ---
+                sidebar.style.display = 'none';
+                mobileHeader.style.display = 'none';
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'block';
+                pageContent.classList.remove('md:ml-72'); // Quita el margen del sidebar
                 if(notificationTicker) notificationTicker.classList.remove('show');
             }
         });
@@ -1100,43 +1103,43 @@
         document.getElementById('share-modal').addEventListener('click', (e) => {
            if(e.target === document.getElementById('share-modal')) return;
            
-            const clone = lessonContainer.cloneNode(true);
-            clone.style.position = 'absolute';
-            clone.style.left = '-9999px';
-            clone.style.top = '0px';
-            clone.style.width = lessonContainer.offsetWidth + 'px';
-            clone.style.paddingBottom = '20px';
-            
-            const watermarkContainer = document.createElement('div');
-            watermarkContainer.style.textAlign = 'center';
-            watermarkContainer.style.paddingTop = '20px';
-            
-            const watermark = new Image();
-            watermark.crossOrigin = "anonymous";
-            
-            watermark.onload = () => {
-                clone.appendChild(watermarkContainer).appendChild(watermark);
-                document.body.appendChild(clone);
+           const clone = lessonContainer.cloneNode(true);
+           clone.style.position = 'absolute';
+           clone.style.left = '-9999px';
+           clone.style.top = '0px';
+           clone.style.width = lessonContainer.offsetWidth + 'px';
+           clone.style.paddingBottom = '20px';
+           
+           const watermarkContainer = document.createElement('div');
+           watermarkContainer.style.textAlign = 'center';
+           watermarkContainer.style.paddingTop = '20px';
+           
+           const watermark = new Image();
+           watermark.crossOrigin = "anonymous";
+           
+           watermark.onload = () => {
+               clone.appendChild(watermarkContainer).appendChild(watermark);
+               document.body.appendChild(clone);
 
-                html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
-                    document.body.removeChild(clone);
-                    const dataUrl = canvas.toDataURL('image/png');
-                    sharePreviewImage.src = dataUrl;
-                    downloadShareImageLink.href = dataUrl;
-                }).catch(err => {
-                    console.error("Error generating canvas:", err);
-                    document.body.removeChild(clone);
-                });
-            };
-            
-            watermark.onerror = () => {
-                console.error("Could not load the signature image.");
-                document.body.removeChild(clone);
-            };
+               html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
+                   document.body.removeChild(clone);
+                   const dataUrl = canvas.toDataURL('image/png');
+                   sharePreviewImage.src = dataUrl;
+                   downloadShareImageLink.href = dataUrl;
+               }).catch(err => {
+                   console.error("Error generating canvas:", err);
+                   document.body.removeChild(clone);
+               });
+           };
+           
+           watermark.onerror = () => {
+               console.error("Could not load the signature image.");
+               document.body.removeChild(clone);
+           };
 
-            watermark.src = 'https://i.imgur.com/CG2tWKI.png';
-            watermark.style.width = '180px';
-            watermark.style.opacity = '0.7';
+           watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+           watermark.style.width = '180px';
+           watermark.style.opacity = '0.7';
         });
 
         const comingSoonModal = document.getElementById('coming-soon-modal');
