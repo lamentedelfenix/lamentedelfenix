@@ -296,7 +296,8 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <aside id="sidebar" class="w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
+        <!-- El menú lateral se oculta por defecto y se mostrará con JS si el usuario está logueado -->
+        <aside id="sidebar" style="display: none;" class="w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
@@ -371,8 +372,9 @@
             </div>
         </aside>
 
-        <div id="page-content" class="flex-1 md:ml-72">
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
+        <div id="page-content" class="flex-1">
+            <!-- La cabecera móvil se oculta por defecto y se mostrará con JS si el usuario está logueado -->
+            <div id="mobile-header" style="display: none;" class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                 </a>
@@ -617,6 +619,8 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const sidebar = document.getElementById('sidebar');
+            const mobileHeader = document.getElementById('mobile-header');
+            const pageContent = document.getElementById('page-content');
             const hamburgerBtn = document.getElementById('hamburger-btn');
             const sidebarBackdrop = document.getElementById('sidebar-backdrop');
             const logoutBtn = document.getElementById('logout-btn');
@@ -640,10 +644,16 @@
             onAuthStateChanged(auth, (user) => {
                 document.body.style.opacity = '1';
                 if (user) {
+                    sidebar.style.display = 'flex';
+                    mobileHeader.style.display = 'flex';
+                    pageContent.classList.add('md:ml-72');
                     mainContent.style.display = 'block';
                     authMessage.style.display = 'none';
                     setupStreakListener(user.uid);
                 } else {
+                    sidebar.style.display = 'none';
+                    mobileHeader.style.display = 'none';
+                    pageContent.classList.remove('md:ml-72');
                     mainContent.style.display = 'none';
                     authMessage.style.display = 'block';
                 }
