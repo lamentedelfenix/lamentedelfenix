@@ -1284,31 +1284,36 @@
         }
 
         function updateItemsState() {
-            const allCourseItemElements = document.querySelectorAll('.intro-item-btn, .lesson-item');
-            const numberedLessons = Array.from(allCourseItemElements).filter(el => allItemsMap.get(el.dataset.id)?.type === 'lesson' || allItemsMap.get(el.dataset.id)?.type === 'review');
+            const numberedLessons = Array.from(document.querySelectorAll('.lesson-item'));
             
-            let nextLessonFound = false;
+            let nextLessonId = null;
+            // Find the ID of the first uncompleted numbered lesson
+            for (const lessonEl of numberedLessons) {
+                if (!completedItems.has(lessonEl.dataset.id)) {
+                    nextLessonId = lessonEl.dataset.id;
+                    break;
+                }
+            }
 
-            // Primero, manejar los botones de introducción
+            // Apply styles to intro buttons
             document.querySelectorAll('.intro-item-btn').forEach(btn => {
                 btn.classList.toggle('completed', completedItems.has(btn.dataset.id));
             });
-            
-            // Luego, manejar las lecciones numeradas
-            for (const itemEl of numberedLessons) {
+
+            // Apply styles to numbered lessons
+            numberedLessons.forEach(itemEl => {
                 const itemId = itemEl.dataset.id;
-                const isCompleted = completedItems.has(itemId);
+                itemEl.classList.remove('completed', 'next-lesson-highlight', 'locked');
 
-                itemEl.classList.toggle('completed', isCompleted);
-                itemEl.classList.remove('next-lesson-highlight', 'locked');
-
-                if (!isCompleted && !nextLessonFound) {
+                if (completedItems.has(itemId)) {
+                    itemEl.classList.add('completed');
+                } else if (itemId === nextLessonId) {
                     itemEl.classList.add('next-lesson-highlight');
-                    nextLessonFound = true;
-                } else if (nextLessonFound) {
+                } else {
+                    // Lock only if it's an uncompleted lesson that is NOT the next one
                     itemEl.classList.add('locked');
                 }
-            }
+            });
         }
         
         function updateSeparatorsState() {
@@ -1426,19 +1431,36 @@
             const isNumberedLesson = item && (item.type === 'lesson' || item.type === 'review');
             const wasAlreadyCompleted = completedItems.has(currentItemId);
 
-            // Si es una lección numerada y no estaba completada, verificar el tiempo
-            if (isNumberedLesson && !wasAlreadyCompleted) {
-                const now = Date.now();
-                const twentyFourHours = 24 * 60 * 60 * 1000;
-                if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twentyFourHours)) {
-                    const timeLeft = twentyFourHours - (now - userData.lastNumberedLessonTimestamp);
-                    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    openModal(confirmModal, `Debes esperar aproximadamente ${hours}h y ${minutes}m para completar la siguiente lección. ¡La paciencia es parte del camino!`, null);
-                    // Cambiar el botón de "Confirmar" a "Entendido"
-                    document.getElementById('confirm-yes-btn').textContent = 'Entendido';
-                    document.getElementById('confirm-no-btn').style.display = 'none';
-                    return;
+            // If trying to complete a lesson for the first time
+            if (!wasAlreadyCompleted && isNumberedLesson) {
+                // Find the true "next" lesson
+                const numberedLessonIds = Array.from(allItemsMap.values())
+                    .filter(i => i.type === 'lesson' || i.type === 'review')
+                    .sort((a, b) => a.order - b.order)
+                    .map(i => i.number ? String(i.number) : i.id);
+                
+                let nextLessonId = null;
+                for (const id of numberedLessonIds) {
+                    if (!completedItems.has(id)) {
+                        nextLessonId = id;
+                        break;
+                    }
+                }
+
+                // ONLY apply the time lock if the user is completing the ACTUAL next lesson in sequence
+                if (currentItemId === nextLessonId) {
+                    const now = Date.now();
+                    const twentyFourHours = 24 * 60 * 60 * 1000;
+                    if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twentyFourHours)) {
+                        const timeLeft = twentyFourHours - (now - userData.lastNumberedLessonTimestamp);
+                        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        openModal(confirmModal, `Debes esperar aproximadamente ${hours}h y ${minutes}m para completar la siguiente lección. ¡La paciencia es parte del camino!`, null);
+                        // Cambiar el botón de "Confirmar" a "Entendido"
+                        document.getElementById('confirm-yes-btn').textContent = 'Entendido';
+                        document.getElementById('confirm-no-btn').style.display = 'none';
+                        return;
+                    }
                 }
             }
 
