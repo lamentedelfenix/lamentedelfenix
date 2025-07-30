@@ -1,77 +1,91 @@
-// Versión de depuración para encontrar el punto de fallo.
+// Importa el SDK de Google, que simplifica las llamadas a la API.
+// Asegúrate de tener "@google/generative-ai" en tu archivo package.json
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+// Accede a tu API Key desde las variables de entorno de Netlify.
+// Revisa que en Netlify la variable se llame GOOGLE_API_KEY.
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 exports.handler = async function (event, context) {
+  // --- INICIO: CONFIGURACIÓN DE CORS (CRUCIAL) ---
+  const headers = {
+    'Access-Control-Allow-Origin': '*', // O el dominio de tu web para más seguridad
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  // El navegador envía una petición OPTIONS "de prueba" antes del POST.
+  // Debemos responderle que sí tiene permiso.
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 204, // No Content
+      headers,
+      body: ''
+    };
+  }
+  // --- FIN: CONFIGURACIÓN DE CORS ---
+
+  // Solo permite peticiones POST
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Método no permitido' }),
+    };
+  }
+
   console.log("1. La función 'get-ai-response' ha comenzado.");
 
   try {
-    const { prompt } = JSON.parse(event.body);
-    console.log("2. El prompt se ha recibido correctamente.");
-
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    if (!GEMINI_API_KEY) {
-      console.error("ERROR FATAL: La variable de entorno GEMINI_API_KEY no se ha encontrado.");
+    // Revisa si la API Key está configurada
+    if (!process.env.GOOGLE_API_KEY) {
+      console.error("ERROR FATAL: La variable de entorno GOOGLE_API_KEY no se ha encontrado.");
       return {
         statusCode: 500,
+        headers,
         body: JSON.stringify({ error: 'La clave API no está configurada en el servidor.' }),
       };
     }
-    console.log("3. La clave API ha sido cargada (pero no se mostrará por seguridad).");
+    console.log("2. La clave API ha sido cargada.");
+
+    const { prompt } = JSON.parse(event.body);
+    console.log("3. El prompt se ha recibido correctamente.");
 
     if (!prompt) {
-      console.error("ERROR: No se ha proporcionado un prompt en la solicitud.");
+      console.error("ERROR: No se ha proporcionado un prompt.");
       return {
         statusCode: 400,
+        headers,
         body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }),
       };
     }
 
-    const modelName = 'gemini-1.5-flash-latest';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.5-flash'.");
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
     
-    const payload = {
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
+    console.log("5. Éxito. Devolviendo la respuesta de la IA.");
+
+    // Devuelve una respuesta JSON exitosa
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ text: text }),
     };
-    console.log("4. Preparando la llamada a la API de Google...");
-
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    console.log("5. La llamada a Google se ha completado. Estado de la respuesta:", response.status);
-
-    if (!response.ok) {
-        const errorResult = await response.text(); // Usamos .text() para ver qué devuelve exactamente
-        console.error('ERROR: La API de Google ha devuelto un error. Respuesta:', errorResult);
-        return {
-            statusCode: response.status,
-            body: JSON.stringify({ error: `Error de la API de Google: ${errorResult}` }),
-        };
-    }
-
-    const result = await response.json();
-    console.log("6. La respuesta de Google se ha convertido a JSON correctamente.");
-
-    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts?.length > 0) {
-      const text = result.candidates[0].content.parts[0].text;
-      console.log("7. Éxito. Devolviendo la respuesta de la IA.");
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ text: text }),
-      };
-    } else {
-      console.error("ERROR: La respuesta de la IA no tiene el formato esperado o está bloqueada.", result);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'La respuesta de la IA no tiene contenido válido o fue bloqueada.' }),
-      };
-    }
 
   } catch (error) {
     console.error("ERROR INESPERADO EN EL BLOQUE TRY-CATCH:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Ha ocurrido un error interno inesperado en el servidor.', details: error.message }),
+      headers,
+      body: JSON.stringify({
+        error: 'Ha ocurrido un error interno inesperado en el servidor.',
+        details: error.message
+      }),
     };
   }
 };
