@@ -3,130 +3,626 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente de Claridad IA</title>
+    <title>Asistente de Claridad IA - La Mente del Fénix</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #0c1427; /* Fondo del iframe */
+            background-color: #0c1427;
+            color: #fbf5e2;
+            overflow-x: hidden;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* --- ESTILOS BARRA LATERAL --- */
+        #sidebar {
+            background-color: #080f1e;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1010;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: #a7b3ce;
+            border-radius: 0.5rem;
+            margin: 0.25rem 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar-link:hover {
+            background-color: rgba(0, 188, 212, 0.1);
             color: #fbf5e2;
         }
-        /* Estilos para el contenedor de la respuesta y el spinner */
-        #response-container {
-            display: none; /* Oculto por defecto */
-            scroll-margin-top: 2rem; /* Añade un margen superior al hacer scroll */
+        .sidebar-link.active {
+            background-color: #00bcd4;
+            color: #0c1427;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
         }
-        /* Spinner magenta (semicírculo) */
-        .spinner {
-            width: 56px;
-            height: 56px;
-            display: none; /* Oculto por defecto */
-            border: 6px solid #fbf5e2;
-            border-bottom-color: #e91e63; /* Color magenta */
-            border-radius: 50%;
-            animation: rotation 1s linear infinite;
+        .sidebar-link i {
+            width: 2rem;
+            text-align: center;
         }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        #sidebar-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 1005;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .logo-glow {
+            animation: ember-effect-glow 3.6s infinite ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+        .logo-glow:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 14px #f6ad55);
+        }
+        @keyframes ember-effect-glow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) drop-shadow(0 0 3px rgba(229, 62, 62, 0.4)); transform: scale(1.0); }
+            50% { filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) drop-shadow(0 0 6px rgba(253, 230, 138, 0.8)); transform: scale(1.12); }
+        }
+        
+        /* --- ESTILOS DE RACHA --- */
+        .streak-container { position: relative; cursor: pointer; }
+        .streak-tooltip {
+            position: absolute; background-color: #1a2a44; color: #fbf5e2; padding: 1rem; border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2); width: 280px; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s; z-index: 1030; pointer-events: none; text-align: left; font-size: 0.8rem;
+        }
+        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip, .streak-container:focus-within .streak-tooltip {
+            opacity: 1; visibility: visible; pointer-events: auto;
+        }
+        .streak-tooltip h4 { font-weight: 800; color: #f6ad55; margin-bottom: 0.5rem; }
+        .streak-tooltip p { font-size: 0.75rem; line-height: 1.5; color: #a7b3ce; }
+        .streak-tooltip p strong { color: #fbf5e2; }
+        .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+        .streak-tooltip-close { position: absolute; top: 0.25rem; right: 0.5rem; font-size: 1.75rem; color: #a7b3ce; cursor: pointer; line-height: 1; padding: 0.25rem; }
+        .streak-tooltip-close:hover { color: #fbf5e2; }
+        #mobile-streak-counter + .streak-tooltip { top: 100%; right: 0; margin-top: 10px; }
+        #sidebar-streak-counter + .streak-tooltip { top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; }
+        @media (max-width: 767px) {
+            #sidebar-streak-counter + .streak-tooltip { top: 100%; left: 50%; transform: translateX(-50%); right: auto; margin-left: 0; margin-top: 10px; width: 250px; }
+        }
+        #sidebar-streak-counter { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem; font-weight: 700; border-radius: 0.5rem; }
+        #sidebar-streak-counter .fa-fire, #mobile-streak-counter .fa-fire { transition: all 0.5s ease; }
+        .streak-level-0 .fa-fire { color: #4a5568; }
+        .streak-level-1 { color: #f6ad55; background-color: rgba(246, 173, 85, 0.1); border: 1px solid rgba(246, 173, 85, 0.3); }
+        .streak-level-1 .fa-fire { animation: flame-flicker 1.5s infinite ease-in-out; text-shadow: 0 0 8px #f6ad55; }
+        .streak-level-2 { color: #f687b3; background-color: rgba(246, 135, 179, 0.1); border: 1px solid rgba(246, 135, 179, 0.3); }
+        .streak-level-2 .fa-fire { animation: flame-flicker-strong 1s infinite ease-in-out; text-shadow: 0 0 12px #f687b3; }
+        .streak-level-3 { color: #e53e3e; background-color: rgba(229, 62, 62, 0.1); border: 1px solid rgba(229, 62, 62, 0.3); }
+        .streak-level-3 .fa-fire { animation: flame-pulse 1.2s infinite ease-in-out; text-shadow: 0 0 16px #e53e3e; }
+        .streak-level-4 { color: #fde68a; background-color: rgba(253, 230, 138, 0.1); border: 1px solid rgba(253, 230, 138, 0.3); }
+        .streak-level-4 .fa-fire { animation: flame-pulse 1s infinite ease-in-out, ember-rise 3s infinite linear; text-shadow: 0 0 20px #fde68a; }
+        @keyframes flame-flicker { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(1.1) rotate(2deg); } }
+        @keyframes flame-flicker-strong { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.15) rotate(3deg); } }
+        @keyframes flame-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
+        @keyframes ember-rise { 0% { box-shadow: 0 0 10px 0px #fde68a; } 50% { box-shadow: 0 -15px 20px 5px rgba(253, 230, 138, 0); } 100% { box-shadow: 0 0 10px 0px #fde68a; } }
+
+        .auth-message-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            height: 100%;
+        }
+        .btn { 
+            position: relative; z-index: 1; overflow: hidden; 
+            transition: all 0.3s ease; border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center; 
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); border-color: #e91e63; background-color: transparent; }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); border-color: #00bcd4; background-color: transparent; }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--glow-color);
+            background-color: var(--glow-color-bg);
+        }
+
+        /* --- ESTILOS PARA MODALES --- */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(5px); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 1020; /* Aumentado para estar por encima del menú */
+            padding: 1rem; 
+            opacity: 0; visibility: hidden; 
+            transition: opacity 0.3s ease; 
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { 
+            background-color: #0c1427; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 2.5rem; 
+            border-radius: 0.75rem; 
+            max-width: 500px; 
+            width: 100%; 
+            text-align: center; 
+            transform: scale(0.9); 
+            transition: transform 0.3s ease; 
+            position: relative; 
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
+        
+        /* --- ESTILOS PARA MODALES DEL MENÚ --- */
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: #fbf5e2;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3);
+            border: 1px solid rgba(0, 188, 212, 0.5);
+        }
+        .text-brand-pink { color: #e91e63; }
+        
+        /* --- ESTILO BOTÓN DE AVISOS FLOTANTE --- */
+        #open-warnings-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            background-color: rgba(233, 30, 99, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none; /* Oculto por defecto */
+        }
+        #open-warnings-btn:hover {
+            background-color: #e91e63;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
+    <canvas id="background-canvas"></canvas>
 
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-700">
-            <h1 class="text-2xl font-bold mb-4 text-cyan-300">Asistente de Claridad</h1>
-            <p class="text-gray-400 mb-6">Describe tu situación o pregunta para recibir una reflexión basada en los principios del curso.</p>
+    <div class="relative min-h-screen">
+        <div id="sidebar-backdrop"></div>
 
-            <div class="space-y-6">
-                <div>
-                    <label for="user-prompt" class="block text-sm font-medium text-gray-300 mb-2">Tu consulta:</label>
-                    <textarea id="user-prompt" rows="4" class="w-full bg-gray-800 border border-gray-600 rounded-md p-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none" placeholder="Ej: Siento ansiedad cuando pienso en el futuro..."></textarea>
+        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
+            <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+                <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+            </a>
+            <div class="streak-container mx-4" tabindex="0">
+                <div id="sidebar-streak-counter" style="display: none;">
+                    <i class="fas fa-fire"></i>
+                    <div>
+                        <span id="sidebar-streak-days">0</span>
+                        <span>días de racha</span>
+                    </div>
+                </div>
+                <div class="streak-tooltip">
+                    <span class="streak-tooltip-close">&times;</span>
+                    <h4>Niveles de la Llama</h4>
+                    <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                    <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                    <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                    <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                    <hr>
+                    <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                </div>
+            </div>
+            <!-- INICIO: NAVEGACIÓN ACTUALIZADA -->
+            <nav class="mt-4 flex-grow">
+                <a href="./miembros.html" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>Panel Principal</span>
+                </a>
+                <a href="./progreso.html" class="sidebar-link">
+                    <i class="fas fa-tasks"></i>
+                    <span>Mi Progreso</span>
+                </a>
+                <a href="./curso.html" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Curso en Vídeo</span>
+                </a>
+                <a href="./inspiracion.html" class="sidebar-link">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Inspiración</span>
+                </a>
+                <a href="./herramienta-ia.html" class="sidebar-link active">
+                    <i class="fas fa-robot"></i>
+                    <span>Asistente IA</span>
+                </a>
+                <hr class="border-gray-700 my-4">
+                <a id="comunidad-btn" class="sidebar-link">
+                    <i class="fas fa-users"></i>
+                    <span>Comunidad</span>
+                </a>
+                <a id="recursos-btn" class="sidebar-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Recursos</span>
+                </a>
+                <a id="sesion-btn" class="sidebar-link">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Sesión 1 a 1</span>
+                </a>
+            </nav>
+            <!-- FIN: NAVEGACIÓN ACTUALIZADA -->
+            <div class="px-4 py-2 mt-auto">
+                <hr class="border-gray-700 mb-4">
+                <button id="logout-btn" class="w-full sidebar-link text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <div id="page-content" class="flex-1 md:ml-72 flex flex-col h-screen">
+            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
+                 <a href="./miembros.html" class="text-white flex items-center space-x-2">
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
+                    <span class="text-xl font-extrabold">Miembro Fénix</span>
+                </a>
+                <div class="streak-container" tabindex="0">
+                    <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
+                        <i class="fas fa-fire"></i>
+                        <span id="mobile-streak-days">0</span>
+                    </div>
+                    <div class="streak-tooltip">
+                        <span class="streak-tooltip-close">&times;</span>
+                        <h4>Niveles de la Llama</h4>
+                        <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                        <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                        <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                        <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                        <hr>
+                        <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                    </div>
+                </div>
+                <button id="hamburger-btn" class="text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="main-scroll-container" class="flex-1 overflow-y-auto">
+                <div id="logged-in-content" class="h-full flex flex-col" style="display: none;">
+                    <div class="flex-grow p-4 md:p-6">
+                        <iframe id="tool-iframe" src="https://sweet-melba-b9513d.netlify.app/" class="w-full h-full border-none rounded-lg"></iframe>
+                    </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button id="generate-response-btn" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300">
-                        Generar Reflexión
-                    </button>
-                    <button id="generate-sentence-btn" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-md transition-colors duration-300">
-                        Crear Oración Sanadora
-                    </button>
+                <div id="auth-container" class="auth-message-container flex items-center justify-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                        <p class="text-lg mt-4 mb-8">Necesitas iniciar sesión para usar esta herramienta.</p>
+                        <a href="./login.html" class="btn btn-pink">
+                            Ir a Iniciar Sesión
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="response-container" class="mt-8 bg-gray-900/50 p-6 rounded-lg border border-gray-700">
-            
-            <div id="loading-spinner" class="spinner mx-auto"></div>
+    <!-- Botón de Avisos -->
+    <button id="open-warnings-btn">
+        <i class="fas fa-exclamation-circle mr-2"></i>AVISOS
+    </button>
 
-            <div id="ai-response" class="text-white prose prose-invert max-w-none"></div>
-
+    <!-- Modals -->
+    <div id="warnings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-6 text-yellow-400">Avisos Importantes</h3>
+            <div class="space-y-4 text-left">
+                <p class="text-yellow-200">
+                    <strong class="font-bold"><i class="fas fa-server mr-2"></i>Nota sobre el Servicio:</strong><br>
+                    En momentos de alta demanda, los servidores de IA pueden saturarse. Si recibes un error, por favor, espera unos minutos y vuelve a intentarlo.
+                </p>
+                <p class="text-sky-200">
+                    <strong class="font-bold"><i class="fas fa-info-circle mr-2"></i>Recordatorio Importante:</strong><br>
+                    Este asistente es una herramienta de apoyo. La IA tiene limitaciones; sus respuestas son un complemento y no deben tomarse como una verdad absoluta.
+                </p>
+            </div>
         </div>
+    </div>
+    
+    <!-- INICIO: MODALES ACTUALIZADOS -->
+    <div id="comunidad-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
+            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <div class="flex justify-center gap-4">
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+            </div>
         </div>
+    </div>
+
+    <div id="recursos-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Recursos</h3>
+            <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
+                    <p class="mb-4">Grabaciones, guías y recursos exclusivos.</p>
+                </div>
+                <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="sesion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+             <div class="card p-6 rounded-lg block no-underline flex flex-col">
+                <div class="flex-grow">
+                    <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
+                    <p class="mb-4">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                </div>
+                <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</a>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: MODALES ACTUALIZADOS -->
 
     <script>
-        // --- Referencias a los elementos del DOM ---
-        const generateResponseBtn = document.getElementById('generate-response-btn');
-        const generateSentenceBtn = document.getElementById('generate-sentence-btn');
+        // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
         
-        const responseContainer = document.getElementById('response-container');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const aiResponseOutput = document.getElementById('ai-response');
-        const userInput = document.getElementById('user-prompt');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+        class Particle {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
+        
+        const resizeObserver = new ResizeObserver(() => {
+            clearTimeout(window.resizeLag);
+            window.resizeLag = setTimeout(() => {
+                resizeCanvas(); 
+                initParticles();
+            }, 250);
+        });
+        
+        window.addEventListener('load', () => {
+             resizeCanvas(); 
+             initParticles(); 
+             animateParticles();
+             resizeObserver.observe(document.body);
+        });
+    </script>
 
-        // --- Función principal que maneja la generación ---
-        async function handleGeneration(promptType) {
-            // 1. Desactivar botones y limpiar la respuesta anterior
-            generateResponseBtn.disabled = true;
-            generateSentenceBtn.disabled = true;
-            generateResponseBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            generateSentenceBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            aiResponseOutput.innerHTML = '';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+            authDomain: "membresia-ucdm-v2.firebaseapp.com",
+            projectId: "membresia-ucdm-v2",
+            storageBucket: "membresia-ucdm-v2.appspot.com",
+            messagingSenderId: "198704348819",
+            appId: "1:198704348819:web:4f52c9acf6cad3583e5766",
+            measurementId: "G-5L3T8PGXYK"
+        };
 
-            // 2. Mostrar el contenedor de respuesta y el spinner
-            responseContainer.style.display = 'block';
-            loadingSpinner.style.display = 'block';
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-            // 3. HACER SCROLL AUTOMÁTICO a la zona de respuesta
-            responseContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // --- MANEJO DE LA BARRA LATERAL ---
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const logoutBtn = document.getElementById('logout-btn');
 
-            // --- Simulación de llamada a la API ---
-            // En una implementación real, aquí iría tu fetch a '/.netlify/functions/get-ai-response'
-            try {
-                // Simulamos una espera de 3 segundos
-                await new Promise(resolve => setTimeout(resolve, 3000)); 
-                
-                // Texto de ejemplo según el botón pulsado
-                const responseText = promptType === 'reflexion'
-                    ? 'Esta es una reflexión profunda sobre tu consulta. La clave está en observar tus pensamientos sin juzgarlos, permitiendo que pasen como nubes en el cielo. La paz no se encuentra en la ausencia de problemas, sino en la capacidad de lidiar con ellos.'
-                    : 'Aquí tienes una oración sanadora para ti: "Libero la necesidad de controlar el futuro y confío en que tengo la fortaleza para afrontar cualquier cosa que venga. Elijo la paz en este momento presente."';
-
-                // 4. Mostrar la respuesta y ocultar el spinner
-                aiResponseOutput.innerHTML = `<p>${responseText}</p>`;
-
-            } catch (error) {
-                console.error('Error al generar la respuesta:', error);
-                aiResponseOutput.innerHTML = `<p class="text-red-400">Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.</p>`;
-            } finally {
-                // 5. Ocultar el spinner y reactivar los botones
-                loadingSpinner.style.display = 'none';
-                generateResponseBtn.disabled = false;
-                generateSentenceBtn.disabled = false;
-                generateResponseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                generateSentenceBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarBackdrop.classList.toggle('show');
         }
 
-        // --- Añadir los listeners a los botones ---
-        generateResponseBtn.addEventListener('click', () => {
-            handleGeneration('reflexion');
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
+        if (logoutBtn) logoutBtn.addEventListener('click', () => {
+             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
         });
 
-        generateSentenceBtn.addEventListener('click', () => {
-            handleGeneration('sanadora');
-});
+        // --- MANEJO DE CONTENIDO Y RACHA ---
+        const loggedInContent = document.getElementById('logged-in-content');
+        const authContainer = document.getElementById('auth-container');
+        const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
+        const sidebarStreakDays = document.getElementById('sidebar-streak-days');
+        const mobileStreakCounter = document.getElementById('mobile-streak-counter');
+        const mobileStreakDays = document.getElementById('mobile-streak-days');
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loggedInContent.style.display = 'flex';
+                authContainer.style.display = 'none';
+                document.getElementById('open-warnings-btn').style.display = 'inline-flex';
+
+                const appId = 'ucdm-tracker-app-v2';
+                const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
+                onSnapshot(progressDocRef, (docSnap) => {
+                    let currentStreak = 0;
+                    let lastCompletedDate = null;
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        currentStreak = data.currentStreak || 0;
+                        lastCompletedDate = data.lastCompletedDate || null;
+                    }
+                    
+                    const today = new Date().toISOString().slice(0, 10);
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+                    if (lastCompletedDate !== today && lastCompletedDate !== yesterday) {
+                        currentStreak = 0;
+                    }
+                    
+                    let streakLevel = 0;
+                    if (currentStreak > 0) streakLevel = 1;
+                    if (currentStreak >= 7) streakLevel = 2;
+                    if (currentStreak >= 30) streakLevel = 3;
+                    if (currentStreak >= 90) streakLevel = 4;
+
+                    [sidebarStreakCounter, mobileStreakCounter].forEach(counter => {
+                        if (counter) {
+                            counter.classList.remove('streak-level-0', 'streak-level-1', 'streak-level-2', 'streak-level-3', 'streak-level-4');
+                            counter.classList.add(`streak-level-${streakLevel}`);
+                        }
+                    });
+
+                    if (sidebarStreakDays) {
+                        sidebarStreakDays.textContent = currentStreak;
+                        sidebarStreakCounter.style.display = 'flex';
+                    }
+                    if (mobileStreakDays) {
+                        mobileStreakDays.textContent = currentStreak;
+                        mobileStreakCounter.style.display = 'flex';
+                    }
+                });
+
+            } else {
+                loggedInContent.style.display = 'none';
+                authContainer.style.display = 'flex';
+                document.getElementById('open-warnings-btn').style.display = 'none';
+            }
+        });
+        
+        document.querySelectorAll('.streak-tooltip-close').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tooltip = e.target.closest('.streak-tooltip');
+                if (tooltip) {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.visibility = 'hidden';
+                    tooltip.style.pointerEvents = 'none';
+                }
+            });
+        });
+
+        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA Y MEJORADA) ---
+        const allModals = document.querySelectorAll('.modal-overlay');
+
+        function closeModal(modal) {
+            if (!modal) return;
+            modal.classList.remove('show');
+            
+            setTimeout(() => {
+                if (document.querySelectorAll('.modal-overlay.show').length === 0) {
+                    document.body.classList.remove('modal-open');
+                }
+            }, 300);
+        }
+
+        function openModal(modalToOpen) {
+            if (!modalToOpen) return;
+
+            // Si el menú lateral está abierto en móvil, ciérralo primero
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+            
+            allModals.forEach(modal => {
+                if (modal !== modalToOpen && modal.classList.contains('show')) {
+                    closeModal(modal);
+                }
+            });
+
+            document.body.classList.add('modal-open');
+            modalToOpen.classList.add('show');
+        }
+
+        allModals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                document.querySelectorAll('.modal-overlay.show').forEach(closeModal);
+            }
+        });
+        
+        // --- LÓGICA DE BOTONES DE MENÚ ACTUALIZADA ---
+        const comunidadBtn = document.getElementById('comunidad-btn');
+        const recursosBtn = document.getElementById('recursos-btn');
+        const sesionBtn = document.getElementById('sesion-btn');
+        const openWarningsBtn = document.getElementById('open-warnings-btn');
+        
+        const comunidadModal = document.getElementById('comunidad-modal');
+        const recursosModal = document.getElementById('recursos-modal');
+        const sesionModal = document.getElementById('sesion-modal');
+        const warningsModal = document.getElementById('warnings-modal');
+
+        if(comunidadBtn) comunidadBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(comunidadModal); });
+        if(recursosBtn) recursosBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(recursosModal); });
+        if(sesionBtn) sesionBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(sesionModal); });
+        if(openWarningsBtn) openWarningsBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(warningsModal); });
+
+        // --- LÓGICA DE SCROLL AUTOMÁTICO ---
+        const toolIframe = document.getElementById('tool-iframe');
+        const scrollContainer = document.getElementById('main-scroll-container');
+
+        window.addEventListener('blur', () => {
+            // Un pequeño retraso para asegurar que el activeElement se haya actualizado
+            setTimeout(() => {
+                if (document.activeElement === toolIframe) {
+                    // El usuario ha hecho clic dentro del iframe.
+                    // Desplaza el contenedor hacia abajo para revelar el área de respuesta.
+                    scrollContainer.scrollTo({
+                        top: scrollContainer.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        });
     </script>
+
 </body>
 </html>
