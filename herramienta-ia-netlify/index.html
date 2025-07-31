@@ -194,25 +194,23 @@
         function findRelevantChunks(query, text) {
             if (!text || !query) return [];
 
-            const stopWords = new Set(['un', 'una', 'de', 'a', 'el', 'la', 'los', 'las', 'que', 'qué', 'es', 'en', 'y', 'o', 'por', 'para', 'con', 'si', 'su', 'sus']);
+            const stopWords = new Set(['un', 'una', 'de', 'a', 'el', 'la', 'los', 'las', 'que', 'qué', 'es', 'en', 'y', 'o', 'por', 'para', 'con', 'si', 'su', 'sus', 'mi', 'mis']);
 
-            // **FIXED**: Clean punctuation, split into words, and filter out stop words.
-            const keywords = query
+            // **FIXED**: Clean the query to get keywords.
+            let keywords = query
                 .toLowerCase()
                 .replace(/[¿?¡!.,;:"'()]/g, '') // Remove common punctuation
                 .split(/\s+/)
-                .filter(word => word && !stopWords.has(word)) // Filter out empty strings and stop words
-                .map(kw => new RegExp(`\\b${kw}\\b`, 'i')); // Create case-insensitive regex for each keyword
+                .filter(word => word && !stopWords.has(word)); // Filter out empty strings and stop words
 
-            // If after filtering, there are no keywords left (e.g., query was "qué es"), 
-            // search for the original query as a whole phrase to catch simple cases.
+            // If no keywords remain, use the most significant original word.
             if (keywords.length === 0) {
-                const cleanedQuery = query.replace(/[¿?¡!.,;:"'()]/g, '').trim();
-                if (cleanedQuery) {
-                    keywords.push(new RegExp(`\\b${cleanedQuery}\\b`, 'i'));
-                } else {
-                    return []; // Return empty if query is only punctuation/stopwords
-                }
+                 const originalWords = query.toLowerCase().replace(/[¿?¡!.,;:"'()]/g, '').split(/\s+/).filter(Boolean);
+                 if (originalWords.length > 0) {
+                     keywords = [originalWords[originalWords.length - 1]];
+                 } else {
+                     return []; // No usable words in query
+                 }
             }
 
             const paragraphs = text.split(/\n\s*\n/);
@@ -221,16 +219,18 @@
 
             for (const p of paragraphs) {
                 const trimmedP = p.trim();
+                const pLower = trimmedP.toLowerCase();
+                
                 // Regex to capture chapter titles, introductions, prefaces, etc.
-                const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Introducción|Prefacio|Anexo.*)/i);
+                const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Texto - Capítulo \d+|Libro de Ejercicios.*|Introducción|Prefacio|Anexo.*)/i);
                 
                 if (chapterMatch) {
-                    currentChapter = chapterMatch[0].trim();
+                    currentChapter = chapterMatch[0].trim().replace('Texto - ', ''); // Clean up chapter title
                     continue; // Don't include the title itself as searchable content
                 }
 
-                // Check if any keyword regex matches the paragraph
-                if (keywords.some(kwRegex => kwRegex.test(trimmedP))) {
+                // **FIXED**: Use .includes() for a more reliable search.
+                if (keywords.some(kw => pLower.includes(kw))) {
                     relevantChunks.push({ chapter: currentChapter, content: trimmedP });
                 }
             }
@@ -334,7 +334,6 @@
                 }
             }
             
-            // **FIXED**: This new prompt specifically instructs the AI to cite the chapters.
             const prompt = `Eres un asistente experto en "Un Curso de Milagros". Tu única fuente de conocimiento es el texto que te proporciono a continuación.
 Basándote estricta y únicamente en estos textos, explica el concepto de "${concept}".
 
