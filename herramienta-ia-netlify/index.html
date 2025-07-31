@@ -185,25 +185,43 @@
         
         document.addEventListener('DOMContentLoaded', loadBookText);
 
-        function findRelevantChunks(query, text) {
-            if (!text) return "";
+        function findRelevantChunksWithChapters(query, text, maxContextLength) {
+            if (!text || !query) return { context: "", chapters: new Set() };
 
-            const MAX_CONTEXT_LENGTH = 15000;
-            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+            const keywords = query.toLowerCase().replace(/[¿?¡!.,;:"'()]/g, '').split(/\s+/).filter(word => word.length > 2);
+            if (keywords.length === 0) {
+                const singleWord = query.toLowerCase().replace(/[¿?¡!.,;:"'()]/g, '').trim();
+                if (singleWord) keywords.push(singleWord);
+                else return { context: "", chapters: new Set() };
+            }
+
             const paragraphs = text.split(/\n\s*\n/);
             let relevantText = "";
+            let currentChapter = "Información General";
+            const foundChapters = new Set();
 
             for (const p of paragraphs) {
-                const pLower = p.toLowerCase();
+                const trimmedP = p.trim();
+                if (!trimmedP) continue;
+
+                const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Texto - Capítulo \d+|Libro de Ejercicios.*|Introducción|Prefacio|Anexo.*)/i);
+                if (chapterMatch) {
+                    currentChapter = chapterMatch[0].trim().replace('Texto - ', '');
+                    continue;
+                }
+
+                const pLower = trimmedP.toLowerCase();
                 if (keywords.some(kw => pLower.includes(kw))) {
-                    if (relevantText.length + p.length < MAX_CONTEXT_LENGTH) {
-                        relevantText += p + "\n\n";
+                    const chunk = `Del capítulo "${currentChapter}":\n${trimmedP}\n\n`;
+                    if (relevantText.length + chunk.length <= maxContextLength) {
+                        relevantText += chunk;
+                        foundChapters.add(currentChapter);
                     } else {
-                        break;
+                        break; 
                     }
                 }
             }
-            return relevantText;
+            return { context: relevantText, chapters: foundChapters };
         }
 
         function formatAIResponse(text) {
@@ -245,7 +263,7 @@
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error || 'Error en el servidor');
+                    throw new Error(result.error || 'Error en el servidor de la IA');
                 }
                 
                 showAIResponse(result.text.trim());
@@ -271,11 +289,26 @@
                 return;
             }
             
-            const relevantContext = findRelevantChunks(concept, UCDM_TEXT);
-            const prompt = 'Basándote estricta y únicamente en los siguientes fragmentos de \'Un Curso de Milagros\', explica el concepto de \'' + concept + '\' de una forma clara, profunda y sencilla para un estudiante. ' +
-                         'No uses ningún conocimiento externo a estos fragmentos. Si los fragmentos no son suficientes, indícalo. ' +
-                         'Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+            const MAX_CONTEXT_LENGTH = 15000;
+            const { context: relevantContext, chapters } = findRelevantChunksWithChapters(concept, UCDM_TEXT, MAX_CONTEXT_LENGTH);
+
+            if (relevantContext.trim() === '') {
+                showAIResponse("No se encontraron secciones relevantes para tu consulta. Prueba con otros términos.", true);
+                return;
+            }
+
+            const prompt = `Eres un asistente experto en "Un Curso de Milagros". Tu única fuente de conocimiento es el texto que te proporciono a continuación.
+Basándote estricta y únicamente en estos textos, explica el concepto de "${concept}".
+
+**Instrucciones importantes:**
+1.  **Cita tus fuentes:** Cuando expliques una idea, DEBES mencionar de qué capítulo o sección proviene. Por ejemplo: "En el '${Array.from(chapters)[0]}', se explica que..." o "Según se lee en la 'Introducción'...".
+2.  **Sé claro y sencillo:** Explica los conceptos de forma clara y profunda, como si hablaras con un estudiante.
+3.  **No inventes:** Si la información no está en los textos proporcionados, indica que no tienes suficiente información para responder. No uses conocimiento externo.
+4.  **Formato:** Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.
+
+--- TEXTOS DE REFERENCIA (AGRUPADOS POR CAPÍTULO) ---
+${relevantContext}`;
+
             callAI(prompt);
         });
 
@@ -289,12 +322,20 @@
                 showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
                 return;
             }
+            
+            const MAX_CONTEXT_LENGTH = 15000;
+            // For prayers, we don't need the chapter structure in the prompt, just the raw text.
+            const { context: rawContext } = findRelevantChunksWithChapters(situation, UCDM_TEXT, MAX_CONTEXT_LENGTH);
 
-            const relevantContext = findRelevantChunks(situation, UCDM_TEXT);
-            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
+            if (rawContext.trim() === '') {
+                 showAIResponse("No se encontraron fragmentos relevantes para tu situación. Intenta describirla de otra manera.", true);
+                return;
+            }
+
+            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes textos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
                          'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
                          'Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+                         '--- TEXTOS RELEVANTES ---\n' + rawContext;
             callAI(prompt);
         });
     </script>
