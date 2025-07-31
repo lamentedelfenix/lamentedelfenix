@@ -192,10 +192,12 @@
          * @returns {Array<{chapter: string, content: string}>} An array of objects, each with the chapter and the relevant paragraph.
          */
         function findRelevantChunks(query, text) {
-            if (!text) return [];
+            if (!text || !query) return [];
 
-            // Use word boundaries for more accurate keyword matching
-            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3).map(kw => new RegExp(`\\b${kw}\\b`, 'i'));
+            // Split query into keywords, remove empty strings, and create a case-insensitive regex for each.
+            // **FIXED**: Removed filter for word length to allow searching for short but important terms like "ego" or "paz".
+            const keywords = query.toLowerCase().split(/\s+/).filter(Boolean).map(kw => new RegExp(`\\b${kw}\\b`, 'i'));
+            
             if (keywords.length === 0) return [];
 
             const paragraphs = text.split(/\n\s*\n/);
