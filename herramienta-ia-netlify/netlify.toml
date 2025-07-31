@@ -1,0 +1,8 @@
+# Configuración de despliegue para Netlify
+
+[build]
+  # Directorio que Netlify publicará como tu sitio web.
+  publish = "herramienta-ia-netlify"
+  
+  # Directorio donde se encuentran las funciones seguras.
+  functions = "herramienta-ia-netlify/netlify/functions"
