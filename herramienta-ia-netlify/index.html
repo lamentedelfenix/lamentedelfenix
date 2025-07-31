@@ -201,7 +201,7 @@
             const foundChapters = new Set();
 
             for (const p of paragraphs) {
-                const trimmedP = p.trim();
+                let trimmedP = p.trim();
                 if (!trimmedP) continue;
 
                 const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Texto - Capítulo \d+|Libro de Ejercicios.*|Introducción|Prefacio|Anexo.*)/i);
@@ -212,6 +212,9 @@
 
                 const pLower = trimmedP.toLowerCase();
                 if (keywords.some(kw => pLower.includes(kw))) {
+                    // **FIX**: Remove reference numbers like (331) from the paragraph before adding it.
+                    trimmedP = trimmedP.replace(/\s*\(\d+\)/g, '').trim();
+
                     const chunk = `Del capítulo "${currentChapter}":\n${trimmedP}\n\n`;
                     if (relevantText.length + chunk.length <= maxContextLength) {
                         relevantText += chunk;
