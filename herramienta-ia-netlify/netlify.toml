@@ -1,8 +1,15 @@
 # Configuración de despliegue para Netlify
+# Este archivo le dice a Netlify cómo construir tu sitio.
 
 [build]
-  # Directorio que Netlify publicará como tu sitio web.
-  publish = "herramienta-ia-netlify"
-  
-  # Directorio donde se encuentran las funciones seguras.
-  functions = "herramienta-ia-netlify/netlify/functions"
+  # Directorio a publicar. Como nuestro index.html está en la raíz de esta carpeta,
+  # usamos "." para indicar "este directorio actual".
+  publish = "."
+
+  # Directorio donde se encuentran las funciones serverless.
+  # La ruta es relativa a la ubicación de este archivo toml.
+  functions = "netlify/functions"
+
+[functions]
+  # Asegura que las dependencias de las funciones se instalen correctamente.
+  node_bundler = "esbuild"
