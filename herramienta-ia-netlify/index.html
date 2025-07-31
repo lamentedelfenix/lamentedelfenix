@@ -194,19 +194,34 @@
         function findRelevantChunks(query, text) {
             if (!text || !query) return [];
 
-            // Split query into keywords, remove empty strings, and create a case-insensitive regex for each.
-            // **FIXED**: Removed filter for word length to allow searching for short but important terms like "ego" or "paz".
-            const keywords = query.toLowerCase().split(/\s+/).filter(Boolean).map(kw => new RegExp(`\\b${kw}\\b`, 'i'));
-            
-            if (keywords.length === 0) return [];
+            const stopWords = new Set(['un', 'una', 'de', 'a', 'el', 'la', 'los', 'las', 'que', 'qué', 'es', 'en', 'y', 'o', 'por', 'para', 'con', 'si', 'su', 'sus']);
+
+            // **FIXED**: Clean punctuation, split into words, and filter out stop words.
+            const keywords = query
+                .toLowerCase()
+                .replace(/[¿?¡!.,;:"'()]/g, '') // Remove common punctuation
+                .split(/\s+/)
+                .filter(word => word && !stopWords.has(word)) // Filter out empty strings and stop words
+                .map(kw => new RegExp(`\\b${kw}\\b`, 'i')); // Create case-insensitive regex for each keyword
+
+            // If after filtering, there are no keywords left (e.g., query was "qué es"), 
+            // search for the original query as a whole phrase to catch simple cases.
+            if (keywords.length === 0) {
+                const cleanedQuery = query.replace(/[¿?¡!.,;:"'()]/g, '').trim();
+                if (cleanedQuery) {
+                    keywords.push(new RegExp(`\\b${cleanedQuery}\\b`, 'i'));
+                } else {
+                    return []; // Return empty if query is only punctuation/stopwords
+                }
+            }
 
             const paragraphs = text.split(/\n\s*\n/);
             let relevantChunks = [];
-            let currentChapter = "Información General"; // Default chapter
+            let currentChapter = "Información General"; // Default chapter if no chapter title is found first
 
             for (const p of paragraphs) {
                 const trimmedP = p.trim();
-                // Regex to capture chapter, introduction, preface, etc.
+                // Regex to capture chapter titles, introductions, prefaces, etc.
                 const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Introducción|Prefacio|Anexo.*)/i);
                 
                 if (chapterMatch) {
@@ -311,7 +326,7 @@
 
             for (const chapter in groupedByChapter) {
                 const content = groupedByChapter[chapter].join("\n\n");
-                const chapterSection = `Del ${chapter}:\n---\n${content}\n\n====================\n\n`;
+                const chapterSection = `Del capítulo "${chapter}":\n---\n${content}\n\n====================\n\n`;
                 if (relevantContext.length + chapterSection.length < MAX_CONTEXT_LENGTH) {
                     relevantContext += chapterSection;
                 } else {
@@ -319,12 +334,12 @@
                 }
             }
             
-            // This new prompt specifically instructs the AI to cite the chapters.
+            // **FIXED**: This new prompt specifically instructs the AI to cite the chapters.
             const prompt = `Eres un asistente experto en "Un Curso de Milagros". Tu única fuente de conocimiento es el texto que te proporciono a continuación.
 Basándote estricta y únicamente en estos textos, explica el concepto de "${concept}".
 
 **Instrucciones importantes:**
-1.  **Cita tus fuentes:** Cuando expliques una idea, DEBES mencionar de qué capítulo proviene. Por ejemplo: "En el ${Object.keys(groupedByChapter)[0]}, se explica que..." o "Según se lee en el ${Object.keys(groupedByChapter)[0]}...".
+1.  **Cita tus fuentes:** Cuando expliques una idea, DEBES mencionar de qué capítulo o sección proviene. Por ejemplo: "En el 'Capítulo 5. La Expiación y la Curación', se explica que..." o "Según se lee en la 'Introducción'...".
 2.  **Sé claro y sencillo:** Explica los conceptos de forma clara y profunda, como si hablaras con un estudiante.
 3.  **No inventes:** Si la información no está en los textos proporcionados, indica que no tienes suficiente información para responder. No uses conocimiento externo.
 4.  **Formato:** Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.
