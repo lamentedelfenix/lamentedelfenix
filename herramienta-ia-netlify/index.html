@@ -185,29 +185,45 @@
         
         document.addEventListener('DOMContentLoaded', loadBookText);
 
+        /**
+         * Finds relevant chunks of text based on a query and identifies their chapter.
+         * @param {string} query The user's search query.
+         * @param {string} text The full text of the book.
+         * @returns {Array<{chapter: string, content: string}>} An array of objects, each with the chapter and the relevant paragraph.
+         */
         function findRelevantChunks(query, text) {
-            if (!text) return "";
+            if (!text) return [];
 
-            const MAX_CONTEXT_LENGTH = 15000;
-            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+            // Use word boundaries for more accurate keyword matching
+            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3).map(kw => new RegExp(`\\b${kw}\\b`, 'i'));
+            if (keywords.length === 0) return [];
+
             const paragraphs = text.split(/\n\s*\n/);
-            let relevantText = "";
+            let relevantChunks = [];
+            let currentChapter = "Información General"; // Default chapter
 
             for (const p of paragraphs) {
-                const pLower = p.toLowerCase();
-                if (keywords.some(kw => pLower.includes(kw))) {
-                    if (relevantText.length + p.length < MAX_CONTEXT_LENGTH) {
-                        relevantText += p + "\n\n";
-                    } else {
-                        break;
-                    }
+                const trimmedP = p.trim();
+                // Regex to capture chapter, introduction, preface, etc.
+                const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Introducción|Prefacio|Anexo.*)/i);
+                
+                if (chapterMatch) {
+                    currentChapter = chapterMatch[0].trim();
+                    continue; // Don't include the title itself as searchable content
+                }
+
+                // Check if any keyword regex matches the paragraph
+                if (keywords.some(kwRegex => kwRegex.test(trimmedP))) {
+                    relevantChunks.push({ chapter: currentChapter, content: trimmedP });
                 }
             }
-            return relevantText;
+            return relevantChunks;
         }
 
         function formatAIResponse(text) {
+            // Bolds text between **
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
+            // Removes any remaining asterisks if they are not paired
             formattedText = formattedText.replace(/\*\*/g, '');
             aiResponseEl.innerHTML = formattedText;
         }
@@ -218,10 +234,10 @@
             aiResponseEl.innerHTML = '';
             
             if(isError) {
-                aiResponseEl.style.color = '#ef4444';
+                aiResponseEl.style.color = '#ef4444'; // Red for errors
                 aiResponseEl.textContent = message;
             } else {
-                aiResponseEl.style.color = '#fbf5e2';
+                aiResponseEl.style.color = '#fbf5e2'; // Default text color
                 formatAIResponse(message);
             }
         }
@@ -233,6 +249,7 @@
             explainBtn.disabled = true;
             prayBtn.disabled = true;
 
+            // Assumes a Netlify function endpoint
             const apiUrl = `/.netlify/functions/get-ai-response`;
 
             try {
@@ -245,7 +262,7 @@
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error || 'Error en el servidor');
+                    throw new Error(result.error || 'Error en el servidor de la IA');
                 }
                 
                 showAIResponse(result.text.trim());
@@ -271,11 +288,48 @@
                 return;
             }
             
-            const relevantContext = findRelevantChunks(concept, UCDM_TEXT);
-            const prompt = 'Basándote estricta y únicamente en los siguientes fragmentos de \'Un Curso de Milagros\', explica el concepto de \'' + concept + '\' de una forma clara, profunda y sencilla para un estudiante. ' +
-                         'No uses ningún conocimiento externo a estos fragmentos. Si los fragmentos no son suficientes, indícalo. ' +
-                         'Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+            const relevantChunks = findRelevantChunks(concept, UCDM_TEXT);
+
+            if (relevantChunks.length === 0) {
+                showAIResponse("No se encontraron secciones relevantes para tu consulta. Prueba con otros términos.", true);
+                return;
+            }
+
+            // Group found paragraphs by chapter to create a structured context for the AI
+            const groupedByChapter = relevantChunks.reduce((acc, chunk) => {
+                if (!acc[chunk.chapter]) {
+                    acc[chunk.chapter] = [];
+                }
+                acc[chunk.chapter].push(chunk.content);
+                return acc;
+            }, {});
+
+            let relevantContext = "";
+            const MAX_CONTEXT_LENGTH = 15000; // OpenAI context limit
+
+            for (const chapter in groupedByChapter) {
+                const content = groupedByChapter[chapter].join("\n\n");
+                const chapterSection = `Del ${chapter}:\n---\n${content}\n\n====================\n\n`;
+                if (relevantContext.length + chapterSection.length < MAX_CONTEXT_LENGTH) {
+                    relevantContext += chapterSection;
+                } else {
+                    break; // Stop adding more text if we exceed the limit
+                }
+            }
+            
+            // This new prompt specifically instructs the AI to cite the chapters.
+            const prompt = `Eres un asistente experto en "Un Curso de Milagros". Tu única fuente de conocimiento es el texto que te proporciono a continuación.
+Basándote estricta y únicamente en estos textos, explica el concepto de "${concept}".
+
+**Instrucciones importantes:**
+1.  **Cita tus fuentes:** Cuando expliques una idea, DEBES mencionar de qué capítulo proviene. Por ejemplo: "En el ${Object.keys(groupedByChapter)[0]}, se explica que..." o "Según se lee en el ${Object.keys(groupedByChapter)[0]}...".
+2.  **Sé claro y sencillo:** Explica los conceptos de forma clara y profunda, como si hablaras con un estudiante.
+3.  **No inventes:** Si la información no está en los textos proporcionados, indica que no tienes suficiente información para responder. No uses conocimiento externo.
+4.  **Formato:** Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.
+
+--- TEXTOS DE REFERENCIA (AGRUPADOS POR CAPÍTULO) ---
+${relevantContext}`;
+
             callAI(prompt);
         });
 
@@ -290,11 +344,14 @@
                 return;
             }
 
-            const relevantContext = findRelevantChunks(situation, UCDM_TEXT);
-            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
+            const relevantChunks = findRelevantChunks(situation, UCDM_TEXT);
+            // For the prayer, we just need the content, not the chapter structure.
+            const relevantContext = relevantChunks.map(chunk => chunk.content).join('\n\n');
+
+            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes textos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
                          'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
                          'Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
+                         '--- TEXTOS RELEVANTES ---\n' + relevantContext;
             callAI(prompt);
         });
     </script>
