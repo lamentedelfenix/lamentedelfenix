@@ -1,6 +1,5 @@
-// Importa el SDK de Google, que simplifica las llamadas a la API.
-// Asegúrate de tener "@google/generative-ai" en tu archivo package.json
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// Usa 'require' para importar el SDK, es más robusto en Netlify.
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Accede a tu API Key desde las variables de entorno de Netlify.
 // Revisa que en Netlify la variable se llame GOOGLE_API_KEY.
@@ -66,6 +65,12 @@ exports.handler = async function (event, context) {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
+
+    // --- INICIO: LOG PARA VER EL CONSUMO DE TOKENS ---
+    // Esta línea imprimirá el recuento de tokens en los logs de Netlify.
+    console.log("Uso de Tokens:", response.usageMetadata);
+    // --- FIN: LOG PARA VER EL CONSUMO DE TOKENS ---
+
     const text = response.text();
     
     console.log("5. Éxito. Devolviendo la respuesta de la IA.");
