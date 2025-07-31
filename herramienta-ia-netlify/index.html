@@ -196,40 +196,37 @@
 
             const stopWords = new Set(['un', 'una', 'de', 'a', 'el', 'la', 'los', 'las', 'que', 'qué', 'es', 'en', 'y', 'o', 'por', 'para', 'con', 'si', 'su', 'sus', 'mi', 'mis']);
 
-            // **FIXED**: Clean the query to get keywords.
             let keywords = query
                 .toLowerCase()
-                .replace(/[¿?¡!.,;:"'()]/g, '') // Remove common punctuation
+                .replace(/[¿?¡!.,;:"'()]/g, '')
                 .split(/\s+/)
-                .filter(word => word && !stopWords.has(word)); // Filter out empty strings and stop words
+                .filter(word => word && !stopWords.has(word));
 
-            // If no keywords remain, use the most significant original word.
             if (keywords.length === 0) {
                  const originalWords = query.toLowerCase().replace(/[¿?¡!.,;:"'()]/g, '').split(/\s+/).filter(Boolean);
                  if (originalWords.length > 0) {
                      keywords = [originalWords[originalWords.length - 1]];
                  } else {
-                     return []; // No usable words in query
+                     return [];
                  }
             }
 
             const paragraphs = text.split(/\n\s*\n/);
             let relevantChunks = [];
-            let currentChapter = "Información General"; // Default chapter if no chapter title is found first
+            let currentChapter = "Información General";
 
             for (const p of paragraphs) {
                 const trimmedP = p.trim();
+                if (!trimmedP) continue;
+
                 const pLower = trimmedP.toLowerCase();
                 
-                // Regex to capture chapter titles, introductions, prefaces, etc.
                 const chapterMatch = trimmedP.match(/^(Capítulo \d+.*|Texto - Capítulo \d+|Libro de Ejercicios.*|Introducción|Prefacio|Anexo.*)/i);
-                
                 if (chapterMatch) {
-                    currentChapter = chapterMatch[0].trim().replace('Texto - ', ''); // Clean up chapter title
-                    continue; // Don't include the title itself as searchable content
+                    currentChapter = chapterMatch[0].trim().replace('Texto - ', '');
+                    continue;
                 }
 
-                // **FIXED**: Use .includes() for a more reliable search.
                 if (keywords.some(kw => pLower.includes(kw))) {
                     relevantChunks.push({ chapter: currentChapter, content: trimmedP });
                 }
@@ -238,9 +235,7 @@
         }
 
         function formatAIResponse(text) {
-            // Bolds text between **
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
-            // Removes any remaining asterisks if they are not paired
             formattedText = formattedText.replace(/\*\*/g, '');
             aiResponseEl.innerHTML = formattedText;
         }
@@ -251,10 +246,10 @@
             aiResponseEl.innerHTML = '';
             
             if(isError) {
-                aiResponseEl.style.color = '#ef4444'; // Red for errors
+                aiResponseEl.style.color = '#ef4444';
                 aiResponseEl.textContent = message;
             } else {
-                aiResponseEl.style.color = '#fbf5e2'; // Default text color
+                aiResponseEl.style.color = '#fbf5e2';
                 formatAIResponse(message);
             }
         }
@@ -266,7 +261,6 @@
             explainBtn.disabled = true;
             prayBtn.disabled = true;
 
-            // Assumes a Netlify function endpoint
             const apiUrl = `/.netlify/functions/get-ai-response`;
 
             try {
@@ -312,7 +306,6 @@
                 return;
             }
 
-            // Group found paragraphs by chapter to create a structured context for the AI
             const groupedByChapter = relevantChunks.reduce((acc, chunk) => {
                 if (!acc[chunk.chapter]) {
                     acc[chunk.chapter] = [];
@@ -322,7 +315,7 @@
             }, {});
 
             let relevantContext = "";
-            const MAX_CONTEXT_LENGTH = 15000; // OpenAI context limit
+            const MAX_CONTEXT_LENGTH = 15000;
 
             for (const chapter in groupedByChapter) {
                 const content = groupedByChapter[chapter].join("\n\n");
@@ -330,10 +323,16 @@
                 if (relevantContext.length + chapterSection.length < MAX_CONTEXT_LENGTH) {
                     relevantContext += chapterSection;
                 } else {
-                    break; // Stop adding more text if we exceed the limit
+                    break;
                 }
             }
             
+            // **CRUCIAL FIX**: Check if the generated context is empty or just whitespace.
+            if (relevantContext.trim() === '') {
+                showAIResponse("Se encontraron fragmentos, pero no se pudo construir un contexto válido. Intenta reformular tu pregunta.", true);
+                return;
+            }
+
             const prompt = `Eres un asistente experto en "Un Curso de Milagros". Tu única fuente de conocimiento es el texto que te proporciono a continuación.
 Basándote estricta y únicamente en estos textos, explica el concepto de "${concept}".
 
@@ -361,8 +360,12 @@ ${relevantContext}`;
             }
 
             const relevantChunks = findRelevantChunks(situation, UCDM_TEXT);
-            // For the prayer, we just need the content, not the chapter structure.
             const relevantContext = relevantChunks.map(chunk => chunk.content).join('\n\n');
+
+            if (relevantContext.trim() === '') {
+                 showAIResponse("No se encontraron fragmentos relevantes para tu situación. Intenta describirla de otra manera.", true);
+                return;
+            }
 
             const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes textos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
                          'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
