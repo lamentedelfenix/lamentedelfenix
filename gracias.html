@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Gracias por tu compra! - La Mente del Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Animación del fondo, igual que en la página de registro */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            /* Fondo oscuro con gradiente animado */
+            background: linear-gradient(-45deg, #007a8a, #00bcd4, #0c2f5b, #009688);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+        }
+
+        /* Estilo para el contenedor principal, efecto cristal */
+        .card-container {
+            background: rgba(12, 47, 91, 0.6); /* Fondo semitransparente */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 188, 212, 0.3); /* Borde cian sutil */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Contenedor principal sin padding y con overflow-hidden para que la imagen se ajuste a los bordes redondeados -->
+    <div class="text-center max-w-lg mx-auto card-container rounded-xl shadow-2xl overflow-hidden">
+        
+        <!-- Banner ahora ocupa todo el ancho superior -->
+        <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto">
+        
+        <!-- Contenedor interno con el padding para el contenido de texto -->
+        <div class="p-6 sm:p-8">
+            <!-- Mensaje de Éxito (colores de texto actualizados para fondo oscuro) -->
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">¡Pago completado con éxito!</h1>
+            <!-- Texto actualizado a "membresía" -->
+            <p class="text-gray-300 mb-6">Estamos muy felices de tenerte a bordo. Estás a un solo paso de acceder a la membresía.</p>
+            
+            <!-- Instrucciones Claras (colores actualizados) -->
+            <div class="bg-cyan-900/50 border-l-4 border-cyan-400 text-cyan-100 p-4 rounded-md text-left">
+                <p class="font-bold">Siguiente paso: Crea tu cuenta</p>
+                <p class="mt-1">Hemos enviado un correo electrónico a la dirección que usaste para el pago. Contiene un enlace único para que crees tu contraseña y completes tu registro.</p>
+            </div>
+
+            <!-- AVISO DE SPAM (colores actualizados) -->
+            <div class="mt-5 bg-yellow-900/50 border-l-4 border-yellow-400 text-yellow-100 p-4 rounded-md text-left">
+                <p class="font-bold">¡Revisa tu correo no deseado (Spam)!</p>
+                <p class="mt-1">Si no ves el correo en tu bandeja de entrada en los próximos 5 minutos, es muy probable que esté en la carpeta de spam.</p>
+            </div>
+            
+            <!-- Contacto (actualizado para mostrar el email) -->
+            <div class="mt-8 text-sm text-gray-400">
+                <p>¿Tienes algún problema? Contacta con nosotros:</p>
+                <a href="mailto:lamentedelfenix@gmail.com" class="font-semibold text-gray-300 hover:underline hover:text-[#e91e63] transition-colors text-base">
+                    lamentedelfenix@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
