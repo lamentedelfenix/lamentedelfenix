@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta - La Mente del Fénix</title>
+    <title>Completar Registro - La Mente del Fénix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <style>
+        /* Estilos visuales para la página */
         @keyframes gradient-animation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(-45deg, #007a8a, #00bcd4, #0c2f5b, #009688);
@@ -23,124 +23,32 @@
             animation: gradient-animation 15s ease infinite;
             color: #f7fafc;
         }
-
-        .form-wrapper {
-            animation: fadeIn 1s ease-out;
-        }
-
+        .form-wrapper { animation: fadeIn 1s ease-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         .form-container {
             background: rgba(12, 47, 91, 0.5);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border-radius: 1rem;
-            position: relative;
-            overflow: hidden;
             border: 1px solid rgba(0, 188, 212, 0.3);
         }
-
-        .form-content {
-            position: relative;
-            z-index: 1;
-            background: rgba(12, 47, 91, 0.7);
-            border-radius: 0.9rem;
-            padding: 2rem;
-        }
-        
-        .input-group {
-            position: relative;
-        }
-
-        .input-label {
-            color: #80DEEA; /* Color cian claro para la etiqueta */
-            transition: color 0.3s ease;
-        }
-
-        .form-input {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #80DEEA; /* Borde cian claro */
-            color: white;
-            transition: border-color 0.3s ease;
-            padding: 0.5rem 0.5rem 0.5rem 2.5rem;
-        }
-
-        .form-input:focus {
-            outline: none;
-        }
-
-        .input-icon {
-            position: absolute;
-            top: 50%;
-            left: 0.5rem;
-            transform: translateY(-50%);
-            color: #80DEEA; /* Color cian claro para el icono */
-            transition: color 0.3s ease;
-        }
-        
-        @keyframes magenta-pulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 4px rgba(233, 30, 99, 0.7));
-            }
-            50% {
-                filter: drop-shadow(0 0 12px rgba(233, 30, 99, 1));
-            }
-        }
-
-        .input-group:focus-within .input-label,
-        .input-group:focus-within .input-icon,
-        .input-group:focus-within .form-input {
-             animation: magenta-pulse 2s infinite ease-in-out;
-        }
-        
-        .input-group:focus-within .input-label,
-        .input-group:focus-within .input-icon {
-            color: #f8bbd0;
-        }
-        .input-group:focus-within .form-input {
-             border-color: #f8bbd0;
-        }
-
-        @keyframes button-pulse {
-            0% { box-shadow: 0 0 15px rgba(233, 30, 99, 0.5); }
-            50% { box-shadow: 0 0 25px 10px rgba(233, 30, 99, 0.8); }
-            100% { box-shadow: 0 0 15px rgba(233, 30, 99, 0.5); }
-        }
-
-        .btn-submit {
-            background: linear-gradient(45deg, #e91e63, #c2185b);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            animation: button-pulse 2.5s infinite ease-in-out;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 30px 12px rgba(233, 30, 99, 1);
-        }
-        
-        .btn-submit:disabled {
-            background: #f8bbd0;
-            cursor: not-allowed;
-            animation: none;
-        }
-
-        .error-message { 
-            background-color: rgba(198, 40, 40, 0.3); 
-            color: #ffcdd2; 
-            border-left: 4px solid #c62828; 
-        }
-        
-        .suggestion-box {
-            background-color: rgba(0, 188, 212, 0.15);
-            border: 1px solid rgba(0, 188, 212, 0.4);
-            color: #E0F7FA;
-        }
+        .form-content { background: rgba(12, 47, 91, 0.7); border-radius: 0.9rem; padding: 2rem; }
+        .input-group { position: relative; }
+        .input-label { color: #80DEEA; }
+        .form-input { background: transparent; border: none; border-bottom: 2px solid #80DEEA; color: white; padding: 0.5rem 0.5rem 0.5rem 2.5rem; }
+        .form-input:focus { outline: none; }
+        .input-icon { position: absolute; top: 50%; left: 0.5rem; transform: translateY(-50%); color: #80DEEA; }
+        .input-group:focus-within .input-label, .input-group:focus-within .input-icon { color: #f8bbd0; }
+        .input-group:focus-within .form-input { border-color: #f8bbd0; }
+        .btn-submit { background: linear-gradient(45deg, #e91e63, #c2185b); color: white; transition: all 0.3s ease; border: none; }
+        .btn-submit:hover { transform: translateY(-3px); }
+        .btn-submit:disabled { background: #f8bbd0; cursor: not-allowed; }
+        .message-box { border-left-width: 4px; }
+        .error-message { background-color: rgba(198, 40, 40, 0.3); color: #ffcdd2; border-color: #c62828; }
+        .success-message { background-color: rgba(0, 188, 212, 0.2); color: #E0F7FA; border-color: #00BCD4; }
+        .info-message { background-color: rgba(255, 193, 7, 0.2); color: #FFF8E1; border-color: #FFC107; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -151,51 +59,37 @@
         </header>
 
         <div class="form-container">
-            <div class="form-content">
+            <div id="form-content" class="form-content">
                 <h2 class="text-3xl font-extrabold text-center mb-6" style="color: #e91e63;">Completa tu Registro</h2>
                 
-                <div id="message-box" class="p-3 rounded-md mb-6 hidden"></div>
+                <div id="message-box" class="message-box p-4 rounded-md mb-6 text-center">Cargando...</div>
 
-                <!-- Caja de Sugerencia de Gmail -->
-                <div class="suggestion-box mb-6 p-4 rounded-lg text-sm text-center">
-                    <i class="fas fa-info-circle mr-2"></i>
-                    <strong>Sugerencia:</strong> Por limitaciones técnicas con nuestra plataforma inteligente te recomendamos usar una cuenta de Gmail. Si no tienes una, puedes crearla <a href="https://workspace.google.com/intl/es/gmail/" target="_blank" class="font-bold underline hover:text-white">aquí</a>. Si prefieres no hacerlo ahora, no te preocupes, podrás configurarlo más tarde.
-                </div>
-
-                <form id="register-form">
+                <form id="register-form" class="hidden">
                     <div class="mb-4">
                         <label for="name" class="input-label block text-sm font-medium mb-2">Nombre</label>
                         <div class="relative input-group">
-                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i class="fas fa-user input-icon"></i>
-                            </div>
+                             <div class="input-icon absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><i class="fas fa-user"></i></div>
                             <input type="text" id="name" class="form-input w-full" required>
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label for="email" class="input-label block text-sm font-medium mb-2">Correo Electrónico</label>
+                        <label for="email" class="input-label block text-sm font-medium mb-2">Correo Electrónico (Verificado)</label>
                         <div class="relative input-group">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i class="fas fa-envelope input-icon"></i>
-                            </div>
-                            <input type="email" id="email" class="form-input w-full" required>
+                            <div class="input-icon absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><i class="fas fa-envelope"></i></div>
+                            <input type="email" id="email" class="form-input w-full bg-gray-700/30 cursor-not-allowed" readonly>
                         </div>
                     </div>
                     <div class="mb-6">
                         <label for="password" class="input-label block text-sm font-medium mb-2">Crea una Contraseña</label>
                         <div class="relative input-group">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i class="fas fa-lock input-icon"></i>
-                            </div>
+                            <div class="input-icon absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><i class="fas fa-lock"></i></div>
                             <input type="password" id="password" class="form-input w-full" required>
                         </div>
                     </div>
                     <div class="mb-6">
                         <label for="confirm-password" class="input-label block text-sm font-medium mb-2">Confirmar Contraseña</label>
                         <div class="relative input-group">
-                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <i class="fas fa-lock input-icon"></i>
-                            </div>
+                             <div class="input-icon absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><i class="fas fa-lock"></i></div>
                             <input type="password" id="confirm-password" class="form-input w-full" required>
                         </div>
                     </div>
@@ -203,18 +97,20 @@
                         Crear mi Cuenta
                     </button>
                 </form>
-                <div class="text-center text-sm text-gray-400 mt-6">
-                    <p>¿Ya tienes una cuenta? <a href="./login.html" class="font-bold hover:underline" style="color: #f472b6;">Inicia sesión aquí</a></p>
-                </div>
             </div>
         </div>
     </div>
 
     <script type="module">
+        // Importaciones de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // **CORRECCIÓN**: Se separaron las importaciones. Auth y Functions son módulos distintos.
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-functions.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
+        // --- CONFIGURACIÓN DE FIREBASE ---
+        // Tus datos de configuración de Firebase.
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -225,10 +121,13 @@
             measurementId: "G-5L3T8PGXYK"
         };
 
+        // Inicializar servicios de Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const functions = getFunctions(app, 'us-central1'); // Especificamos la región de las functions
 
+        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         const registerForm = document.getElementById('register-form');
         const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
@@ -236,37 +135,60 @@
         const confirmPasswordInput = document.getElementById('confirm-password');
         const messageBox = document.getElementById('message-box');
         const submitButton = document.getElementById('submit-button');
+        const formContent = document.getElementById('form-content');
+
+        // --- LÓGICA PRINCIPAL ---
+        let registrationToken = null;
 
         function showMessage(text, type = 'error') {
             messageBox.textContent = text;
-            messageBox.className = 'p-3 rounded-md mb-6'; 
-            if (type === 'error') {
-                messageBox.classList.add('error-message');
-            }
+            messageBox.className = 'message-box p-4 rounded-md mb-6 text-center '; 
+            if (type === 'error') messageBox.classList.add('error-message');
+            else if (type === 'success') messageBox.classList.add('success-message');
+            else messageBox.classList.add('info-message');
             messageBox.classList.remove('hidden');
         }
 
-        function showAuthError(errorCode) {
-            let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
-            switch (errorCode) {
-                case 'auth/email-already-in-use': message = 'Este correo electrónico ya está registrado. Por favor, inicia sesión.'; break;
-                case 'auth/weak-password': message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.'; break;
-                case 'auth/invalid-email': message = 'El formato del correo electrónico no es válido.'; break;
-                case 'auth/password-mismatch': message = 'Las contraseñas no coinciden.'; break;
+        // Al cargar la página, validar el token de la URL
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            registrationToken = params.get('token');
+
+            if (!registrationToken) {
+                showMessage('Acceso no autorizado. Este enlace de registro no es válido o ha expirado.', 'error');
+                formContent.classList.add('hidden');
+                return;
             }
-            showMessage(message, 'error');
-        }
-        
+            
+            showMessage('Validando tu acceso...', 'info');
+
+            try {
+                // Preparamos la llamada a la Cloud Function para validar el token
+                const validateRegistrationToken = httpsCallable(functions, 'validateRegistrationToken');
+                const result = await validateRegistrationToken({ token: registrationToken });
+                
+                const data = result.data;
+                emailInput.value = data.email;
+                messageBox.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error validando token:", error);
+                showMessage(error.message, 'error');
+                formContent.classList.add('hidden');
+            }
+        });
+
+        // Manejar el envío del formulario de registro
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = nameInput.value.trim();
             const email = emailInput.value;
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
-            messageBox.classList.add('hidden');
-
+            
             if (password !== confirmPassword) {
-                showAuthError('auth/password-mismatch');
+                showMessage('Las contraseñas no coinciden.', 'error');
                 return;
             }
             if (!name) {
@@ -278,22 +200,36 @@
             submitButton.textContent = 'Creando cuenta...';
 
             try {
+                // 1. Crear el usuario en Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                const userDocRef = doc(db, "users", user.uid);
-                
-                await setDoc(userDocRef, {
-                    name: name,
-                    email: email,
-                    createdAt: new Date()
+                // 2. Llamar a la Cloud Function para finalizar el registro
+                const finalizeRegistration = httpsCallable(functions, 'finalizeRegistration');
+                await finalizeRegistration({ 
+                    token: registrationToken, 
+                    uid: user.uid,
+                    name: name
                 });
 
-                window.location.href = './miembros.html';
+                // 3. Redirigir al usuario a la página de miembros
+                showMessage('¡Registro completado! Redirigiendo...', 'success');
+                setTimeout(() => {
+                    window.location.href = './miembros.html'; // O la URL de tu área de miembros
+                }, 2000);
 
             } catch (error) {
-                showAuthError(error.code);
-                console.error("Error de registro:", error);
+                let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
+                if (error.code) {
+                    switch (error.code) {
+                        case 'auth/weak-password': message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.'; break;
+                        case 'auth/email-already-in-use': message = 'Este correo ya tiene una cuenta. Intenta iniciar sesión.'; break;
+                        default: message = 'Error al crear la cuenta. (' + error.code + ')';
+                    }
+                } else {
+                    message = error.message;
+                }
+                showMessage(message, 'error');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Crear mi Cuenta';
             }
