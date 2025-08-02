@@ -11,29 +11,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <style>
         /* Estilos visuales para la página */
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(-45deg, #007a8a, #00bcd4, #0c2f5b, #009688);
-            background-size: 400% 400%;
-            animation: gradient-animation 15s ease infinite;
-            color: #f7fafc;
-        }
+        @keyframes gradient-animation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(-45deg, #007a8a, #00bcd4, #0c2f5b, #009688); background-size: 400% 400%; animation: gradient-animation 15s ease infinite; color: #f7fafc; }
         .form-wrapper { animation: fadeIn 1s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .form-container {
-            background: rgba(12, 47, 91, 0.5);
-            backdrop-filter: blur(15px);
-            border-radius: 1rem;
-            border: 1px solid rgba(0, 188, 212, 0.3);
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .form-container { background: rgba(12, 47, 91, 0.5); backdrop-filter: blur(15px); border-radius: 1rem; border: 1px solid rgba(0, 188, 212, 0.3); }
         .form-content { background: rgba(12, 47, 91, 0.7); border-radius: 0.9rem; padding: 2rem; }
         .input-group { position: relative; }
         .input-label { color: #80DEEA; }
@@ -61,9 +43,7 @@
         <div class="form-container">
             <div id="form-content" class="form-content">
                 <h2 class="text-3xl font-extrabold text-center mb-6" style="color: #e91e63;">Completa tu Registro</h2>
-                
                 <div id="message-box" class="message-box p-4 rounded-md mb-6 text-center">Cargando...</div>
-
                 <form id="register-form" class="hidden">
                     <div class="mb-4">
                         <label for="name" class="input-label block text-sm font-medium mb-2">Nombre</label>
@@ -93,24 +73,16 @@
                             <input type="password" id="confirm-password" class="form-input w-full" required>
                         </div>
                     </div>
-                    <button type="submit" id="submit-button" class="btn-submit w-full font-bold py-3 rounded-lg mt-4">
-                        Crear mi Cuenta
-                    </button>
+                    <button type="submit" id="submit-button" class="btn-submit w-full font-bold py-3 rounded-lg mt-4">Crear mi Cuenta</button>
                 </form>
             </div>
         </div>
     </div>
 
     <script type="module">
-        // Importaciones de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // **CORRECCIÓN**: Se separaron las importaciones. Auth y Functions son módulos distintos.
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-functions.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // --- CONFIGURACIÓN DE FIREBASE ---
-        // Tus datos de configuración de Firebase.
         const firebaseConfig = {
             apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
             authDomain: "membresia-ucdm-v2.firebaseapp.com",
@@ -121,13 +93,9 @@
             measurementId: "G-5L3T8PGXYK"
         };
 
-        // Inicializar servicios de Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
-        const functions = getFunctions(app, 'us-central1'); // Especificamos la región de las functions
 
-        // --- REFERENCIAS A ELEMENTOS DEL DOM ---
         const registerForm = document.getElementById('register-form');
         const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
@@ -137,7 +105,6 @@
         const submitButton = document.getElementById('submit-button');
         const formContent = document.getElementById('form-content');
 
-        // --- LÓGICA PRINCIPAL ---
         let registrationToken = null;
 
         function showMessage(text, type = 'error') {
@@ -149,7 +116,6 @@
             messageBox.classList.remove('hidden');
         }
 
-        // Al cargar la página, validar el token de la URL
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             registrationToken = params.get('token');
@@ -163,12 +129,22 @@
             showMessage('Validando tu acceso...', 'info');
 
             try {
-                // Preparamos la llamada a la Cloud Function para validar el token
-                const validateRegistrationToken = httpsCallable(functions, 'validateRegistrationToken');
-                const result = await validateRegistrationToken({ token: registrationToken });
+                // --- URL de la función de validación actualizada ---
+                const validateUrl = "https://us-central1-membresia-ucdm-v2.cloudfunctions.net/validateRegistrationToken"; 
                 
-                const data = result.data;
-                emailInput.value = data.email;
+                const response = await fetch(validateUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: { token: registrationToken } })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Error de validación desconocido.');
+                }
+
+                emailInput.value = result.data.email;
                 messageBox.classList.add('hidden');
                 registerForm.classList.remove('hidden');
 
@@ -179,7 +155,6 @@
             }
         });
 
-        // Manejar el envío del formulario de registro
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = nameInput.value.trim();
@@ -187,48 +162,42 @@
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
             
-            if (password !== confirmPassword) {
-                showMessage('Las contraseñas no coinciden.', 'error');
-                return;
-            }
-            if (!name) {
-                showMessage('Por favor, introduce tu nombre.', 'error');
-                return;
-            }
+            if (password !== confirmPassword) { showMessage('Las contraseñas no coinciden.', 'error'); return; }
+            if (!name) { showMessage('Por favor, introduce tu nombre.', 'error'); return; }
 
             submitButton.disabled = true;
             submitButton.textContent = 'Creando cuenta...';
 
             try {
-                // 1. Crear el usuario en Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // 2. Llamar a la Cloud Function para finalizar el registro
-                const finalizeRegistration = httpsCallable(functions, 'finalizeRegistration');
-                await finalizeRegistration({ 
-                    token: registrationToken, 
-                    uid: user.uid,
-                    name: name
-                });
+                // --- URL de la función de finalización actualizada ---
+                const finalizeUrl = "https://us-central1-membresia-ucdm-v2.cloudfunctions.net/finalizeRegistration";
 
-                // 3. Redirigir al usuario a la página de miembros
+                const finalizeResponse = await fetch(finalizeUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: { token: registrationToken, uid: user.uid, name: name } })
+                });
+                
+                if (!finalizeResponse.ok) {
+                    const errorResult = await finalizeResponse.json();
+                    throw new Error(errorResult.error || 'No se pudo finalizar la configuración de la cuenta.');
+                }
+
                 showMessage('¡Registro completado! Redirigiendo...', 'success');
-                setTimeout(() => {
-                    window.location.href = './miembros.html'; // O la URL de tu área de miembros
-                }, 2000);
+                setTimeout(() => { window.location.href = './miembros.html'; }, 2000);
 
             } catch (error) {
                 let message = 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
                 if (error.code) {
-                    switch (error.code) {
+                     switch (error.code) {
                         case 'auth/weak-password': message = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.'; break;
                         case 'auth/email-already-in-use': message = 'Este correo ya tiene una cuenta. Intenta iniciar sesión.'; break;
                         default: message = 'Error al crear la cuenta. (' + error.code + ')';
                     }
-                } else {
-                    message = error.message;
-                }
+                } else { message = error.message; }
                 showMessage(message, 'error');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Crear mi Cuenta';
