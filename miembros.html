@@ -1191,6 +1191,7 @@
                     watermarkContainer.style.textAlign = 'center';
                     watermarkContainer.appendChild(watermark);
 
+                    // Inserta el contenido y el watermark en el contenedor temporal
                     tempContainer.appendChild(clone);
                     tempContainer.appendChild(watermarkContainer);
                     document.body.appendChild(tempContainer);
@@ -1285,29 +1286,25 @@
             shareLessonBtn.addEventListener('click', async () => {
                 if (!currentLesson) return;
 
-                // Genera el texto a compartir
-                const shareText = `Mensaje del Día: “${currentLesson.phrase}”\n\n${currentLesson.explanation}\n\nConoce más en La Mente del Fénix: ${window.location.href}`;
-                
                 // Muestra un indicador de carga
                 openModal(shareModal);
                 sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
                 downloadShareImageLink.style.display = 'none';
 
+                // Determina si el dispositivo es móvil y soporta la Web Share API con archivos
+                const isMobileShareSupported = navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
 
-                // Versión para compartir en móvil (con Web Share API)
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] })) {
+                if (isMobileShareSupported) {
                     try {
                         const imageBlob = await generateMobileShareImage();
                         const imageFile = new File([imageBlob], 'mensaje-del-dia.png', { type: imageBlob.type });
 
                         await navigator.share({
                             title: 'Mensaje del Día - La Mente del Fénix',
-                            text: shareText,
                             files: [imageFile]
                         });
                         console.log('Contenido compartido con éxito a través de la API nativa.');
                         closeModal(shareModal);
-
                     } catch (error) {
                         console.error('Error al compartir:', error);
                         // Si falla, se queda en la modal de descarga como fallback
