@@ -707,7 +707,6 @@
     <div id="recursos-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
-            <h3 class="text-2xl font-bold mb-4">Recursos</h3>
             <div class="card p-6 rounded-lg block no-underline flex flex-col">
                 <div class="flex-grow">
                     <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
@@ -739,8 +738,10 @@
             <span class="modal-close-btn">×</span>
             <h3 class="text-2xl font-bold mb-4">Comparte el Mensaje del Día</h3>
             <p class="mb-6">Descarga la imagen y compártela en tus redes sociales.</p>
+            <!-- Imagen de previsualización que se llena con el canvas -->
             <img id="share-preview-image" src="" alt="Previsualización del Mensaje">
-            <a id="download-share-image" href="#" download="mensaje-del-dia.png" class="btn btn-cyan font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
+            <!-- Botón de descarga -->
+            <a id="download-share-image" href="#" download="mensaje-del-dia.png" class="btn btn-cyan font-bold py-3 px-6 rounded-lg no-underline shadow-lg" style="display: none;">
                 <i class="fas fa-download mr-2"></i>Descargar Imagen
             </a>
         </div>
@@ -764,7 +765,7 @@
     </button>
 
     <script>
-        // Background animation script
+        // Script de animación de fondo
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -1103,52 +1104,71 @@
         }
 
         const shareLessonBtn = document.getElementById('share-lesson-btn');
-        shareLessonBtn.addEventListener('click', () => openModal(document.getElementById('share-modal')));
-
         const sharePreviewImage = document.getElementById('share-preview-image');
         const downloadShareImageLink = document.getElementById('download-share-image');
+        const shareModal = document.getElementById('share-modal');
+        const shareModalContent = shareModal.querySelector('.modal-content');
         
-        document.getElementById('share-modal').addEventListener('click', (e) => {
-           if(e.target === document.getElementById('share-modal')) return;
-           
-           const clone = lessonContainer.cloneNode(true);
-           clone.style.position = 'absolute';
-           clone.style.left = '-9999px';
-           clone.style.top = '0px';
-           clone.style.width = lessonContainer.offsetWidth + 'px';
-           clone.style.paddingBottom = '20px';
-           
-           const watermarkContainer = document.createElement('div');
-           watermarkContainer.style.textAlign = 'center';
-           watermarkContainer.style.paddingTop = '20px';
-           
-           const watermark = new Image();
-           watermark.crossOrigin = "anonymous";
-           
-           watermark.onload = () => {
-               clone.appendChild(watermarkContainer).appendChild(watermark);
-               document.body.appendChild(clone);
+        // --- LÓGICA CORREGIDA PARA EL BOTÓN DE COMPARTIR ---
+        if (shareLessonBtn) {
+            shareLessonBtn.addEventListener('click', async () => {
+                openModal(shareModal);
+                
+                // Muestra un mensaje de carga mientras se genera la imagen
+                sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
+                downloadShareImageLink.style.display = 'none';
 
-               html2canvas(clone, { backgroundColor: "#0c1427", useCORS: true, scale: 2 }).then(canvas => {
-                   document.body.removeChild(clone);
-                   const dataUrl = canvas.toDataURL('image/png');
-                   sharePreviewImage.src = dataUrl;
-                   downloadShareImageLink.href = dataUrl;
-               }).catch(err => {
-                   console.error("Error generating canvas:", err);
-                   document.body.removeChild(clone);
-               });
-           };
-           
-           watermark.onerror = () => {
-               console.error("Could not load the signature image.");
-               document.body.removeChild(clone);
-           };
+                // Clona el contenedor de la lección para poder capturarlo sin modificar el original
+                const clone = lessonContainer.cloneNode(true);
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0px';
+                clone.style.width = '700px'; // Establece un ancho fijo para una imagen consistente
+                clone.style.padding = '40px';
+                
+                const watermarkContainer = document.createElement('div');
+                watermarkContainer.style.textAlign = 'center';
+                watermarkContainer.style.paddingTop = '20px';
+                
+                const watermark = new Image();
+                watermark.crossOrigin = "anonymous";
+                
+                // Genera la imagen cuando el watermark ha cargado
+                watermark.onload = () => {
+                    clone.appendChild(watermarkContainer).appendChild(watermark);
+                    document.body.appendChild(clone);
 
-           watermark.src = 'https://i.imgur.com/CG2tWKI.png';
-           watermark.style.width = '180px';
-           watermark.style.opacity = '0.7';
-        });
+                    html2canvas(clone, { 
+                        backgroundColor: "#0c1427", 
+                        useCORS: true, 
+                        scale: 2 
+                    }).then(canvas => {
+                        document.body.removeChild(clone);
+                        const dataUrl = canvas.toDataURL('image/png');
+                        sharePreviewImage.src = dataUrl;
+                        downloadShareImageLink.href = dataUrl;
+                        downloadShareImageLink.style.display = 'block';
+                    }).catch(err => {
+                        console.error("Error generating canvas:", err);
+                        sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error';
+                        document.body.removeChild(clone);
+                    });
+                };
+                
+                watermark.onerror = () => {
+                    console.error("Could not load the signature image.");
+                    sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error de+Carga';
+                    document.body.removeChild(clone);
+                };
+
+                // Inicia la carga del watermark
+                watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+                watermark.style.width = '180px';
+                watermark.style.opacity = '0.7';
+            });
+        }
+        // --- FIN LÓGICA CORREGIDA ---
+
 
         const comingSoonModal = document.getElementById('coming-soon-modal');
         document.querySelectorAll('.teaser-card').forEach(card => card.addEventListener('click', () => openModal(comingSoonModal)));
@@ -1223,7 +1243,4 @@
                 }
             });
         });
-
     </script>
-</body>
-</html>
