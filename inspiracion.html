@@ -351,6 +351,10 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
+                <a href="./instrucciones.html" class="sidebar-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Mapa Mental + IA</span>
+                </a>
                  <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
                     <i class="fas fa-users"></i>
@@ -593,6 +597,11 @@
             if(user) {
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
+
+                // Muestra el menú lateral y el encabezado para usuarios autenticados
+                sidebar.style.removeProperty('display');
+                document.querySelector('.md\\:hidden').style.removeProperty('display');
+                
                 loadVideos();
 
                 const appId = 'ucdm-tracker-app-v2';
@@ -639,6 +648,10 @@
             } else {
                 mainContent.style.display = 'none';
                 authMessage.style.display = 'flex';
+
+                // Oculta el menú lateral y el encabezado para usuarios no autenticados
+                sidebar.style.display = 'none';
+                document.querySelector('.md\\:hidden').style.display = 'none';
             }
         });
         
