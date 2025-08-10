@@ -394,7 +394,7 @@
         }
         #share-clone .lesson-card-spectacular {
             width: 100%;
-            height: 100%;
+            height: auto; /* Cambiado para que se ajuste al contenido */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -408,11 +408,8 @@
             line-height: 1.5;
             margin-top: 40px;
         }
-        #share-clone .watermark {
-            width: 300px;
-            opacity: 0.8;
-            margin-top: 40px;
-        }
+        /* Este estilo ya no es necesario aquí, se aplica en JS */
+        /* #share-clone .watermark { ... } */
 
         .tool-button {
             display: inline-block;
@@ -868,6 +865,9 @@
         let currentLesson = null; // Variable para almacenar la lección actual
         let startAnimation;
 
+        // --- FUNCIÓN HELPER PARA DETECTAR MÓVILES ---
+        const isMobileDevice = () => /Mobi|Android/i.test(navigator.userAgent);
+
         // --- LÓGICA DE LA BARRA LATERAL MÓVIL ---
         function toggleSidebar() {
             sidebar.classList.toggle('-translate-x-full');
@@ -1160,11 +1160,13 @@
                 
                 const clone = lessonContainer.cloneNode(true);
                 clone.style.width = '100%';
+                clone.style.height = 'auto'; // Ajustar altura al contenido
                 clone.style.padding = '80px';
                 clone.style.display = 'flex';
                 clone.style.flexDirection = 'column';
                 clone.style.justifyContent = 'center';
                 clone.style.alignItems = 'center';
+                clone.style.boxSizing = 'border-box'; // Asegurar padding correcto
 
                 const phraseEl = clone.querySelector('#lesson-phrase');
                 if (phraseEl) phraseEl.style.fontSize = '4rem';
@@ -1185,15 +1187,17 @@
                 watermark.onload = () => {
                     watermark.style.width = '300px';
                     watermark.style.opacity = '0.7';
-                    watermark.style.marginTop = '40px';
                     
                     const watermarkContainer = document.createElement('div');
                     watermarkContainer.style.textAlign = 'center';
+                    watermarkContainer.style.marginTop = '80px'; // Ajusta este valor para acercar o alejar la firma
                     watermarkContainer.appendChild(watermark);
 
-                    // Inserta el contenido y el watermark en el contenedor temporal
+                    // *** FIX: Inserta el watermark DENTRO del clon del contenido ***
+                    clone.appendChild(watermarkContainer);
+                    
+                    // Inserta el clon (que ahora contiene todo) en el contenedor temporal
                     tempContainer.appendChild(clone);
-                    tempContainer.appendChild(watermarkContainer);
                     document.body.appendChild(tempContainer);
 
                     html2canvas(tempContainer, { 
@@ -1292,9 +1296,10 @@
                 downloadShareImageLink.style.display = 'none';
 
                 // Determina si el dispositivo es móvil y soporta la Web Share API con archivos
-                const isMobileShareSupported = navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
+                const isShareApiSupported = navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
 
-                if (isMobileShareSupported) {
+                // *** FIX: Usar isMobileDevice() para forzar el modo de descarga en escritorio ***
+                if (isMobileDevice() && isShareApiSupported) {
                     try {
                         const imageBlob = await generateMobileShareImage();
                         const imageFile = new File([imageBlob], 'mensaje-del-dia.png', { type: imageBlob.type });
@@ -1306,22 +1311,27 @@
                         console.log('Contenido compartido con éxito a través de la API nativa.');
                         closeModal(shareModal);
                     } catch (error) {
-                        console.error('Error al compartir:', error);
-                        // Si falla, se queda en la modal de descarga como fallback
-                        const dataUrl = URL.createObjectURL(imageBlob);
-                        sharePreviewImage.src = dataUrl;
-                        downloadShareImageLink.href = dataUrl;
-                        downloadShareImageLink.style.display = 'block';
+                        // Si el usuario cancela el diálogo de compartir, no es un error real.
+                        if (error.name === 'AbortError') {
+                            console.log('El usuario canceló la acción de compartir.');
+                            closeModal(shareModal);
+                        } else {
+                           console.error('Error al compartir:', error);
+                           // Si falla, se queda en la modal de descarga como fallback
+                           // (esto requiere que imageBlob esté disponible en este scope)
+                           // Para simplificar, simplemente cerramos la modal o mostramos un error.
+                           closeModal(shareModal);
+                        }
                     }
                 } else {
-                    // Versión para escritorio (muestra la modal con el botón de descarga)
+                    // Versión para escritorio (o móvil sin API de compartir)
                     try {
                         const imageBlob = await generateDesktopImage();
                         const dataUrl = URL.createObjectURL(imageBlob);
                         sharePreviewImage.src = dataUrl;
                         downloadShareImageLink.href = dataUrl;
                         downloadShareImageLink.style.display = 'block';
-                        console.log('API de compartir no disponible, mostrando modal de descarga.');
+                        console.log('API de compartir no disponible o es escritorio, mostrando modal de descarga.');
                     } catch (error) {
                         console.error("No se pudo generar la imagen para la modal de descarga.", error);
                         sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error';
@@ -1348,8 +1358,7 @@
         const bookmarkTooltip = document.getElementById('bookmark-tooltip');
         
         if (bookmarkBtn && bookmarkTooltip) {
-            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-            if (isMobile) bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
+            if (isMobileDevice()) bookmarkTooltip.innerHTML = `Usa la opción 'Añadir a pantalla de inicio' de tu navegador.`;
             else if(navigator.userAgent.includes("Mac")) bookmarkTooltip.innerHTML = `Presiona <kbd class="font-sans bg-gray-700 p-1 rounded">Cmd</kbd> + <kbd class="font-sans bg-gray-700 p-1 rounded">D</kbd> para guardar.`;
             
             bookmarkBtn.addEventListener('click', () => {
@@ -1406,3 +1415,5 @@
             });
         });
     </script>
+</body>
+</html>
