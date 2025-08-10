@@ -489,6 +489,11 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
+                 <!-- Aquí se añade el nuevo enlace al mapa mental -->
+                 <a href="./instrucciones.html" class="sidebar-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Mapa Mental + IA</span>
+                </a>
                 <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
                     <i class="fas fa-users"></i>
@@ -925,7 +930,7 @@
             document.body.style.opacity = '1'; // Muestra el body para evitar parpadeo
             if (user) {
                 // --- USUARIO AUTENTICADO ---
-                sidebar.style.display = 'flex';
+                sidebar.style.removeProperty('display');
                 mobileHeader.classList.remove('hidden'); // Muestra la cabecera móvil
                 mainContent.style.display = 'block';
                 authMessage.style.display = 'none';
