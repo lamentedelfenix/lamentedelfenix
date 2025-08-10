@@ -644,13 +644,16 @@
             onAuthStateChanged(auth, (user) => {
                 document.body.style.opacity = '1';
                 if (user) {
-                    sidebar.style.display = 'flex';
-                    mobileHeader.style.display = 'flex';
-                    pageContent.classList.add('md:ml-72');
+                    // Muestra los elementos de la interfaz del usuario
+                    // Se remueve la propiedad 'display' para que Tailwind CSS controle la visibilidad
+                    sidebar.style.removeProperty('display');
+                    mobileHeader.style.removeProperty('display');
                     mainContent.style.display = 'block';
                     authMessage.style.display = 'none';
+                    pageContent.classList.add('md:ml-72');
                     setupStreakListener(user.uid);
                 } else {
+                    // Oculta los elementos de la interfaz del usuario
                     sidebar.style.display = 'none';
                     mobileHeader.style.display = 'none';
                     pageContent.classList.remove('md:ml-72');
