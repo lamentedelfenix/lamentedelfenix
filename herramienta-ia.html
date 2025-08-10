@@ -221,7 +221,7 @@
     <div class="relative min-h-screen">
         <div id="sidebar-backdrop"></div>
 
-        <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
+        <aside id="sidebar" style="display: none;" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
             <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
@@ -267,6 +267,10 @@
                     <i class="fas fa-robot"></i>
                     <span>Asistente IA</span>
                 </a>
+                <a href="./instrucciones.html" class="sidebar-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Mapa Mental + IA</span>
+                </a>
                 <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
                     <i class="fas fa-users"></i>
@@ -292,7 +296,7 @@
         </aside>
 
         <div id="page-content" class="flex-1 md:ml-72 flex flex-col h-screen">
-            <div class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
+            <div id="mobile-header" style="display: none;" class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
                  <a href="./miembros.html" class="text-white flex items-center space-x-2">
                     <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                     <span class="text-xl font-extrabold">Miembro Fénix</span>
@@ -476,12 +480,16 @@
         const sidebarStreakDays = document.getElementById('sidebar-streak-days');
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
         const mobileStreakDays = document.getElementById('mobile-streak-days');
+        const mobileHeader = document.querySelector('.md\\:hidden');
         
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // Muestra el contenido para usuarios autenticados
                 loggedInContent.style.display = 'flex';
                 authContainer.style.display = 'none';
                 document.getElementById('open-warnings-btn').style.display = 'inline-flex';
+                sidebar.style.removeProperty('display');
+                mobileHeader.style.removeProperty('display');
 
                 const appId = 'ucdm-tracker-app-v2';
                 const progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
@@ -525,9 +533,12 @@
                 });
 
             } else {
+                // Oculta el contenido para usuarios no autenticados
                 loggedInContent.style.display = 'none';
                 authContainer.style.display = 'flex';
                 document.getElementById('open-warnings-btn').style.display = 'none';
+                sidebar.style.display = 'none';
+                mobileHeader.style.display = 'none';
             }
         });
         
