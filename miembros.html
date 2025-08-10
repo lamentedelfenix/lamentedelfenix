@@ -381,6 +381,38 @@
         
         #share-preview-image { max-width: 100%; max-height: 60vh; border-radius: 0.5rem; margin: 0 auto 1.5rem auto; }
         #watermark { opacity: 0.7; font-size: 0.8rem; }
+        /* Nuevas clases para el clon de la imagen de compartir en móvil */
+        #share-clone {
+            width: 1080px;
+            height: 1920px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            box-sizing: border-box;
+        }
+        #share-clone .lesson-card-spectacular {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #share-clone #lesson-phrase {
+            font-size: 4rem;
+            line-height: 1.2;
+        }
+        #share-clone #lesson-explanation {
+            font-size: 2rem;
+            line-height: 1.5;
+            margin-top: 40px;
+        }
+        #share-clone .watermark {
+            width: 300px;
+            opacity: 0.8;
+            margin-top: 40px;
+        }
 
         .tool-button {
             display: inline-block;
@@ -1060,7 +1092,7 @@
 
         window.displayLesson = function(lesson) {
             if (!lesson || !lesson[Object.keys(lesson)[1]]) return;
-            currentLesson = lesson; // Actualiza la variable de la lección actual
+            currentLesson = lesson; // Almacena la lección actual
             const [lessonNum, phrase, explanation, exercise] = Object.values(lesson);
             
             lessonContainer.innerHTML = `
@@ -1110,20 +1142,95 @@
         const sharePreviewImage = document.getElementById('share-preview-image');
         const downloadShareImageLink = document.getElementById('download-share-image');
         const shareModal = document.getElementById('share-modal');
-        const shareModalContent = shareModal.querySelector('.modal-content');
         let isGenerating = false;
-
-        // Función para generar la imagen de la lección
-        async function generateLessonImage() {
-            // Evita múltiples clics mientras se genera la imagen
+        
+        // Función para generar la imagen con un formato específico (para móvil)
+        async function generateMobileShareImage() {
             if (isGenerating) return;
             isGenerating = true;
 
-            // Muestra el estado de carga
-            sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
-            downloadShareImageLink.style.display = 'none';
+            return new Promise((resolve, reject) => {
+                // Crea un contenedor temporal con formato vertical 9:16
+                const tempContainer = document.createElement('div');
+                tempContainer.id = 'share-clone';
+                tempContainer.style.position = 'absolute';
+                tempContainer.style.left = '-9999px';
+                tempContainer.style.top = '0px';
+                tempContainer.style.backgroundColor = '#0c1427';
+                
+                const clone = lessonContainer.cloneNode(true);
+                clone.style.width = '100%';
+                clone.style.padding = '80px';
+                clone.style.display = 'flex';
+                clone.style.flexDirection = 'column';
+                clone.style.justifyContent = 'center';
+                clone.style.alignItems = 'center';
+
+                const phraseEl = clone.querySelector('#lesson-phrase');
+                if (phraseEl) phraseEl.style.fontSize = '4rem';
+                
+                const explanationEl = clone.querySelector('#lesson-explanation');
+                if (explanationEl) {
+                    explanationEl.style.fontSize = '2rem';
+                    explanationEl.style.lineHeight = '1.5';
+                    explanationEl.style.marginTop = '40px';
+                }
+                
+                const exerciseBoxEl = clone.querySelector('#lesson-exercise-box');
+                if (exerciseBoxEl) exerciseBoxEl.style.display = 'none';
+
+                const watermark = new Image();
+                watermark.crossOrigin = "anonymous";
+                
+                watermark.onload = () => {
+                    watermark.style.width = '300px';
+                    watermark.style.opacity = '0.7';
+                    watermark.style.marginTop = '40px';
+                    
+                    const watermarkContainer = document.createElement('div');
+                    watermarkContainer.style.textAlign = 'center';
+                    watermarkContainer.appendChild(watermark);
+
+                    tempContainer.appendChild(clone);
+                    tempContainer.appendChild(watermarkContainer);
+                    document.body.appendChild(tempContainer);
+
+                    html2canvas(tempContainer, { 
+                        backgroundColor: "#0c1427", 
+                        useCORS: true, 
+                        scale: 2 
+                    }).then(canvas => {
+                        document.body.removeChild(tempContainer);
+                        isGenerating = false;
+                        canvas.toBlob(blob => {
+                            resolve(blob);
+                        }, 'image/png');
+                    }).catch(err => {
+                        console.error("Error generating canvas:", err);
+                        document.body.removeChild(tempContainer);
+                        isGenerating = false;
+                        reject(err);
+                    });
+                };
+                
+                watermark.onerror = () => {
+                    console.error("Could not load the signature image.");
+                    document.body.removeChild(tempContainer);
+                    isGenerating = false;
+                    reject("Error loading watermark");
+                };
+
+                watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+            });
+        }
+
+        // Función para generar la imagen con un formato para escritorio/descarga
+        async function generateDesktopImage() {
+            if (isGenerating) return;
+            isGenerating = true;
 
             return new Promise((resolve, reject) => {
+                // Clona el contenedor de la lección para poder capturarlo
                 const clone = lessonContainer.cloneNode(true);
                 clone.style.position = 'absolute';
                 clone.style.left = '-9999px';
@@ -1176,36 +1283,43 @@
         // --- LÓGICA DE COMPARTIR MEJORADA ---
         if (shareLessonBtn) {
             shareLessonBtn.addEventListener('click', async () => {
+                if (!currentLesson) return;
+
                 // Genera el texto a compartir
                 const shareText = `Mensaje del Día: “${currentLesson.phrase}”\n\n${currentLesson.explanation}\n\nConoce más en La Mente del Fénix: ${window.location.href}`;
+                
+                // Muestra un indicador de carga
+                openModal(shareModal);
+                sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
+                downloadShareImageLink.style.display = 'none';
 
-                // Verifica si la API de compartir archivos está disponible
+
+                // Versión para compartir en móvil (con Web Share API)
                 if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] })) {
                     try {
-                        const imageBlob = await generateLessonImage();
+                        const imageBlob = await generateMobileShareImage();
                         const imageFile = new File([imageBlob], 'mensaje-del-dia.png', { type: imageBlob.type });
 
                         await navigator.share({
                             title: 'Mensaje del Día - La Mente del Fénix',
                             text: shareText,
-                            files: [imageFile],
-                            url: window.location.href
+                            files: [imageFile]
                         });
                         console.log('Contenido compartido con éxito a través de la API nativa.');
+                        closeModal(shareModal);
 
                     } catch (error) {
                         console.error('Error al compartir:', error);
-                        // Si falla, abre la modal con el fallback
-                        openModal(shareModal);
-                        sharePreviewImage.src = URL.createObjectURL(imageBlob);
-                        downloadShareImageLink.href = URL.createObjectURL(imageBlob);
+                        // Si falla, se queda en la modal de descarga como fallback
+                        const dataUrl = URL.createObjectURL(imageBlob);
+                        sharePreviewImage.src = dataUrl;
+                        downloadShareImageLink.href = dataUrl;
                         downloadShareImageLink.style.display = 'block';
                     }
                 } else {
-                    // Si no hay soporte para la API de compartir archivos, usa el método de descarga
-                    openModal(shareModal);
+                    // Versión para escritorio (muestra la modal con el botón de descarga)
                     try {
-                        const imageBlob = await generateLessonImage();
+                        const imageBlob = await generateDesktopImage();
                         const dataUrl = URL.createObjectURL(imageBlob);
                         sharePreviewImage.src = dataUrl;
                         downloadShareImageLink.href = dataUrl;
@@ -1213,11 +1327,13 @@
                         console.log('API de compartir no disponible, mostrando modal de descarga.');
                     } catch (error) {
                         console.error("No se pudo generar la imagen para la modal de descarga.", error);
+                        sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error';
                     }
                 }
             });
         }
         // --- FIN LÓGICA DE COMPARTIR MEJORADA ---
+
 
         const comingSoonModal = document.getElementById('coming-soon-modal');
         document.querySelectorAll('.teaser-card').forEach(card => card.addEventListener('click', () => openModal(comingSoonModal)));
