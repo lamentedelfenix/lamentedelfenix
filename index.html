@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Mente del Fénix - Psicoterapia y Coaching con Darío Arrigazzi</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat -->
+
+    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de los que se descargarán recursos críticos. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://i.imgur.com">
+
+    <!-- OPTIMIZACIÓN: Precargar la imagen más importante (LCP) para que el navegador la descargue con alta prioridad. -->
+    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/B0IHYVP.png" type="image/png">
+
+    <!-- CORRECCIÓN: Se elimina el atributo 'defer' para que los estilos de Tailwind se carguen inmediatamente y se evite la distorsión visual. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- OPTIMIZACIÓN: Las fuentes de Google y Font Awesome se cargan de forma asíncrona para no bloquear. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+    
     <style>
         /* Estilos base consistentes con el área de miembros */
         html { scroll-behavior: smooth; }
@@ -183,7 +192,10 @@
     <div class="max-w-6xl mx-auto">
 
         <header class="text-center mb-8">
-            <img src="https://i.imgur.com/B0IHYVP.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+             <!-- OPTIMIZACIÓN: Se añaden width y height para evitar saltos de layout (CLS).
+                  'fetchpriority="high"' refuerza la prioridad de esta imagen.
+                  'decoding="async"' permite al navegador decodificarla sin bloquear el hilo principal. -->
+            <img src="https://i.imgur.com/B0IHYVP.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
         </header>
 
         <main>
@@ -214,8 +226,11 @@
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
                     <div class="md:col-span-1">
                         <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
-                            <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
-                            <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
+                            <!-- OPTIMIZACIÓN: 'loading="lazy"' para diferir la carga de imágenes fuera de la pantalla inicial.
+                                 'decoding="async"' para decodificar sin bloquear.
+                                 'width' y 'height' para reservar espacio y evitar CLS. -->
+                            <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image" loading="lazy" decoding="async" width="256" height="256">
+                            <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image" loading="lazy" decoding="async" width="256" height="256">
                         </div>
                     </div>
                     <div class="md:col-span-2">
