@@ -646,14 +646,6 @@
                         <p class="text-lg">Cargando mensaje...</p>
                     </div>
                     <div class="flex justify-center items-center flex-wrap gap-4 mt-6">
-                        <div class="btn-lecciones-wrapper">
-                            <a href="./progreso.html" id="btn-lecciones" class="btn btn-lecciones font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
-                                <i class="fas fa-book-open"></i>Mis lecciones
-                            </a>
-                        </div>
-                        <a href="./inspiracion.html" id="btn-conocimiento" class="btn btn-videos font-bold py-3 px-6 rounded-lg no-underline shadow-lg">
-                            <i class="fas fa-video mr-2"></i>Inspiración y Conocimiento
-                        </a>
                         <button id="new-lesson-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">Mostrar otro mensaje</button>
                         <button id="share-lesson-btn" class="btn btn-share font-bold py-2 px-5 rounded-lg">
                             <i class="fas fa-share-alt mr-2"></i>Compartir
@@ -1147,23 +1139,6 @@
                     displayLesson(allLessons[randomIndex]);
                 }
             });
-        }
-
-        const leccionesBtn = document.getElementById('btn-lecciones');
-        const storageKey = 'lastLessonButtonClickDate';
-        function checkButtonAnimation() {
-            const lastClickDate = localStorage.getItem(storageKey);
-            const today = new Date().toISOString().slice(0, 10);
-            if (leccionesBtn && lastClickDate !== today) leccionesBtn.classList.add('animate-heartbeat');
-            else if (leccionesBtn) leccionesBtn.classList.remove('animate-heartbeat');
-        }
-        if(leccionesBtn) {
-            leccionesBtn.addEventListener('click', () => {
-                const today = new Date().toISOString().slice(0, 10);
-                localStorage.setItem(storageKey, today);
-                leccionesBtn.classList.remove('animate-heartbeat');
-            });
-            checkButtonAnimation();
         }
 
         const shareLessonBtn = document.getElementById('share-lesson-btn');
