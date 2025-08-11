@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Membresía La Mente del Fénix</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat -->
+
+    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de los que se descargarán recursos críticos para acelerar la conexión inicial. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Panzoom for image zooming -->
-    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+    <link rel="preconnect" href="https://i.imgur.com">
+
+    <!-- OPTIMIZACIÓN: Precargar la imagen más importante (LCP) para que el navegador la descargue con alta prioridad. -->
+    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/dgANxJU.png" type="image/png">
+
+    <!-- OPTIMIZACIÓN: El script de Tailwind CSS se carga con 'defer' para que no bloquee la renderización de la página. -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    
+    <!-- OPTIMIZACIÓN: Las fuentes de Google y Font Awesome se cargan de forma asíncrona para no bloquear el renderizado.
+         La página se mostrará con una fuente de sistema y cambiará a Montserrat cuando se cargue. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <!-- OPTIMIZACIÓN: El script de Panzoom se carga con 'defer' para no bloquear. -->
+    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js" defer></script>
+    
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; }
         .text-brand-pink { color: #e91e63; }
@@ -89,10 +100,8 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        /* Zoomable image style */
         .zoomable-image { cursor: pointer; transition: transform 0.3s ease; }
         .zoomable-image:hover { transform: scale(1.03); }
-        /* Lightbox styles */
         .lightbox { 
             position: fixed; 
             top: 0; 
@@ -182,7 +191,10 @@
 
         <!-- Header -->
         <header class="p-4 md:p-8">
-             <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+             <!-- OPTIMIZACIÓN: Se añaden width y height para evitar saltos de layout (CLS).
+                  'fetchpriority="high"' refuerza la prioridad de esta imagen.
+                  'decoding="async"' permite al navegador decodificarla sin bloquear el hilo principal. -->
+             <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1080" height="424" fetchpriority="high" decoding="async">
         </header>
 
         <!-- Botón para volver a la página principal -->
@@ -283,11 +295,14 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Mapa Conceptual: src apunta a la imagen estática, data-gif-src al GIF -->
+                            <!-- OPTIMIZACIÓN: 'loading="lazy"' para diferir la carga de imágenes fuera de la pantalla inicial.
+                                 'decoding="async"' para decodificar sin bloquear.
+                                 'width' y 'height' para reservar espacio y evitar CLS. -->
                             <img id="mapa-conceptual-img" 
                                  src="https://i.imgur.com/xrTind4.png" 
                                  alt="Mapa Conceptual de UCDM" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 loading="lazy" decoding="async" width="625" height="662"
                                  data-static-src="https://i.imgur.com/xrTind4.png"
                                  data-gif-src="https://i.imgur.com/DiOIB3w.gif">
                             <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
@@ -295,11 +310,11 @@
                     </div>
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Chat IA: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="chat-ia-img"
                                  src="https://i.imgur.com/RPIB19T.png" 
                                  alt="Chat con IA" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 loading="lazy" decoding="async" width="625" height="662"
                                  data-static-src="https://i.imgur.com/RPIB19T.png" 
                                  data-gif-src="https://i.imgur.com/LqovuKM.gif">
                             <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclarará dudas y te ayudará con frases para entrenar tu mente</p>
@@ -307,11 +322,11 @@
                     </div>
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Mensajes Diarios: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="mensajes-diarios-img"
                                  src="https://i.imgur.com/D0Zh9jy.png" 
                                  alt="Mensajes Diarios" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 loading="lazy" decoding="async" width="625" height="662"
                                  data-static-src="https://i.imgur.com/D0Zh9jy.png" 
                                  data-gif-src="https://i.imgur.com/BheekP1.gif">
                             <p class="mt-2 font-semibold">Mensajes Diarios para ti y <span class="highlight-word">compartir</span></p>
@@ -319,24 +334,23 @@
                     </div>
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Lecciones Ritmo: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="lecciones-ritmo-img"
                                  src="https://i.imgur.com/XCb5yM7.png" 
                                  alt="Seguimiento de Lecciones" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 loading="lazy" decoding="async" width="625" height="662"
                                  data-static-src="https://i.imgur.com/XCb5yM7.png" 
                                  data-gif-src="https://i.imgur.com/JLweKjE.gif">
                             <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
                         </div>
                     </div>
-                    <!-- New image added - Centered for PC view, same size -->
                     <div class="text-center sm:col-start-1 sm:col-end-3">
                         <div class="max-w-sm mx-auto">
-                            <!-- Rincón Inspiración: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="rincon-inspiracion-img"
                                  src="https://i.imgur.com/g5NgVsm.png" 
                                  alt="Rincón de Inspiración" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 loading="lazy" decoding="async" width="625" height="662"
                                  data-static-src="https://i.imgur.com/g5NgVsm.png" 
                                  data-gif-src="https://i.imgur.com/p7idYrx.gif">
                             <p class="mt-2 font-semibold">Rincón de <span class="highlight-word">Inspiración y Conocimiento</span></p>
@@ -419,64 +433,25 @@
             const zoomableImages = document.querySelectorAll('.zoomable-image');
 
             let panzoomInstance = null;
-
-            // Map of image IDs to their GIF and static URLs
-            const imageSources = {
-                'mapa-conceptual-img': { 
-                    static: 'https://i.imgur.com/xrTind4.png', 
-                    gif: 'https://i.imgur.com/DiOIB3w.gif' 
-                },
-                'chat-ia-img': { 
-                    static: 'https://i.imgur.com/RPIB19T.png', 
-                    gif: 'https://i.imgur.com/LqovuKM.gif' 
-                },
-                'mensajes-diarios-img': { 
-                    static: 'https://i.imgur.com/D0Zh9jy.png', 
-                    gif: 'https://i.imgur.com/BheekP1.gif'
-                },
-                'lecciones-ritmo-img': { 
-                    static: 'https://i.imgur.com/XCb5yM7.png', 
-                    gif: 'https://i.imgur.com/JLweKjE.gif'
-                },
-                'rincon-inspiracion-img': { 
-                    static: 'https://i.imgur.com/g5NgVsm.png', 
-                    gif: 'https://i.imgur.com/p7idYrx.gif'
-                }
-            };
-
+            
+            // La lógica de carga de GIFs al hacer clic ya es una buena práctica de rendimiento, se mantiene.
             zoomableImages.forEach(image => {
-                // Establece el src inicial de la imagen en la galería a su versión estática
-                const imageId = image.id;
-                const sources = imageSources[imageId];
-                if (sources && sources.static) {
-                    image.src = sources.static;
-                }
-
                 image.addEventListener('click', () => {
-                    // Al hacer clic, carga el GIF en el lightbox
-                    if (sources && sources.gif) {
-                        lightboxImg.src = sources.gif; 
-                    } else if (sources && sources.static) { // Fallback a la estática si no hay GIF
-                        lightboxImg.src = sources.static;
-                    } else { // Fallback al src actual de la imagen si no hay fuentes definidas
+                    const gifSrc = image.dataset.gifSrc;
+                    if (gifSrc) {
+                        lightboxImg.src = gifSrc; 
+                    } else {
                         lightboxImg.src = image.src; 
                     }
                     
                     lightbox.classList.add('show');
-                    // Destruye cualquier instancia de Panzoom existente antes de crear una nueva
                     if (panzoomInstance) {
                         panzoomInstance.destroy();
                     }
-                    // Inicializa Panzoom en la imagen del lightbox con opciones mejoradas para móvil
                     panzoomInstance = Panzoom(lightboxImg, {
-                        maxScale: 10, // Aumentado el zoom máximo para permitir más ampliación
+                        maxScale: 10,
                         minScale: 0.7,
-                        // Eliminada la opción 'contain: inside' para permitir el paneo libre
-                        // incluso cuando la imagen se sale de los límites del lightbox.
-                        // Esto permite al usuario arrastrar para ver todas las partes de la imagen ampliada.
                         handleStartEvent: (e) => {
-                            // Previene el comportamiento por defecto del navegador en eventos táctiles
-                            // para mejorar la fluidez del arrastre (panning)
                             if (e.touches && e.touches.length === 1) { 
                                 e.preventDefault();
                             }
@@ -487,12 +462,10 @@
             
             function closeLightbox() { 
                 lightbox.classList.remove('show');
-                // Destruye la instancia de Panzoom cuando el lightbox se cierra
                 if(panzoomInstance) {
                     panzoomInstance.destroy();
                     panzoomInstance = null;
                 }
-                // Resetea el src de la imagen del lightbox para evitar que el GIF siga reproduciéndose en segundo plano
                 lightboxImg.src = ''; 
             }
             closeLightboxBtn.addEventListener('click', closeLightbox);
@@ -501,7 +474,6 @@
                 if (e.target === lightbox) closeLightbox();
             });
             
-            // Añade el listener para el zoom con la rueda del ratón
             if (lightboxImg) {
                 lightbox.addEventListener('wheel', function (event) {
                     if (!panzoomInstance) return;
@@ -556,7 +528,6 @@
                     monthlyLabel.classList.add('text-brand-pink');
                 }
             });
-            // Establece el enlace inicial a mensual
             paymentLink.href = monthlyLink; 
         });
     </script>
