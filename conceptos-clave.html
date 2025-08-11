@@ -13,32 +13,39 @@
     <!-- Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
+        /* Adaptado de progreso.html para consistencia */
         :root {
-            --brand-blue: #0c2f5b;
+            --brand-blue: #0c1427;
             --brand-gold: #ffd700;
             --brand-pink: #e91e63;
             --brand-cyan: #00bcd4;
-            --bg-light: #fbf5e2;
-            --bg-off-white: #fffaf0;
-            --border-color: #e0d9c6;
+            --bg-main: #0c1427;
+            --text-main: #fbf5e2;
+            --text-muted: #a7b3ce;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
         html {
             scroll-behavior: smooth;
         }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--brand-blue);
+            background-color: var(--bg-main);
+            color: var(--text-main);
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
         .btn-back {
-            background-color: transparent; color: var(--brand-blue); border: 2px solid var(--brand-blue);
+            background-color: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
             transition: all 0.3s ease;
         }
         .btn-back:hover { 
-            background-color: var(--brand-blue); color: white; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: translateY(-2px); 
+            background-color: rgba(0, 188, 212, 0.1);
+            color: var(--brand-cyan);
+            border-color: var(--brand-cyan);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform: translateY(-2px); 
         }
         
         /* Flowing Article Styles */
@@ -64,14 +71,19 @@
             flex-shrink: 0;
             width: 100px;
             height: 100px;
-            background-color: var(--bg-off-white);
+            background-color: rgba(255, 255, 255, 0.05); /* Usando un color más oscuro */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid var(--border-color);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin: 0 auto 1rem auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .concept-icon-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--brand-cyan);
         }
         
         @media (min-width: 768px) {
@@ -84,8 +96,8 @@
             font-size: 2.5rem;
             color: var(--brand-pink);
             opacity: 0.8;
+            transition: color 0.3s ease;
         }
-
         .concept-text-content {
             flex-grow: 1;
         }
@@ -95,13 +107,14 @@
             font-weight: 800;
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: var(--brand-blue);
+            color: var(--text-main);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
         }
         .concept-body {
             font-family: 'Lora', serif;
             line-height: 1.9;
             font-size: 1.1rem;
-            color: #374151; /* gray-700 */
+            color: var(--text-muted); /* Usando el color de texto silenciado */
         }
         .concept-body p {
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -110,6 +123,7 @@
         .concept-body p.is-in-focus {
             opacity: 1;
             transform: scale(1.01);
+            color: var(--text-main);
         }
         .paragraph-number {
             font-size: 1.25em; 
@@ -118,14 +132,17 @@
             display: inline-block; 
             margin-right: 0.2em;
         }
+        .text-brand-pink {
+            color: var(--brand-pink);
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <main id="main-content" class="max-w-4xl mx-auto p-4 md:p-8" style="display: none;">
         <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2">Conceptos Clave</h1>
-            <p class="text-lg text-gray-600">Los pilares para tu estudio de Un Curso de Milagros.</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 text-brand-pink">Conceptos Clave</h1>
+            <p class="text-lg text-gray-400">Los pilares para tu estudio de Un Curso de Milagros.</p>
         </header>
 
         <div class="text-center mb-12">
@@ -140,9 +157,9 @@
     </main>
     
     <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-        <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-        <p class="text-lg mt-4">Necesitas iniciar sesión en la membresía para ver este contenido.</p>
-        <a href="./login.html" class="mt-8 inline-block bg-[#e91e63] hover:bg-[#c2185b] text-white font-bold py-3 px-6 rounded-lg transition-colors">
+        <h1 class="text-3xl font-bold text-brand-pink mb-4">Acceso Denegado</h1>
+        <p class="text-lg mt-4 text-gray-400">Necesitas iniciar sesión en la membresía para ver este contenido.</p>
+        <a href="./login.html" class="mt-8 inline-block bg-brand-pink hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
             Ir a Iniciar Sesión
         </a>
     </div>
