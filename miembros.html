@@ -463,22 +463,28 @@
             filter: drop-shadow(0 0 14px #f6ad55);
         }
         
-        /* --- ESTILOS PARA LA LÍNEA SEPARADORA ANIMADA --- */
+        /* --- ESTILOS PARA LA LÍNEA SEPARADORA ANIMADA (MODIFICADO) --- */
         .animated-divider {
-            height: 4px;
-            background: linear-gradient(90deg, transparent 0%, #e91e63 20%, #00bcd4 50%, #e91e63 80%, transparent 100%);
+            height: 2px; /* Más fina */
+            background: linear-gradient(90deg, transparent, rgba(0, 188, 212, 0.7), rgba(233, 30, 99, 0.5), transparent); /* Más claro y brillante */
             width: 0;
-            margin: 2.5rem auto;
+            margin: 2.5rem auto 5rem; /* Doble de espacio inferior */
             border: none;
-            opacity: 0.5;
+            opacity: 0.7; /* Ligeramente más visible para compensar el grosor */
             animation: expand-and-glow 1.5s forwards cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             z-index: 10;
         }
 
         @keyframes expand-and-glow {
-            0% { width: 0; box-shadow: 0 0 0px #e91e63; }
-            100% { width: 100%; box-shadow: 0 0 15px #00bcd4; }
+            0% {
+                width: 0;
+                box-shadow: none; /* Sin sombra al inicio */
+            }
+            100% {
+                width: 100%;
+                box-shadow: 0 0 12px rgba(0, 188, 212, 0.4); /* Sombra más sutil y brillante */
+            }
         }
 
     </style>
