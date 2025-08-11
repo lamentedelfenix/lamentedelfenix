@@ -462,6 +462,25 @@
             transform: scale(1.05);
             filter: drop-shadow(0 0 14px #f6ad55);
         }
+        
+        /* --- ESTILOS PARA LA LÍNEA SEPARADORA ANIMADA --- */
+        .animated-divider {
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, #e91e63 20%, #00bcd4 50%, #e91e63 80%, transparent 100%);
+            width: 0;
+            margin: 2.5rem auto;
+            border: none;
+            opacity: 0.5;
+            animation: expand-and-glow 1.5s forwards cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes expand-and-glow {
+            0% { width: 0; box-shadow: 0 0 0px #e91e63; }
+            100% { width: 100%; box-shadow: 0 0 15px #00bcd4; }
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -592,6 +611,9 @@
                         <img src="https://i.imgur.com/KgQlZvg.png" alt="Banner de la Membresía" class="w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/1024x256/fbf5e2/0c2f5b?text=La+Mente+del+Fénix';">
                     </div>
                 </header>
+                
+                <!-- LÍNEA SEPARADORA AÑADIDA AQUÍ -->
+                <hr class="animated-divider" style="max-width: 80%;">
 
                 <section class="text-center mb-32 md:mb-40">
                     <h1 id="welcome-title" class="text-5xl md:text-6xl font-bold mb-4" style="text-shadow: 0 0 15px rgba(255,255,255,0.3);">Bienvenido/a...</h1>
