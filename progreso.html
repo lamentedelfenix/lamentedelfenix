@@ -376,13 +376,13 @@
         .lesson-item.locked {
             background-color: rgba(74, 85, 104, 0.2);
             color: #718096;
-            cursor: not-allowed;
+            cursor: pointer; /* Modificado para permitir el clic */
             border-color: #4a5568;
         }
         .lesson-item.locked:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: #4a5568;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-color: var(--brand-cyan);
         }
         .lesson-item.locked::after {
             content: '\f023'; /* Font Awesome lock icon */
@@ -1148,10 +1148,9 @@
                     lessonItem.textContent = String(item.number || 'R');
                     lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
+                    // La lógica del evento de clic se maneja en updateItemsState()
                     lessonItem.addEventListener('click', () => {
-                        if (!lessonItem.classList.contains('locked')) {
-                            openModal(itemModal, itemId);
-                        }
+                        openModal(itemModal, itemId);
                     });
                     currentGrid.appendChild(lessonItem);
 
@@ -1383,7 +1382,7 @@
             if (!hasNumberedItems && fullText.trim()) return [fullText.trim()];
             return paragraphs;
         }
-
+        
         // --- Modal & Carousel Handling ---
         function openItemModal(itemId) {
             currentItemId = itemId;
@@ -1395,11 +1394,25 @@
             modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
             
-            const correctlyGroupedParagraphs = groupParagraphs(item.paragraphs);
+            // Si la lección está bloqueada, solo mostrar el primer párrafo
+            let paragraphsToShow = item.paragraphs;
+            const itemEl = document.querySelector(`.lesson-item[data-id="${itemId}"]`);
+            if (itemEl && itemEl.classList.contains('locked')) {
+                // Si ya es un array, solo toma el primer elemento
+                if (Array.isArray(paragraphsToShow)) {
+                    paragraphsToShow = [paragraphsToShow[0]];
+                } else {
+                    // Si es un string, encuentra el primer párrafo
+                    const firstParagraph = paragraphsToShow.split('\n\n')[0];
+                    paragraphsToShow = [firstParagraph];
+                }
+            }
+            
+            const correctlyGroupedParagraphs = groupParagraphs(paragraphsToShow);
             paragraphSlider.innerHTML = '';
             totalParagraphs = correctlyGroupedParagraphs.length;
             currentParagraphIndex = 0;
-
+            
             if (totalParagraphs > 0) {
                 correctlyGroupedParagraphs.forEach(p => {
                     const slide = document.createElement('div');
@@ -1424,8 +1437,18 @@
             } else {
                 modalCompleteBtn.textContent = 'Marcar como completada';
             }
-            
-            updateCarouselState();
+
+            // Habilitar o deshabilitar botones y navegación según el estado
+            const isItemLocked = itemEl && itemEl.classList.contains('locked');
+            if (isItemLocked) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'none';
+                modalCompleteBtn.disabled = true;
+                modalCompleteBtn.textContent = 'Lección bloqueada';
+                modalCompleteBtn.classList.remove('btn-glow');
+            } else {
+                updateCarouselState();
+            }
         }
 
         function updateCarouselState() {
@@ -1446,6 +1469,10 @@
         }
 
         function showNextParagraph() {
+            if (currentItemId && document.querySelector(`.lesson-item[data-id="${currentItemId}"]`).classList.contains('locked')) {
+                // No hacer nada si la lección está bloqueada
+                return;
+            }
             if (currentParagraphIndex < totalParagraphs - 1) {
                 currentParagraphIndex++;
                 updateCarouselState();
@@ -1453,6 +1480,10 @@
         }
 
         function showPrevParagraph() {
+            if (currentItemId && document.querySelector(`.lesson-item[data-id="${currentItemId}"]`).classList.contains('locked')) {
+                // No hacer nada si la lección está bloqueada
+                return;
+            }
             if (currentParagraphIndex > 0) {
                 currentParagraphIndex--;
                 updateCarouselState();
@@ -1468,9 +1499,10 @@
             // Apply time lock ONLY if it's a new progression
             if (isNumberedLesson && item.number > userData.highestLessonCompleted) {
                 const now = Date.now();
-                const twentyFourHours = 24 * 60 * 60 * 1000;
-                if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twentyFourHours)) {
-                    const timeLeft = twentyFourHours - (now - userData.lastNumberedLessonTimestamp);
+                // Reducido a 12 horas (12 * 60 * 60 * 1000)
+                const twelveHours = 12 * 60 * 60 * 1000; 
+                if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twelveHours)) {
+                    const timeLeft = twelveHours - (now - userData.lastNumberedLessonTimestamp);
                     const hours = Math.floor(timeLeft / (1000 * 60 * 60));
                     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                     openModal(confirmModal, `Debes esperar aproximadamente ${hours}h y ${minutes}m para completar la siguiente lección. ¡La paciencia es parte del camino!`, null);
