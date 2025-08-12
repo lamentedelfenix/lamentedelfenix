@@ -413,6 +413,41 @@
             transform: scale(1.08) !important;
         }
 
+        /* NUEVO: Contenedor para el tooltip de la previsualización */
+        .preview-tooltip-container {
+            position: relative;
+            z-index: 1000; /* Asegura que el tooltip esté encima de otros elementos */
+        }
+        .preview-tooltip {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%) translateX(10px);
+            background-color: #0c1427;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            max-width: 300px;
+            width: max-content;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+        }
+        .lesson-item:hover .preview-tooltip, .lesson-item:focus-within .preview-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        @media (max-width: 768px) {
+            .preview-tooltip {
+                top: auto;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
         .modal-header-section { grid-row: 1; }
         .paragraph-carousel-container { grid-row: 2; min-height: 0; }
         .modal-footer-section { grid-row: 3; padding-top: 1rem; }
@@ -559,7 +594,7 @@
         }
         @keyframes separator-glow {
             0% { opacity: 0.4; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
+            100% { transform: scale(1); }
         }
 
         /* --- ESTILOS PARA MODALES DEL MENÚ (AÑADIDO) --- */
@@ -756,6 +791,15 @@
                 </button>
             </div>
 
+            <!-- Movido el div de auth-message antes del main content -->
+            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
+                <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
+                <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
+                <a href="./login.html" class="mt-8 inline-block btn-primary font-bold py-3 px-6 rounded-lg">
+                    Ir a Iniciar Sesión
+                </a>
+            </div>
+
             <main id="main-content" class="flex-1 overflow-y-auto" style="display: none;">
                 <div class="max-w-4xl mx-auto p-4 md:p-8">
                     <header class="mb-8 text-center">
@@ -815,13 +859,6 @@
                 </div>
             </main>
 
-            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-                <h1 class="text-3xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-                <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
-                <a href="./login.html" class="mt-8 inline-block btn-primary font-bold py-3 px-6 rounded-lg">
-                    Ir a Iniciar Sesión
-                </a>
-            </div>
         </div>
     </div>
     
@@ -923,6 +960,7 @@
         const modalItemHeader = document.getElementById('modal-item-header');
         const modalItemTitle = document.getElementById('modal-item-title');
         const modalCompleteBtn = document.getElementById('modal-complete-btn');
+        const modalFooterContent = document.getElementById('modal-footer-content');
 
         const confirmModal = document.getElementById('confirm-modal');
         const confirmMessage = document.getElementById('confirm-message');
@@ -1148,11 +1186,29 @@
                     lessonItem.textContent = String(item.number || 'R');
                     lessonItem.dataset.id = itemId;
                     lessonItem.innerHTML += '<div class="line-through"></div>';
+                    
+                    // Añadir lógica de previsualización para lecciones bloqueadas
+                    const firstParagraph = groupParagraphs(item.paragraphs)[0];
+                    if (firstParagraph) {
+                        const previewTooltip = document.createElement('div');
+                        previewTooltip.className = 'preview-tooltip';
+                        previewTooltip.innerHTML = `
+                            <p class="font-bold text-brand-pink mb-2">Previsualización:</p>
+                            <p class="text-sm italic">${firstParagraph.split('.')[0] + '.'}</p>
+                        `;
+                        lessonItem.classList.add('preview-tooltip-container');
+                        lessonItem.appendChild(previewTooltip);
+                    }
+
                     lessonItem.addEventListener('click', () => {
                         if (!lessonItem.classList.contains('locked')) {
                             openModal(itemModal, itemId);
+                        } else {
+                           // Abre el modal de previsualización si está bloqueado
+                           openModal(itemModal, itemId, true);
                         }
                     });
+
                     currentGrid.appendChild(lessonItem);
 
                     if (titledSeparators[item.number]) {
@@ -1330,9 +1386,16 @@
                 if (completedItems.has(itemId)) {
                     itemEl.classList.add('completed');
                 } else if (itemId === nextLessonId) {
-                    itemEl.classList.add('next-lesson-highlight');
+                    // Check if the next lesson is available based on the new 12-hour timer
+                    const now = Date.now();
+                    const twelveHours = 12 * 60 * 60 * 1000;
+                    if (userData.lastNumberedLessonTimestamp === null || (now - userData.lastNumberedLessonTimestamp >= twelveHours)) {
+                         itemEl.classList.add('next-lesson-highlight');
+                    } else {
+                        itemEl.classList.add('locked');
+                    }
                 } else {
-                    // Lock only if it's an uncompleted lesson that is NOT the next one
+                    // Lock all other uncompleted lessons
                     itemEl.classList.add('locked');
                 }
             });
@@ -1385,7 +1448,7 @@
         }
 
         // --- Modal & Carousel Handling ---
-        function openItemModal(itemId) {
+        function openItemModal(itemId, isPreview = false) {
             currentItemId = itemId;
             const item = allItemsMap.get(itemId);
             if (!item) return;
@@ -1395,13 +1458,19 @@
             modalItemHeader.textContent = item.original_header || item.type;
             modalItemTitle.textContent = `“${item.title}”`;
             
-            const correctlyGroupedParagraphs = groupParagraphs(item.paragraphs);
+            let paragraphsToDisplay = groupParagraphs(item.paragraphs);
+
+            // Si es una previsualización, solo muestra el primer párrafo
+            if (isPreview && paragraphsToDisplay.length > 1) {
+                paragraphsToDisplay = [paragraphsToDisplay[0]];
+            }
+            
             paragraphSlider.innerHTML = '';
-            totalParagraphs = correctlyGroupedParagraphs.length;
+            totalParagraphs = paragraphsToDisplay.length;
             currentParagraphIndex = 0;
 
             if (totalParagraphs > 0) {
-                correctlyGroupedParagraphs.forEach(p => {
+                paragraphsToDisplay.forEach(p => {
                     const slide = document.createElement('div');
                     slide.className = 'paragraph-slide';
                     const styledP = p.replace(/\n/g, '<br>').replace(/^(\s*\d+\.\s*)/gm, '<span class="paragraph-number">$1</span>');
@@ -1418,30 +1487,56 @@
 
             const isLessonOrReview = item.type === 'lesson' || item.type === 'review';
             paragraphSlider.classList.toggle('text-centered-lesson', isLessonOrReview);
-            
-            if (completedItems.has(itemId)) {
-                modalCompleteBtn.textContent = 'Lección Completada';
+
+            // Lógica de botones de acción
+            if (isPreview) {
+                modalFooterContent.innerHTML = `
+                    <p class="text-gray-400 italic">Esta es solo una vista previa. Completa la lección anterior para desbloquearla.</p>
+                `;
             } else {
-                modalCompleteBtn.textContent = 'Marcar como completada';
+                const isCompleted = completedItems.has(currentItemId);
+                modalFooterContent.innerHTML = '';
+                const completeBtn = document.createElement('button');
+                completeBtn.id = 'modal-complete-btn';
+                completeBtn.className = 'btn-primary font-bold py-2 px-6 rounded-lg shadow-md';
+                completeBtn.textContent = isCompleted ? 'Lección Completada' : 'Marcar como completada';
+                modalFooterContent.appendChild(completeBtn);
+
+                if (isCompleted) {
+                    completeBtn.disabled = true;
+                } else {
+                    completeBtn.disabled = !(currentParagraphIndex >= totalParagraphs - 1);
+                    completeBtn.classList.toggle('btn-glow', isLastParagraph);
+                }
+                completeBtn.addEventListener('click', handleMarkComplete);
             }
             
-            updateCarouselState();
+            // Actualizar el estado del carrusel, ocultando los botones de navegación si es previsualización
+            updateCarouselState(isPreview);
         }
 
-        function updateCarouselState() {
+        function updateCarouselState(isPreview = false) {
             paragraphSlider.style.transform = `translateX(-${currentParagraphIndex * 100}%)`;
-            prevBtn.style.display = currentParagraphIndex === 0 ? 'none' : 'flex';
-            nextBtn.style.display = currentParagraphIndex >= totalParagraphs - 1 ? 'none' : 'flex';
+            
+            // Ocultar botones de navegación del carrusel en la vista previa
+            prevBtn.style.display = (isPreview || currentParagraphIndex === 0) ? 'none' : 'flex';
+            nextBtn.style.display = (isPreview || currentParagraphIndex >= totalParagraphs - 1) ? 'none' : 'flex';
             paginationEl.textContent = totalParagraphs > 1 ? `${currentParagraphIndex + 1} / ${totalParagraphs}` : '';
-            const isLastParagraph = currentParagraphIndex >= totalParagraphs - 1;
-            const isCompleted = completedItems.has(currentItemId);
+            
+            if (!isPreview) {
+                const isLastParagraph = currentParagraphIndex >= totalParagraphs - 1;
+                const isCompleted = completedItems.has(currentItemId);
+                const completeBtn = document.getElementById('modal-complete-btn');
 
-            if (isCompleted) {
-                modalCompleteBtn.disabled = true;
-                modalCompleteBtn.classList.remove('btn-glow');
-            } else {
-                modalCompleteBtn.disabled = !isLastParagraph;
-                modalCompleteBtn.classList.toggle('btn-glow', isLastParagraph);
+                if (completeBtn) {
+                    if (isCompleted) {
+                        completeBtn.disabled = true;
+                        completeBtn.classList.remove('btn-glow');
+                    } else {
+                        completeBtn.disabled = !isLastParagraph;
+                        completeBtn.classList.toggle('btn-glow', isLastParagraph);
+                    }
+                }
             }
         }
 
@@ -1468,9 +1563,9 @@
             // Apply time lock ONLY if it's a new progression
             if (isNumberedLesson && item.number > userData.highestLessonCompleted) {
                 const now = Date.now();
-                const twentyFourHours = 24 * 60 * 60 * 1000;
-                if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twentyFourHours)) {
-                    const timeLeft = twentyFourHours - (now - userData.lastNumberedLessonTimestamp);
+                const twelveHours = 12 * 60 * 60 * 1000;
+                if (userData.lastNumberedLessonTimestamp && (now - userData.lastNumberedLessonTimestamp < twelveHours)) {
+                    const timeLeft = twelveHours - (now - userData.lastNumberedLessonTimestamp);
                     const hours = Math.floor(timeLeft / (1000 * 60 * 60));
                     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                     openModal(confirmModal, `Debes esperar aproximadamente ${hours}h y ${minutes}m para completar la siguiente lección. ¡La paciencia es parte del camino!`, null);
@@ -1505,19 +1600,23 @@
                 await updateDoc(progressDocRef, updates);
                 playCompletionSound();
                 
-                const completeBtnContainer = document.getElementById('modal-footer-content');
-                modalCompleteBtn.style.display = 'none';
+                const completeBtn = document.getElementById('modal-complete-btn');
+                if (completeBtn) {
+                     completeBtn.style.display = 'none';
+                }
 
                 const successMessage = document.createElement('div');
                 successMessage.innerHTML = '¡Lección completada! ✨';
                 successMessage.className = 'text-brand-gold font-bold text-lg py-2 px-6';
-                completeBtnContainer.appendChild(successMessage);
+                modalFooterContent.appendChild(successMessage);
                 
                 setTimeout(() => {
                     closeModal(itemModal);
-                    modalCompleteBtn.style.display = '';
-                    if (completeBtnContainer.contains(successMessage)) {
-                        completeBtnContainer.removeChild(successMessage);
+                    if (completeBtn) {
+                        completeBtn.style.display = '';
+                    }
+                    if (modalFooterContent.contains(successMessage)) {
+                        modalFooterContent.removeChild(successMessage);
                     }
                 }, 1500);
 
@@ -1579,8 +1678,8 @@
         
         // --- Event Listeners ---
         modalCloseBtn.addEventListener('click', () => closeModal(itemModal));
-        modalCompleteBtn.addEventListener('click', handleMarkComplete);
-        
+        // modalCompleteBtn.addEventListener('click', handleMarkComplete);
+
         confirmYesBtn.addEventListener('click', () => {
             if (confirmCallback) confirmCallback();
             closeModal(confirmModal);
@@ -1621,7 +1720,7 @@
             }, 300);
         }
 
-        function openModal(modalToOpen, data, callback) {
+        function openModal(modalToOpen, data, isPreview) {
             if (!modalToOpen) return;
             
             // Si el menú lateral está abierto en móvil, ciérralo primero
@@ -1635,7 +1734,7 @@
                 }
             });
 
-            if (modalToOpen === itemModal) openItemModal(data);
+            if (modalToOpen === itemModal) openItemModal(data, isPreview);
             if (modalToOpen === achievementModal) {
                  achievementModalIcon.className = `fas ${data.icon} mb-4`;
                  achievementModalText.innerHTML = data.title;
