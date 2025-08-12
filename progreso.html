@@ -1500,15 +1500,8 @@
                 completeBtn.id = 'modal-complete-btn';
                 completeBtn.className = 'btn-primary font-bold py-2 px-6 rounded-lg shadow-md';
                 completeBtn.textContent = isCompleted ? 'Lección Completada' : 'Marcar como completada';
-                modalFooterContent.appendChild(completeBtn);
-
-                if (isCompleted) {
-                    completeBtn.disabled = true;
-                } else {
-                    completeBtn.disabled = !(currentParagraphIndex >= totalParagraphs - 1);
-                    completeBtn.classList.toggle('btn-glow', isLastParagraph);
-                }
                 completeBtn.addEventListener('click', handleMarkComplete);
+                modalFooterContent.appendChild(completeBtn);
             }
             
             // Actualizar el estado del carrusel, ocultando los botones de navegación si es previsualización
