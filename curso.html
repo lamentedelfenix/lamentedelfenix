@@ -281,6 +281,18 @@
             box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
             border: 1px solid rgba(0, 188, 212, 0.5);
         }
+        /* ESTILO PARA EL BANNER DE CONSTRUCCIÓN */
+        .construction-banner {
+            position: relative;
+            background-color: #f6ad55; /* Color naranja */
+            color: #0c1427; /* Color del texto */
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+            z-index: 1000; /* Asegura que esté por encima de la mayoría del contenido */
+            margin-bottom: 2rem; /* Espacio debajo del banner */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -391,6 +403,14 @@
             </div>
 
             <main id="main-content" class="p-4 md:p-8" style="display: none;">
+                <!-- Nuevo banner de construcción -->
+                <div class="construction-banner rounded-lg mb-8">
+                    <p>
+                        <i class="fas fa-tools mr-2"></i>
+                        ¡Estamos trabajando en ello! Este curso está en proceso de construcción. Aún puedes navegar, pero los vídeos no están disponibles.
+                    </p>
+                </div>
+
                 <header class="mb-8">
                     <h1 class="text-4xl md:text-5xl font-bold mb-2">Curso en Vídeo</h1>
                     <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
