@@ -408,6 +408,8 @@
             line-height: 1.5;
             margin-top: 40px;
         }
+        /* Este estilo ya no es necesario aquí, se aplica en JS */
+        /* #share-clone .watermark { ... } */
 
         .tool-button {
             display: inline-block;
@@ -780,35 +782,19 @@
     </div>
     <!-- FIN: MODALES ACTUALIZADOS -->
 
-    <!-- INICIO: MODAL DE COMPARTIR ACTUALIZADO -->
     <div id="share-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">×</span>
             <h3 class="text-2xl font-bold mb-4">Comparte el Mensaje del Día</h3>
-            <p class="mb-6">Elige un formato para generar la imagen.</p>
-            
-            <!-- Contenedor para la previsualización y botones -->
-            <div id="share-preview-container" class="mb-6" style="display: none;">
-                 <img id="share-preview-image" src="" alt="Previsualización del Mensaje">
-            </div>
-
-            <!-- Contenedor para los botones de acción -->
-            <div id="share-action-buttons" class="flex justify-center items-center flex-wrap gap-4">
-                <button id="generate-social-btn" class="btn btn-cyan font-bold py-2 px-5 rounded-lg">
-                    <i class="fas fa-share-alt mr-2"></i>Para Redes Sociales
-                </button>
-                <button id="generate-wallpaper-btn" class="btn btn-pink font-bold py-2 px-5 rounded-lg">
-                    <i class="fas fa-mobile-alt mr-2"></i>Crear Fondo de Pantalla
-                </button>
-            </div>
-
-            <!-- Botón de descarga (inicialmente oculto) -->
-            <a id="download-share-image" href="#" download="mensaje-del-dia.png" class="mt-6 btn btn-cyan font-bold py-3 px-6 rounded-lg no-underline shadow-lg" style="display: none;">
+            <p class="mb-6">Descarga la imagen y compártela en tus redes sociales.</p>
+            <!-- Imagen de previsualización que se llena con el canvas -->
+            <img id="share-preview-image" src="" alt="Previsualización del Mensaje">
+            <!-- Botón de descarga -->
+            <a id="download-share-image" href="#" download="mensaje-del-dia.png" class="btn btn-cyan font-bold py-3 px-6 rounded-lg no-underline shadow-lg" style="display: none;">
                 <i class="fas fa-download mr-2"></i>Descargar Imagen
             </a>
         </div>
     </div>
-    <!-- FIN: MODAL DE COMPARTIR ACTUALIZADO -->
     
     <div id="coming-soon-modal" class="modal-overlay">
         <div class="modal-content">
@@ -1155,208 +1141,209 @@
             });
         }
 
-        // --- INICIO: LÓGICA DE COMPARTIR ACTUALIZADA ---
         const shareLessonBtn = document.getElementById('share-lesson-btn');
-        const shareModal = document.getElementById('share-modal');
-        const sharePreviewContainer = document.getElementById('share-preview-container');
         const sharePreviewImage = document.getElementById('share-preview-image');
-        const shareActionButtons = document.getElementById('share-action-buttons');
         const downloadShareImageLink = document.getElementById('download-share-image');
-        const generateSocialBtn = document.getElementById('generate-social-btn');
-        const generateWallpaperBtn = document.getElementById('generate-wallpaper-btn');
+        const shareModal = document.getElementById('share-modal');
         let isGenerating = false;
-
-        // Función para crear un clon base del contenido para la imagen
-        function createContentClone() {
-            const clone = lessonContainer.cloneNode(true);
-            // Elimina el ejercicio para que no aparezca en la imagen
-            const exerciseBoxEl = clone.querySelector('#lesson-exercise-box');
-            if (exerciseBoxEl) exerciseBoxEl.remove();
-            // Asegura que todos los elementos internos son visibles para la captura
-            clone.querySelectorAll('[style*="opacity"]').forEach(el => {
-                el.style.opacity = 1;
-                el.style.transform = 'none';
-            });
-            return clone;
-        }
-
-        // Función genérica para renderizar el canvas
-        async function renderCanvas(element, options = {}) {
-            return html2canvas(element, {
-                backgroundColor: "#0c1427",
-                useCORS: true,
-                scale: 2,
-                ...options
-            });
-        }
-
-        // Función para generar la imagen para redes sociales (móvil) o descarga (escritorio)
-        async function generateSocialImage() {
-            if (isGenerating) return;
-            isGenerating = true;
-
-            const tempContainer = document.createElement('div');
-            tempContainer.style.position = 'absolute';
-            tempContainer.style.left = '-9999px';
-            tempContainer.style.top = '0px';
-            tempContainer.style.background = '#0c1427';
-
-            const contentClone = createContentClone();
-            
-            // Estilos específicos para la imagen social/descarga
-            contentClone.style.width = '700px';
-            contentClone.style.padding = '40px';
-            contentClone.querySelector('#lesson-phrase').style.fontSize = '2rem';
-            contentClone.querySelector('#lesson-explanation').style.fontSize = '1.25rem';
-
-            const watermark = new Image();
-            watermark.crossOrigin = "anonymous";
-            watermark.src = 'https://i.imgur.com/CG2tWKI.png'; // Firma
-            watermark.style.width = '180px';
-            watermark.style.opacity = '0.7';
-            watermark.style.marginTop = '20px';
-
-            tempContainer.appendChild(contentClone);
-            contentClone.appendChild(watermark);
-            document.body.appendChild(tempContainer);
-
-            try {
-                const canvas = await renderCanvas(tempContainer);
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                return blob;
-            } catch (error) {
-                console.error("Error generating social image:", error);
-                return null;
-            } finally {
-                document.body.removeChild(tempContainer);
-                isGenerating = false;
-            }
-        }
-
-        // NUEVA FUNCIÓN: Generar fondo de pantalla
-        async function generateWallpaperImage() {
-            if (isGenerating) return;
-            isGenerating = true;
-
-            const tempContainer = document.createElement('div');
-            tempContainer.style.position = 'absolute';
-            tempContainer.style.left = '-9999px';
-            tempContainer.style.top = '0px';
-            tempContainer.style.background = '#0c1427';
-            tempContainer.style.width = '1080px';
-            tempContainer.style.height = '1920px'; // Proporción 9:16
-            tempContainer.style.display = 'flex';
-            tempContainer.style.flexDirection = 'column';
-            tempContainer.style.justifyContent = 'center';
-            tempContainer.style.alignItems = 'center';
-            tempContainer.style.padding = '80px';
-            tempContainer.style.boxSizing = 'border-box';
-
-            const contentClone = createContentClone();
-            
-            // Estilos específicos para el fondo de pantalla
-            contentClone.querySelector('#lesson-phrase').style.fontSize = '4.5rem'; // Ligeramente más grande
-            contentClone.querySelector('#lesson-explanation').style.fontSize = '2.2rem'; // Ligeramente más grande
-            contentClone.querySelector('#lesson-explanation').style.marginTop = '40px';
-
-            const watermark = new Image();
-            watermark.crossOrigin = "anonymous";
-            watermark.src = 'https://i.imgur.com/CG2tWKI.png'; // Firma
-            watermark.style.width = '300px';
-            watermark.style.opacity = '0.7';
-            watermark.style.marginTop = '80px';
-
-            tempContainer.appendChild(contentClone);
-            contentClone.appendChild(watermark);
-            document.body.appendChild(tempContainer);
-
-            try {
-                const canvas = await renderCanvas(tempContainer);
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                return blob;
-            } catch (error) {
-                console.error("Error generating wallpaper:", error);
-                return null;
-            } finally {
-                document.body.removeChild(tempContainer);
-                isGenerating = false;
-            }
-        }
-
-        function showPreviewAndDownload(blob, filename) {
-            if (!blob) {
-                sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error+al+generar';
-                downloadShareImageLink.style.display = 'none';
-                return;
-            }
-            const dataUrl = URL.createObjectURL(blob);
-            sharePreviewImage.src = dataUrl;
-            downloadShareImageLink.href = dataUrl;
-            downloadShareImageLink.download = filename;
-            downloadShareImageLink.style.display = 'inline-flex'; // Usar inline-flex para centrar
-            sharePreviewContainer.style.display = 'block';
-            shareActionButtons.style.display = 'none'; // Ocultar botones de generación
-        }
         
-        if (shareLessonBtn) {
-            shareLessonBtn.addEventListener('click', () => {
-                if (!currentLesson) return;
-                // Resetea la modal a su estado inicial
-                sharePreviewContainer.style.display = 'none';
-                sharePreviewImage.src = '';
-                downloadShareImageLink.style.display = 'none';
-                shareActionButtons.style.display = 'flex';
-                openModal(shareModal);
-            });
-        }
+        // Función para generar la imagen con un formato específico (para móvil)
+        async function generateMobileShareImage() {
+            if (isGenerating) return;
+            isGenerating = true;
 
-        if (generateSocialBtn) {
-            generateSocialBtn.addEventListener('click', async () => {
-                sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
-                sharePreviewContainer.style.display = 'block';
+            return new Promise((resolve, reject) => {
+                // Crea un contenedor temporal con formato vertical 9:16
+                const tempContainer = document.createElement('div');
+                tempContainer.id = 'share-clone';
+                tempContainer.style.position = 'absolute';
+                tempContainer.style.left = '-9999px';
+                tempContainer.style.top = '0px';
+                tempContainer.style.backgroundColor = '#0c1427';
                 
-                const imageBlob = await generateSocialImage();
-                if (!imageBlob) {
-                    showPreviewAndDownload(null);
-                    return;
+                const clone = lessonContainer.cloneNode(true);
+                clone.style.width = '100%';
+                clone.style.height = 'auto'; // Ajustar altura al contenido
+                clone.style.padding = '80px';
+                clone.style.display = 'flex';
+                clone.style.flexDirection = 'column';
+                clone.style.justifyContent = 'center';
+                clone.style.alignItems = 'center';
+                clone.style.boxSizing = 'border-box'; // Asegurar padding correcto
+
+                const phraseEl = clone.querySelector('#lesson-phrase');
+                if (phraseEl) phraseEl.style.fontSize = '4rem';
+                
+                const explanationEl = clone.querySelector('#lesson-explanation');
+                if (explanationEl) {
+                    explanationEl.style.fontSize = '2rem';
+                    explanationEl.style.lineHeight = '1.5';
+                    explanationEl.style.marginTop = '40px';
                 }
                 
+                const exerciseBoxEl = clone.querySelector('#lesson-exercise-box');
+                if (exerciseBoxEl) exerciseBoxEl.style.display = 'none';
+
+                const watermark = new Image();
+                watermark.crossOrigin = "anonymous";
+                
+                watermark.onload = () => {
+                    watermark.style.width = '300px';
+                    watermark.style.opacity = '0.7';
+                    
+                    const watermarkContainer = document.createElement('div');
+                    watermarkContainer.style.textAlign = 'center';
+                    watermarkContainer.style.marginTop = '80px'; // Ajusta este valor para acercar o alejar la firma
+                    watermarkContainer.appendChild(watermark);
+
+                    // *** FIX: Inserta el watermark DENTRO del clon del contenido ***
+                    clone.appendChild(watermarkContainer);
+                    
+                    // Inserta el clon (que ahora contiene todo) en el contenedor temporal
+                    tempContainer.appendChild(clone);
+                    document.body.appendChild(tempContainer);
+
+                    html2canvas(tempContainer, { 
+                        backgroundColor: "#0c1427", 
+                        useCORS: true, 
+                        scale: 2 
+                    }).then(canvas => {
+                        document.body.removeChild(tempContainer);
+                        isGenerating = false;
+                        canvas.toBlob(blob => {
+                            resolve(blob);
+                        }, 'image/png');
+                    }).catch(err => {
+                        console.error("Error generating canvas:", err);
+                        document.body.removeChild(tempContainer);
+                        isGenerating = false;
+                        reject(err);
+                    });
+                };
+                
+                watermark.onerror = () => {
+                    console.error("Could not load the signature image.");
+                    document.body.removeChild(tempContainer);
+                    isGenerating = false;
+                    reject("Error loading watermark");
+                };
+
+                watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+            });
+        }
+
+        // Función para generar la imagen con un formato para escritorio/descarga
+        async function generateDesktopImage() {
+            if (isGenerating) return;
+            isGenerating = true;
+
+            return new Promise((resolve, reject) => {
+                // Clona el contenedor de la lección para poder capturarlo
+                const clone = lessonContainer.cloneNode(true);
+                clone.style.position = 'absolute';
+                clone.style.left = '-9999px';
+                clone.style.top = '0px';
+                clone.style.width = '700px'; 
+                clone.style.padding = '40px';
+                
+                const watermarkContainer = document.createElement('div');
+                watermarkContainer.style.textAlign = 'center';
+                watermarkContainer.style.paddingTop = '20px';
+                
+                const watermark = new Image();
+                watermark.crossOrigin = "anonymous";
+                
+                watermark.onload = () => {
+                    clone.appendChild(watermarkContainer).appendChild(watermark);
+                    document.body.appendChild(clone);
+
+                    html2canvas(clone, { 
+                        backgroundColor: "#0c1427", 
+                        useCORS: true, 
+                        scale: 2 
+                    }).then(canvas => {
+                        document.body.removeChild(clone);
+                        isGenerating = false;
+                        canvas.toBlob(blob => {
+                            resolve(blob);
+                        }, 'image/png');
+                    }).catch(err => {
+                        console.error("Error generating canvas:", err);
+                        document.body.removeChild(clone);
+                        isGenerating = false;
+                        reject(err);
+                    });
+                };
+                
+                watermark.onerror = () => {
+                    console.error("Could not load the signature image.");
+                    document.body.removeChild(clone);
+                    isGenerating = false;
+                    reject("Error loading watermark");
+                };
+
+                watermark.src = 'https://i.imgur.com/CG2tWKI.png';
+                watermark.style.width = '180px';
+                watermark.style.opacity = '0.7';
+            });
+        }
+        
+        // --- LÓGICA DE COMPARTIR MEJORADA ---
+        if (shareLessonBtn) {
+            shareLessonBtn.addEventListener('click', async () => {
+                if (!currentLesson) return;
+
+                // Muestra un indicador de carga
+                openModal(shareModal);
+                sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Generando...';
+                downloadShareImageLink.style.display = 'none';
+
+                // Determina si el dispositivo es móvil y soporta la Web Share API con archivos
                 const isShareApiSupported = navigator.share && navigator.canShare && navigator.canShare({ files: [new File([], 'test.png', { type: 'image/png' })] });
 
+                // *** FIX: Usar isMobileDevice() para forzar el modo de descarga en escritorio ***
                 if (isMobileDevice() && isShareApiSupported) {
                     try {
+                        const imageBlob = await generateMobileShareImage();
                         const imageFile = new File([imageBlob], 'mensaje-del-dia.png', { type: imageBlob.type });
+
                         await navigator.share({
                             title: 'Mensaje del Día - La Mente del Fénix',
                             files: [imageFile]
                         });
+                        console.log('Contenido compartido con éxito a través de la API nativa.');
                         closeModal(shareModal);
                     } catch (error) {
-                        if (error.name !== 'AbortError') {
-                           console.error('Error al compartir:', error);
-                           // Si falla, muestra la opción de descarga como fallback
-                           showPreviewAndDownload(imageBlob, 'mensaje-del-dia.png');
+                        // Si el usuario cancela el diálogo de compartir, no es un error real.
+                        if (error.name === 'AbortError') {
+                            console.log('El usuario canceló la acción de compartir.');
+                            closeModal(shareModal);
                         } else {
-                           closeModal(shareModal); // El usuario canceló
+                           console.error('Error al compartir:', error);
+                           // Si falla, se queda en la modal de descarga como fallback
+                           // (esto requiere que imageBlob esté disponible en este scope)
+                           // Para simplificar, simplemente cerramos la modal o mostramos un error.
+                           closeModal(shareModal);
                         }
                     }
                 } else {
-                    // Escritorio o móvil sin API: muestra la preview para descargar
-                    showPreviewAndDownload(imageBlob, 'mensaje-del-dia.png');
+                    // Versión para escritorio (o móvil sin API de compartir)
+                    try {
+                        const imageBlob = await generateDesktopImage();
+                        const dataUrl = URL.createObjectURL(imageBlob);
+                        sharePreviewImage.src = dataUrl;
+                        downloadShareImageLink.href = dataUrl;
+                        downloadShareImageLink.style.display = 'block';
+                        console.log('API de compartir no disponible o es escritorio, mostrando modal de descarga.');
+                    } catch (error) {
+                        console.error("No se pudo generar la imagen para la modal de descarga.", error);
+                        sharePreviewImage.src = 'https://placehold.co/600x400/0c1427/fbf5e2?text=Error';
+                    }
                 }
             });
         }
+        // --- FIN LÓGICA DE COMPARTIR MEJORADA ---
 
-        if (generateWallpaperBtn) {
-            generateWallpaperBtn.addEventListener('click', async () => {
-                sharePreviewImage.src = 'https://placehold.co/1080x1920/0c1427/fbf5e2?text=Generando...';
-                sharePreviewContainer.style.display = 'block';
-                
-                const imageBlob = await generateWallpaperImage();
-                showPreviewAndDownload(imageBlob, 'fondo-de-pantalla-fenix.png');
-            });
-        }
-        // --- FIN: LÓGICA DE COMPARTIR ACTUALIZADA ---
 
         const comingSoonModal = document.getElementById('coming-soon-modal');
         document.querySelectorAll('.teaser-card').forEach(card => card.addEventListener('click', () => openModal(comingSoonModal)));
