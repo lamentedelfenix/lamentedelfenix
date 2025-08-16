@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -17,38 +18,72 @@
             color: #0c2f5b;
         }
         .text-brand-pink { color: #e91e63; }
+        .prose h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .prose p {
+            line-height: 1.75;
+            color: #374151; /* gray-700 */
+        }
+        .prose strong {
+            color: #0c2f5b;
+        }
+        .highlight-box {
+            background-color: #fffbeb; /* yellow-50 */
+            border-left: 4px solid #f59e0b; /* amber-500 */
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Main container -->
-    <div class="max-w-3xl mx-auto p-8 md:p-12">
+    <div class="max-w-3xl mx-auto p-4 sm:p-8 md:p-12">
         <header class="mb-8 text-center">
-            <a href="./index.html"><img src="https://i.imgur.com/F4JacEf.png" alt="Banner La Mente del Fénix" class="w-full max-w-md mx-auto h-auto rounded-lg shadow-lg"></a>
+            <a href="./index.html"><img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg"></a>
         </header>
 
-        <main class="bg-white p-8 rounded-lg shadow-md">
-            <h1 class="text-3xl font-bold mb-6">Términos del Servicio y Política de Desistimiento</h1>
+        <main class="bg-white p-6 sm:p-8 rounded-lg shadow-xl prose max-w-none">
+            <h1 class="text-3xl font-extrabold mb-4 text-center">Términos del Servicio</h1>
+            <p class="text-center text-sm text-gray-500 mb-8">Última actualización: 17 de Agosto de 2025</p>
             
-            <h2 class="text-xl font-bold mt-8 mb-2">1. Cancelación de la Suscripción</h2>
-            <p class="text-gray-700 leading-relaxed">
-                Puedes cancelar tu suscripción a la membresía en cualquier momento. La cancelación detendrá los futuros cobros automáticos. Seguirás teniendo acceso a todo el contenido de la membresía hasta que finalice el periodo que ya has pagado (mensual o anual).
+            <hr class="my-6">
+
+            <h2>1. Cancelación de la Suscripción</h2>
+            <p>
+                Puedes <strong>cancelar tu suscripción</strong> a la membresía en cualquier momento. La cancelación detendrá los futuros cobros automáticos. Seguirás teniendo acceso a todo el contenido de la membresía hasta que finalice el periodo que ya has pagado (mensual o anual).
             </p>
 
-            <h2 class="text-xl font-bold mt-8 mb-2">2. Derecho de Desistimiento y Reembolsos</h2>
-            <p class="text-gray-700 leading-relaxed">
+            <h2>2. Derecho de Desistimiento y Política de Reembolsos</h2>
+            <p>
                 De acuerdo con la legislación vigente para la venta de contenido digital (Artículo 103, letra m, de la Ley General para la Defensa de los Consumidores y Usuarios), al adquirir la membresía se te da acceso inmediato a todo el contenido digital (vídeos, lecciones, plataforma, etc.).
             </p>
-            <p class="text-gray-700 leading-relaxed mt-4">
-                Al realizar la compra, se te solicitará tu **consentimiento expreso** para iniciar la ejecución del servicio de forma inmediata. Al aceptar, entiendes y reconoces que **pierdes tu derecho de desistimiento de 14 días**. Por lo tanto, una vez realizado el pago y obtenido el acceso, no se realizarán reembolsos, ni totales ni parciales.
-            </p>
-            <p class="text-gray-700 leading-relaxed mt-4">
+            <div class="highlight-box">
+                <p>
+                    Al realizar la compra, se te solicitará tu <strong>consentimiento expreso</strong> para iniciar la ejecución del servicio de forma inmediata. Al aceptar, entiendes y reconoces que <strong>pierdes tu derecho de desistimiento de 14 días</strong>.
+                </p>
+                <p class="mt-2">
+                    Por lo tanto, una vez realizado el pago y obtenido el acceso, <strong>no se realizarán reembolsos</strong>, ni totales ni parciales.
+                </p>
+            </div>
+            <p>
                 Esta política nos permite ofrecer todo el valor de la membresía desde el primer momento y se aplica tanto al plan mensual como al anual.
+            </p>
+
+            <h2>3. Precios Especiales y Ofertas</h2>
+            <p>
+                En el caso de que te hayas suscrito a la membresía a través de una oferta especial (como el precio de lanzamiento o cualquier otra promoción), la cancelación de tu suscripción implicará la <strong>pérdida de las condiciones ventajosas</strong> de dicha oferta. Si en el futuro decides volver a suscribirte, se aplicará la tarifa estándar vigente en ese momento, no pudiendo acogerte de nuevo al precio promocional.
             </p>
             
             <div class="mt-12 text-center">
-                <a href="./index.html" class="text-gray-600 hover:text-pink-600 font-semibold underline transition-colors">
-                    &larr; Volver a la página principal
+                <a href="./membresia.html" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver a la página de la membresía</span>
                 </a>
             </div>
         </main>
