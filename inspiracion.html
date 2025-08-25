@@ -752,6 +752,9 @@
         }
         
         function parseCSV(text) {
+            // Expresión regular para separar una fila de CSV, manejando campos entre comillas.
+            const regex = /("([^"]|"")*"|[^,]*)(,|$)/g;
+
             const lines = text.split(/\r?\n/);
             if (lines.length < 2) return [];
 
@@ -763,31 +766,29 @@
 
                 const obj = {};
                 const values = [];
-                let currentField = '';
-                let inQuotes = false;
-
-                for (const char of lines[i]) {
-                    if (char === '"' && (currentField.length === 0 || currentField.slice(-1) !== '\\')) {
-                        inQuotes = !inQuotes;
-                        continue;
+                
+                // Usamos la expresión regular para extraer los campos de la fila actual.
+                lines[i].replace(regex, function (match, p1) {
+                    let value = p1;
+                    // Si el campo estaba entre comillas, las quitamos y escapamos las comillas dobles internas.
+                    if (value.charAt(0) === '"') {
+                        value = value.slice(1, -1).replace(/""/g, '"');
                     }
-                    
-                    if (char === ',' && !inQuotes) {
-                        values.push(currentField.trim());
-                        currentField = '';
-                    } else {
-                        currentField += char;
-                    }
+                    values.push(value);
+                });
+                
+                // La expresión regular puede añadir un campo vacío extra al final, lo eliminamos.
+                if (values.length > headers.length) {
+                    values.pop();
                 }
-                values.push(currentField.trim());
 
                 if (values.length >= headers.length) {
-                      for (let j = 0; j < headers.length; j++) {
-                          obj[headers[j]] = values[j].replace(/^"|"$/g, '');
-                      }
-                      if (obj.title && obj.url) {
-                          result.push(obj);
-                      }
+                    for (let j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = values[j] || ''; // Aseguramos que el valor no sea indefinido
+                    }
+                    if (obj.title && obj.url) {
+                        result.push(obj);
+                    }
                 }
             }
             return result;
