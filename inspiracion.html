@@ -571,7 +571,9 @@
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
         const mobileStreakDays = document.getElementById('mobile-streak-days');
         
-        const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
+        // --- URL ORIGINAL Y PROXY ---
+        const originalGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKtJeB_t4-3VweJu1A5LAeHDeoRbHZ-f5hqobAbSag02BgeUWr261VyqMmRc1bQ6g7fT99_QUgoATP/pub?gid=1956803733&single=true&output=csv';
+        const googleSheetUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalGoogleSheetUrl)}`;
         
         const gallery = document.getElementById('video-gallery');
         const loadingIndicator = document.getElementById('loading-indicator');
