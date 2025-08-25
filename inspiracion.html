@@ -307,8 +307,8 @@
 
         <aside id="sidebar" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 flex flex-col h-screen">
              <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
-                <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+                 <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
             <div class="streak-container mx-4" tabindex="0">
                 <div id="sidebar-streak-counter" style="display: none;">
@@ -329,7 +329,6 @@
                     <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
                 </div>
             </div>
-            <!-- INICIO: NAVEGACIÓN ACTUALIZADA -->
             <nav class="mt-4 flex-grow">
                 <a href="./miembros.html" class="sidebar-link">
                     <i class="fas fa-home"></i>
@@ -355,7 +354,7 @@
                     <i class="fas fa-brain"></i>
                     <span>Mapa Mental + IA</span>
                 </a>
-                 <hr class="border-gray-700 my-4">
+                    <hr class="border-gray-700 my-4">
                 <a id="comunidad-btn" class="sidebar-link">
                     <i class="fas fa-users"></i>
                     <span>Comunidad</span>
@@ -369,7 +368,6 @@
                     <span>Sesión 1 a 1</span>
                 </a>
             </nav>
-            <!-- FIN: NAVEGACIÓN ACTUALIZADA -->
             <div class="px-4 py-2 mt-auto">
                 <hr class="border-gray-700 mb-4">
                 <button id="logout-btn" class="w-full sidebar-link text-left">
@@ -419,7 +417,6 @@
                     </header>
 
                     <main>
-                        <!-- INICIO: FILTROS ACTUALIZADOS -->
                         <div id="filter-container" class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-12 p-4 rounded-lg bg-black bg-opacity-20">
                             <div class="flex items-center gap-3">
                                 <label for="category-filter" class="text-lg font-semibold text-gray-300 whitespace-nowrap">Filtrar por:</label>
@@ -431,8 +428,6 @@
                                 <input type="text" id="search-filter" placeholder="Escribe un título..." class="filter-control w-full md:w-auto">
                             </div>
                         </div>
-                        <!-- FIN: FILTROS ACTUALIZADOS -->
-
                         <div id="video-gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"></div>
                         <div id="loading-indicator" class="flex flex-col items-center justify-center py-20">
                             <div class="loader"></div>
@@ -456,7 +451,6 @@
         </div>
     </div>
 
-    <!-- Modals -->
     <div id="video-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close-btn" title="Cerrar">&times;</button>
@@ -464,7 +458,6 @@
         </div>
     </div>
     
-    <!-- INICIO: MODALES ACTUALIZADOS -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
@@ -503,8 +496,6 @@
             </div>
         </div>
     </div>
-    <!-- FIN: MODALES ACTUALIZADOS -->
-
     <script>
         // --- SCRIPT PARA ANIMACIÓN DE FONDO ---
         const canvas = document.getElementById('background-canvas');
@@ -529,10 +520,10 @@
         });
         
         window.addEventListener('load', () => {
-             resizeCanvas(); 
-             initParticles(); 
-             animateParticles();
-             resizeObserver.observe(document.body);
+              resizeCanvas(); 
+              initParticles(); 
+              animateParticles();
+              resizeObserver.observe(document.body);
         });
     </script>
 
@@ -569,7 +560,7 @@
         if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
         if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
         if (logoutBtn) logoutBtn.addEventListener('click', () => {
-             signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
+              signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error);
         });
 
         // --- MANEJO DE CONTENIDO Y RACHA ---
@@ -789,12 +780,12 @@
                 values.push(currentField.trim());
 
                 if (values.length >= headers.length) {
-                     for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = values[j].replace(/^"|"$/g, '');
-                    }
-                    if (obj.title && obj.url) {
-                        result.push(obj);
-                    }
+                      for (let j = 0; j < headers.length; j++) {
+                          obj[headers[j]] = values[j].replace(/^"|"$/g, '');
+                      }
+                      if (obj.title && obj.url) {
+                          result.push(obj);
+                      }
                 }
             }
             return result;
