@@ -194,7 +194,7 @@
             background-color: rgba(0, 0, 0, 0.7); 
             backdrop-filter: blur(5px); 
             display: flex; align-items: center; justify-content: center; 
-            z-index: 1020; /* Aumentado para estar por encima del menú */
+            z-index: 1020;
             padding: 1rem; 
             opacity: 0; visibility: hidden; 
             transition: opacity 0.3s ease; 
@@ -250,7 +250,6 @@
         .loader:after { animation-duration: 4s; }
         @keyframes l24 { 100% {transform: rotate(1turn)} }
         
-        /* --- ESTILOS PARA FILTROS --- */
         .filter-control {
             background-color: rgba(12, 20, 39, 0.8);
             color: #fbf5e2;
@@ -572,15 +571,10 @@
         const mobileStreakDays = document.getElementById('mobile-streak-days');
         
         // --- URL ORIGINAL Y PROXY ---
-        // INSTRUCCIONES IMPORTANTES:
-        // 1. Ve a tu archivo de Google Sheets.
-        // 2. Haz clic en "Archivo" > "Compartir" > "Publicar en la web".
-        // 3. En la ventana, asegúrate de que esté seleccionada la hoja correcta (la que tiene los vídeos).
-        // 4. En el segundo desplegable, elige "Valores separados por comas (.csv)".
-        // 5. Haz clic en "Publicar" y copia el enlace que te da.
-        // 6. Pega ese enlace aquí abajo, reemplazando el que está entre las comillas simples.
         const originalGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQI5VSd7XzlE8HFUou8EiD9Kghc6VCk3kxUL2C_q6XHvyQ4OrbYQGOhtX2LfOEynV3dCH3BaGMhcVrP/pub?gid=0&single=true&output=csv';
-        const googleSheetUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalGoogleSheetUrl)}`;
+        
+        // Se ha cambiado el servicio de proxy a uno más estable.
+        const googleSheetUrl = `https://thingproxy.freeboard.io/fetch/${originalGoogleSheetUrl}`;
         
         const gallery = document.getElementById('video-gallery');
         const loadingIndicator = document.getElementById('loading-indicator');
@@ -588,7 +582,6 @@
         const videoModal = document.getElementById('video-modal');
         const modalPlayer = document.getElementById('modal-video-player');
         
-        // --- NUEVOS ELEMENTOS DE FILTRO ---
         const categoryFilter = document.getElementById('category-filter');
         const searchFilter = document.getElementById('search-filter');
         let allVideos = []; 
@@ -658,7 +651,6 @@
                 
                 const csvData = await response.text();
 
-                // Verificación anti-HTML: Si la respuesta es una página web, lanza un error.
                 if (csvData.trim().toLowerCase().startsWith("<!doctype html") || csvData.trim().startsWith("<html")) {
                     console.error("Error: Se recibió un documento HTML en lugar de CSV. Revisa la URL y la configuración de publicación de Google Sheets.");
                     throw new Error("Formato de datos incorrecto. Se esperaba CSV.");
@@ -699,7 +691,6 @@
         function applyFilters() {
             const selectedCategory = categoryFilter.value;
             const searchTerm = searchFilter.value.toLowerCase();
-
             let filteredVideos = allVideos;
 
             if (selectedCategory !== 'Todas las categorías') {
@@ -853,7 +844,6 @@
             });
         });
         
-        // --- LÓGICA UNIFICADA DE MODALES (CORREGIDA Y MEJORADA) ---
         const allModals = document.querySelectorAll('.modal-overlay');
 
         function closeModal(modal) {
@@ -905,7 +895,6 @@
             }
         });
         
-        // --- LÓGICA DE BOTONES DE MENÚ ACTUALIZADA ---
         const comunidadBtn = document.getElementById('comunidad-btn');
         const recursosBtn = document.getElementById('recursos-btn');
         const sesionBtn = document.getElementById('sesion-btn');
@@ -920,5 +909,4 @@
         
     </script>
 </body>
-</html>
-
+</ht
