@@ -223,6 +223,8 @@
             background-color: #080f1e;
         }
         #video-modal .modal-close-btn {
+            position: absolute;
+            z-index: 50; /* <-- CORRECCIÓN #1: Asegura que el botón esté por encima del vídeo */
             top: -10px; right: -10px; font-size: 1.5rem;
             color: #080f1e; background-color: #fbf5e2; border-radius: 50%;
             width: 40px; height: 40px;
@@ -641,6 +643,7 @@
         });
         
         function loadVideos() {
+            // La variable 'videosData' viene del archivo 'videos.js'
             if (typeof videosData !== 'undefined') {
                 allVideos = videosData;
                 hideLoading();
@@ -794,11 +797,12 @@
             if (!modal) return;
             modal.classList.remove('show');
 
-            const iframe = modal.querySelector('iframe');
-            if (iframe && iframe.src.includes('youtube')) {
-                const videoSrc = iframe.src;
-                iframe.src = ''; 
-                iframe.src = videoSrc.replace("&autoplay=1", "");
+            // CORRECCIÓN #2: Si es el modal del vídeo, vaciamos el reproductor para detener el vídeo.
+            if (modal.id === 'video-modal') {
+                const modalPlayer = document.getElementById('modal-video-player');
+                if (modalPlayer) {
+                    modalPlayer.innerHTML = '';
+                }
             }
             
             setTimeout(() => {
