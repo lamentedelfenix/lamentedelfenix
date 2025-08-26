@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Se carga el nuevo archivo con la lista de vídeos -->
+    <script src="./videos.js" defer></script>
     <style>
         html { scroll-behavior: smooth; }
         body {
@@ -570,12 +572,6 @@
         const mobileStreakCounter = document.getElementById('mobile-streak-counter');
         const mobileStreakDays = document.getElementById('mobile-streak-days');
         
-        // --- URL ORIGINAL Y PROXY ---
-        const originalGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQI5VSd7XzlE8HFUou8EiD9Kghc6VCk3kxUL2C_q6XHvyQ4OrbYQGOhtX2LfOEynV3dCH3BaGMhcVrP/pub?gid=0&single=true&output=csv';
-        
-        // Se ha cambiado el servicio de proxy a uno más estable.
-        const googleSheetUrl = `https://cors.sh/${originalGoogleSheetUrl}`;
-        
         const gallery = document.getElementById('video-gallery');
         const loadingIndicator = document.getElementById('loading-indicator');
         const errorMessage = document.getElementById('error-message');
@@ -644,32 +640,15 @@
             }
         });
         
-        async function loadVideos() {
-            try {
-                const response = await fetch(googleSheetUrl);
-                if (!response.ok) throw new Error(`Error en la red: ${response.status}`);
-                
-                const csvData = await response.text();
-
-                if (csvData.trim().toLowerCase().startsWith("<!doctype html") || csvData.trim().startsWith("<html")) {
-                    console.error("Error: Se recibió un documento HTML en lugar de CSV. Revisa la URL y la configuración de publicación de Google Sheets.");
-                    throw new Error("Formato de datos incorrecto. Se esperaba CSV.");
-                }
-
-                allVideos = parseCSV(csvData);
-                
-                if (allVideos.length === 0) {
-                    console.warn("CSV parseado pero no se encontraron vídeos válidos. Revisa el contenido del archivo CSV.");
-                }
-
+        function loadVideos() {
+            if (typeof videosData !== 'undefined') {
+                allVideos = videosData;
+                hideLoading();
                 setupFilters(allVideos);
                 applyFilters();
-
-            } catch (error) {
-                console.error("Error detallado al cargar los vídeos:", error);
+            } else {
+                console.error("Error: No se ha encontrado la lista de vídeos (videosData). Asegúrate de que el archivo 'videos.js' está cargado correctamente.");
                 showError();
-            } finally {
-                hideLoading();
             }
         }
 
@@ -710,7 +689,7 @@
         function displayVideos(videos) {
             gallery.innerHTML = ''; 
             if (!videos || videos.length === 0) {
-                gallery.innerHTML = '<p class="text-center col-span-full text-gray-400 text-lg">No se encontraron vídeos. Revisa que el enlace de Google Sheets sea el correcto y que la hoja tenga contenido.</p>';
+                gallery.innerHTML = '<p class="text-center col-span-full text-gray-400 text-lg">No se encontraron vídeos.</p>';
                 return;
             }
 
@@ -752,41 +731,6 @@
             return card;
         }
         
-        function parseCSV(text) {
-            const headers = ['category', 'title', 'description', 'url', 'thumbnail'];
-            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-            if (lines.length === 0) return [];
-
-            const result = [];
-            const regex = /("([^"]|"")*"|[^,]*)(,|$)/g;
-
-            for (const line of lines) {
-                const obj = {};
-                const values = [];
-                let match;
-                regex.lastIndex = 0; 
-                
-                while ((match = regex.exec(line)) && match[0] !== '') {
-                    let value = match[1];
-                    if (value.startsWith('"') && value.endsWith('"')) {
-                        value = value.slice(1, -1).replace(/""/g, '"');
-                    }
-                    values.push(value.trim());
-                    if (match[3] === '') break;
-                }
-
-                if (values.length > 0) {
-                    for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = values[j] || '';
-                    }
-                    if (obj.title && obj.url) {
-                        result.push(obj);
-                    }
-                }
-            }
-            return result;
-        }
-
         function getEmbedUrl(url) {
             if (!url || typeof url !== 'string') return null;
             
@@ -909,4 +853,4 @@
         
     </script>
 </body>
-</ht
+</html>
