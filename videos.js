@@ -1,6 +1,34 @@
 const videosData = [
   {
     category: "Inspiración",
+    title: '24 Minutos Muerta - Tessa Romero Cuenta su emotiva experiencia"',
+    description: "Tessa Romero nos cuenta lo que vivió y sintió estando muerta y nos cuenta como no hay nada que temer en la muerte y que sin duda estamos todos conectados entre nosotros y a Dios",
+    url: "https://youtu.be/ZEhz0rQIdpM",
+    thumbnail: ""
+  },
+  {
+    category: "Conocimiento",
+    title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que el mundo puede ser una simulación"',
+    description: "Javier Santaolalla doctor en física de particulas nos explica como la realidad matematicamente puede ser una simulación o multiples simulaciones una dentro de otra",
+    url: "https://youtu.be/PTIcIOrYGSM",
+    thumbnail: ""
+  },
+  {
+    category: "Conocimiento",
+    title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que no existe el TIEMPO"',
+    description: "Javier Santaolalla doctor en física de particulas nos explica como el tiempo no existe y que es unicamente una percepción humana",
+    url: "https://youtu.be/jFffcQBRKZY",
+    thumbnail: ""
+  },
+  {
+    category: "Inspiración",
+    title: 'Las carceles de Noruega - Las carceles compasivas con menor reincidencia del mundo"',
+    description: "En este capitulo documental nos hablan de como en las carceles mas compasivas del mundo consiguen las mejores tasas de reinserción del planeta",
+    url: "https://dai.ly/x7t35dm",
+    thumbnail: ""
+  },
+  {
+    category: "Inspiración",
     title: 'Ilia Topuria (Campeón del Mundo): "Deposito mi Confianza en Dios"',
     description: "Ilia Topuria antes de ser campeón indiscutido y contra todo pronóstico de MMA; habla de que aplica uno de los principios fundamentales de UCDM. Depositar tu fe en Dios y que lo demás se dará.",
     url: "https://www.youtube.com/watch?v=QTqD7ThiDRQ",
@@ -77,4 +105,5 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
