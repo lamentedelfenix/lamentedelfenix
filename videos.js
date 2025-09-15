@@ -10,6 +10,13 @@ const videosData = [
     category: "Conocimiento",
     title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que el mundo puede ser una simulación"',
     description: "Javier Santaolalla doctor en física de particulas nos explica como la realidad matematicamente puede ser una simulación o multiples simulaciones una dentro de otra",
+    url: "https://youtu.be/RNUuphoKL8k",
+    thumbnail: ""
+  },
+  {
+    category: "Conocimiento",
+    title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que el mundo puede ser una simulación"',
+    description: "Javier Santaolalla doctor en física de particulas nos explica como la realidad matematicamente puede ser una simulación o multiples simulaciones una dentro de otra",
     url: "https://youtu.be/PTIcIOrYGSM",
     thumbnail: ""
   },
@@ -105,5 +112,6 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
 
