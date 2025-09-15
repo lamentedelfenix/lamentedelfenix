@@ -166,14 +166,15 @@
         @keyframes ember-rise { 0% { box-shadow: 0 0 10px 0px #fde68a; } 50% { box-shadow: 0 -15px 20px 5px rgba(253, 230, 138, 0); } 100% { box-shadow: 0 0 10px 0px #fde68a; } }
 
         /* --- ESTILOS DE LA PÁGINA DE CURSO --- */
+        /* MODIFICACIÓN #2: Se elimina la altura fija para que el contenedor se adapte al contenido y al sticky parent. */
         #video-list-container {
-            height: calc(100vh - 8rem);
             overflow-y: auto;
         }
         #video-list-container::-webkit-scrollbar { width: 8px; }
         #video-list-container::-webkit-scrollbar-track { background: #080f1e; }
         #video-list-container::-webkit-scrollbar-thumb { background-color: var(--brand-cyan); border-radius: 10px; border: 2px solid #080f1e; }
 
+        /* MODIFICACIÓN #3: Brillo rosado para el video seleccionado. */
         .video-list-item {
             border-left: 4px solid transparent;
             transition: all 0.2s ease-in-out;
@@ -184,11 +185,18 @@
         .video-list-item:hover .video-list-item-header {
             background-color: rgba(255, 255, 255, 0.05);
         }
-        .video-list-item.active .video-list-item-header {
-            background-color: rgba(0, 188, 212, 0.15);
-        }
         .video-list-item.active {
-            border-left-color: var(--brand-cyan);
+            border-left-color: var(--brand-pink);
+        }
+        .video-list-item.active .video-list-item-header {
+            background-color: rgba(233, 30, 99, 0.1);
+        }
+        .video-list-item.active .video-list-item-header span:nth-child(2) {
+            color: #f9a8d4; /* Rosa brillante */
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(233, 30, 99, 0.7);
+            transform: translateX(4px);
+            transition: all 0.3s ease-in-out;
         }
         .video-list-item.seen .fa-check-circle {
             color: var(--brand-gold);
@@ -281,17 +289,17 @@
             box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
             border: 1px solid rgba(0, 188, 212, 0.5);
         }
-        /* ESTILO PARA EL BANNER DE CONSTRUCCIÓN */
-        .construction-banner {
-            position: relative;
-            background-color: #f6ad55; /* Color naranja */
-            color: #0c1427; /* Color del texto */
+        
+        /* MODIFICACIÓN #1: Banner de información con nuevo estilo */
+        .info-banner {
+            background-color: rgba(0, 188, 212, 0.1);
+            color: var(--text-main);
+            border: 1px solid var(--brand-cyan);
             padding: 1rem;
             text-align: center;
-            font-weight: 700;
-            z-index: 1000; /* Asegura que esté por encima de la mayoría del contenido */
-            margin-bottom: 2rem; /* Espacio debajo del banner */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.2);
         }
     </style>
 </head>
@@ -403,11 +411,11 @@
             </div>
 
             <main id="main-content" class="p-4 md:p-8" style="display: none;">
-                <!-- Nuevo banner de construcción -->
-                <div class="construction-banner rounded-lg mb-8">
+                <!-- MODIFICACIÓN #1: Banner actualizado con nuevo texto y estilo -->
+                <div class="info-banner rounded-lg mb-8">
                     <p>
-                        <i class="fas fa-tools mr-2"></i>
-                        ¡Estamos trabajando en ello! Este curso está en proceso de construcción. Aún puedes navegar, pero los vídeos no están disponibles.
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Estaremos regularmente actualizando los videos y añadiendo nuevo contenido. Recuerda entrar aquí de vez en cuando.
                     </p>
                 </div>
 
@@ -418,9 +426,10 @@
                 
                 <div class="max-w-7xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg">
-                            <h2 class="text-xl font-bold mb-4">Contenido del Curso</h2>
-                            <div id="video-list-container" class="lg:h-auto">
+                        <!-- MODIFICACIÓN #2: La columna de la lista de videos ahora es "sticky" en pantallas grandes para evitar el espacio vacío al hacer scroll. -->
+                        <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg flex flex-col lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)]">
+                            <h2 class="text-xl font-bold mb-4 flex-shrink-0">Contenido del Curso</h2>
+                            <div id="video-list-container" class="flex-grow">
                                 <ul id="video-list" class="space-y-2">
                                     <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
                                 </ul>
@@ -565,7 +574,7 @@
                 
                 // Hace visible el menú lateral y el encabezado para usuarios autenticados
                 sidebar.style.removeProperty('display');
-                document.querySelector('.md\\:hidden').style.removeProperty('display');
+                document.getElementById('mobile-header').style.removeProperty('display');
 
                 const appId = 'ucdm-tracker-app-v2';
                 progressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'videos');
@@ -604,7 +613,7 @@
                 authMessage.style.display = 'block';
                 // Oculta el menú lateral y el encabezado para usuarios no autenticados
                 sidebar.style.display = 'none';
-                document.querySelector('.md\\:hidden').style.display = 'none';
+                document.getElementById('mobile-header').style.display = 'none';
             }
         });
 
