@@ -31,7 +31,7 @@ const videosData = [
     category: "Inspiración",
     title: 'Las carceles de Noruega - Las carceles compasivas con menor reincidencia del mundo"',
     description: "En este capitulo documental nos hablan de como en las carceles mas compasivas del mundo consiguen las mejores tasas de reinserción del planeta",
-    url: "https://dai.ly/x7t35dm",
+    url: "https://youtu.be/4ShqT6ZxfCI",
     thumbnail: ""
   },
   {
@@ -112,6 +112,7 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
 
 
