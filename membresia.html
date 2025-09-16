@@ -14,6 +14,7 @@
     <!-- Panzoom for image zooming -->
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
     <style>
+        html { scroll-behavior: smooth; }
         body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; }
         .text-brand-pink { color: #e91e63; }
         .bg-brand-pink { background-color: #e91e63; }
@@ -63,30 +64,34 @@
             100% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1); }
         }
 
-        .pricing-toggle { display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; }
-        .toggle-label { font-weight: 600; transition: color 0.4s ease; }
-        .toggle-switch { width: 60px; height: 34px; position: relative; display: inline-block; margin: 0 1rem; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #daa520; }
-        input:checked + .slider:before { transform: translateX(26px); }
+        /* Pricing Card Festive Styles */
+        .pricing-card-festive {
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            border-image: linear-gradient(135deg, #f0c74c, #daa520, #e91e63);
+            border-image-slice: 1;
+            animation: festive-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes festive-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(233, 30, 99, 0.4), 0 0 15px rgba(218, 165, 32, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(233, 30, 99, 0.7), 0 0 30px rgba(218, 165, 32, 0.7); }
+        }
+
+        .festive-ribbon {
+            background: linear-gradient(45deg, #e91e63, #c2185b);
+        }
         
-        .pricing-card { transition: all 0.4s ease; }
-        .pricing-card.annual-selected {
-            border-color: #daa520;
-            background-image: radial-gradient(circle, #fffaf0, white);
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(218, 165, 32, 0.3);
+        /* Countdown Timer Styles */
+        #countdown-timer > div {
+            background-color: rgba(0,0,0,0.05);
+            padding: 0.5rem;
+            border-radius: 8px;
+            min-width: 60px; /* Asegura espacio para el texto */
         }
-        .btn-gold {
-            background: linear-gradient(45deg, #f0c74c, #daa520);
-            color: white;
-            transition: all 0.3s ease;
-        }
-         .btn-gold:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+
+        #countdown-timer .countdown-separator {
+            align-self: center;
         }
 
         /* Zoomable image style */
@@ -127,19 +132,6 @@
             line-height: 1; 
         }
         
-        .benefit-icon {
-            background: linear-gradient(135deg, #f0c74c, #daa520);
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto;
-        }
-
         .contact-link {
             position: relative;
             text-decoration: none;
@@ -280,9 +272,21 @@
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que verás dentro</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- NUEVO: Curso Orientativo -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Mapa Conceptual -->
+                            <img id="curso-orientativo-img"
+                                 src="https://i.imgur.com/ip9Yh4Z.png" 
+                                 alt="Curso orientativo sobre Un Curso de Milagros" 
+                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
+                                 data-static-src="https://i.imgur.com/ip9Yh4Z.png" 
+                                 data-gif-src="https://i.imgur.com/5uZzCht.gif">
+                            <p class="mt-2 font-semibold">Curso orientativo sobre Un Curso de Milagros y como aplicarlo</p>
+                        </div>
+                    </div>
+                    <!-- Mapa Conceptual -->
+                    <div class="text-center">
+                        <div class="max-w-sm mx-auto">
                             <img id="mapa-conceptual-img" 
                                  src="https://i.imgur.com/xrTind4.png" 
                                  alt="Mapa Conceptual de UCDM" 
@@ -292,9 +296,9 @@
                             <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
                         </div>
                     </div>
+                    <!-- Chat IA -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Chat IA -->
                             <img id="chat-ia-img"
                                  src="https://i.imgur.com/RPIB19T.png" 
                                  alt="Chat con IA" 
@@ -304,9 +308,9 @@
                             <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclara tus dudas al instante</p>
                         </div>
                     </div>
+                    <!-- Mensajes Diarios -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Mensajes Diarios -->
                             <img id="mensajes-diarios-img"
                                  src="https://i.imgur.com/D0Zh9jy.png" 
                                  alt="Mensajes Diarios" 
@@ -316,9 +320,9 @@
                             <p class="mt-2 font-semibold">Mensajes Diarios para <span class="highlight-word">inspirarte y compartir</span></p>
                         </div>
                     </div>
+                    <!-- Lecciones Ritmo -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <!-- Lecciones Ritmo -->
                             <img id="lecciones-ritmo-img"
                                  src="https://i.imgur.com/YPGafgM.png" 
                                  alt="Seguimiento de Lecciones" 
@@ -329,7 +333,7 @@
                         </div>
                     </div>
                     <!-- Rincón Inspiración -->
-                    <div class="text-center sm:col-start-1 sm:col-end-3">
+                    <div class="text-center">
                         <div class="max-w-sm mx-auto">
                             <img id="rincon-inspiracion-img"
                                  src="https://i.imgur.com/qOiuyzJ.png" 
@@ -347,46 +351,56 @@
 
         <!-- Call to Action & Pricing -->
         <section class="py-20 px-4">
-            <div id="pricing-card" class="pricing-card relative max-w-md mx-auto text-center bg-white p-8 rounded-xl shadow-2xl border-2 border-gray-200 overflow-hidden">
+            <div id="pricing-card" class="pricing-card-festive relative max-w-md mx-auto text-center bg-white p-8 rounded-xl overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32">
-                    <div class="absolute transform rotate-45 bg-red-500 text-center text-white font-semibold py-0.5 right-[-50px] top-[15px] w-[170px] shadow-lg">
+                    <div class="festive-ribbon absolute transform rotate-45 text-center text-white font-semibold py-1 right-[-45px] top-[20px] w-[170px] shadow-lg">
                         Oferta
                     </div>
                 </div>
 
-                <h2 class="text-3xl font-bold mb-2">Aprovecha el Precio</h2>
-                <p class="text-gray-700 mb-2 font-semibold"><i class="fas fa-lock text-yellow-500 mr-2"></i>¡Apóyame en el lanzamiento y mantén este precio <span class="text-brand-pink">para siempre!*</span></p>
-                <p class="text-xs text-gray-500 mb-8">*La oferta se pierde al desuscribirte.</p>
-                
-                <div class="pricing-toggle">
-                    <span id="monthly-label" class="toggle-label text-brand-pink">Mensual</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="pricing-toggle-checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <span id="annual-label" class="toggle-label inline-flex flex-col items-center sm:flex-row sm:items-baseline">
-                        <span>Anual</span>
-                        <span class="bg-yellow-300 text-yellow-800 text-xs font-bold px-2 py-1 rounded-full mt-1 sm:mt-0 sm:ml-2">AHORRA MÁS</span>
-                    </span>
+                <h2 class="text-3xl font-bold mb-2">Oferta de Lanzamiento</h2>
+                <p class="text-gray-700 mb-2 font-semibold"><i class="fas fa-history text-yellow-500 mr-2"></i>¡Precio bloqueado <span class="text-brand-pink">para siempre!*</span></p>
+
+                <!-- Countdown Timer -->
+                <div id="countdown-timer" class="flex justify-center gap-1 sm:gap-2 my-6 text-center">
+                    <div>
+                        <span id="days" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
+                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Días</span>
+                    </div>
+                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
+                    <div>
+                        <span id="hours" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
+                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Horas</span>
+                    </div>
+                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
+                    <div>
+                        <span id="minutes" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
+                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Minutos</span>
+                    </div>
+                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
+                    <div>
+                        <span id="seconds" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
+                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Segundos</span>
+                    </div>
                 </div>
 
+                <p class="text-xs text-gray-500 mb-6">*La oferta se pierde al desuscribirte.</p>
+                
                 <div id="monthly-price" class="my-6">
                     <div class="flex justify-center items-center">
-                        <span class="text-2xl text-gray-500 font-semibold mr-3 line-through">55€</span>
-                        <span class="text-5xl font-extrabold text-green-600">35€</span>
+                        <span class="text-2xl text-gray-500 font-semibold mr-3 line-through">45€</span>
+                        <span class="text-5xl font-extrabold text-green-600">19,50€</span>
                     </div>
                     <span class="text-gray-500">/ mes</span>
                 </div>
-                <div id="annual-price" class="my-6 hidden">
-                    <span class="text-5xl font-extrabold">300€</span>
-                    <span class="text-gray-500">/ año</span>
-                    <p class="text-sm font-semibold">(Equivale a 25€/mes)</p>
-                    <p class="mt-2 font-bold text-green-600">¡Ahorras 360€ al año vs. el precio normal!</p>
-                    <p class="mt-2 font-bold text-yellow-600"><i class="fas fa-star mr-1"></i>¡Incluye 2 sesiones 1 a 1 de regalo!</p>
-                </div>
                 
-                <a href="#" id="payment-link" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl w-full block">
-                    Sí, ¡Quiero la Oferta Ahora!
+                <div id="offer-expired-message" class="hidden my-8 text-center">
+                    <p class="text-xl font-bold text-red-600">¡La oferta ha terminado!</p>
+                    <p class="text-gray-600 mt-2">Pronto anunciaremos los nuevos precios. ¡Gracias por tu interés!</p>
+                </div>
+
+                <a href="#" id="payment-link" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl w-full block transition transform hover:scale-105">
+                    ¡Sí, Quiero la Oferta Ahora!
                 </a>
                 <div class="mt-6 flex items-center justify-center gap-2 text-gray-500">
                     <i class="fas fa-shield-alt"></i>
@@ -431,8 +445,11 @@
 
             let panzoomInstance = null;
 
-            // Map of image IDs to their GIF and static URLs
             const imageSources = {
+                'curso-orientativo-img': { 
+                    static: 'https://i.imgur.com/ip9Yh4Z.png', 
+                    gif: 'https://i.imgur.com/5uZzCht.gif'
+                },
                 'mapa-conceptual-img': { 
                     static: 'https://i.imgur.com/xrTind4.png', 
                     gif: 'https://i.imgur.com/DiOIB3w.gif' 
@@ -478,11 +495,6 @@
                     panzoomInstance = Panzoom(lightboxImg, {
                         maxScale: 10,
                         minScale: 0.7,
-                        handleStartEvent: (e) => {
-                            if (e.touches && e.touches.length === 1) { 
-                                e.preventDefault();
-                            }
-                        }
                     });
                 });
             });
@@ -521,42 +533,54 @@
 
             featureItems.forEach(item => featureObserver.observe(item));
             
-            // --- Lógica del selector de precios ---
-            const toggle = document.getElementById('pricing-toggle-checkbox');
-            const monthlyPrice = document.getElementById('monthly-price');
-            const annualPrice = document.getElementById('annual-price');
-            const paymentLink = document.getElementById('payment-link');
-            const pricingCard = document.getElementById('pricing-card');
-            const monthlyLabel = document.getElementById('monthly-label');
-            const annualLabel = document.getElementById('annual-label');
-            
-            const monthlyLink = "https://buy.stripe.com/6oU5kC1GA9xegDLggx3F600"; 
-            const annualLink = "https://buy.stripe.com/14AaEW5WQ7p62MV5BT3F601";
+            // --- Lógica del cronómetro de oferta ---
+            // La oferta termina el Viernes 19 de Septiembre de 2025 a las 21:00h
+            const countdownEndDate = new Date('2025-09-19T21:00:00');
 
-            toggle.addEventListener('change', () => {
-                if (toggle.checked) { // Anual seleccionado
-                    monthlyPrice.classList.add('hidden');
-                    annualPrice.classList.remove('hidden');
-                    paymentLink.href = annualLink;
-                    paymentLink.classList.remove('btn-pink');
-                    paymentLink.classList.add('btn-gold');
-                    pricingCard.classList.add('annual-selected');
-                    monthlyLabel.classList.remove('text-brand-pink');
-                    annualLabel.classList.add('text-yellow-600');
-                } else { // Mensual seleccionado
-                    annualPrice.classList.add('hidden');
-                    monthlyPrice.classList.remove('hidden');
-                    paymentLink.href = monthlyLink;
-                    paymentLink.classList.add('btn-pink');
-                    paymentLink.classList.remove('btn-gold');
-                    pricingCard.classList.remove('annual-selected');
-                    annualLabel.classList.remove('text-yellow-600');
-                    monthlyLabel.classList.add('text-brand-pink');
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const paymentLink = document.getElementById('payment-link');
+            const countdownTimerEl = document.getElementById('countdown-timer');
+            const monthlyPriceEl = document.getElementById('monthly-price');
+            const offerExpiredMessageEl = document.getElementById('offer-expired-message');
+
+            const offerLink = "https://buy.stripe.com/00weVc5WQ9xe3QZ8O53F604";
+            paymentLink.href = offerLink;
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownEndDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    countdownTimerEl.classList.add('hidden');
+                    monthlyPriceEl.classList.add('hidden');
+                    offerExpiredMessageEl.classList.remove('hidden');
+
+                    paymentLink.textContent = "Oferta Finalizada";
+                    paymentLink.href = "#";
+                    paymentLink.classList.remove('btn-pink', 'hover:scale-105');
+                    paymentLink.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-75');
+                    paymentLink.onclick = (e) => e.preventDefault();
+                    
+                    return;
                 }
-            });
-            // Establece el enlace inicial a mensual
-            paymentLink.href = monthlyLink; 
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.textContent = String(days).padStart(2, '0');
+                hoursEl.textContent = String(hours).padStart(2, '0');
+                minutesEl.textContent = String(minutes).padStart(2, '0');
+                secondsEl.textContent = String(seconds).padStart(2, '0');
+
+            }, 1000);
         });
     </script>
 </body>
 </html>
+
