@@ -64,34 +64,30 @@
             100% { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1); }
         }
 
-        /* Pricing Card Festive Styles */
-        .pricing-card-festive {
-            border: 3px solid transparent;
-            background-clip: padding-box;
-            border-image: linear-gradient(135deg, #f0c74c, #daa520, #e91e63);
-            border-image-slice: 1;
-            animation: festive-glow 3s infinite ease-in-out;
-        }
-
-        @keyframes festive-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(233, 30, 99, 0.4), 0 0 15px rgba(218, 165, 32, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(233, 30, 99, 0.7), 0 0 30px rgba(218, 165, 32, 0.7); }
-        }
-
-        .festive-ribbon {
-            background: linear-gradient(45deg, #e91e63, #c2185b);
-        }
+        .pricing-toggle { display: flex; justify-content: center; align-items: center; margin-bottom: 2rem; }
+        .toggle-label { font-weight: 600; transition: color 0.4s ease; }
+        .toggle-switch { width: 60px; height: 34px; position: relative; display: inline-block; margin: 0 1rem; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #daa520; }
+        input:checked + .slider:before { transform: translateX(26px); }
         
-        /* Countdown Timer Styles */
-        #countdown-timer > div {
-            background-color: rgba(0,0,0,0.05);
-            padding: 0.5rem;
-            border-radius: 8px;
-            min-width: 60px; /* Asegura espacio para el texto */
+        .pricing-card { transition: all 0.4s ease; }
+        .pricing-card.annual-selected {
+            border-color: #daa520;
+            background-image: radial-gradient(circle, #fffaf0, white);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(218, 165, 32, 0.3);
         }
-
-        #countdown-timer .countdown-separator {
-            align-self: center;
+        .btn-gold {
+            background: linear-gradient(45deg, #f0c74c, #daa520);
+            color: white;
+            transition: all 0.3s ease;
+        }
+         .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         /* Zoomable image style */
@@ -159,6 +155,26 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
+
+        /* FAQ Accordion Styles */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .faq-item .faq-icon {
+            transition: transform 0.3s ease-out;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -187,10 +203,13 @@
 
         <!-- Hero Section -->
         <section class="text-center pt-8 pb-16 px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Deja de sentirte perdido con Un Curso de Milagros y <span class="animated-highlight">empieza a vivirlo de verdad</span>.</h1>
-            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">La Membresía "La Mente del Fénix" es el único espacio que combina <span class="font-bold text-brand-pink">mentoría experta</span> con <span class="font-bold text-brand-pink">tecnología inteligente</span> para integrar el Curso en tu día a día, encontrar paz y recuperar tu poder.</p>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-12">Te ayudo a <span class="animated-highlight">transformar tu vida</span> como lo hice yo a través de los principios de Un Curso de Milagros.</h1>
+            <div class="text-lg md:text-xl max-w-3xl mx-auto mb-20 space-y-4">
+                <p>Soy Darío Arrigazzi y he creado la membresía La Mente del Fénix para enseñarte y acompañarte a integrar los principios que cambiaron mi vida.</p> 
+                <p>Es el único espacio que combina <span class="font-bold text-brand-pink">mentoría experta</span>, con <span class="font-bold text-brand-pink">tecnología inteligente</span> y una <span class="font-bold text-brand-pink">aplicación web exclusiva</span> para integrar estos principios espirituales de El Curso de Milagros.</p>
+            </div>
             <a href="#pricing-card" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl inline-block transition transform hover:scale-105">
-                ¡Aprovechar Oferta de Lanzamiento!
+                Únete a la Membresía
             </a>
             <div class="mt-4 text-sm text-gray-500">Cancela cuando quieras. Cero dramas.</div>
         </section>
@@ -203,11 +222,11 @@
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h3 class="font-bold text-xl mb-3 text-brand-pink">Esta membresía es para ti si...</h3>
                         <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Sientes curiosidad por el UCDM y el poder que tiene para cambiar tu vida al igual que hizo con la mía.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Lees el Curso pero te cuesta entenderlo y llevarlo a la práctica en tu día a día.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Si lees sobre espiritualidad y crecimiento personal, pero luego no sabes cómo aplicarlo.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Entiendes que tu mundo exterior es una proyección de tu mundo interior.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Buscas un acompañamiento regular pero que sea asequible.</span></li>
                             <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Te sientes solo/a en tu camino y buscas una comunidad de apoyo.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Necesitas respuestas claras y fiables sobre el Curso, sin confusiones.</span></li>
-                             <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Estás listo/a para dejar el victimismo y ser dueño/a de tu paz.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Estás listo/a para dejar el victimismo y ser dueño/a de tu paz.</span></li>
                         </ul>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-md">
@@ -243,7 +262,7 @@
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-check-double"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Seguimiento de Lecciones</h3>
-                        <p class="text-gray-600">Mantén la constancia con nuestra herramienta interactiva para los ejercicios de UCDM.</p>
+                        <p class="text-gray-600">Mantén la constancia con las lecciones de UCDM, un ejercicio para cada día del año.</p>
                     </div>
                     <!-- Feature 4: Comunidad Privada -->
                     <div class="feature-item text-center">
@@ -351,60 +370,80 @@
 
         <!-- Call to Action & Pricing -->
         <section class="py-20 px-4">
-            <div id="pricing-card" class="pricing-card-festive relative max-w-md mx-auto text-center bg-white p-8 rounded-xl overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32">
-                    <div class="festive-ribbon absolute transform rotate-45 text-center text-white font-semibold py-1 right-[-45px] top-[20px] w-[170px] shadow-lg">
-                        Oferta
-                    </div>
-                </div>
-
-                <h2 class="text-3xl font-bold mb-2">Oferta de Lanzamiento</h2>
-                <p class="text-gray-700 mb-2 font-semibold"><i class="fas fa-history text-yellow-500 mr-2"></i>¡Precio bloqueado <span class="text-brand-pink">para siempre!*</span></p>
-
-                <!-- Countdown Timer -->
-                <div id="countdown-timer" class="flex justify-center gap-1 sm:gap-2 my-6 text-center">
-                    <div>
-                        <span id="days" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Días</span>
-                    </div>
-                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
-                    <div>
-                        <span id="hours" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Horas</span>
-                    </div>
-                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
-                    <div>
-                        <span id="minutes" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Minutos</span>
-                    </div>
-                    <span class="text-3xl sm:text-4xl font-bold text-gray-300 countdown-separator">:</span>
-                    <div>
-                        <span id="seconds" class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">00</span>
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider">Segundos</span>
-                    </div>
-                </div>
-
-                <p class="text-xs text-gray-500 mb-6">*La oferta se pierde al desuscribirte.</p>
+            <div id="pricing-card" class="pricing-card max-w-md mx-auto text-center bg-white p-8 rounded-xl shadow-2xl border-2 border-gray-200">
+                <h2 class="text-3xl font-bold mb-4">Elige tu Plan y Únete Hoy</h2>
+                <p class="text-gray-600 mb-8">Accede a todas las herramientas y transforma tu práctica del Curso.</p>
                 
+                <div class="pricing-toggle">
+                    <span id="monthly-label" class="toggle-label text-brand-pink">Mensual</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pricing-toggle-checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <span id="annual-label" class="toggle-label">Anual <span class="bg-yellow-300 text-yellow-800 text-xs font-bold px-2 py-1 rounded-full">-28%</span></span>
+                </div>
+
                 <div id="monthly-price" class="my-6">
-                    <div class="flex justify-center items-center">
-                        <span class="text-2xl text-gray-500 font-semibold mr-3 line-through">45€</span>
-                        <span class="text-5xl font-extrabold text-green-600">19,50€</span>
+                    <div class="flex justify-center items-baseline">
+                        <span class="text-5xl font-extrabold">35€</span>
+                        <span class="text-gray-600 font-bold text-lg ml-2">/ mes</span>
                     </div>
-                    <span class="text-gray-500">/ mes</span>
+                </div>
+                <div id="annual-price" class="my-6 hidden">
+                    <div class="flex justify-center items-baseline">
+                         <span class="text-5xl font-extrabold">300€</span>
+                         <span class="text-gray-600 font-bold text-lg ml-2">/ año</span>
+                    </div>
+                    <p class="text-sm font-semibold mt-2">(Equivale a 25€/mes)</p>
+                    <p class="mt-2 font-bold text-green-600">¡Ahorras 120€ al año!</p>
+                    <p class="mt-2 font-bold text-yellow-600"><i class="fas fa-star mr-1"></i>¡Incluye 2 sesiones 1 a 1 gratis!</p>
                 </div>
                 
-                <div id="offer-expired-message" class="hidden my-8 text-center">
-                    <p class="text-xl font-bold text-red-600">¡La oferta ha terminado!</p>
-                    <p class="text-gray-600 mt-2">Pronto anunciaremos los nuevos precios. ¡Gracias por tu interés!</p>
-                </div>
-
-                <a href="#" id="payment-link" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl w-full block transition transform hover:scale-105">
-                    ¡Sí, Quiero la Oferta Ahora!
+                <a href="#" id="payment-link" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl w-full block">
+                    Quiero unirme ahora
                 </a>
                 <div class="mt-6 flex items-center justify-center gap-2 text-gray-500">
                     <i class="fas fa-shield-alt"></i>
                     <span class="text-sm font-semibold">Cancela en cualquier momento. Sin compromisos.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-20 px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
+                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
+                            <span>¿Cómo funciona la cancelación?</span>
+                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
+                        </button>
+                        <div class="faq-answer px-5 text-gray-600">
+                            <p>Puedes cancelar tu suscripción en cualquier momento desde tu panel de usuario. No hay compromisos ni contratos. Si cancelas, seguirás teniendo acceso completo a la membresía hasta el final del ciclo de facturación que ya has pagado (ya sea mensual o anual). Después de esa fecha, tu suscripción no se renovará y no se te volverá a cobrar.</p>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
+                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
+                            <span>¿Qué pasa si no puedo asistir a una mentoría en vivo?</span>
+                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
+                        </button>
+                        <div class="faq-answer px-5 text-gray-600">
+                            <p>¡No te preocupes! Todas las sesiones de mentoría grupal se graban y se suben a la biblioteca de recursos en un plazo de 24-48 horas. Podrás verlas cuando quieras, las veces que quieras.</p>
+                        </div>
+                    </div>
+                     <!-- FAQ Item 3 -->
+                     <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
+                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
+                            <span>¿Qué métodos de pago aceptan?</span>
+                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
+                        </button>
+                        <div class="faq-answer px-5 text-gray-600">
+                            <p>Aceptamos las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) a través de nuestra pasarela de pago segura Stripe.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -533,52 +572,55 @@
 
             featureItems.forEach(item => featureObserver.observe(item));
             
-            // --- Lógica del cronómetro de oferta ---
-            // La oferta termina el Viernes 19 de Septiembre de 2025 a las 21:00h
-            const countdownEndDate = new Date('2025-09-19T21:00:00');
-
-            const daysEl = document.getElementById('days');
-            const hoursEl = document.getElementById('hours');
-            const minutesEl = document.getElementById('minutes');
-            const secondsEl = document.getElementById('seconds');
+            // --- Lógica del selector de precios ---
+            const toggle = document.getElementById('pricing-toggle-checkbox');
+            const monthlyPrice = document.getElementById('monthly-price');
+            const annualPrice = document.getElementById('annual-price');
             const paymentLink = document.getElementById('payment-link');
-            const countdownTimerEl = document.getElementById('countdown-timer');
-            const monthlyPriceEl = document.getElementById('monthly-price');
-            const offerExpiredMessageEl = document.getElementById('offer-expired-message');
+            const pricingCard = document.getElementById('pricing-card');
+            const monthlyLabel = document.getElementById('monthly-label');
+            const annualLabel = document.getElementById('annual-label');
+            
+            const monthlyLink = "https://buy.stripe.com/6oU5kC1GA9xegDLggx3F600"; 
+            const annualLink = "https://buy.stripe.com/14AaEW5WQ7p62MV5BT3F601";
 
-            const offerLink = "https://buy.stripe.com/00weVc5WQ9xe3QZ8O53F604";
-            paymentLink.href = offerLink;
+            // Set initial state
+            paymentLink.href = monthlyLink;
 
-            const timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = countdownEndDate - now;
-
-                if (distance < 0) {
-                    clearInterval(timerInterval);
-                    countdownTimerEl.classList.add('hidden');
-                    monthlyPriceEl.classList.add('hidden');
-                    offerExpiredMessageEl.classList.remove('hidden');
-
-                    paymentLink.textContent = "Oferta Finalizada";
-                    paymentLink.href = "#";
-                    paymentLink.classList.remove('btn-pink', 'hover:scale-105');
-                    paymentLink.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-75');
-                    paymentLink.onclick = (e) => e.preventDefault();
-                    
-                    return;
+            toggle.addEventListener('change', () => {
+                if (toggle.checked) { // Anual seleccionado
+                    monthlyPrice.classList.add('hidden');
+                    annualPrice.classList.remove('hidden');
+                    paymentLink.href = annualLink;
+                    paymentLink.classList.remove('btn-pink');
+                    paymentLink.classList.add('btn-gold');
+                    pricingCard.classList.add('annual-selected');
+                    monthlyLabel.classList.remove('text-brand-pink');
+                    annualLabel.classList.add('text-yellow-600');
+                } else { // Mensual seleccionado
+                    annualPrice.classList.add('hidden');
+                    monthlyPrice.classList.remove('hidden');
+                    paymentLink.href = monthlyLink;
+                    paymentLink.classList.add('btn-pink');
+                    paymentLink.classList.remove('btn-gold');
+                    pricingCard.classList.remove('annual-selected');
+                    annualLabel.classList.remove('text-yellow-600');
+                    monthlyLabel.classList.add('text-brand-pink');
                 }
+            });
 
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                daysEl.textContent = String(days).padStart(2, '0');
-                hoursEl.textContent = String(hours).padStart(2, '0');
-                minutesEl.textContent = String(minutes).padStart(2, '0');
-                secondsEl.textContent = String(seconds).padStart(2, '0');
-
-            }, 1000);
+            // --- Lógica del Acordeón de FAQ ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const currentlyActive = document.querySelector('.faq-item.active');
+                    if (currentlyActive && currentlyActive !== item) {
+                        currentlyActive.classList.remove('active');
+                    }
+                    item.classList.toggle('active');
+                });
+            });
         });
     </script>
 </body>
