@@ -16,7 +16,7 @@ const videosData = [
   {
     category: "Inspiración",
     title: 'El Perdón hace que un Psicopata se derrumbe por primera vez"',
-    description: "Este video muestra a uno de los mayores asesión de mujeres de EEUU derrumbandose emocionalmente por primera vez ante un padre que le perdona por matar a su hija. Mostrando como el perdón verdadero puede desmontar hasta a la persona más psicopata",
+    description: "Este video muestra a uno de los mayores asesión de mujeres de EEUU derrumbandose emocionalmente por primera vez ante un padre que le perdona por matar a su hija. Mostrando como el perdón verdadero puede desmontar hasta a la persona más psicopata.",
     url: "https://youtu.be/I5B6wloyURA",
     thumbnail: ""
   },
@@ -119,6 +119,7 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
 
 
