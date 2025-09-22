@@ -117,8 +117,9 @@ const videosData = [
     description: "Camila demuestra como entrenando la mente se puede ver sin usar lo ojos y lo demuestra en directo.",
     url: "https://youtu.be/suVhfCe7Ah4",
     thumbnail: ""
-  }
+  },
 ];
+
 
 
 
