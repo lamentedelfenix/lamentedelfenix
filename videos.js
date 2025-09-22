@@ -19,7 +19,7 @@ const videosData = [
     description: "Este video muestra a uno de los mayores asesión de mujeres de EEUU derrumbandose emocionalmente por primera vez ante un padre que le perdona por matar a su hija. Mostrando como el perdón verdadero puede desmontar hasta a la persona más "psicopata"",
     url: "https://youtu.be/I5B6wloyURA?t=44",
     thumbnail: ""
-  }
+  },
   {
     category: "Conocimiento",
     title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que el mundo puede ser una simulación"',
@@ -119,6 +119,7 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
 
 
