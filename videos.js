@@ -14,6 +14,13 @@ const videosData = [
     thumbnail: ""
   },
   {
+    category: "Inspiración",
+    title: 'El Perdón hace que un Psicopata se derrumbe por primera vez"',
+    description: "Este video muestra a uno de los mayores asesión de mujeres de EEUU derrumbandose emocionalmente por primera vez ante un padre que le perdona por matar a su hija. Mostrando como el perdón verdadero puede desmontar hasta a la persona más "psicopata"",
+    url: "https://youtu.be/I5B6wloyURA?t=44",
+    thumbnail: ""
+  }
+  {
     category: "Conocimiento",
     title: 'Uno de los co-descubridores del bosón de Higgs nos habla de que el mundo puede ser una simulación"',
     description: "Javier Santaolalla doctor en física de particulas nos explica como la realidad matematicamente puede ser una simulación o multiples simulaciones una dentro de otra",
@@ -112,6 +119,7 @@ const videosData = [
     thumbnail: ""
   }
 ];
+
 
 
 
