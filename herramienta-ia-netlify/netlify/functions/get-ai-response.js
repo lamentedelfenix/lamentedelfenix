@@ -57,10 +57,10 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // --- ¡NUEVO CAMBIO DE PRUEBA! ---
-    // Cambiamos a "gemini-pro" que es de acceso más general.
-    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-pro'.");
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // --- ¡CORRECCIÓN DEFINITIVA! ---
+    // Usamos un nombre de modelo más específico y estable: "gemini-1.0-pro".
+    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.0-pro'.");
+    const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
