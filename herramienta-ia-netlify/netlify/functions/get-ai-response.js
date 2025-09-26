@@ -15,7 +15,6 @@ exports.handler = async function (event, context) {
   };
 
   // El navegador envía una petición OPTIONS "de prueba" antes del POST.
-  // Debemos responderle que sí tiene permiso.
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 204, // No Content
@@ -25,7 +24,6 @@ exports.handler = async function (event, context) {
   }
   // --- FIN: CONFIGURACIÓN DE CORS ---
 
-  // Solo permite peticiones POST
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -37,7 +35,6 @@ exports.handler = async function (event, context) {
   console.log("1. La función 'get-ai-response' ha comenzado.");
 
   try {
-    // Revisa si la API Key está configurada
     if (!process.env.GOOGLE_API_KEY) {
       console.error("ERROR FATAL: La variable de entorno GOOGLE_API_KEY no se ha encontrado.");
       return {
@@ -60,24 +57,20 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
-    // Cambiamos "gemini-1.5-flash" por "gemini-1.5-flash-latest"
-    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.5-flash-latest'.");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    // --- ¡NUEVO CAMBIO DE PRUEBA! ---
+    // Cambiamos a "gemini-pro" que es de acceso más general.
+    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-pro'.");
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
 
-    // --- INICIO: LOG PARA VER EL CONSUMO DE TOKENS ---
-    // Esta línea imprimirá el recuento de tokens en los logs de Netlify.
     console.log("Uso de Tokens:", response.usageMetadata);
-    // --- FIN: LOG PARA VER EL CONSUMO DE TOKENS ---
 
     const text = response.text();
     
     console.log("5. Éxito. Devolviendo la respuesta de la IA.");
 
-    // Devuelve una respuesta JSON exitosa
     return {
       statusCode: 200,
       headers,
