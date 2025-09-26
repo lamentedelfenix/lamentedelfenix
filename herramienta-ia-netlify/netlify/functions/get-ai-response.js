@@ -60,8 +60,10 @@ exports.handler = async function (event, context) {
       };
     }
 
-    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.5-flash'.");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
+    // Cambiamos "gemini-1.5-flash" por "gemini-1.5-flash-latest"
+    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.5-flash-latest'.");
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -94,3 +96,4 @@ exports.handler = async function (event, context) {
     };
   }
 };
+
