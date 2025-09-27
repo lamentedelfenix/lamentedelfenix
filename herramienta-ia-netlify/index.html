@@ -166,13 +166,13 @@
             setButtonsDisabled(true);
 
             try {
-                // He actualizado esta URL para que apunte a la carpeta 'herramienta-ia-ucdm' dentro de tu repositorio.
-                const embeddingsUrl = 'https://cdn.jsdelivr.net/gh/lamentedelfenix/biblia/herramienta-ia-ucdm/ucdm_embeddings.json';
+                // He corregido esta URL para que apunte a la raíz de tu repositorio, que es donde está el archivo.
+                const embeddingsUrl = 'https://cdn.jsdelivr.net/gh/lamentedelfenix/biblia/ucdm_embeddings.json';
                 
                 const response = await fetch(embeddingsUrl);
                 
                 if (!response.ok) {
-                    throw new Error(`No se pudo cargar el archivo desde GitHub (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' existe dentro de la carpeta 'herramienta-ia-ucdm' en tu repositorio 'biblia'.`);
+                    throw new Error(`No se pudo cargar el archivo desde GitHub (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' existe en la raíz de tu repositorio 'biblia'.`);
                 }
                 
                 UCDM_EMBEDDINGS = await response.json();
