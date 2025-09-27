@@ -1,20 +1,14 @@
 /**
- * Netlify serverless function to interact with Google's Vertex AI.
- * FINAL VERSION: This uses the official @google-cloud/vertexai library, 
- * which correctly communicates with the Vertex AI endpoint instead of the 
- * older Generative Language endpoint, solving the 404 error.
+ * Netlify serverless function to interact with Google's Generative Language API.
+ * FINAL SIMPLIFIED VERSION: This reverts to the original library which works 
+ * with API Keys and uses a stable model name ('gemini-1.0-pro') to avoid all
+ * previous 404 and authentication errors.
  */
 
-// Import the correct library for Vertex AI
-const { VertexAI } = require('@google-cloud/vertexai');
-
-// The original library is still useful for its embedding function.
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-// Load the embeddings file directly on the server.
 const embeddingsData = require('../../ucdm_embeddings.json');
 
-// --- Helper functions for vector search (no changes here) ---
+// --- Helper functions for vector search (no changes) ---
 function dotProduct(vecA, vecB) { let p = 0; for (let i = 0; i < vecA.length; i++) { p += vecA[i] * vecB[i]; } return p; }
 function cosineSimilarity(vecA, vecB) {
     const p = dotProduct(vecA, vecB);
@@ -31,22 +25,14 @@ exports.handler = async function (event, context) {
     if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers };
     if (event.httpMethod !== 'POST') return { statusCode: 405, headers, body: JSON.stringify({ error: 'Método no permitido' }) };
 
-    console.log("1. Función Vertex AI iniciada.");
+    console.log("1. Función simple iniciada.");
 
     try {
-        // --- NEW: Vertex AI requires Project ID and Location from environment variables ---
-        const GCLOUD_PROJECT = process.env.GCLOUD_PROJECT;
-        const GCLOUD_LOCATION = process.env.GCLOUD_LOCATION; // e.g., "us-central1"
         const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-
-        if (!GCLOUD_PROJECT || !GCLOUD_LOCATION || !GOOGLE_API_KEY) {
-            throw new Error("Faltan variables de entorno: GCLOUD_PROJECT, GCLOUD_LOCATION o GOOGLE_API_KEY.");
+        if (!GOOGLE_API_KEY) {
+            throw new Error("Falta la variable de entorno GOOGLE_API_KEY.");
         }
 
-        // --- NEW: Initialize Vertex AI Client ---
-        const vertex_ai = new VertexAI({ project: GCLOUD_PROJECT, location: GCLOUD_LOCATION });
-        
-        // Initialize the other client just for the embedding task
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 
         const { question, promptType } = JSON.parse(event.body);
@@ -54,12 +40,12 @@ exports.handler = async function (event, context) {
 
         console.log(`2. Buscando contexto para: "${question}"`);
 
-        // --- STEP 1: Generate embedding for the user's question ---
+        // --- STEP 1: Generate embedding for the question ---
         const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
         const questionEmbeddingResult = await embeddingModel.embedContent(question);
         const questionEmbedding = questionEmbeddingResult.embedding.values;
 
-        // --- STEP 2: Find the most relevant chunks ---
+        // --- STEP 2: Find relevant chunks ---
         const similarities = embeddingsData.map(item => ({
             chunk: item.chunk,
             similarity: cosineSimilarity(questionEmbedding, item.embedding)
@@ -67,9 +53,9 @@ exports.handler = async function (event, context) {
         similarities.sort((a, b) => b.similarity - a.similarity);
         const relevantContext = similarities.slice(0, 5).map(c => c.chunk).join("\n\n---\n\n");
         
-        console.log("3. Contexto encontrado. Construyendo prompt final.");
+        console.log("3. Contexto encontrado. Construyendo prompt.");
 
-        // --- STEP 3: Build final prompt (no changes) ---
+        // --- STEP 3: Build final prompt ---
         let finalPrompt;
         if (promptType === 'pray') {
             finalPrompt = `Actúa como un guía sabio y experto en 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: '${question}'. La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
@@ -77,19 +63,18 @@ exports.handler = async function (event, context) {
             finalPrompt = `Actúa como un maestro de 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, explica de forma clara, concisa y amorosa (en menos de 150 palabras) la lección fundamental que el curso ofrece sobre esta situación: '${question}'. La respuesta debe centrarse en la corrección de la percepción y no debe incluir saludos ni despedidas, solo la explicación directa. Enfatiza las ideas clave usando asteriscos dobles, por ejemplo: **idea clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
         }
 
-        // --- STEP 4: Call the AI model using the Vertex AI client ---
-        console.log("4. Llamando al modelo de Vertex AI...");
-        const generativeModel = vertex_ai.getGenerativeModel({
-            model: 'gemini-1.5-flash-001', // Usamos el nombre específico de Vertex
-        });
-        const result = await generativeModel.generateContent(finalPrompt);
-        const response = result.response;
+        // --- STEP 4: Call the AI model ---
+        console.log("4. Llamando al modelo gemini-1.0-pro...");
+        const textModel = genAI.getGenerativeModel({ model: "gemini-1.0-pro" }); // STABLE MODEL
         
-        if (!response.candidates || response.candidates.length === 0 || !response.candidates[0].content) {
+        const result = await textModel.generateContent(finalPrompt);
+        const response = await result.response;
+        
+        if (!response.candidates || response.candidates.length === 0) {
              throw new Error('La IA no pudo generar una respuesta (contenido bloqueado o vacío).');
         }
-        const text = response.candidates[0].content.parts[0].text;
-        console.log("5. Respuesta de Vertex AI generada con éxito.");
+        const text = response.text();
+        console.log("5. Respuesta generada con éxito.");
 
         // --- STEP 5: Send response back ---
         return {
@@ -97,9 +82,9 @@ exports.handler = async function (event, context) {
         };
 
     } catch (error) {
-        console.error("ERROR EN LA FUNCIÓN DE VERTEX AI:", error);
+        console.error("ERROR EN LA FUNCIÓN:", error);
         return {
-            statusCode: 500, headers, body: JSON.stringify({ error: error.message })
+            statusCode: 500, headers, body: JSON.stringify({ error: `[${error.name}]: ${error.message}` })
         };
     }
 };
