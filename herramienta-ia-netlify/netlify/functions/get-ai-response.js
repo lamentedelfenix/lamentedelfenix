@@ -1,129 +1,122 @@
 /**
  * Netlify serverless function to interact with the Google Gemini API.
- * Updated to use a current, stable model (gemini-1.5-flash-latest).
+ * RESTRUCTURED to handle embedding search on the server-side.
+ * This avoids loading the large JSON file in the browser.
  */
+
+// Import the Google Generative AI SDK
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// Load the embeddings file directly on the server.
+// The path is relative to the function file's location.
+const embeddingsData = require('../../ucdm_embeddings.json');
+
+// --- Helper functions for vector search ---
+function dotProduct(vecA, vecB) {
+    let product = 0;
+    for (let i = 0; i < vecA.length; i++) {
+        product += vecA[i] * vecB[i];
+    }
+    return product;
+}
+
+function cosineSimilarity(vecA, vecB) {
+    const product = dotProduct(vecA, vecB);
+    const magnitudeA = Math.sqrt(dotProduct(vecA, vecA));
+    const magnitudeB = Math.sqrt(dotProduct(vecB, vecB));
+    if (magnitudeA === 0 || magnitudeB === 0) {
+        return 0;
+    }
+    return product / (magnitudeA * magnitudeB);
+}
+// --- End of helper functions ---
+
 exports.handler = async function (event, context) {
-    // Define headers for CORS (Cross-Origin Resource Sharing) to allow your website to call this function.
+    // CORS headers
     const headers = {
-        'Access-Control-Allow-Origin': '*', // Allows any domain, you might want to restrict this to your site's domain for production.
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Content-Type': 'application/json'
     };
 
-    // The browser sends an OPTIONS request first to check CORS policy. This is the "preflight" request.
+    // Handle preflight OPTIONS request
     if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 204, // "No Content" success status, indicating the preflight check is okay.
-            headers
-        };
+        return { statusCode: 204, headers };
     }
 
-    // This function should only be called with the POST method.
+    // Ensure the method is POST
     if (event.httpMethod !== 'POST') {
         return {
-            statusCode: 405, // "Method Not Allowed"
+            statusCode: 405,
             headers,
             body: JSON.stringify({ error: 'Método no permitido' })
         };
     }
 
-    console.log("1. La función 'get-ai-response' ha comenzado.");
+    console.log("1. Función 'get-ai-response' iniciada.");
 
     try {
-        // Retrieve the Google API key from your Netlify environment variables for security.
-        const apiKey = process.env.GOOGLE_API_KEY;
-        if (!apiKey) {
-            console.error("Error: La variable de entorno GOOGLE_API_KEY no se ha encontrado.");
-            throw new Error('La variable de entorno GOOGLE_API_KEY no se ha encontrado.');
+        // Get API Key from environment variables
+        const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+        if (!GOOGLE_API_KEY) {
+            throw new Error("La clave de API de Google no está configurada en las variables de entorno de Netlify.");
         }
-        console.log("2. La clave API ha sido cargada.");
 
-        // Parse the incoming request body to get the user's prompt.
-        const { prompt } = JSON.parse(event.body);
-        console.log("3. El prompt se ha recibido correctamente.");
+        // Initialize the Generative AI client
+        const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 
-        if (!prompt) {
+        // Parse the incoming request body from the frontend
+        const { question, promptType } = JSON.parse(event.body);
+        if (!question || !promptType) {
             return {
-                statusCode: 400, // "Bad Request"
+                statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' })
+                body: JSON.stringify({ error: "Faltan 'question' o 'promptType' en la solicitud." })
             };
         }
 
-        // --- FIX: Use an updated model and the 'v1beta' API endpoint for better compatibility. ---
-        const modelName = 'gemini-2.5-flash'; // Usando el modelo estable y más rápido de tu lista.
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        console.log(`2. Buscando contexto para la pregunta: "${question}"`);
 
-        console.log(`4. Preparando llamada a la API con el modelo '${modelName}'.`);
+        // --- STEP 1: Generate embedding for the user's question ---
+        const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
+        const questionEmbeddingResult = await embeddingModel.embedContent(question);
+        const questionEmbedding = questionEmbeddingResult.embedding.values;
 
-        // This is the data structure that the Gemini API expects.
-        const payload = {
-            contents: [{
-                parts: [{
-                    text: prompt
-                }]
-            }],
-            // Optional: Fine-tune the AI's response.
-            generationConfig: {
-                temperature: 0.7, // Controls randomness. Lower is more predictable.
-                topK: 1,
-                topP: 1,
-                maxOutputTokens: 8192, // Limits the length of the response.
-            },
-            // Optional: Configure safety settings to block harmful content.
-            safetySettings: [
-                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-            ]
-        };
+        // --- STEP 2: Find the most relevant chunks from your JSON file ---
+        const similarities = embeddingsData.map(item => ({
+            chunk: item.chunk,
+            similarity: cosineSimilarity(questionEmbedding, item.embedding)
+        }));
 
-        // Make the actual API call using fetch.
-        const apiResponse = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
+        similarities.sort((a, b) => b.similarity - a.similarity);
 
-        const responseData = await apiResponse.json();
+        const topChunks = similarities.slice(0, 5); // Get top 5 most relevant chunks
+        const relevantContext = topChunks.map(chunk => chunk.chunk).join("\n\n---\n\n");
+        
+        console.log("3. Contexto relevante encontrado. Construyendo el prompt final.");
 
-        // Handle potential errors returned by the Google API itself.
-        if (!apiResponse.ok || responseData.error) {
-            console.error("Error de la API de Google (JSON):", JSON.stringify(responseData, null, 2));
-            const errorMessage = responseData.error ? responseData.error.message : 'Error desconocido de la API de Google.';
-            throw new Error(`La API de Google respondió con un error ${apiResponse.status}: ${errorMessage}`);
+        // --- STEP 3: Build the final prompt based on the request type ---
+        let finalPrompt;
+        if (promptType === 'pray') {
+            finalPrompt = `Actúa como un guía sabio y experto en 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: '${question}'. La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
+        } else { // 'explain'
+            finalPrompt = `Actúa como un maestro de 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, explica de forma clara, concisa y amorosa (en menos de 150 palabras) la lección fundamental que el curso ofrece sobre esta situación: '${question}'. La respuesta debe centrarse en la corrección de la percepción y no debe incluir saludos ni despedidas, solo la explicación directa. Enfatiza las ideas clave usando asteriscos dobles, por ejemplo: **idea clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
         }
         
-        // --- FIX: Add robust checking for the API response structure. ---
-        // Log the full response from Google for debugging purposes.
-        console.log("Respuesta completa de la API de Google:", JSON.stringify(responseData, null, 2));
-
-        // Check if the expected data is present before trying to access it.
-        // The API might not return candidates if the prompt is blocked by safety settings.
-        if (!responseData.candidates || responseData.candidates.length === 0) {
-            console.error("La respuesta de la API no contiene candidatos. Esto puede deberse a las políticas de seguridad.");
-            if (responseData.promptFeedback) {
-                console.error("Feedback del prompt:", JSON.stringify(responseData.promptFeedback, null, 2));
-            }
-            throw new Error('La IA no pudo generar una respuesta, probablemente debido a que el contenido fue bloqueado. Por favor, ajusta tu pregunta.');
+        // --- STEP 4: Call the AI model to get the final answer ---
+        const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+        const result = await textModel.generateContent(finalPrompt);
+        const response = await result.response;
+        
+        if (!response.candidates || response.candidates.length === 0 || !response.candidates[0].content) {
+             throw new Error('La IA no pudo generar una respuesta, probablemente debido a que el contenido fue bloqueado.');
         }
 
-        // --- FINAL FIX: Check for empty content parts due to finish reasons like MAX_TOKENS ---
-        if (!responseData.candidates[0].content.parts || responseData.candidates[0].content.parts.length === 0) {
-            const finishReason = responseData.candidates[0].finishReason || 'Desconocida';
-            console.error(`La respuesta de la IA está vacía. Razón de finalización: ${finishReason}`);
-            throw new Error(`La respuesta de la IA está incompleta o vacía (Razón: ${finishReason}). Esto puede ocurrir si se alcanza el límite de tokens.`);
-        }
+        const text = response.candidates[0].content.parts[0].text;
+        console.log("4. Respuesta de la IA generada con éxito.");
 
-        // Extract the generated text from the successful response.
-        const text = responseData.candidates[0].content.parts[0].text;
-        console.log("5. Respuesta de la IA generada con éxito.");
-
-        // Send the AI's text back to your web page.
+        // --- STEP 5: Send the response back to the frontend ---
         return {
             statusCode: 200,
             headers,
@@ -131,18 +124,11 @@ exports.handler = async function (event, context) {
         };
 
     } catch (error) {
-        // Catch any unexpected errors during the execution.
-        console.error("ERROR INESPERADO EN EL BLOQUE TRY-CATCH:", error);
+        console.error("ERROR INESPERADO EN LA FUNCIÓN:", error);
         return {
-            statusCode: 500, // "Internal Server Error"
+            statusCode: 500,
             headers,
             body: JSON.stringify({ error: error.message })
         };
     }
 };
-
-
-
-
-
-
