@@ -66,7 +66,7 @@ exports.handler = async function (event, context) {
         }
 
         // --- STEP 4: Call the AI model ---
-        const modelNameToUse = "gemini-1.0-pro-001"; // USING THE MOST SPECIFIC NAME
+        const modelNameToUse = "Gemini 2.5 Flash"; // USING THE MOST SPECIFIC NAME
         console.log(`4. Llamando al modelo específico: ${modelNameToUse}...`);
         const textModel = genAI.getGenerativeModel({ model: modelNameToUse });
         
