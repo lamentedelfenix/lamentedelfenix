@@ -105,8 +105,8 @@ exports.handler = async function (event, context) {
         }
         
         // --- STEP 4: Call the AI model to get the final answer ---
-        // FIX: Changed model name to a stable version instead of "latest".
-        const textModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        // FINAL FIX: Changed to "gemini-pro", a stable and widely available model.
+        const textModel = genAI.getGenerativeModel({ model: "gemini-pro" });
         const result = await textModel.generateContent(finalPrompt);
         const response = await result.response;
         
