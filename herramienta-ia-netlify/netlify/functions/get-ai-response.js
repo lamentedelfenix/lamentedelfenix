@@ -69,7 +69,7 @@ exports.handler = async function (event, context) {
                 temperature: 0.7, // Controls randomness. Lower is more predictable.
                 topK: 1,
                 topP: 1,
-                maxOutputTokens: 2048, // Limits the length of the response.
+                maxOutputTokens: 8192, // Limits the length of the response.
             },
             // Optional: Configure safety settings to block harmful content.
             safetySettings: [
@@ -112,6 +112,13 @@ exports.handler = async function (event, context) {
             throw new Error('La IA no pudo generar una respuesta, probablemente debido a que el contenido fue bloqueado. Por favor, ajusta tu pregunta.');
         }
 
+        // --- FINAL FIX: Check for empty content parts due to finish reasons like MAX_TOKENS ---
+        if (!responseData.candidates[0].content.parts || responseData.candidates[0].content.parts.length === 0) {
+            const finishReason = responseData.candidates[0].finishReason || 'Desconocida';
+            console.error(`La respuesta de la IA está vacía. Razón de finalización: ${finishReason}`);
+            throw new Error(`La respuesta de la IA está incompleta o vacía (Razón: ${finishReason}). Esto puede ocurrir si se alcanza el límite de tokens.`);
+        }
+
         // Extract the generated text from the successful response.
         const text = responseData.candidates[0].content.parts[0].text;
         console.log("5. Respuesta de la IA generada con éxito.");
@@ -133,6 +140,7 @@ exports.handler = async function (event, context) {
         };
     }
 };
+
 
 
 
