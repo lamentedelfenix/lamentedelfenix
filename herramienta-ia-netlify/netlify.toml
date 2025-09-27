@@ -1,21 +1,14 @@
-# Configuración de despliegue para Netlify
-# Este archivo le dice a Netlify cómo construir tu sitio.
+# Archivo de configuración para Netlify (Versión corregida)
 
 [build]
-  # Directorio a publicar. Como nuestro index.html está en la raíz de esta carpeta,
-  # usamos "." para indicar "este directorio actual".
+  # Directorio que Netlify debe desplegar.
   publish = "."
 
-  # Directorio donde se encuentran las funciones serverless.
-  # La ruta es relativa a la ubicación de este archivo toml.
-  functions = "netlify/functions"
-
 [functions]
-  # CAMBIADO: Usamos "zisi", el empaquetador por defecto, que es más robusto
-  # y compatible con más librerías que "esbuild".
+  # Directorio donde Netlify debe buscar tus funciones de servidor.
+  # Esta es la única línea necesaria para definir la carpeta.
+  directory = "netlify/functions"
   node_bundler = "zisi"
 
-# Esta es la instrucción que faltaba para activar Git LFS.
 [lfs]
   fetch_deep = true
-
