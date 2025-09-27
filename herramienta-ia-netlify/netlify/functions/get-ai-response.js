@@ -97,6 +97,20 @@ exports.handler = async function (event, context) {
             const errorMessage = responseData.error ? responseData.error.message : 'Error desconocido de la API de Google.';
             throw new Error(`La API de Google respondió con un error ${apiResponse.status}: ${errorMessage}`);
         }
+        
+        // --- FIX: Add robust checking for the API response structure. ---
+        // Log the full response from Google for debugging purposes.
+        console.log("Respuesta completa de la API de Google:", JSON.stringify(responseData, null, 2));
+
+        // Check if the expected data is present before trying to access it.
+        // The API might not return candidates if the prompt is blocked by safety settings.
+        if (!responseData.candidates || responseData.candidates.length === 0) {
+            console.error("La respuesta de la API no contiene candidatos. Esto puede deberse a las políticas de seguridad.");
+            if (responseData.promptFeedback) {
+                console.error("Feedback del prompt:", JSON.stringify(responseData.promptFeedback, null, 2));
+            }
+            throw new Error('La IA no pudo generar una respuesta, probablemente debido a que el contenido fue bloqueado. Por favor, ajusta tu pregunta.');
+        }
 
         // Extract the generated text from the successful response.
         const text = responseData.candidates[0].content.parts[0].text;
@@ -119,6 +133,7 @@ exports.handler = async function (event, context) {
         };
     }
 };
+
 
 
 
