@@ -166,13 +166,14 @@
             setButtonsDisabled(true);
 
             try {
-                // Esta es la URL correcta y definitiva que usa el CDN jsDelivr.
-                const embeddingsUrl = 'https://cdn.jsdelivr.net/gh/lamentedelfenix/lamentedelfenix/ucdm_embeddings.json';
+                // SOLUCIÓN FINAL: Cargar el archivo directamente desde la misma carpeta.
+                // Esto elimina todas las dependencias externas (GitHub, jsDelivr, etc.).
+                const embeddingsUrl = 'ucdm_embeddings.json';
                 
                 const response = await fetch(embeddingsUrl);
                 
                 if (!response.ok) {
-                    throw new Error(`No se pudo cargar el archivo desde el CDN (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' se ha subido a la raíz de tu repositorio 'lamentedelfenix'.`);
+                    throw new Error(`No se pudo cargar el archivo localmente (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' está en la misma carpeta que este HTML.`);
                 }
                 
                 UCDM_EMBEDDINGS = await response.json();
