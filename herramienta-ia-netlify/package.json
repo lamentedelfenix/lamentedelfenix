@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "latest"
+    "@google/generative-ai": "0.15.0",
+    "uuid": "^10.0.0"
   }
 }
