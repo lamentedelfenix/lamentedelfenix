@@ -120,12 +120,13 @@
         
         <footer class="mt-12 text-center">
              <a href="javascript:history.back()" class="btn btn-cyan font-bold py-2 px-5 rounded-lg text-sm bg-opacity-80">
-                <i class="fas fa-arrow-left mr-2"></i> Volver
+                 <i class="fas fa-arrow-left mr-2"></i> Volver
             </a>
         </footer>
     </div>
     
     <script>
+        // --- Background Animation (No changes) ---
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -145,6 +146,7 @@
     </script>
 
     <script>
+        // --- Main Application Logic (Updated for Embeddings) ---
         const explainBtn = document.getElementById('explain-btn');
         const prayBtn = document.getElementById('pray-btn');
         const conceptInput = document.getElementById('concept-input');
@@ -154,56 +156,93 @@
         const aiResponseEl = document.getElementById('ai-response');
         const aiPlaceholder = document.getElementById('ai-placeholder');
 
-        let UCDM_TEXT = '';
+        let UCDM_EMBEDDINGS = [];
 
-        async function loadBookText() {
-            if (UCDM_TEXT) return;
+        // 1. Load the new embeddings JSON file
+        async function loadEmbeddings() {
+            if (UCDM_EMBEDDINGS.length > 0) return;
             
             showAIResponse("Cargando el conocimiento de Un Curso de Milagros...", false);
-            explainBtn.disabled = true;
-            prayBtn.disabled = true;
+            setButtonsDisabled(true);
 
             try {
-                const gistUrl = 'https://gist.githubusercontent.com/lamentedelfenix/53ae2869adab53e259dc4aeaac8f5e03/raw/446ddea029bf49f851404bf2693c96fb099790f4/ucdm_completo.txt';
-                const response = await fetch(gistUrl);
+                // He actualizado esta URL para que apunte directamente a tu repositorio 'biblia'.
+                // Simplemente sube 'ucdm_embeddings.json' a la carpeta principal de ese repositorio y funcionará.
+                const embeddingsUrl = 'https://cdn.jsdelivr.net/gh/lamentedelfenix/biblia/ucdm_embeddings.json';
+                
+                const response = await fetch(embeddingsUrl);
                 
                 if (!response.ok) {
-                    throw new Error('No se pudo cargar el texto del libro desde GitHub.');
+                    throw new Error(`No se pudo cargar el archivo desde GitHub (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' existe en la raíz de tu repositorio 'biblia'.`);
                 }
                 
-                UCDM_TEXT = await response.text();
+                UCDM_EMBEDDINGS = await response.json();
                 showAIResponse("¡Listo! El conocimiento ha sido cargado. Ya puedes hacer tus preguntas.", false);
 
             } catch (error) {
-                console.error("Error al cargar el texto del libro:", error);
-                showAIResponse("Error: No se pudo cargar el texto de 'Un Curso de Milagros'. Por favor, recarga la página.", true);
+                console.error("Error al cargar los embeddings:", error);
+                showAIResponse(`Error: No se pudo cargar la base de conocimiento. ${error.message}`, true);
             } finally {
-                explainBtn.disabled = false;
-                prayBtn.disabled = false;
+                setButtonsDisabled(false);
             }
         }
         
-        document.addEventListener('DOMContentLoaded', loadBookText);
+        document.addEventListener('DOMContentLoaded', loadEmbeddings);
 
-        function findRelevantChunks(query, text) {
-            if (!text) return "";
-
-            const MAX_CONTEXT_LENGTH = 15000;
-            const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-            const paragraphs = text.split(/\n\s*\n/);
-            let relevantText = "";
-
-            for (const p of paragraphs) {
-                const pLower = p.toLowerCase();
-                if (keywords.some(kw => pLower.includes(kw))) {
-                    if (relevantText.length + p.length < MAX_CONTEXT_LENGTH) {
-                        relevantText += p + "\n\n";
-                    } else {
-                        break;
-                    }
-                }
+        // 2. Helper function for vector math (Cosine Similarity)
+        function cosineSimilarity(vecA, vecB) {
+            let dotProduct = 0;
+            let normA = 0;
+            let normB = 0;
+            for (let i = 0; i < vecA.length; i++) {
+                dotProduct += vecA[i] * vecB[i];
+                normA += vecA[i] * vecA[i];
+                normB += vecB[i] * vecB[i];
             }
-            return relevantText;
+            if (normA === 0 || normB === 0) {
+                return 0;
+            }
+            return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        }
+
+        // 3. New function to find relevant chunks using embeddings
+        async function findMostRelevantChunks(query) {
+            if (UCDM_EMBEDDINGS.length === 0) {
+                throw new Error("La base de conocimiento no está cargada.");
+            }
+
+            // Get the embedding for the user's query from our new Netlify function
+            const response = await fetch('/.netlify/functions/get-embedding', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: query })
+            });
+
+            if (!response.ok) {
+                const errorResult = await response.json();
+                throw new Error(`No se pudo obtener el vector para la consulta: ${errorResult.error || 'Error desconocido'}`);
+            }
+            const { embedding: queryEmbedding } = await response.json();
+
+            // Calculate similarity for each chunk
+            const chunksWithSimilarity = UCDM_EMBEDDINGS.map(item => ({
+                chunk: item.chunk,
+                similarity: cosineSimilarity(queryEmbedding, item.embedding)
+            }));
+
+            // Sort by similarity (highest first) and take the top 5
+            chunksWithSimilarity.sort((a, b) => b.similarity - a.similarity);
+            
+            const topChunks = chunksWithSimilarity.slice(0, 5).map(item => item.chunk);
+            
+            return topChunks.join("\n\n---\n\n");
+        }
+
+        // --- UI and API Call Functions (Simplified) ---
+
+        function setButtonsDisabled(disabled) {
+            explainBtn.disabled = disabled;
+            prayBtn.disabled = disabled;
         }
 
         function formatAIResponse(text) {
@@ -230,13 +269,10 @@
             aiResponseEl.innerHTML = '';
             aiPlaceholder.classList.add('hidden');
             loader.classList.remove('hidden');
-            explainBtn.disabled = true;
-            prayBtn.disabled = true;
-
-            const apiUrl = `/.netlify/functions/get-ai-response`;
+            setButtonsDisabled(true);
 
             try {
-                const response = await fetch(apiUrl, {
+                const response = await fetch('/.netlify/functions/get-ai-response', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: prompt })
@@ -255,48 +291,60 @@
                 showAIResponse(`Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde. (${error.message})`, true);
             } finally {
                 loader.classList.add('hidden');
-                explainBtn.disabled = false;
-                prayBtn.disabled = false;
+                setButtonsDisabled(false);
             }
         }
 
-        explainBtn.addEventListener('click', () => {
+        // --- Event Listeners (Updated to use new system) ---
+        
+        async function handleExplainClick() {
             const concept = conceptInput.value.trim();
             if (!concept) {
                 showAIResponse("Por favor, introduce un concepto para explicar.", true);
                 return;
             }
-            if (!UCDM_TEXT) {
-                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
-                return;
-            }
             
-            const relevantContext = findRelevantChunks(concept, UCDM_TEXT);
-            const prompt = 'Basándote estricta y únicamente en los siguientes fragmentos de \'Un Curso de Milagros\', explica el concepto de \'' + concept + '\' de una forma clara, profunda y sencilla para un estudiante. ' +
-                         'No uses ningún conocimiento externo a estos fragmentos. Si los fragmentos no son suficientes, indícalo. ' +
-                         'Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
-            callAI(prompt);
-        });
+            showAIResponse("Buscando los fragmentos más relevantes...", false);
+            loader.classList.remove('hidden');
+            setButtonsDisabled(true);
 
-        prayBtn.addEventListener('click', () => {
+            try {
+                const relevantContext = await findMostRelevantChunks(concept);
+                const prompt = `Basándote estricta y únicamente en los siguientes fragmentos de 'Un Curso de Milagros', explica el concepto de '${concept}' de una forma clara, profunda y sencilla para un estudiante. No uses ningún conocimiento externo a estos fragmentos. Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
+                await callAI(prompt);
+            } catch (error) {
+                 showAIResponse(`Error al buscar contexto: ${error.message}`, true);
+                 loader.classList.add('hidden');
+                 setButtonsDisabled(false);
+            }
+        }
+        
+        async function handlePrayClick() {
             const situation = situationInput.value.trim();
             if (!situation) {
                 showAIResponse("Por favor, describe una situación para generar una oración.", true);
                 return;
             }
-            if (!UCDM_TEXT) {
-                showAIResponse("El texto del libro aún no se ha cargado. Por favor, espera un momento.", true);
-                return;
+            
+            showAIResponse("Buscando inspiración en el texto...", false);
+            loader.classList.remove('hidden');
+            setButtonsDisabled(true);
+            
+            try {
+                const relevantContext = await findMostRelevantChunks(situation);
+                const prompt = `Actúa como un guía sabio y experto en 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: '${situation}'. La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
+                await callAI(prompt);
+            } catch (error) {
+                 showAIResponse(`Error al buscar contexto: ${error.message}`, true);
+                 loader.classList.add('hidden');
+                 setButtonsDisabled(false);
             }
+        }
 
-            const relevantContext = findRelevantChunks(situation, UCDM_TEXT);
-            const prompt = 'Actúa como un guía sabio y experto en \'Un Curso de Milagros\'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: \'' + situation + '\'. ' +
-                         'La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. ' +
-                         'Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n' +
-                         '--- FRAGMENTOS RELEVANTES ---\n' + relevantContext;
-            callAI(prompt);
-        });
+        explainBtn.addEventListener('click', handleExplainClick);
+        prayBtn.addEventListener('click', handlePrayClick);
+
     </script>
 </body>
 </html>
+
