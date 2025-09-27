@@ -56,17 +56,21 @@ exports.handler = async function (event, context) {
 
     if (!apiResponse.ok) {
         let errorDetails = `La API de Google respondió con un error ${apiResponse.status} (${apiResponse.statusText})`;
+        
+        // --- ¡CORRECCIÓN DE LÓGICA! ---
+        // Leemos el cuerpo de la respuesta UNA SOLA VEZ como texto.
+        const errorText = await apiResponse.text();
+        
         try {
-            // Intenta leer el error como JSON, que es lo normal.
-            const errorBody = await apiResponse.json();
+            // Intentamos interpretar el texto como JSON.
+            const errorBody = JSON.parse(errorText);
             console.error("Error de la API de Google (JSON):", errorBody);
             if (errorBody.error && errorBody.error.message) {
                 errorDetails += `: ${errorBody.error.message}`;
             }
         } catch (e) {
-            // Si falla, es porque la respuesta es HTML.
-            const errorText = await apiResponse.text();
-            console.error("Error de la API de Google (respuesta no es JSON):", errorText.substring(0, 500)); // Muestra solo el principio
+            // Si falla el JSON.parse, es porque la respuesta era HTML u otro texto.
+            console.error("Error de la API de Google (respuesta no es JSON):", errorText.substring(0, 500));
             errorDetails = "La API de Google devolvió una respuesta inesperada (probablemente HTML). Revisa que la clave API sea correcta, no tenga restricciones y la facturación esté activa.";
         }
         throw new Error(errorDetails);
