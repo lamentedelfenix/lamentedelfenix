@@ -33,12 +33,14 @@ exports.handler = async function (event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }) };
     }
     
-    // --- ¡CORRECCIÓN FINAL Y DEFINITIVA! ---
-    // Usamos el nombre exacto del modelo base, sin el sufijo "-latest".
     const modelName = 'gemini-1.5-flash';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    
+    // --- ¡SOLUCIÓN DEFINITIVA! ---
+    // Apuntamos al endpoint regional específico (us-central1) que tu proyecto
+    // tiene autorizado, en lugar del endpoint global.
+    const apiUrl = `https://us-central1-generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-    console.log(`4. Preparando llamada directa a la API v1beta con el modelo exacto '${modelName}'.`);
+    console.log(`4. Preparando llamada al endpoint regional '${apiUrl}'.`);
 
     const payload = {
       contents: [{
