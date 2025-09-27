@@ -1,8 +1,7 @@
 /**
  * Netlify serverless function to interact with Google's Generative Language API.
- * FINAL PRECISION FIX: This version uses the most specific, stable model name 
- * from the user's available list ('gemini-1.0-pro-001') to prevent any ambiguity.
- * It also includes enhanced logging for better diagnostics.
+ * FINAL CORRECTED SOLUTION: This version uses the full, explicit model path 'models/gemini-2.5-flash'.
+ * NEW: Added token counting for input and output to monitor costs.
  */
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -32,7 +31,6 @@ exports.handler = async function (event, context) {
         if (!GOOGLE_API_KEY) {
             throw new Error("Falta la variable de entorno GOOGLE_API_KEY.");
         }
-        // Log to confirm the key is loaded (without exposing it)
         console.log(`API Key loaded: ${GOOGLE_API_KEY ? 'Sí' : 'No'}`);
 
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
@@ -66,7 +64,7 @@ exports.handler = async function (event, context) {
         }
 
         // --- STEP 4: Call the AI model ---
-        const modelNameToUse = "models/gemini-2.5-flash"; // USING THE MOST SPECIFIC NAME
+        const modelNameToUse = "models/gemini-2.5-flash"; 
         console.log(`4. Llamando al modelo específico: ${modelNameToUse}...`);
         const textModel = genAI.getGenerativeModel({ model: modelNameToUse });
         
@@ -76,16 +74,31 @@ exports.handler = async function (event, context) {
         if (!response.candidates || response.candidates.length === 0) {
              throw new Error('La IA no pudo generar una respuesta (contenido bloqueado o vacío).');
         }
+        
+        // --- NUEVO: Conteo de Tokens ---
+        const usageMetadata = response.usageMetadata;
+        if (usageMetadata) {
+            console.log(`USO DE TOKENS: Entrada=${usageMetadata.promptTokenCount}, Salida=${usageMetadata.candidatesTokenCount}, Total=${usageMetadata.totalTokenCount}`);
+        } else {
+            console.log("USO DE TOKENS: No se encontró metadata de uso.");
+        }
+        
         const text = response.text();
         console.log("5. Respuesta generada con éxito.");
 
         // --- STEP 5: Send response back ---
         return {
-            statusCode: 200, headers, body: JSON.stringify({ text: text })
+            statusCode: 200, 
+            headers, 
+            body: JSON.stringify({ 
+                text: text,
+                // NUEVO: Incluir datos de uso en la respuesta
+                usage: usageMetadata || { info: "No se pudo obtener el conteo de tokens." }
+            })
         };
 
     } catch (error) {
-        console.error("FULL ERROR OBJECT:", JSON.stringify(error, null, 2)); // Enhanced error logging
+        console.error("FULL ERROR OBJECT:", JSON.stringify(error, null, 2));
         return {
             statusCode: 500, headers, body: JSON.stringify({ error: `[${error.name}]: ${error.message}` })
         };
