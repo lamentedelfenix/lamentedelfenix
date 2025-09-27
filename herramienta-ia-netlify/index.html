@@ -166,13 +166,14 @@
             setButtonsDisabled(true);
 
             try {
-                // He corregido esta URL para que apunte a la raíz de tu repositorio, que es donde está el archivo.
-                const embeddingsUrl = 'https://cdn.jsdelivr.net/gh/lamentedelfenix/biblia/ucdm_embeddings.json';
+                // He actualizado la URL para usar el enlace de la release de GitHub.
+                // Esto funcionará después de que crees la release v1.0.0 y adjuntes el archivo.
+                const embeddingsUrl = 'https://github.com/lamentedelfenix/biblia/releases/download/v1.0.0/ucdm_embeddings.json';
                 
                 const response = await fetch(embeddingsUrl);
                 
                 if (!response.ok) {
-                    throw new Error(`No se pudo cargar el archivo desde GitHub (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' existe en la raíz de tu repositorio 'biblia'.`);
+                    throw new Error(`No se pudo cargar el archivo desde GitHub Releases (código de estado: ${response.status}). Asegúrate de haber creado la release 'v1.0.0' y haber subido el archivo 'ucdm_embeddings.json' como un asset.`);
                 }
                 
                 UCDM_EMBEDDINGS = await response.json();
