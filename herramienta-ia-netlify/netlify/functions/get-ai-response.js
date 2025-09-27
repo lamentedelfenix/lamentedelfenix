@@ -1,5 +1,6 @@
-// NO SE USA NINGUNA LIBRERÍA EXTERNA DE GOOGLE.
-// ESTE CÓDIGO ESTÁ EN MODO DIAGNÓSTICO PARA LISTAR LOS MODELOS DISPONIBLES.
+// VERSIÓN DE PRUEBA FINAL - NO TOCAR
+// USA UNA LLAMADA DIRECTA AL ENDPOINT GLOBAL Y AL MODELO MÁS ESTABLE (gemini-pro)
+// PARA DIAGNOSTICAR EL PROBLEMA DE RAÍZ.
 
 exports.handler = async function (event, context) {
   const headers = {
@@ -13,12 +14,11 @@ exports.handler = async function (event, context) {
     return { statusCode: 204, headers, body: '' };
   }
 
-  // Aceptamos un POST, aunque la llamada interna sea GET, para no cambiar el frontend.
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
-  console.log("1. La función 'get-ai-response' (MODO DIAGNÓSTICO) ha comenzado.");
+  console.log("1. La función 'get-ai-response' (Prueba Global) ha comenzado.");
 
   try {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -26,13 +26,34 @@ exports.handler = async function (event, context) {
       throw new Error("La variable de entorno GOOGLE_API_KEY no se ha encontrado.");
     }
     console.log("2. La clave API ha sido cargada.");
+
+    const { prompt } = JSON.parse(event.body);
+    console.log("3. El prompt se ha recibido correctamente.");
+
+    if (!prompt) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }) };
+    }
     
-    // --- PASO DE DIAGNÓSTICO: LISTAR MODELOS ---
-    const listModelsUrl = `https://us-central1-generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+    // **CAMBIO 1: Usamos el modelo más estable para la prueba.**
+    const modelName = 'gemini-pro'; 
+    // **CAMBIO 2: Apuntamos al endpoint GLOBAL, no al regional.**
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-    console.log(`4. Realizando llamada de diagnóstico a: ${listModelsUrl}`);
+    console.log(`4. Preparando llamada al endpoint GLOBAL con el modelo '${modelName}'.`);
 
-    const apiResponse = await fetch(listModelsUrl, { method: 'GET' });
+    const payload = {
+      contents: [{
+        parts: [{
+          text: prompt
+        }]
+      }]
+    };
+
+    const apiResponse = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
     if (!apiResponse.ok) {
         let errorDetails = `La API de Google respondió con un error ${apiResponse.status} (${apiResponse.statusText})`;
@@ -45,24 +66,25 @@ exports.handler = async function (event, context) {
             }
         } catch (e) {
             console.error("Error de la API de Google (respuesta no es JSON):", errorText.substring(0, 500));
-            errorDetails = "La API de Google devolvió una respuesta inesperada. Revisa la clave API.";
+            errorDetails = "La API devolvió una respuesta inesperada. Revisa la configuración del proyecto en Google Cloud.";
         }
         throw new Error(errorDetails);
     }
 
     const data = await apiResponse.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    // Extraer y formatear los nombres de los modelos encontrados
-    const modelNames = data.models ? data.models.map(model => model.name).join('\n') : "No se encontraron modelos.";
-
-    console.log("Modelos encontrados:\n" + modelNames);
-
-    const diagnosticText = "--- MODO DIAGNÓSTICO ---\n\nSe han encontrado los siguientes modelos disponibles para tu clave API:\n\n" + modelNames + "\n\nPor favor, copia toda esta lista y pégala en el chat para que podamos usar el nombre correcto y solucionar el problema.";
+    if (!text) {
+        console.error("La respuesta de la API no tuvo el formato esperado:", data);
+        throw new Error("No se pudo extraer el texto de la respuesta de la IA.");
+    }
+    
+    console.log("5. Éxito. Devolviendo la respuesta de la IA.");
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ text: diagnosticText }),
+      body: JSON.stringify({ text: text }),
     };
 
   } catch (error) {
