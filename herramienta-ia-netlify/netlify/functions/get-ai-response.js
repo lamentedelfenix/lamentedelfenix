@@ -1,6 +1,6 @@
-// VERSIÓN DE PRUEBA FINAL - NO TOCAR
-// USA UNA LLAMADA DIRECTA AL ENDPOINT GLOBAL Y AL MODELO MÁS ESTABLE (gemini-pro)
-// PARA DIAGNOSTICAR EL PROBLEMA DE RAÍZ.
+// VERSIÓN FINAL - ÚLTIMA PRUEBA DE ESTABILIDAD
+// USA UNA LLAMADA DIRECTA AL ENDPOINT GLOBAL Y AL MODELO MÁS ESTABLE Y VERSIONADO (gemini-1.0-pro).
+// SI ESTO NO FUNCIONA, EL PROBLEMA ESTÁ EN LA CONFIGURACIÓN DEL PROYECTO DE GOOGLE CLOUD.
 
 exports.handler = async function (event, context) {
   const headers = {
@@ -18,7 +18,7 @@ exports.handler = async function (event, context) {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
-  console.log("1. La función 'get-ai-response' (Prueba Global) ha comenzado.");
+  console.log("1. La función 'get-ai-response' (Última Prueba) ha comenzado.");
 
   try {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -34,12 +34,11 @@ exports.handler = async function (event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }) };
     }
     
-    // **CAMBIO 1: Usamos el modelo más estable para la prueba.**
-    const modelName = 'gemini-pro'; 
-    // **CAMBIO 2: Apuntamos al endpoint GLOBAL, no al regional.**
+    // **ÚLTIMO CAMBIO: Usamos el modelo estable y versionado.**
+    const modelName = 'gemini-1.0-pro'; 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-    console.log(`4. Preparando llamada al endpoint GLOBAL con el modelo '${modelName}'.`);
+    console.log(`4. Preparando llamada al endpoint GLOBAL con el modelo estable '${modelName}'.`);
 
     const payload = {
       contents: [{
