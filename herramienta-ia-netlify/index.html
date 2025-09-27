@@ -29,7 +29,7 @@
         .btn { 
             position: relative; z-index: 1; overflow: hidden; transition: all 0.3s ease; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; color: white; box-shadow: 0 0 5px rgba(255,255,255,0.2);
         }
-        .btn:hover { 
+        .btn:hover:not(:disabled) { 
             transform: translateY(-2px); box-shadow: 0 0 20px var(--glow-color); background-color: var(--glow-color-bg);
         }
         .btn:disabled {
@@ -121,12 +121,12 @@
         <footer class="mt-12 text-center">
              <a href="javascript:history.back()" class="btn btn-cyan font-bold py-2 px-5 rounded-lg text-sm bg-opacity-80">
                  <i class="fas fa-arrow-left mr-2"></i> Volver
-            </a>
+             </a>
         </footer>
     </div>
     
     <script>
-        // --- Background Animation (No changes) ---
+        // --- Background Animation (Tu código original - sin cambios) ---
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -146,7 +146,10 @@
     </script>
 
     <script>
-        // --- Main Application Logic (Updated for Embeddings) ---
+        // --- Main Application Logic (NUEVA LÓGICA - INTEGRADA EN TU DISEÑO) ---
+        const NETLIFY_FUNCTION_URL = '/.netlify/functions/get-ai-response';
+
+        // --- DOM Elements ---
         const explainBtn = document.getElementById('explain-btn');
         const prayBtn = document.getElementById('pray-btn');
         const conceptInput = document.getElementById('concept-input');
@@ -156,194 +159,78 @@
         const aiResponseEl = document.getElementById('ai-response');
         const aiPlaceholder = document.getElementById('ai-placeholder');
 
-        let UCDM_EMBEDDINGS = [];
-
-        // 1. Load the new embeddings JSON file
-        async function loadEmbeddings() {
-            if (UCDM_EMBEDDINGS.length > 0) return;
-            
-            showAIResponse("Cargando el conocimiento de Un Curso de Milagros...", false);
-            setButtonsDisabled(true);
-
-            try {
-                // SOLUCIÓN FINAL: Cargar el archivo directamente desde la misma carpeta.
-                // Esto elimina todas las dependencias externas (GitHub, jsDelivr, etc.).
-                const embeddingsUrl = 'ucdm_embeddings.json';
-                
-                const response = await fetch(embeddingsUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`No se pudo cargar el archivo localmente (código de estado: ${response.status}). Asegúrate de que el archivo 'ucdm_embeddings.json' está en la misma carpeta que este HTML.`);
-                }
-                
-                UCDM_EMBEDDINGS = await response.json();
-                showAIResponse("¡Listo! El conocimiento ha sido cargado. Ya puedes hacer tus preguntas.", false);
-
-            } catch (error) {
-                console.error("Error al cargar los embeddings:", error);
-                showAIResponse(`Error: No se pudo cargar la base de conocimiento. ${error.message}`, true);
-            } finally {
-                setButtonsDisabled(false);
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', loadEmbeddings);
-
-        // 2. Helper function for vector math (Cosine Similarity)
-        function cosineSimilarity(vecA, vecB) {
-            let dotProduct = 0;
-            let normA = 0;
-            let normB = 0;
-            for (let i = 0; i < vecA.length; i++) {
-                dotProduct += vecA[i] * vecB[i];
-                normA += vecA[i] * vecA[i];
-                normB += vecB[i] * vecB[i];
-            }
-            if (normA === 0 || normB === 0) {
-                return 0;
-            }
-            return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-        }
-
-        // 3. New function to find relevant chunks using embeddings
-        async function findMostRelevantChunks(query) {
-            if (UCDM_EMBEDDINGS.length === 0) {
-                throw new Error("La base de conocimiento no está cargada.");
-            }
-
-            // Get the embedding for the user's query from our new Netlify function
-            const response = await fetch('/.netlify/functions/get-embedding', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: query })
-            });
-
-            if (!response.ok) {
-                const errorResult = await response.json();
-                throw new Error(`No se pudo obtener el vector para la consulta: ${errorResult.error || 'Error desconocido'}`);
-            }
-            const { embedding: queryEmbedding } = await response.json();
-
-            // Calculate similarity for each chunk
-            const chunksWithSimilarity = UCDM_EMBEDDINGS.map(item => ({
-                chunk: item.chunk,
-                similarity: cosineSimilarity(queryEmbedding, item.embedding)
-            }));
-
-            // Sort by similarity (highest first) and take the top 5
-            chunksWithSimilarity.sort((a, b) => b.similarity - a.similarity);
-            
-            const topChunks = chunksWithSimilarity.slice(0, 5).map(item => item.chunk);
-            
-            return topChunks.join("\n\n---\n\n");
-        }
-
-        // --- UI and API Call Functions (Simplified) ---
-
+        // --- UI Functions ---
         function setButtonsDisabled(disabled) {
             explainBtn.disabled = disabled;
             prayBtn.disabled = disabled;
         }
 
-        function formatAIResponse(text) {
-            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
-            formattedText = formattedText.replace(/\*\*/g, '');
-            aiResponseEl.innerHTML = formattedText;
-        }
-
-        function showAIResponse(message, isError = false) {
-            loader.classList.add('hidden');
-            aiPlaceholder.classList.add('hidden');
-            aiResponseEl.innerHTML = '';
+        function showUIState(state, message = "") {
+            loader.classList.toggle('hidden', state !== 'loading');
+            aiPlaceholder.classList.toggle('hidden', state !== 'placeholder');
             
-            if(isError) {
-                aiResponseEl.style.color = '#ef4444';
-                aiResponseEl.textContent = message;
-            } else {
+            if (state === 'loading' || state === 'placeholder') {
+                 aiResponseEl.innerHTML = '';
+            }
+            
+            if (state === 'placeholder') {
+                aiPlaceholder.textContent = message || "La respuesta de la IA aparecerá aquí...";
+            } else if (state === 'response') {
+                let formattedText = message.replace(/\*\*(.*?)\*\*/g, '<strong class="text-brand-green font-bold">$1</strong>');
+                aiResponseEl.innerHTML = formattedText;
                 aiResponseEl.style.color = '#fbf5e2';
-                formatAIResponse(message);
+            } else if (state === 'error') {
+                aiResponseEl.textContent = message;
+                aiResponseEl.style.color = '#ef4444'; // Tailwind's red-500
             }
         }
 
-        async function callAI(prompt) {
-            aiResponseEl.innerHTML = '';
-            aiPlaceholder.classList.add('hidden');
-            loader.classList.remove('hidden');
+        // --- Core Logic ---
+        async function callAIFunction(question, promptType) {
+            showUIState('loading');
             setButtonsDisabled(true);
 
             try {
-                const response = await fetch('/.netlify/functions/get-ai-response', {
+                const response = await fetch(NETLIFY_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
+                    body: JSON.stringify({ question, promptType })
                 });
 
-                const result = await response.json();
+                const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error || 'Error en el servidor');
+                    throw new Error(data.error || `Error del servidor: ${response.statusText}`);
                 }
                 
-                showAIResponse(result.text.trim());
+                showUIState('response', data.text);
 
             } catch (error) {
-                console.error("Error al llamar a la IA:", error);
-                showAIResponse(`Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde. (${error.message})`, true);
+                console.error("Error al llamar a la función de Netlify:", error);
+                showUIState('error', `Lo siento, ha ocurrido un error: ${error.message}`);
             } finally {
-                loader.classList.add('hidden');
                 setButtonsDisabled(false);
             }
         }
-
-        // --- Event Listeners (Updated to use new system) ---
         
-        async function handleExplainClick() {
+        // --- Event Handlers ---
+        explainBtn.addEventListener('click', () => {
             const concept = conceptInput.value.trim();
             if (!concept) {
-                showAIResponse("Por favor, introduce un concepto para explicar.", true);
+                showUIState('error', "Por favor, introduce un concepto para explicar.");
                 return;
             }
-            
-            showAIResponse("Buscando los fragmentos más relevantes...", false);
-            loader.classList.remove('hidden');
-            setButtonsDisabled(true);
+            callAIFunction(concept, 'explain');
+        });
 
-            try {
-                const relevantContext = await findMostRelevantChunks(concept);
-                const prompt = `Basándote estricta y únicamente en los siguientes fragmentos de 'Un Curso de Milagros', explica el concepto de '${concept}' de una forma clara, profunda y sencilla para un estudiante. No uses ningún conocimiento externo a estos fragmentos. Enfatiza las palabras más importantes usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
-                await callAI(prompt);
-            } catch (error) {
-                 showAIResponse(`Error al buscar contexto: ${error.message}`, true);
-                 loader.classList.add('hidden');
-                 setButtonsDisabled(false);
-            }
-        }
-        
-        async function handlePrayClick() {
+        prayBtn.addEventListener('click', () => {
             const situation = situationInput.value.trim();
             if (!situation) {
-                showAIResponse("Por favor, describe una situación para generar una oración.", true);
+                showUIState('error', "Por favor, describe una situación para generar una oración.");
                 return;
             }
-            
-            showAIResponse("Buscando inspiración en el texto...", false);
-            loader.classList.remove('hidden');
-            setButtonsDisabled(true);
-            
-            try {
-                const relevantContext = await findMostRelevantChunks(situation);
-                const prompt = `Actúa como un guía sabio y experto en 'Un Curso de Milagros'. Basándote estricta y únicamente en los principios encontrados en los siguientes fragmentos del curso, crea una oración o afirmación corta y poderosa para ayudar a un estudiante a cambiar su percepción sobre esta situación específica: '${situation}'. La oración debe ser práctica, en primera persona y usar un lenguaje similar al del curso. La respuesta debe ser **únicamente la oración**, sin explicaciones adicionales. Enfatiza las palabras clave usando asteriscos dobles, por ejemplo: **palabra clave**.\n\n--- FRAGMENTOS RELEVANTES ---\n${relevantContext}`;
-                await callAI(prompt);
-            } catch (error) {
-                 showAIResponse(`Error al buscar contexto: ${error.message}`, true);
-                 loader.classList.add('hidden');
-                 setButtonsDisabled(false);
-            }
-        }
-
-        explainBtn.addEventListener('click', handleExplainClick);
-        prayBtn.addEventListener('click', handlePrayClick);
-
+            callAIFunction(situation, 'pray');
+        });
     </script>
 </body>
 </html>
