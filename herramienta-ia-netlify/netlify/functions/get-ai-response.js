@@ -52,8 +52,8 @@ exports.handler = async function (event, context) {
         }
 
         // --- FIX: Use an updated model and the 'v1beta' API endpoint for better compatibility. ---
-        const modelName = 'gemini-1.5-flash-latest'; // This is a modern, efficient, and powerful model.
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        const modelName = 'gemini-2.5-flash-preview-05-20'; // Usando el modelo correcto de tu lista.
+        const apiUrl = `https://generativelab.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
         console.log(`4. Preparando llamada a la API con el modelo '${modelName}'.`);
 
@@ -119,3 +119,5 @@ exports.handler = async function (event, context) {
         };
     }
 };
+
+
