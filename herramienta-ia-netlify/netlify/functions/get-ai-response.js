@@ -34,10 +34,6 @@ exports.handler = async function (event, context) {
     }
     
     const modelName = 'gemini-1.5-flash';
-    
-    // --- ¡SOLUCIÓN DEFINITIVA! ---
-    // Apuntamos al endpoint regional específico (us-central1) que tu proyecto
-    // tiene autorizado, en lugar del endpoint global.
     const apiUrl = `https://us-central1-generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
     console.log(`4. Preparando llamada al endpoint regional '${apiUrl}'.`);
@@ -59,9 +55,21 @@ exports.handler = async function (event, context) {
     });
 
     if (!apiResponse.ok) {
-        const errorBody = await apiResponse.json();
-        console.error("Error de la API de Google:", errorBody);
-        throw new Error(`La API de Google respondió con un error ${apiResponse.status}: ${errorBody.error.message}`);
+        let errorDetails = `La API de Google respondió con un error ${apiResponse.status} (${apiResponse.statusText})`;
+        try {
+            // Intenta leer el error como JSON, que es lo normal.
+            const errorBody = await apiResponse.json();
+            console.error("Error de la API de Google (JSON):", errorBody);
+            if (errorBody.error && errorBody.error.message) {
+                errorDetails += `: ${errorBody.error.message}`;
+            }
+        } catch (e) {
+            // Si falla, es porque la respuesta es HTML.
+            const errorText = await apiResponse.text();
+            console.error("Error de la API de Google (respuesta no es JSON):", errorText.substring(0, 500)); // Muestra solo el principio
+            errorDetails = "La API de Google devolvió una respuesta inesperada (probablemente HTML). Revisa que la clave API sea correcta, no tenga restricciones y la facturación esté activa.";
+        }
+        throw new Error(errorDetails);
     }
 
     const data = await apiResponse.json();
