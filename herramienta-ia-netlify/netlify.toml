@@ -11,5 +11,6 @@
   functions = "netlify/functions"
 
 [functions]
-  # Asegura que las dependencias de las funciones se instalen correctamente.
-  node_bundler = "esbuild"
+  # CAMBIADO: Usamos "zisi", el empaquetador por defecto, que es más robusto
+  # y compatible con más librerías que "esbuild".
+  node_bundler = "zisi"
