@@ -1,8 +1,8 @@
 /**
  * Netlify serverless function to interact with Google's Generative Language API.
- * FINAL SIMPLIFIED VERSION: This reverts to the original library which works 
- * with API Keys and uses a stable model name ('gemini-1.0-pro') to avoid all
- * previous 404 and authentication errors.
+ * FINAL PRECISION FIX: This version uses the most specific, stable model name 
+ * from the user's available list ('gemini-1.0-pro-001') to prevent any ambiguity.
+ * It also includes enhanced logging for better diagnostics.
  */
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -32,6 +32,8 @@ exports.handler = async function (event, context) {
         if (!GOOGLE_API_KEY) {
             throw new Error("Falta la variable de entorno GOOGLE_API_KEY.");
         }
+        // Log to confirm the key is loaded (without exposing it)
+        console.log(`API Key loaded: ${GOOGLE_API_KEY ? 'Sí' : 'No'}`);
 
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 
@@ -64,8 +66,9 @@ exports.handler = async function (event, context) {
         }
 
         // --- STEP 4: Call the AI model ---
-        console.log("4. Llamando al modelo gemini-1.0-pro...");
-        const textModel = genAI.getGenerativeModel({ model: "gemini-1.0-pro" }); // STABLE MODEL
+        const modelNameToUse = "gemini-1.0-pro-001"; // USING THE MOST SPECIFIC NAME
+        console.log(`4. Llamando al modelo específico: ${modelNameToUse}...`);
+        const textModel = genAI.getGenerativeModel({ model: modelNameToUse });
         
         const result = await textModel.generateContent(finalPrompt);
         const response = await result.response;
@@ -82,7 +85,7 @@ exports.handler = async function (event, context) {
         };
 
     } catch (error) {
-        console.error("ERROR EN LA FUNCIÓN:", error);
+        console.error("FULL ERROR OBJECT:", JSON.stringify(error, null, 2)); // Enhanced error logging
         return {
             statusCode: 500, headers, body: JSON.stringify({ error: `[${error.name}]: ${error.message}` })
         };
