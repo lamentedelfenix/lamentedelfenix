@@ -32,13 +32,14 @@ exports.handler = async function (event, context) {
     if (!prompt) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }) };
     }
+    
+    const modelName = 'gemini-1.5-flash-latest';
+    // --- ¡CORRECCIÓN FINAL! ---
+    // Cambiamos la URL de la API de v1 a v1beta, que es la correcta
+    // para los modelos que usan el sufijo "-latest".
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-    // --- ¡SOLUCIÓN DEFINITIVA! ---
-    // Construimos la llamada a la API manualmente para evitar la librería problemática.
-    const modelName = 'gemini-1.5-flash-latest'; // El modelo que tu proyecto SÍ permite
-    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`;
-
-    console.log(`4. Preparando llamada directa a la API v1 con el modelo '${modelName}'.`);
+    console.log(`4. Preparando llamada directa a la API v1beta con el modelo '${modelName}'.`);
 
     const payload = {
       contents: [{
@@ -56,7 +57,6 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(payload)
     });
 
-    // Manejo de errores de la API
     if (!apiResponse.ok) {
         const errorBody = await apiResponse.json();
         console.error("Error de la API de Google:", errorBody);
@@ -64,8 +64,6 @@ exports.handler = async function (event, context) {
     }
 
     const data = await apiResponse.json();
-    
-    // Extraemos la respuesta de forma segura
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
