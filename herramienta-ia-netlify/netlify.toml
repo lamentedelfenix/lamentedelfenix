@@ -2,15 +2,20 @@
 # Este archivo le dice a Netlify cómo construir tu sitio.
 
 [build]
-  # Directorio a publicar. Como nuestro index.html está en la raíz de esta carpeta,
-  # usamos "." para indicar "este directorio actual".
-  publish = "."
+  # Directorio a publicar. Como nuestro index.html está en la raíz de esta carpeta,
+  # usamos "." para indicar "este directorio actual".
+  publish = "."
 
-  # Directorio donde se encuentran las funciones serverless.
-  # La ruta es relativa a la ubicación de este archivo toml.
-  functions = "netlify/functions"
+  # Directorio donde se encuentran las funciones serverless.
+  # La ruta es relativa a la ubicación de este archivo toml.
+  functions = "netlify/functions"
 
 [functions]
-  # CAMBIADO: Usamos "zisi", el empaquetador por defecto, que es más robusto
-  # y compatible con más librerías que "esbuild".
-  node_bundler = "zisi"
+  # CAMBIADO: Usamos "zisi", el empaquetador por defecto, que es más robusto
+  # y compatible con más librerías que "esbuild".
+  node_bundler = "zisi"
+
+# --- AÑADE ESTA SECCIÓN AL FINAL DE TU ARCHIVO ---
+# Esta es la instrucción que faltaba para activar Git LFS.
+[lfs]
+  fetch_deep = true
