@@ -1,8 +1,5 @@
-// Usa 'require' para importar el SDK, es más robusto en Netlify.
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-// Accede a tu API Key desde las variables de entorno de Netlify.
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+// NO SE USA NINGUNA LIBRERÍA EXTERNA DE GOOGLE.
+// ESTO EVITA CUALQUIER PROBLEMA DE CACHÉ EN NETLIFY.
 
 exports.handler = async function (event, context) {
   const headers = {
@@ -20,10 +17,11 @@ exports.handler = async function (event, context) {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Método no permitido' }) };
   }
 
-  console.log("1. La función 'get-ai-response' ha comenzado.");
+  console.log("1. La función 'get-ai-response' (versión directa) ha comenzado.");
 
   try {
-    if (!process.env.GOOGLE_API_KEY) {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    if (!apiKey) {
       throw new Error("La variable de entorno GOOGLE_API_KEY no se ha encontrado.");
     }
     console.log("2. La clave API ha sido cargada.");
@@ -35,15 +33,45 @@ exports.handler = async function (event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'No se ha proporcionado un prompt.' }) };
     }
 
-    // --- ¡CORRECCIÓN DEFINITIVA! ---
-    // Volvemos a usar el modelo que tu proyecto de Google Cloud tiene permitido,
-    // según tu captura de pantalla de las cuotas.
-    console.log("4. Preparando la llamada a la API de Google con el modelo 'gemini-1.5-flash-latest'.");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    // --- ¡SOLUCIÓN DEFINITIVA! ---
+    // Construimos la llamada a la API manualmente para evitar la librería problemática.
+    const modelName = 'gemini-1.5-flash-latest'; // El modelo que tu proyecto SÍ permite
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${apiKey}`;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    console.log(`4. Preparando llamada directa a la API v1 con el modelo '${modelName}'.`);
+
+    const payload = {
+      contents: [{
+        parts: [{
+          text: prompt
+        }]
+      }]
+    };
+
+    const apiResponse = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    // Manejo de errores de la API
+    if (!apiResponse.ok) {
+        const errorBody = await apiResponse.json();
+        console.error("Error de la API de Google:", errorBody);
+        throw new Error(`La API de Google respondió con un error ${apiResponse.status}: ${errorBody.error.message}`);
+    }
+
+    const data = await apiResponse.json();
+    
+    // Extraemos la respuesta de forma segura
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+        console.error("La respuesta de la API no tuvo el formato esperado:", data);
+        throw new Error("No se pudo extraer el texto de la respuesta de la IA.");
+    }
     
     console.log("5. Éxito. Devolviendo la respuesta de la IA.");
 
