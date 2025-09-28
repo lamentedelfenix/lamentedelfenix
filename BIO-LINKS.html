@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darío Arrigazzi - La Mente del Fénix</title>
+
+    <!-- Preconexión para optimizar la carga de recursos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.imgur.com">
+    <!-- Precargar imagen del banner -->
+    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/B0IHYVP.png" type="image/png">
+
+    <!-- Tailwind CSS para un diseño rápido y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Estilos personalizados inspirados en tu web principal */
+        :root {
+            --bg-color: #fbf5e2;
+            --text-color: #0c2f5b;
+            --brand-pink: #e91e63;
+            --brand-cyan: #00bcd4;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background: linear-gradient(170deg, #fbf5e2 0%, #fdece2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alineado al inicio para el scroll */
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .link-container {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Estilo para los botones de enlace, optimizado para móvil */
+        .link-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            background: linear-gradient(120deg, var(--text-color) 0%, #a31545 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.5s ease;
+        }
+
+        .link-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4); 
+            background: linear-gradient(120deg, var(--text-color) 0%, var(--brand-pink) 100%);
+        }
+        
+        /* Efecto al presionar en móvil */
+        .link-button:active {
+            transform: translateY(0px) scale(0.98); /* Se "hunde" un poco */
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+        }
+
+        @keyframes text-flow {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Efecto de imagen de perfil */
+        .profile-image-container {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            margin: -2.5rem auto 0 auto; /* Solapamiento sobre el banner reducido */
+            z-index: 10;
+        }
+        .profile-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .profile-image-container .hover-image {
+            opacity: 0;
+        }
+        .profile-image-container:hover .hover-image {
+            opacity: 1;
+        }
+        .profile-image-container:hover .default-image {
+            opacity: 0;
+        }
+        
+        /* Cita animada */
+        .animated-quote {
+            font-style: italic;
+            color: transparent;
+            background-image: linear-gradient(90deg, var(--brand-cyan), var(--brand-pink), var(--text-color), var(--brand-cyan));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: text-flow 10s linear infinite;
+        }
+
+        /* Iconos de redes sociales */
+        .social-icon {
+            font-size: 1.75rem;
+            color: var(--text-color);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+            color: var(--brand-pink);
+        }
+        .social-icon.email-icon:hover {
+            color: var(--brand-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="link-container text-center">
+
+        <!-- Banner -->
+        <img src="https://i.imgur.com/B0IHYVP.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400">
+
+        <!-- Imagen de Perfil e Info -->
+        <header class="mb-8">
+            <div class="profile-image-container rounded-full shadow-xl border-4 border-white overflow-hidden">
+                <img src="https://i.imgur.com/T6RLxgX.jpeg" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
+                <img src="https://i.imgur.com/XlmLArU.jpeg" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
+            </div>
+            
+            <div class="pt-2"> <!-- Espacio para que no se solape el texto con la foto -->
+                <p class="mt-4 font-medium text-lg">Despierta tu Potencial. Transforma tu Mente.</p>
+                <p class="mt-2 text-sm max-w-xs mx-auto text-gray-700">
+                    Te enseño las mismas herramientas que cambiaron mi vida y que pueden obrar milagros en la tuya.
+                </p>
+            </div>
+        </header>
+
+        <!-- Enlaces Principales -->
+        <main>
+            <a href="https://www.lamentedelfenix.com/membresia" target="_blank" class="link-button">
+                Membresía La Mente del Fénix
+            </a>
+            <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="link-button">
+                Psicoterapia 1 a 1 (Reservar Sesión)
+            </a>
+            <a href="https://www.lamentedelfenix.com/login" target="_blank" class="link-button">
+                Acceso para Miembros
+            </a>
+            <a href="https://www.lamentedelfenix.com" target="_blank" class="link-button">
+                Visitar mi Web Principal
+            </a>
+        </main>
+        
+        <!-- Cita -->
+        <section class="mt-8 px-4">
+            <p class="animated-quote text-sm">
+                "En nuestra mente todos tenemos una máquina del tiempo en la que podemos viajar a nuestro pasado y reinterpretarlo, transformando con ello nuestro presente."
+            </p>
+        </section>
+
+        <!-- Redes Sociales -->
+        <footer class="mt-8">
+            <div class="flex justify-center items-center gap-6">
+                <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram social-icon"></i>
+                </a>
+                <a href="mailto:lamentedelfenix@gmail.com" target="_blank" aria-label="Email">
+                    <i class="fas fa-envelope social-icon email-icon"></i>
+                </a>
+            </div>
+            <p class="text-xs text-gray-500 mt-6">&copy; 2025 La Mente del Fénix</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
+
