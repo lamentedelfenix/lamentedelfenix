@@ -226,7 +226,7 @@
         }
         .video-list-item.active .video-content-panel {
             max-height: 1000px;
-            padding: 1.5rem 1rem;
+            padding: 1.5rem 0; /* Padding vertical, horizontal se gestiona en el contenido */
         }
 
         .btn-action { background-color: var(--brand-pink); color: white; transition: background-color 0.3s ease, transform 0.2s ease; }
@@ -416,30 +416,33 @@
                 </button>
             </div>
 
-            <main id="main-content" class="p-4 md:p-8" style="display: none;">
-                <div class="info-banner rounded-lg mb-8">
+            <main id="main-content" class="py-4 md:p-8" style="display: none;">
+                <div class="info-banner rounded-lg mb-8 mx-4 md:mx-0">
                     <p>
                         <i class="fas fa-sync-alt mr-2"></i>
                         Estaremos regularmente actualizando los videos y añadiendo nuevo contenido. Recuerda entrar aquí de vez en cuando.
                     </p>
                 </div>
 
-                <div id="course-tabs" class="flex items-center justify-center space-x-2 md:space-x-4 mb-8 border-b border-gray-700">
-                    <button data-course="ucdm" class="course-tab active font-bold py-3 px-6 text-lg border-b-2 border-transparent hover:text-white transition">Curso de Milagros</button>
-                    <button data-course="ansiedad" class="course-tab font-bold py-3 px-6 text-lg border-b-2 border-transparent text-gray-400 hover:text-white transition">
-                        Control de la Ansiedad <span class="text-xs ml-2 opacity-70">(Próximamente)</span>
+                <div id="course-tabs" class="flex items-center justify-center space-x-0 md:space-x-4 mb-8 border-b border-gray-700 overflow-x-auto pb-1">
+                    <button data-course="ucdm" class="course-tab active font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent hover:text-white transition whitespace-nowrap">Curso de Milagros</button>
+                    <button data-course="ansiedad" class="course-tab font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent text-gray-400 hover:text-white transition whitespace-nowrap">
+                        Control de la Ansiedad
+                    </button>
+                     <button data-course="mentorias" class="course-tab font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent text-gray-400 hover:text-white transition whitespace-nowrap">
+                        Mentorías
                     </button>
                 </div>
                 
-                <header class="mb-8 text-center md:text-left">
+                <header class="mb-8 text-center md:text-left px-4 md:px-0">
                     <h1 class="text-4xl md:text-5xl font-bold mb-2">Curso en Vídeo</h1>
                     <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
                 </header>
                 
                 <div class="max-w-7xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1 bg-gray-900/50 p-4 rounded-lg flex flex-col lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)]">
-                            <h2 class="text-xl font-bold mb-4 flex-shrink-0">Contenido del Curso</h2>
+                        <div class="lg:col-span-1 bg-gray-900/50 lg:p-4 rounded-lg flex flex-col lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)]">
+                            <h2 class="text-xl font-bold mb-4 flex-shrink-0 px-4 lg:px-0">Contenido del Curso</h2>
                             <div id="video-list-container" class="flex-grow">
                                 <ul id="video-list" class="space-y-2">
                                     <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
@@ -572,6 +575,11 @@
                 docId: 'ansiedad',
                 title: 'Mini-Curso: Control de la Ansiedad',
                 description: 'Herramientas prácticas para gestionar la ansiedad y recuperar la calma.'
+            },
+            'mentorias': {
+                docId: 'mentorias',
+                title: 'Mentorías Grabadas',
+                description: 'Grabaciones de las mentorías en vivo resolviendo dudas y problemas personales.'
             }
         };
         let currentCourseId = 'ucdm'; 
@@ -602,7 +610,10 @@
             }
         }
         
-        // **SEGURIDAD REACTIVADA**
+        // **SEGURIDAD TEMPORALMENTE DESACTIVADA PARA PREVISUALIZACIÓN**
+        // Se ha comentado el código original de autenticación.
+        // Para reactivar la seguridad, elimina el bloque 'window.addEventListener' de abajo y descomenta el siguiente bloque.
+        /*
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
             if (user) {
@@ -650,6 +661,35 @@
                 document.getElementById('mobile-header').style.display = 'none';
             }
         });
+        */
+
+        // Bloque para previsualización sin login
+        window.addEventListener('load', async () => {
+            document.body.style.opacity = '1';
+            const fakeUser = { uid: 'preview-user-123' };
+            currentUser = fakeUser;
+
+            mainContent.style.display = 'block';
+            authMessage.style.display = 'none';
+            
+            sidebar.style.removeProperty('display');
+            document.getElementById('mobile-header').style.removeProperty('display');
+
+            document.querySelectorAll('.course-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const newCourseId = tab.dataset.course;
+                    if (newCourseId !== currentCourseId) {
+                        loadCourse(newCourseId);
+                    }
+                });
+            });
+
+            await loadCourse(currentCourseId);
+            
+            // Simular una racha para que el contador se muestre en la previsualización
+            updateStreakCounters(7); 
+        });
+
 
         async function loadCourse(courseId) {
             if (!currentUser) return;
@@ -759,11 +799,11 @@
                 <div class="video-player-container shadow-lg shadow-cyan-500/10">
                     <iframe src="${vimeoUrl}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                 </div>
-                <div class="mt-6">
+                <div class="mt-6 px-4">
                     <h2 class="text-3xl font-bold text-brand-cyan">${video.title}</h2>
                     <p class="mt-4 text-gray-300 leading-relaxed">${video.description}</p>
                 </div>
-                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4 px-4">
                     <button data-video-id="${video.id}" class="btn-action font-bold py-3 px-6 rounded-lg w-full sm:w-auto flex-grow ${isSeen ? 'completed' : ''}">
                         <i class="fas fa-check-circle mr-2"></i>
                         <span>${isSeen ? 'Marcado como visto' : 'Marcar como visto'}</span>
@@ -795,13 +835,19 @@
                     if (!item.classList.contains('active')) {
                         contentPanel.innerHTML = createPlayerHTML(video);
                         updateButtonsState(contentPanel, videoId);
-                        item.classList.add('active');
                     }
+                    item.classList.add('active');
                 } else {
                     item.classList.remove('active');
-                    contentPanel.innerHTML = '';
                 }
             });
+            // Hacemos scroll suave hacia el video activo en móvil
+            const activeElement = document.querySelector(`.video-list-item[data-video-id='${videoId}']`);
+            if (activeElement && window.innerWidth < 1024) {
+                 setTimeout(() => {
+                    activeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 500); // Pequeño delay para asegurar que el panel se ha abierto
+            }
             updateActiveListItemVisuals(videoId);
         }
 
