@@ -610,10 +610,7 @@
             }
         }
         
-        // **SEGURIDAD TEMPORALMENTE DESACTIVADA PARA PREVISUALIZACIÓN**
-        // Se ha comentado el código original de autenticación.
-        // Para reactivar la seguridad, elimina el bloque 'window.addEventListener' de abajo y descomenta el siguiente bloque.
-        /*
+        // **SEGURIDAD REACTIVADA**
         onAuthStateChanged(auth, async (user) => {
             document.body.style.opacity = '1';
             if (user) {
@@ -661,35 +658,6 @@
                 document.getElementById('mobile-header').style.display = 'none';
             }
         });
-        */
-
-        // Bloque para previsualización sin login
-        window.addEventListener('load', async () => {
-            document.body.style.opacity = '1';
-            const fakeUser = { uid: 'preview-user-123' };
-            currentUser = fakeUser;
-
-            mainContent.style.display = 'block';
-            authMessage.style.display = 'none';
-            
-            sidebar.style.removeProperty('display');
-            document.getElementById('mobile-header').style.removeProperty('display');
-
-            document.querySelectorAll('.course-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const newCourseId = tab.dataset.course;
-                    if (newCourseId !== currentCourseId) {
-                        loadCourse(newCourseId);
-                    }
-                });
-            });
-
-            await loadCourse(currentCourseId);
-            
-            // Simular una racha para que el contador se muestre en la previsualización
-            updateStreakCounters(7); 
-        });
-
 
         async function loadCourse(courseId) {
             if (!currentUser) return;
