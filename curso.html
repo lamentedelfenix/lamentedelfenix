@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso en Vídeo - La Mente del Fénix</title>
+    <title>Espacio de Miembros - La Mente del Fénix</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
             --brand-blue: #0c1427;
@@ -20,44 +27,30 @@
             --text-muted: #a7b3ce;
             --border-color: rgba(255, 255, 255, 0.1);
         }
-        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            transition: opacity 0.3s ease-in-out;
-            overflow-x: hidden;
-            opacity: 0; /* Oculto por defecto */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
-        body.modal-open {
-            overflow: hidden;
-        }
-
+        
         #background-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
         }
 
-        /* --- ESTILOS BARRA LATERAL --- */
+        /* --- Barra Lateral --- */
         #sidebar {
             background-color: #080f1e;
-            transition: transform 0.3s ease-in-out;
-            z-index: 1010;
+            border-right: 1px solid var(--border-color);
         }
         .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
             color: var(--text-muted);
-            border-radius: 0.5rem;
-            margin: 0.25rem 0;
+            font-weight: 500;
             transition: background-color 0.2s ease, color 0.2s ease;
-            text-decoration: none;
-            cursor: pointer;
         }
         .sidebar-link:hover {
             background-color: rgba(0, 188, 212, 0.1);
@@ -69,422 +62,283 @@
             font-weight: 700;
             box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
         }
-        .sidebar-link i {
-            width: 2rem;
-            text-align: center;
-        }
-        #sidebar-backdrop {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5); z-index: 1005;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        #sidebar-backdrop.show {
-            opacity: 1;
-            visibility: visible;
-        }
         
+        /* --- Logo Glow --- */
         @keyframes ember-effect-glow {
-            0%, 100% {
-                filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) 
-                        drop-shadow(0 0 3px rgba(229, 62, 62, 0.4));
-                transform: scale(1.0);
-            }
-            50% {
-                filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) 
-                        drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) 
-                        drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
-                transform: scale(1.12);
-            }
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(246, 173, 85, 0.6)) drop-shadow(0 0 3px rgba(229, 62, 62, 0.4)); transform: scale(1.0); }
+            50% { filter: drop-shadow(0 0 20px rgba(246, 173, 85, 1)) drop-shadow(0 0 12px rgba(229, 62, 62, 0.7)) drop-shadow(0 0 6px rgba(253, 230, 138, 0.8)); transform: scale(1.1); }
         }
         .logo-glow {
             animation: ember-effect-glow 3.6s infinite ease-in-out;
-            transition: transform 0.3s ease-in-out;
-        }
-        .logo-glow:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 14px #f6ad55);
-        }
-
-        /* --- ESTILOS DE RACHA EVOLUTIVA --- */
-        .streak-container { position: relative; cursor: pointer; }
-        .streak-tooltip {
-            position: absolute;
-            background-color: #1a2a44;
-            color: #fbf5e2;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 280px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 1030;
-            pointer-events: none;
-            text-align: left;
-            font-size: 0.8rem;
-        }
-        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip, .streak-container:focus-within .streak-tooltip {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-        .streak-tooltip h4 { font-weight: 800; color: #f6ad55; margin-bottom: 0.5rem; }
-        .streak-tooltip p { font-size: 0.75rem; line-height: 1.5; color: #a7b3ce; }
-        .streak-tooltip p strong { color: #fbf5e2; }
-        .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
-        .streak-tooltip-close {
-            position: absolute;
-            top: 0.25rem;
-            right: 0.5rem;
-            font-size: 1.75rem;
-            color: #a7b3ce;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0.25rem;
-        }
-        .streak-tooltip-close:hover { color: #fbf5e2; }
-        #mobile-streak-counter + .streak-tooltip { top: 100%; right: 0; margin-top: 10px; }
-        #sidebar-streak-counter + .streak-tooltip { top: 50%; left: 100%; transform: translateY(-50%); margin-left: 10px; }
-        @media (max-width: 767px) {
-            #sidebar-streak-counter + .streak-tooltip { top: 100%; left: 50%; transform: translateX(-50%); right: auto; margin-left: 0; margin-top: 10px; width: 250px; }
-        }
-        #sidebar-streak-counter { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; margin-top: 1.5rem; font-weight: 700; border-radius: 0.5rem; }
-        #sidebar-streak-counter .fa-fire, #mobile-streak-counter .fa-fire { transition: all 0.5s ease; }
-        .streak-level-0 .fa-fire { color: #4a5568; }
-        .streak-level-1 { color: #f6ad55; background-color: rgba(246, 173, 85, 0.1); border: 1px solid rgba(246, 173, 85, 0.3); }
-        .streak-level-1 .fa-fire { animation: flame-flicker 1.5s infinite ease-in-out; text-shadow: 0 0 8px #f6ad55; }
-        .streak-level-2 { color: #f687b3; background-color: rgba(246, 135, 179, 0.1); border: 1px solid rgba(246, 135, 179, 0.3); }
-        .streak-level-2 .fa-fire { animation: flame-flicker-strong 1s infinite ease-in-out; text-shadow: 0 0 12px #f687b3; }
-        .streak-level-3 { color: #e53e3e; background-color: rgba(229, 62, 62, 0.1); border: 1px solid rgba(229, 62, 62, 0.3); }
-        .streak-level-3 .fa-fire { animation: flame-pulse 1.2s infinite ease-in-out; text-shadow: 0 0 16px #e53e3e; }
-        .streak-level-4 { color: #fde68a; background-color: rgba(253, 230, 138, 0.1); border: 1px solid rgba(253, 230, 138, 0.3); }
-        .streak-level-4 .fa-fire { animation: flame-pulse 1s infinite ease-in-out, ember-rise 3s infinite linear; text-shadow: 0 0 20px #fde68a; }
-        @keyframes flame-flicker { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(1.1) rotate(2deg); } }
-        @keyframes flame-flicker-strong { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.15) rotate(3deg); } }
-        @keyframes flame-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
-        @keyframes ember-rise { 0% { box-shadow: 0 0 10px 0px #fde68a; } 50% { box-shadow: 0 -15px 20px 5px rgba(253, 230, 138, 0); } 100% { box-shadow: 0 0 10px 0px #fde68a; } }
-
-        /* --- ESTILOS DE LA PÁGINA DE CURSO --- */
-        #video-list-container {
-            overflow-y: auto;
-        }
-        #video-list-container::-webkit-scrollbar { width: 8px; }
-        #video-list-container::-webkit-scrollbar-track { background: #080f1e; }
-        #video-list-container::-webkit-scrollbar-thumb { background-color: var(--brand-cyan); border-radius: 10px; border: 2px solid #080f1e; }
-
-        .video-list-item {
-            border-left: 4px solid transparent;
-            transition: all 0.2s ease-in-out;
-        }
-        .video-list-item-header {
-            transition: background-color 0.2s ease-in-out;
-        }
-        .video-list-item:hover .video-list-item-header {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        .video-list-item.active {
-            border-left-color: var(--brand-pink);
-        }
-        .video-list-item.active .video-list-item-header {
-            background-color: rgba(233, 30, 99, 0.1);
-        }
-        .video-list-item.active .video-list-item-header span:nth-child(2) {
-            color: #f9a8d4; /* Rosa brillante */
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(233, 30, 99, 0.7);
-            transform: translateX(4px);
-            transition: all 0.3s ease-in-out;
-        }
-        .video-list-item.seen .fa-check-circle {
-            color: var(--brand-gold);
-            opacity: 1;
-        }
-
-        .video-player-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-            background-color: #000;
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-        .video-player-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
         
+        /* --- Contador de Racha --- */
+        .streak-counter { transition: all 0.3s ease; border: 1px solid var(--border-color); background-color: rgba(0,0,0,0.2); }
+        .streak-level-0 { color: var(--text-muted); }
+        .streak-level-1 { color: #f6ad55; background-color: rgba(246, 173, 85, 0.1); border-color: rgba(246, 173, 85, 0.3); }
+        .streak-level-2 { color: #f687b3; background-color: rgba(246, 135, 179, 0.1); border-color: rgba(246, 135, 179, 0.3); }
+        .streak-level-3 { color: #e53e3e; background-color: rgba(229, 62, 62, 0.1); border-color: rgba(229, 62, 62, 0.3); }
+        .streak-level-4 { color: #fde68a; background-color: rgba(253, 230, 138, 0.1); border-color: rgba(253, 230, 138, 0.3); }
+        .streak-level-1 .fa-fire, .streak-level-2 .fa-fire, .streak-level-3 .fa-fire, .streak-level-4 .fa-fire { animation: flame-pulse 1.5s infinite ease-in-out; }
+        @keyframes flame-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+        /* --- Tarjetas y Botones --- */
+        .card {
+            background-color: rgba(18, 27, 49, 0.6);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+        .btn {
+            border-radius: 0.5rem; font-weight: 700; transition: all 0.2s ease;
+            position: relative; z-index: 1; overflow: hidden;  border: 1px solid transparent;
+        }
+        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); background-color: transparent; border-color: #e91e63; color: white; }
+        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); background-color: transparent; border-color: #00bcd4; color: white; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 15px var(--glow-color); background-color: var(--glow-color-bg); }
+        
+        .btn-nav { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-muted); }
+        .btn-nav:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.1); border-color: var(--brand-cyan); color: var(--text-main); }
+        .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .btn-completed { background: linear-gradient(to right, #16a34a, #15803d); color: white; cursor: default; }
+        .btn-completed:hover { transform: none; box-shadow: none; }
+
+        /* --- Lista de Videos --- */
+        .video-list-item {
+            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.03);
+            transition: all 0.2s ease-in-out;
+        }
+        .video-list-item:hover {
+            border-color: var(--brand-cyan);
+            background-color: rgba(0, 188, 212, 0.05);
+            transform: scale(1.02);
+        }
+        .video-list-item.active {
+            background-color: rgba(233, 30, 99, 0.1);
+            border-color: var(--brand-pink);
+        }
+        .video-list-item.active .video-title { color: #f9a8d4; /* rosa claro */ }
+        .video-list-item .fa-circle-play { color: #6b7280; }
+        .video-list-item.seen .fa-circle-play { color: var(--brand-gold); }
+
         .video-content-panel {
-            max-height: 0;
-            overflow: hidden;
+            max-height: 0; overflow: hidden;
             transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
             padding: 0 1rem;
         }
         .video-list-item.active .video-content-panel {
-            max-height: 1000px;
-            padding: 1.5rem 0; /* Padding vertical, horizontal se gestiona en el contenido */
-        }
-
-        .btn-action { background-color: var(--brand-pink); color: white; transition: background-color 0.3s ease, transform 0.2s ease; }
-        .btn-action:hover { background-color: #c2185b; transform: translateY(-2px); }
-        .btn-action.completed { background-color: #4caf50; cursor: default; }
-        .btn-action.completed:hover { background-color: #43a047; transform: none; }
-        .btn-nav { background-color: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color); }
-        .btn-nav:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.2); border-color: var(--brand-cyan); }
-        .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        .modal-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background-color: rgba(0, 0, 0, 0.7); 
-            backdrop-filter: blur(5px); 
-            display: flex; align-items: center; justify-content: center; 
-            z-index: 1020;
-            padding: 1rem; 
-            opacity: 0; visibility: hidden; 
-            transition: opacity 0.3s ease; 
-        }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-content { 
-            background-color: #0c1427; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            padding: 2.5rem; 
-            border-radius: 0.75rem; 
-            max-width: 500px; 
-            width: 100%; 
-            text-align: center; 
-            transform: scale(0.9); 
-            transition: transform 0.3s ease; 
-            position: relative; 
-        }
-        .modal-overlay.show .modal-content { transform: scale(1); }
-        .modal-close-btn { position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; color: #9ca3af; cursor: pointer; line-height: 1; }
-        
-        .btn { 
-            position: relative; z-index: 1; overflow: hidden; 
-            transition: all 0.3s ease; border: 1px solid transparent;
-            display: inline-flex; align-items: center; justify-content: center; color: white;
-        }
-        .btn-pink { --glow-color: #e91e63; --glow-color-bg: rgba(233, 30, 99, 0.2); background-color: transparent; border-color: #e91e63; }
-        .btn-cyan { --glow-color: #00bcd4; --glow-color-bg: rgba(0, 188, 212, 0.2); background-color: transparent; border-color: #00bcd4; }
-        .btn:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px var(--glow-color);
-            background-color: var(--glow-color-bg);
-        }
-        .card { 
-            background-color: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-        }
-        .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 0 25px rgba(0, 188, 212, 0.3); 
-            border: 1px solid rgba(0, 188, 212, 0.5);
+            max-height: 1000px; /* Suficientemente grande */
+            padding: 1.5rem 0.5rem;
         }
         
-        .info-banner {
-            background-color: rgba(0, 188, 212, 0.1);
-            color: var(--text-main);
-            border: 1px solid var(--brand-cyan);
-            padding: 1rem;
-            text-align: center;
-            font-weight: 500;
-            z-index: 1000;
-            box-shadow: 0 0 15px rgba(0, 188, 212, 0.2);
-        }
-
-        /* --- NUEVOS ESTILOS PARA LAS PESTAÑAS DE CURSOS --- */
+        /* --- Pestañas de Curso --- */
         .course-tab {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border-bottom: 2px solid transparent;
+            color: var(--text-muted);
         }
+        .course-tab:hover { color: var(--text-main); }
         .course-tab.active {
             color: var(--brand-pink);
             border-bottom-color: var(--brand-pink);
         }
+        
+        /* --- Esqueleto de Carga --- */
+        .skeleton {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse { 50% { opacity: .5; } }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1020;
+            padding: 1rem;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--brand-blue);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn { 
+            position: absolute; top: 0.5rem; right: 1rem; font-size: 2rem; 
+            color: var(--text-muted); cursor: pointer; line-height: 1; 
+        }
+        .modal-close-btn:hover { color: var(--text-main); }
     </style>
 </head>
 <body class="antialiased">
 
     <canvas id="background-canvas"></canvas>
-    
-    <div class="relative min-h-screen md:flex">
-        <div id="sidebar-backdrop"></div>
 
-        <aside id="sidebar" style="display: none;" class="bg-gray-800 text-gray-100 w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col h-screen">
-            <a href="./miembros.html" class="text-white flex items-center space-x-2 px-4">
-                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
+    <div class="relative min-h-screen md:flex">
+        <!-- Backdrop para sidebar móvil -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-30 md:hidden hidden"></div>
+
+        <!-- Barra Lateral -->
+        <aside id="sidebar" class="w-72 space-y-6 py-7 px-4 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex-col hidden">
+            <!-- Logo y Título -->
+            <a href="./miembros.html" class="flex items-center space-x-3 px-2">
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
-            <div class="streak-container mx-4" tabindex="0">
-                <div id="sidebar-streak-counter" style="display: none;">
-                    <i class="fas fa-fire"></i>
+            
+            <!-- Navegación -->
+            <nav class="flex-grow space-y-1">
+                <a href="./miembros.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-home w-6 text-center"></i> <span>Panel Principal</span>
+                </a>
+                <a href="./progreso.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-tasks w-6 text-center"></i> <span>Mi Progreso</span>
+                </a>
+                <a href="./curso.html" class="sidebar-link active flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-video w-6 text-center"></i> <span>Curso en Vídeo</span>
+                </a>
+                <a href="./inspiracion.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-lightbulb w-6 text-center"></i> <span>Inspiración</span>
+                </a>
+                <a href="./herramienta-ia.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-robot w-6 text-center"></i> <span>Asistente IA</span>
+                </a>
+                <a href="./instrucciones.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-brain w-6 text-center"></i> <span>Mapa Mental + IA</span>
+                </a>
+                <hr class="border-slate-700 my-3">
+                <a href="#" id="comunidad-btn" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-users w-6 text-center"></i> <span>Comunidad</span>
+                </a>
+                <a href="#" id="recursos-btn" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-folder-open w-6 text-center"></i> <span>Recursos</span>
+                </a>
+                <a href="#" id="sesion-btn" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
+                    <i class="fas fa-calendar-check w-6 text-center"></i> <span>Sesión 1 a 1</span>
+                </a>
+            </nav>
+
+            <!-- Contador de Racha y Salida -->
+            <div class="space-y-4">
+                 <div id="sidebar-streak-container" class="streak-counter flex items-center gap-4 text-sm font-semibold p-3 rounded-lg hidden">
+                    <i class="fas fa-fire text-xl"></i>
                     <div>
-                        <span id="sidebar-streak-days">0</span>
+                        <span id="sidebar-streak-days" class="font-bold text-base">0</span>
                         <span>días de racha</span>
                     </div>
                 </div>
-                <div class="streak-tooltip">
-                    <span class="streak-tooltip-close">×</span>
-                    <h4>Niveles de la Llama</h4>
-                    <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
-                    <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
-                    <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
-                    <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
-                    <hr>
-                    <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
-                </div>
-            </div>
-            <nav class="mt-4 flex-grow">
-                <a href="./miembros.html" class="sidebar-link">
-                    <i class="fas fa-home"></i>
-                    <span>Panel Principal</span>
-                </a>
-                <a href="./progreso.html" class="sidebar-link">
-                    <i class="fas fa-tasks"></i>
-                    <span>Mi Progreso</span>
-                </a>
-                <a href="./curso.html" class="sidebar-link active">
-                    <i class="fas fa-video"></i>
-                    <span>Curso en Vídeo</span>
-                </a>
-                <a href="./inspiracion.html" class="sidebar-link">
-                    <i class="fas fa-lightbulb"></i>
-                    <span>Inspiración</span>
-                </a>
-                <a href="./herramienta-ia.html" class="sidebar-link">
-                    <i class="fas fa-robot"></i>
-                    <span>Asistente IA</span>
-                </a>
-                <a href="./instrucciones.html" class="sidebar-link">
-                    <i class="fas fa-brain"></i>
-                    <span>Mapa Mental + IA</span>
-                </a>
-                <hr class="border-gray-700 my-4">
-                <a id="comunidad-btn" class="sidebar-link">
-                    <i class="fas fa-users"></i>
-                    <span>Comunidad</span>
-                </a>
-                <a id="recursos-btn" class="sidebar-link">
-                    <i class="fas fa-folder-open"></i>
-                    <span>Recursos</span>
-                </a>
-                <a id="sesion-btn" class="sidebar-link">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Sesión 1 a 1</span>
-                </a>
-            </nav>
-            <div class="px-4 py-2">
-                <hr class="border-gray-700 mb-4">
-                <button id="logout-btn" class="w-full sidebar-link text-left">
-                    <i class="fas fa-sign-out-alt"></i>
+                <button id="logout-btn" class="w-full sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg text-left">
+                    <i class="fas fa-sign-out-alt w-6 text-center"></i>
                     <span>Cerrar Sesión</span>
                 </button>
             </div>
         </aside>
 
-        <div id="page-content" class="flex-1">
-            <div id="mobile-header" style="display: none;" class="md:hidden p-4 flex justify-between items-center bg-gray-900 sticky top-0 z-[1002]">
-                <a href="./miembros.html" class="text-white flex items-center space-x-2">
-                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
-                    <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
-                </a>
-                <div class="streak-container" tabindex="0">
-                    <div id="mobile-streak-counter" class="flex items-center gap-3 text-lg font-bold px-3 py-1 rounded-full" style="display: none;">
-                        <i class="fas fa-fire"></i>
-                        <span id="mobile-streak-days">0</span>
-                    </div>
-                    <div class="streak-tooltip">
-                        <span class="streak-tooltip-close">×</span>
-                        <h4>Niveles de la Llama</h4>
-                        <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
-                        <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
-                        <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
-                        <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
-                        <hr>
-                        <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
-                    </div>
-                </div>
-                <button id="hamburger-btn" class="text-white focus:outline-none">
-                    <i class="fas fa-bars text-2xl"></i>
+        <!-- Contenido Principal -->
+        <div class="flex-1">
+            <!-- Cabecera Móvil -->
+            <div id="mobile-header" class="md:hidden p-4 flex justify-between items-center bg-[#080f1e] border-b border-slate-800 sticky top-0 z-20 hidden">
+                <button id="hamburger-btn" class="text-slate-300 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
                 </button>
+                 <a href="#" class="flex items-center space-x-2">
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-8 h-8 logo-glow">
+                 </a>
+                <div id="mobile-streak-container" class="streak-counter flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-full hidden">
+                    <i class="fas fa-fire"></i>
+                    <span id="mobile-streak-days">0</span>
+                </div>
             </div>
 
-            <main id="main-content" class="py-4 md:p-8" style="display: none;">
-                <div class="info-banner rounded-lg mb-8 mx-4 md:mx-0">
-                    <p>
-                        <i class="fas fa-sync-alt mr-2"></i>
-                        Estaremos regularmente actualizando los videos y añadiendo nuevo contenido. Recuerda entrar aquí de vez en cuando.
-                    </p>
-                </div>
-
-                <div id="course-tabs" class="flex items-center justify-center space-x-0 md:space-x-4 mb-8 border-b border-gray-700 overflow-x-auto pb-1">
-                    <button data-course="ucdm" class="course-tab active font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent hover:text-white transition whitespace-nowrap">Curso de Milagros</button>
-                    <button data-course="ansiedad" class="course-tab font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent text-gray-400 hover:text-white transition whitespace-nowrap">
-                        Control de la Ansiedad
-                    </button>
-                     <button data-course="mentorias" class="course-tab font-bold py-3 px-4 md:px-6 text-base md:text-lg border-b-2 border-transparent text-gray-400 hover:text-white transition whitespace-nowrap">
-                        Mentorías
-                    </button>
-                </div>
-                
-                <header class="mb-8 text-center md:text-left px-4 md:px-0">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Curso en Vídeo</h1>
-                    <p class="text-lg text-gray-400">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
-                </header>
-                
+            <main id="main-content" class="p-4 md:p-8 hidden">
                 <div class="max-w-7xl mx-auto">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1 bg-gray-900/50 lg:p-4 rounded-lg flex flex-col lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)]">
-                            <h2 class="text-xl font-bold mb-4 flex-shrink-0 px-4 lg:px-0">Contenido del Curso</h2>
-                            <div id="video-list-container" class="flex-grow">
-                                <ul id="video-list" class="space-y-2">
-                                    <li class="p-4 text-center text-gray-400">Cargando vídeos...</li>
-                                </ul>
+                    <!-- Cabecera de la página -->
+                    <header class="mb-8 text-center md:text-left">
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Curso en Vídeo</h1>
+                        <p class="text-lg text-slate-400" id="page-description">Una guía paso a paso para profundizar en "Un Curso de Milagros".</p>
+                    </header>
+
+                    <!-- Pestañas de cursos -->
+                    <div class="border-b border-slate-700 mb-8">
+                        <nav id="course-tabs" class="-mb-px flex space-x-6" aria-label="Tabs">
+                             <button data-course="ucdm" class="course-tab active font-bold py-3 px-1 text-base">Curso de Milagros</button>
+                             <button data-course="ansiedad" class="course-tab font-bold py-3 px-1 text-base">Control de Ansiedad</button>
+                             <button data-course="mentorias" class="course-tab font-bold py-3 px-1 text-base">Mentorías</button>
+                        </nav>
+                    </div>
+
+                    <!-- Layout de videos -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+                        
+                        <!-- Lista de Videos -->
+                        <div class="lg:col-span-1">
+                            <h2 class="text-xl font-bold mb-4 text-white">Contenido del Curso</h2>
+                            <ul id="video-list" class="space-y-3">
+                                <!-- El esqueleto de carga o los vídeos se insertarán aquí -->
+                            </ul>
+                        </div>
+                        
+                        <!-- Reproductor (solo en escritorio) -->
+                        <div class="hidden lg:block lg:col-span-2 lg:sticky lg:top-8 self-start">
+                            <div id="desktop-player-wrapper" class="card p-1.5">
+                                <!-- El reproductor del video activo se insertará aquí -->
                             </div>
                         </div>
 
-                        <div class="hidden lg:block lg:col-span-2" id="desktop-player-wrapper"></div>
                     </div>
                 </div>
             </main>
             
-            <div id="auth-message" class="max-w-4xl mx-auto p-8 text-center" style="display: none;">
-                <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
-                <p class="text-lg mt-4">Necesitas iniciar sesión para ver este contenido.</p>
-                <a href="./login.html" class="mt-8 inline-block btn-action font-bold py-3 px-6 rounded-lg">
-                    Ir a Iniciar Sesión
-                </a>
+            <div id="auth-message" class="flex items-center justify-center h-screen p-8 text-center">
+                 <div>
+                    <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
+                    <p class="text-lg mt-4 text-slate-300">Necesitas iniciar sesión para ver este contenido.</p>
+                    <a href="./login.html" class="mt-8 inline-block btn btn-pink font-bold py-3 px-6 rounded-lg">
+                        Ir a Iniciar Sesión
+                    </a>
+                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Modales -->
+    
+    <!-- Modals -->
     <div id="comunidad-modal" class="modal-overlay">
         <div class="modal-content">
-            <span class="modal-close-btn">×</span>
+            <span class="modal-close-btn">&times;</span>
             <h3 class="text-2xl font-bold mb-4">Comunidad Privada</h3>
-            <p class="mb-6">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
+            <p class="mb-6 text-slate-300">Únete para conversar, compartir y resolver dudas en tiempo real.</p>
             <div class="flex justify-center gap-4">
-                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
-                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
+                <a href="https://chat.whatsapp.com/CpcmsxrkfWI8LgjI9itlSk" target="_blank" class="btn btn-cyan font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>
+                <a href="https://t.me/+1TKvvNIqhO8yMDY0" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg no-underline"><i class="fab fa-telegram-plane mr-2"></i>Telegram</a>
             </div>
         </div>
     </div>
     <div id="recursos-modal" class="modal-overlay">
         <div class="modal-content">
-            <span class="modal-close-btn">×</span>
+            <span class="modal-close-btn">&times;</span>
             <h3 class="text-2xl font-bold mb-4">Recursos</h3>
             <div class="card p-6 rounded-lg block no-underline flex flex-col">
                 <div class="flex-grow">
                     <h3 class="text-xl font-bold mb-2">Recursos en Google Drive</h3>
-                    <p class="mb-4">Grabaciones, guías y recursos exclusivos.</p>
+                    <p class="mb-4 text-slate-300">Grabaciones, guías y recursos exclusivos.</p>
                 </div>
                 <a href="https://drive.google.com/drive/folders/1SIxteR0jPyu_z_CxWM4B0if6uuWe0IV5?usp=drive_link" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Ver Recursos</a>
             </div>
@@ -492,415 +346,380 @@
     </div>
     <div id="sesion-modal" class="modal-overlay">
         <div class="modal-content">
-            <span class="modal-close-btn">×</span>
+            <span class="modal-close-btn">&times;</span>
              <div class="card p-6 rounded-lg block no-underline flex flex-col">
                 <div class="flex-grow">
                     <h3 class="text-xl font-bold mb-2">Psicoterapia 1 a 1</h3>
-                    <p class="mb-4">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
+                    <p class="mb-4 text-slate-300">Reserva tu sesión privada con Darío Arrigazzi.<br><b>Precio Miembros: 35€</b> (Normal: 55€).</p>
                 </div>
                 <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" class="btn btn-pink font-bold py-2 px-4 rounded-lg self-center no-underline mt-4">Reservar Sesión</a>
             </div>
         </div>
     </div>
+    
+<script>
+    // Script de fondo animado (original)
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
+    class Particle {
+        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
+        update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
+        draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+    function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
+    function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
+    const resizeObserver = new ResizeObserver(() => {
+        clearTimeout(window.resizeLag);
+        window.resizeLag = setTimeout(() => { resizeCanvas(); initParticles(); }, 250);
+    });
+    window.addEventListener('load', () => { resizeCanvas(); initParticles(); animateParticles(); resizeObserver.observe(document.body); });
+</script>
 
-    <script>
-        // Background animation script
-        const canvas = document.getElementById('background-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.body.scrollHeight; }
-        class Particle {
-            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3; this.color = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.1})`; }
-            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX *= -1; if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; }
-            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- Configuración de Firebase ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
+        authDomain: "membresia-ucdm-v2.firebaseapp.com",
+        projectId: "membresia-ucdm-v2",
+        storageBucket: "membresia-ucdm-v2.appspot.com",
+        messagingSenderId: "198704348819",
+        appId: "1:198704348819:web:4f52c9acf6cad3583e5766"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- Selectores del DOM ---
+    const sidebar = document.getElementById('sidebar');
+    const mobileHeader = document.getElementById('mobile-header');
+    const mainContent = document.getElementById('main-content');
+    const authMessage = document.getElementById('auth-message');
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+    const logoutBtn = document.getElementById('logout-btn');
+    const videoList = document.getElementById('video-list');
+    const desktopPlayerWrapper = document.getElementById('desktop-player-wrapper');
+    const pageDescription = document.getElementById('page-description');
+    
+    // --- Variables de estado ---
+    let currentUser = null;
+    let activeVideoId = null;
+    let currentCourseId = 'ucdm';
+    let courseVideos = [];
+    let seenVideoIds = new Set();
+    let progressDocRef = null;
+
+    const courseConfig = {
+        'ucdm': { docId: 'videos', title: 'Curso de Milagros', description: 'Una guía paso a paso para profundizar en "Un Curso de Milagros".' },
+        'ansiedad': { docId: 'ansiedad', title: 'Mini-Curso: Control de la Ansiedad', description: 'Herramientas prácticas para gestionar la ansiedad y recuperar la calma.' },
+        'mentorias': { docId: 'mentorias', title: 'Mentorías Grabadas', description: 'Grabaciones de las mentorías resolviendo dudas y problemas personales.' }
+    };
+    
+    // --- Lógica de Autenticación y Carga Inicial ---
+    onAuthStateChanged(auth, async (user) => {
+        document.body.style.opacity = '1';
+        if (user) {
+            currentUser = user;
+            authMessage.style.display = 'none';
+            mainContent.classList.remove('hidden');
+            sidebar.classList.remove('hidden');
+            sidebar.classList.add('md:flex');
+            mobileHeader.classList.remove('hidden');
+            
+            setupEventListeners();
+            await loadCourse(currentCourseId);
+            setupStreakListener();
+        } else {
+            currentUser = null;
+            mainContent.classList.add('hidden');
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('md:flex');
+            mobileHeader.classList.add('hidden');
+            authMessage.style.display = 'flex';
         }
-        function initParticles() { particles = []; const numberOfParticles = (canvas.width * canvas.height) / 9000; for (let i = 0; i < numberOfParticles; i++) { particles.push(new Particle()); } }
-        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); } requestAnimationFrame(animateParticles); }
-        const resizeObserver = new ResizeObserver(() => {
-            clearTimeout(window.resizeLag);
-            window.resizeLag = setTimeout(() => { resizeCanvas(); initParticles(); }, 250);
-        });
-        window.addEventListener('load', () => { resizeCanvas(); initParticles(); animateParticles(); resizeObserver.observe(document.body); });
-    </script>
+    });
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    function setupEventListeners() {
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        sidebarBackdrop.addEventListener('click', toggleSidebar);
+        logoutBtn.addEventListener('click', () => signOut(auth).catch(console.error));
         
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbA-qi5YMot_55vqQ2KbocDwNMT8RNZ6Q",
-            authDomain: "membresia-ucdm-v2.firebaseapp.com",
-            projectId: "membresia-ucdm-v2",
-            storageBucket: "membresia-ucdm-v2.appspot.com",
-            messagingSenderId: "198704348819",
-            appId: "1:198704348819:web:4f52c9acf6cad3583e5766"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- Selectores de elementos del DOM ---
-        const mainContent = document.getElementById('main-content');
-        const authMessage = document.getElementById('auth-message');
-        const videoList = document.getElementById('video-list');
-        const desktopPlayerWrapper = document.getElementById('desktop-player-wrapper');
-        const sidebar = document.getElementById('sidebar');
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-        const logoutBtn = document.getElementById('logout-btn');
-        const sidebarStreakCounter = document.getElementById('sidebar-streak-counter');
-        const sidebarStreakDays = document.getElementById('sidebar-streak-days');
-        const mobileStreakCounter = document.getElementById('mobile-streak-counter');
-        const mobileStreakDays = document.getElementById('mobile-streak-days');
-        const pageHeader = document.querySelector('header h1');
-        const pageDescription = document.querySelector('header p');
-
-        // --- Variables de estado ---
-        let currentUser = null;
-        let activeVideoId = null;
-        let courseVideos = []; 
-        let seenVideoIds = new Set();
-        let progressDocRef = null;
-
-        // --- Configuración de los cursos ---
-        const courseConfig = {
-            'ucdm': {
-                docId: 'videos', 
-                title: 'Curso de Milagros',
-                description: 'Una guía paso a paso para profundizar en "Un Curso de Milagros".'
-            },
-            'ansiedad': {
-                docId: 'ansiedad',
-                title: 'Mini-Curso: Control de la Ansiedad',
-                description: 'Herramientas prácticas para gestionar la ansiedad y recuperar la calma.'
-            },
-            'mentorias': {
-                docId: 'mentorias',
-                title: 'Mentorías Grabadas',
-                description: 'Grabaciones de las mentorías en vivo resolviendo dudas y problemas personales.'
-            }
-        };
-        let currentCourseId = 'ucdm'; 
-
-        async function fetchVideosFromFirestore(courseId) {
-            const docId = courseConfig[courseId]?.docId;
-            if (!docId) {
-                console.error("Configuración de curso no encontrada para:", courseId);
-                videoList.innerHTML = `<li class="p-4 text-center text-red-400">Error de configuración del curso.</li>`;
-                return [];
-            }
-            try {
-                const docRef = doc(db, "course_data", docId);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists() && docSnap.data().videoList && docSnap.data().videoList.length > 0) {
-                    const videos = docSnap.data().videoList;
-                    videos.sort((a, b) => a.id - b.id);
-                    return videos;
-                } else {
-                    console.log(`Documento 'course_data/${docId}' no encontrado o está vacío.`);
-                    videoList.innerHTML = `<li class="p-4 text-center text-yellow-400">Aún no hay vídeos en este curso. ¡Próximamente!</li>`;
-                    return [];
+        document.querySelectorAll('.course-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const newCourseId = tab.dataset.course;
+                if (newCourseId !== currentCourseId) {
+                    loadCourse(newCourseId);
                 }
-            } catch (error) {
-                console.error("Error fetching videos from Firestore:", error);
-                videoList.innerHTML = `<li class="p-4 text-center text-red-400">Error al cargar los vídeos.</li>`;
-                return [];
-            }
-        }
-        
-        // **SEGURIDAD REACTIVADA**
-        onAuthStateChanged(auth, async (user) => {
-            document.body.style.opacity = '1';
-            if (user) {
-                currentUser = user;
-                mainContent.style.display = 'block';
-                authMessage.style.display = 'none';
-                
-                sidebar.style.removeProperty('display');
-                document.getElementById('mobile-header').style.removeProperty('display');
-
-                document.querySelectorAll('.course-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        const newCourseId = tab.dataset.course;
-                        if (newCourseId !== currentCourseId) {
-                            loadCourse(newCourseId);
-                        }
-                    });
-                });
-
-                await loadCourse(currentCourseId);
-                
-                const appId = 'ucdm-tracker-app-v2';
-                const mainProgressDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'progress', 'main');
-                onSnapshot(mainProgressDocRef, (docSnap) => {
-                    let currentStreak = 0;
-                    let lastCompletedDate = null;
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        currentStreak = data.currentStreak || 0;
-                        lastCompletedDate = data.lastCompletedDate || null;
-                    }
-                    const today = new Date().toISOString().slice(0, 10);
-                    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-                    if (lastCompletedDate !== today && lastCompletedDate !== yesterday) {
-                        currentStreak = 0;
-                    }
-                    updateStreakCounters(currentStreak);
-                });
-
-            } else {
-                currentUser = null;
-                mainContent.style.display = 'none';
-                authMessage.style.display = 'block';
-                sidebar.style.display = 'none';
-                document.getElementById('mobile-header').style.display = 'none';
-            }
+            });
         });
 
-        async function loadCourse(courseId) {
-            if (!currentUser) return;
-            currentCourseId = courseId;
-            const course = courseConfig[courseId];
-
-            pageHeader.textContent = course.title;
-            pageDescription.textContent = course.description;
-            document.querySelectorAll('.course-tab').forEach(tab => {
-                const isActive = tab.dataset.course === courseId;
-                tab.classList.toggle('active', isActive);
-                tab.classList.toggle('text-gray-400', !isActive);
-            });
-
-            const appId = 'ucdm-tracker-app-v2';
-            progressDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'progress', course.docId);
-
-            desktopPlayerWrapper.innerHTML = '';
-            videoList.innerHTML = `<li class="p-4 text-center text-gray-400">Cargando vídeos...</li>`;
-
-            courseVideos = await fetchVideosFromFirestore(courseId);
-            await loadUserProgress();
-            renderVideoList();
-
-            if (courseVideos.length > 0) {
-                const firstUnseenVideo = courseVideos.find(v => !seenVideoIds.has(v.id));
-                const videoToLoad = firstUnseenVideo || courseVideos[0];
-                if (videoToLoad) {
-                    loadVideo(videoToLoad.id);
-                }
-            }
-        }
-
-        function updateStreakCounters(currentStreak) {
-            let streakLevel = 0;
-            if (currentStreak > 0) streakLevel = 1;
-            if (currentStreak >= 7) streakLevel = 2;
-            if (currentStreak >= 30) streakLevel = 3;
-            if (currentStreak >= 90) streakLevel = 4;
-
-            [sidebarStreakCounter, mobileStreakCounter].forEach(counter => {
-                if (counter) {
-                    counter.className = counter.className.replace(/streak-level-\d+/g, '');
-                    counter.classList.add(`streak-level-${streakLevel}`);
-                }
-            });
-
-            if (sidebarStreakDays) {
-                sidebarStreakDays.textContent = currentStreak;
-                sidebarStreakCounter.style.display = 'flex';
-            }
-            if (mobileStreakDays) {
-                mobileStreakDays.textContent = currentStreak;
-                mobileStreakCounter.style.display = 'flex';
-            }
-        }
-
-        async function loadUserProgress() {
-            try {
-                const docSnap = await getDoc(progressDocRef);
-                if (docSnap.exists()) {
-                    seenVideoIds = new Set(docSnap.data().completed || []);
-                } else {
-                    seenVideoIds = new Set();
-                }
-            } catch (error) {
-                console.error("Error loading user progress:", error);
-            }
-        }
-
-        function renderVideoList() {
-            videoList.innerHTML = '';
-            if (courseVideos.length === 0) {
-                 return;
-            }
-
-            courseVideos.forEach(video => {
-                const isSeen = seenVideoIds.has(video.id);
-                const li = document.createElement('li');
-                li.className = `video-list-item rounded-lg overflow-hidden ${isSeen ? 'seen' : ''}`;
-                li.dataset.videoId = video.id;
-                li.innerHTML = `
-                    <div class="video-list-item-header p-4 cursor-pointer flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="text-gray-500 font-bold w-8">${video.id}.</span>
-                            <span>${video.title}</span>
-                        </div>
-                        <i class="fas fa-check-circle text-gray-600 opacity-0 transition-opacity"></i>
-                    </div>
-                    <div class="video-content-panel lg:hidden"></div>
-                `;
-                li.querySelector('.video-list-item-header').addEventListener('click', () => loadVideo(video.id));
-                videoList.appendChild(li);
-            });
-        }
-
-        function createPlayerHTML(video) {
-            const isSeen = seenVideoIds.has(video.id);
-            const vimeoHash = video.vimeoHash;
-            
-            let vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?title=0&byline=0&portrait=0`;
-            if (vimeoHash && vimeoHash.trim() !== '') {
-                vimeoUrl += `&h=${vimeoHash}`;
-            }
-            
-            return `
-                <div class="video-player-container shadow-lg shadow-cyan-500/10">
-                    <iframe src="${vimeoUrl}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="mt-6 px-4">
-                    <h2 class="text-3xl font-bold text-brand-cyan">${video.title}</h2>
-                    <p class="mt-4 text-gray-300 leading-relaxed">${video.description}</p>
-                </div>
-                <div class="mt-8 flex flex-col sm:flex-row items-center gap-4 px-4">
-                    <button data-video-id="${video.id}" class="btn-action font-bold py-3 px-6 rounded-lg w-full sm:w-auto flex-grow ${isSeen ? 'completed' : ''}">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>${isSeen ? 'Marcado como visto' : 'Marcar como visto'}</span>
-                    </button>
-                    <div class="flex gap-4 w-full sm:w-auto">
-                        <button data-direction="-1" class="btn-nav font-bold py-3 px-6 rounded-lg w-full">
-                            <i class="fas fa-arrow-left mr-2"></i> Anterior
-                        </button>
-                        <button data-direction="1" class="btn-nav font-bold py-3 px-6 rounded-lg w-full">
-                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function loadVideo(videoId) {
-            const video = courseVideos.find(v => v.id === videoId);
-            if (!video) return;
-
-            activeVideoId = video.id;
-            
-            desktopPlayerWrapper.innerHTML = createPlayerHTML(video);
-            updateButtonsState(desktopPlayerWrapper, videoId);
-            
-            document.querySelectorAll('.video-list-item').forEach(item => {
-                const contentPanel = item.querySelector('.video-content-panel');
-                if (parseInt(item.dataset.videoId) === videoId) {
-                    if (!item.classList.contains('active')) {
-                        contentPanel.innerHTML = createPlayerHTML(video);
-                        updateButtonsState(contentPanel, videoId);
-                    }
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            // Hacemos scroll suave hacia el video activo en móvil
-            const activeElement = document.querySelector(`.video-list-item[data-video-id='${videoId}']`);
-            if (activeElement && window.innerWidth < 1024) {
-                 setTimeout(() => {
-                    activeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 500); // Pequeño delay para asegurar que el panel se ha abierto
-            }
-            updateActiveListItemVisuals(videoId);
-        }
-
-        function updateActiveListItemVisuals(videoId) {
-            document.querySelectorAll('.video-list-item').forEach(item => {
-                item.classList.toggle('active', parseInt(item.dataset.videoId) === videoId);
-            });
-        }
-
-        function updateButtonsState(container, videoId) {
-            const markBtn = container.querySelector('.btn-action');
-            markBtn.addEventListener('click', () => toggleSeenStatus(videoId));
-
-            const navBtns = container.querySelectorAll('.btn-nav');
-            const currentIndex = courseVideos.findIndex(v => v.id === videoId);
-            navBtns[0].disabled = currentIndex === 0;
-            navBtns[1].disabled = currentIndex === courseVideos.length - 1;
-            navBtns.forEach(btn => btn.addEventListener('click', (e) => {
-                const direction = parseInt(e.currentTarget.dataset.direction);
-                navigateVideo(direction);
-            }));
-        }
-
-        async function toggleSeenStatus(videoId) {
-            if (!videoId || !progressDocRef) return;
-            
-            const isCurrentlySeen = seenVideoIds.has(videoId);
-            try {
-                if (isCurrentlySeen) {
-                    await updateDoc(progressDocRef, { completed: arrayRemove(videoId) });
-                    seenVideoIds.delete(videoId);
-                } else {
-                    await setDoc(progressDocRef, { completed: arrayUnion(videoId) }, { merge: true });
-                    seenVideoIds.add(videoId);
-                }
-                renderVideoList(); 
-                loadVideo(videoId); 
-            } catch (error) {
-                console.error("Error updating progress:", error);
-            }
-        }
-
-        function navigateVideo(direction) {
-            const currentIndex = courseVideos.findIndex(v => v.id === activeVideoId);
-            const newIndex = currentIndex + direction;
-            if (newIndex >= 0 && newIndex < courseVideos.length) {
-                loadVideo(courseVideos[newIndex].id);
-            }
-        }
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarBackdrop.classList.toggle('show');
-        }
-        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-        if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', toggleSidebar);
-        if (logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth).then(() => { window.location.href = './login.html'; }).catch(console.error));
-
-        const allModals = document.querySelectorAll('.modal-overlay');
-        function closeModal(modal) {
-            if (!modal) return;
-            modal.classList.remove('show');
-            setTimeout(() => {
-                if (!Array.from(allModals).some(m => m.classList.contains('show'))) {
-                    document.body.classList.remove('modal-open');
-                }
-            }, 300);
-        }
-        function openModal(modalToOpen) {
-            if (!modalToOpen) return;
-            allModals.forEach(modal => {
-                if (modal !== modalToOpen && modal.classList.contains('show')) closeModal(modal);
-            });
-            document.body.classList.add('modal-open');
-            modalToOpen.classList.add('show');
-        }
-        allModals.forEach(modal => {
-            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-            const closeBtn = modal.querySelector('.modal-close-btn');
-            if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
-        });
+        // Set up modal triggers
         document.getElementById('comunidad-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('comunidad-modal')); });
         document.getElementById('recursos-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('recursos-modal')); });
         document.getElementById('sesion-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('sesion-modal')); });
-    </script>
+    }
+
+    // --- Lógica de Cursos y Videos ---
+    async function loadCourse(courseId) {
+        if (!currentUser) return;
+        currentCourseId = courseId;
+        const course = courseConfig[courseId];
+
+        pageDescription.textContent = course.description;
+        document.querySelectorAll('.course-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.course === courseId);
+        });
+        
+        const appId = 'ucdm-tracker-app-v2';
+        progressDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'progress', course.docId);
+
+        renderSkeletonLoader();
+        
+        courseVideos = await fetchVideosFromFirestore(courseId);
+        await loadUserProgress();
+        
+        renderVideoList();
+        
+        if (courseVideos.length > 0) {
+            const firstUnseen = courseVideos.find(v => !seenVideoIds.has(v.id)) || courseVideos[0];
+            loadVideo(firstUnseen.id);
+        } else {
+            renderEmptyState();
+        }
+    }
+    
+    async function fetchVideosFromFirestore(courseId) {
+        const docId = courseConfig[courseId]?.docId;
+        if (!docId) return [];
+        try {
+            const docRef = doc(db, "course_data", docId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists() && docSnap.data().videoList) {
+                const videos = docSnap.data().videoList;
+                return videos.sort((a, b) => a.id - b.id);
+            }
+            return [];
+        } catch (error) {
+            console.error("Error fetching videos:", error);
+            return [];
+        }
+    }
+
+    async function loadUserProgress() {
+        try {
+            const docSnap = await getDoc(progressDocRef);
+            seenVideoIds = docSnap.exists() ? new Set(docSnap.data().completed || []) : new Set();
+        } catch (error) {
+            console.error("Error loading user progress:", error);
+            seenVideoIds = new Set();
+        }
+    }
+
+    function loadVideo(videoId) {
+        const video = courseVideos.find(v => v.id === videoId);
+        if (!video) return;
+
+        activeVideoId = videoId;
+        const playerHTML = createPlayerHTML(video);
+        desktopPlayerWrapper.innerHTML = playerHTML;
+        addPlayerEventListeners(desktopPlayerWrapper);
+
+        document.querySelectorAll('.video-list-item').forEach(item => {
+            const contentPanel = item.querySelector('.video-content-panel');
+            const isActive = parseInt(item.dataset.videoId) === videoId;
+            item.classList.toggle('active', isActive);
+            if (isActive) {
+                contentPanel.innerHTML = playerHTML;
+                addPlayerEventListeners(contentPanel);
+                 if (window.innerWidth < 1024) {
+                    setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                 }
+            } else {
+                contentPanel.innerHTML = '';
+            }
+        });
+    }
+
+    async function toggleSeenStatus(videoId) {
+        if (!progressDocRef) return;
+        const isCurrentlySeen = seenVideoIds.has(videoId);
+        try {
+            const updateData = { completed: isCurrentlySeen ? arrayRemove(videoId) : arrayUnion(videoId) };
+            await setDoc(progressDocRef, updateData, { merge: true });
+
+            if (isCurrentlySeen) seenVideoIds.delete(videoId);
+            else seenVideoIds.add(videoId);
+            
+            renderVideoList();
+            loadVideo(videoId);
+        } catch (error) {
+            console.error("Error updating progress:", error);
+        }
+    }
+    
+    function navigateVideo(direction) {
+        const currentIndex = courseVideos.findIndex(v => v.id === activeVideoId);
+        const newIndex = currentIndex + direction;
+        if (newIndex >= 0 && newIndex < courseVideos.length) {
+            loadVideo(courseVideos[newIndex].id);
+        }
+    }
+
+    // --- Renderizado de UI ---
+    function renderVideoList() {
+        if (courseVideos.length === 0) {
+            renderEmptyState();
+            return;
+        }
+        videoList.innerHTML = courseVideos.map(video => {
+            const isSeen = seenVideoIds.has(video.id);
+            return `
+                <li class="video-list-item rounded-lg cursor-pointer ${isSeen ? 'seen' : ''}" data-video-id="${video.id}">
+                    <div class="p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-circle-play text-2xl"></i>
+                            <div>
+                                <p class="font-semibold video-title">${video.title}</p>
+                                <p class="text-sm text-slate-400">${video.description.substring(0, 40)}...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="video-content-panel lg:hidden"></div>
+                </li>`;
+        }).join('');
+        
+        videoList.querySelectorAll('.video-list-item').forEach(item => {
+            item.addEventListener('click', () => loadVideo(parseInt(item.dataset.videoId)));
+        });
+    }
+
+    function createPlayerHTML(video) {
+        const isSeen = seenVideoIds.has(video.id);
+        const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?h=${video.vimeoHash}&title=0&byline=0&portrait=0&color=e91e63`;
+        const currentIndex = courseVideos.findIndex(v => v.id === video.id);
+        return `
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe src="${vimeoUrl}" class="rounded-t-lg" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="p-6">
+                <h3 class="text-2xl font-bold text-white">${video.title}</h3>
+                <p class="mt-2 text-slate-300">${video.description}</p>
+                <div class="mt-6 border-t border-slate-700 pt-6 flex flex-col sm:flex-row items-center gap-4">
+                    <button data-video-id="${video.id}" class="btn ${isSeen ? 'btn-completed' : 'btn-pink'} w-full sm:w-auto flex-grow">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>${isSeen ? 'Lección Completada' : 'Marcar como completada'}</span>
+                    </button>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <button data-direction="-1" class="btn btn-nav w-full" ${currentIndex === 0 ? 'disabled' : ''}><i class="fas fa-arrow-left"></i></button>
+                        <button data-direction="1" class="btn btn-nav w-full" ${currentIndex === courseVideos.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>`;
+    }
+    
+    function addPlayerEventListeners(container) {
+        const markBtn = container.querySelector('.btn-pink, .btn-completed');
+        if (markBtn) markBtn.addEventListener('click', () => toggleSeenStatus(parseInt(markBtn.dataset.videoId)));
+        container.querySelectorAll('.btn-nav').forEach(btn => {
+            if (!btn.disabled) btn.addEventListener('click', () => navigateVideo(parseInt(btn.dataset.direction)));
+        });
+    }
+    
+    function renderSkeletonLoader() {
+        let skeletonHTML = '';
+        for (let i = 0; i < 3; i++) {
+            skeletonHTML += `<li class="p-4 rounded-lg flex items-center space-x-4 border border-slate-800 bg-slate-900/50"><div class="skeleton w-10 h-10 rounded-full flex-shrink-0"></div><div class="flex-grow space-y-2"><div class="skeleton h-4 w-3/4"></div><div class="skeleton h-3 w-1/2"></div></div></li>`;
+        }
+        videoList.innerHTML = skeletonHTML;
+        desktopPlayerWrapper.innerHTML = `<div class="p-4 space-y-4"><div class="skeleton w-full h-0 pb-[56.25%] relative rounded-lg"></div><div class="skeleton h-6 w-3/4 mt-4"></div><div class="skeleton h-4 w-full mt-2"></div><div class="skeleton h-4 w-5/6"></div></div>`;
+    }
+    
+    function renderEmptyState() {
+        videoList.innerHTML = `<li class="card p-6 text-center text-slate-400"><i class="fas fa-film text-4xl mb-4 text-slate-600"></i><h3 class="font-semibold text-white">Aún no hay vídeos</h3><p class="text-sm">El contenido de este curso estará disponible próximamente.</p></li>`;
+        desktopPlayerWrapper.innerHTML = '';
+    }
+    
+    // --- Lógica de Racha (Streak) ---
+    function setupStreakListener() {
+        const appId = 'ucdm-tracker-app-v2';
+        const streakDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'progress', 'main');
+        onSnapshot(streakDocRef, (docSnap) => {
+            let currentStreak = 0;
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const lastCompletedDate = data.lastCompletedDate;
+                const today = new Date().toISOString().slice(0, 10);
+                const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+                if (lastCompletedDate === today || lastCompletedDate === yesterday) {
+                    currentStreak = data.currentStreak || 0;
+                }
+            }
+            updateStreakCounters(currentStreak);
+        });
+    }
+    
+    function updateStreakCounters(streak) {
+        let level = 0;
+        if (streak > 0) level = 1; if (streak >= 7) level = 2; if (streak >= 30) level = 3; if (streak >= 90) level = 4;
+        
+        ['sidebar-streak-container', 'mobile-streak-container'].forEach(id => {
+            const container = document.getElementById(id);
+            if (container) {
+                container.className = container.className.replace(/streak-level-\d/g, '');
+                container.classList.add(`streak-level-${level}`);
+                container.classList.remove('hidden');
+            }
+        });
+        document.getElementById('sidebar-streak-days').textContent = streak;
+        document.getElementById('mobile-streak-days').textContent = streak;
+    }
+    
+    // --- Utilidades ---
+    function toggleSidebar() {
+        sidebar.classList.toggle('-translate-x-full');
+        sidebarBackdrop.classList.toggle('hidden');
+    }
+
+    // --- Modal Logic ---
+    const allModals = document.querySelectorAll('.modal-overlay');
+    function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('show');
+        // Check if any other modals are open before removing the class
+        setTimeout(() => {
+            const isAnyModalOpen = Array.from(allModals).some(m => m.classList.contains('show'));
+            if (!isAnyModalOpen) {
+                document.body.classList.remove('modal-open');
+            }
+        }, 300); // Wait for transition
+    }
+    function openModal(modalToOpen) {
+        if (!modalToOpen) return;
+        // Close any currently open modals first
+        allModals.forEach(modal => {
+            if (modal.classList.contains('show')) {
+                closeModal(modal);
+            }
+        });
+        document.body.classList.add('modal-open');
+        modalToOpen.classList.add('show');
+    }
+    allModals.forEach(modal => {
+        modal.addEventListener('click', (e) => { 
+            if (e.target === modal) closeModal(modal); 
+        });
+        const closeBtn = modal.querySelector('.modal-close-btn');
+        if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+    });
+</script>
+
 </body>
 </html>
 
