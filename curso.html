@@ -613,7 +613,8 @@
                 contentPanel.innerHTML = playerHTML;
                 addPlayerEventListeners(contentPanel);
                  if (window.innerWidth < 1024) {
-                    setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'center' }), 550);
+                    // FIX: Aumentamos ligeramente el timeout y cambiamos a 'start' para un scroll más fiable tras la animación.
+                    setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
                  }
             } else {
                 contentPanel.innerHTML = '';
@@ -800,6 +801,7 @@
 
 </body>
 </html>
+
 
 
 
