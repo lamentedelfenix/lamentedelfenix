@@ -82,6 +82,38 @@
         .streak-level-1 .fa-fire, .streak-level-2 .fa-fire, .streak-level-3 .fa-fire, .streak-level-4 .fa-fire { animation: flame-pulse 1.5s infinite ease-in-out; }
         @keyframes flame-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
+        /* --- Tooltip de Racha --- */
+        .streak-container { position: relative; }
+        .streak-tooltip {
+            position: absolute;
+            background-color: #1a2a44;
+            color: var(--text-main);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 1030;
+            pointer-events: none;
+            font-size: 0.8rem;
+            transform: scale(0.95);
+        }
+        .streak-container:hover .streak-tooltip, .streak-container:focus .streak-tooltip, .streak-container:focus-within .streak-tooltip {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+        .streak-tooltip h4 { font-weight: 800; color: #f6ad55; margin-bottom: 0.5rem; }
+        .streak-tooltip p { font-size: 0.75rem; line-height: 1.5; color: var(--text-muted); }
+        .streak-tooltip p strong { color: var(--text-main); }
+        .streak-tooltip hr { border-color: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+        .mobile-streak-container .streak-tooltip { top: 100%; right: 0; margin-top: 10px; }
+        .sidebar-streak-container .streak-tooltip { top: 50%; left: 100%; transform: translateY(-50%) scale(0.95); margin-left: 10px; }
+        .sidebar-streak-container:hover .streak-tooltip { transform: translateY(-50%) scale(1); }
+
         /* --- Tarjetas y Botones --- */
         .card {
             background-color: rgba(18, 27, 49, 0.6);
@@ -195,13 +227,33 @@
         <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-30 md:hidden hidden"></div>
 
         <!-- Barra Lateral -->
-        <aside id="sidebar" class="w-72 space-y-6 py-7 px-4 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex-col hidden">
+        <aside id="sidebar" class="w-72 space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex-col hidden">
             <!-- Logo y Título -->
-            <a href="./miembros.html" class="flex items-center space-x-3 px-2">
-                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
+            <a href="./miembros.html" class="flex items-center space-x-2 px-4">
+                <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-11 h-11 logo-glow">
                 <span class="text-2xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
             </a>
             
+            <!-- Streak Counter -->
+            <div class="streak-container sidebar-streak-container mx-2" tabindex="0">
+                <div id="sidebar-streak-counter" class="streak-counter p-3 rounded-lg items-center gap-4 hidden">
+                     <i class="fas fa-fire text-xl"></i>
+                     <div>
+                         <span id="sidebar-streak-days" class="font-bold text-base">0</span>
+                         <span>días de racha</span>
+                     </div>
+                </div>
+                <div class="streak-tooltip">
+                    <h4 class="text-base">Niveles de la Llama</h4>
+                    <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                    <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                    <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                    <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                    <hr>
+                    <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                </div>
+            </div>
+
             <!-- Navegación -->
             <nav class="flex-grow space-y-1">
                 <a href="./miembros.html" class="sidebar-link flex items-center space-x-4 py-2.5 px-4 rounded-lg">
@@ -254,15 +306,29 @@
         <div class="flex-1">
             <!-- Cabecera Móvil -->
             <div id="mobile-header" class="md:hidden p-4 flex justify-between items-center bg-[#080f1e] border-b border-slate-800 sticky top-0 z-20 hidden">
-                <button id="hamburger-btn" class="text-slate-300 focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-                 <a href="#" class="flex items-center space-x-2">
-                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-8 h-8 logo-glow">
-                 </a>
-                <div id="mobile-streak-container" class="streak-counter flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-full hidden">
-                    <i class="fas fa-fire"></i>
-                    <span id="mobile-streak-days">0</span>
+                <a href="./miembros.html" class="flex items-center space-x-2">
+                    <img src="https://i.imgur.com/CvX9mez.png" alt="Logo Fénix" class="w-10 h-10 logo-glow">
+                    <span class="text-xl font-extrabold whitespace-nowrap">Miembro Fénix</span>
+                </a>
+                <div class="flex items-center gap-4">
+                    <div class="streak-container mobile-streak-container" tabindex="0">
+                        <div id="mobile-streak-counter" class="streak-counter flex items-center gap-2 text-lg font-bold px-3 py-1.5 rounded-full hidden">
+                            <i class="fas fa-fire"></i>
+                            <span id="mobile-streak-days">0</span>
+                        </div>
+                         <div class="streak-tooltip">
+                            <h4 class="text-base">Niveles de la Llama</h4>
+                            <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
+                            <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
+                            <p><strong>Nivel 3 (30+ días):</strong> Fuego Rugiente</p>
+                            <p><strong>Nivel 4 (90+ días):</strong> Fuego Sagrado</p>
+                            <hr>
+                            <p>Tu racha representa los <strong>días consecutivos</strong> que has puesto en práctica las lecciones del curso.</p>
+                        </div>
+                    </div>
+                    <button id="hamburger-btn" class="text-white focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
                 </div>
             </div>
 
@@ -667,12 +733,15 @@
         let level = 0;
         if (streak > 0) level = 1; if (streak >= 7) level = 2; if (streak >= 30) level = 3; if (streak >= 90) level = 4;
         
-        ['sidebar-streak-container', 'mobile-streak-container'].forEach(id => {
-            const container = document.getElementById(id);
-            if (container) {
-                container.className = container.className.replace(/streak-level-\d/g, '');
-                container.classList.add(`streak-level-${level}`);
-                container.classList.remove('hidden');
+        ['sidebar-streak-counter', 'mobile-streak-counter'].forEach(id => {
+            const counter = document.getElementById(id);
+            if (counter) {
+                counter.className = counter.className.replace(/streak-level-\d/g, ''); // remove old level
+                counter.classList.add(`streak-level-${level}`);
+                counter.classList.remove('hidden');
+                if (!counter.classList.contains('flex')) {
+                   counter.classList.add('flex');
+                }
             }
         });
         document.getElementById('sidebar-streak-days').textContent = streak;
@@ -720,4 +789,5 @@
 
 </body>
 </html>
+
 
