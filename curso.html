@@ -10,7 +10,7 @@
     
     <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -247,11 +247,11 @@
             <!-- Streak Counter -->
             <div class="streak-container sidebar-streak-container mx-2" tabindex="0">
                 <div id="sidebar-streak-counter" class="streak-counter p-3 rounded-lg items-center gap-4 hidden">
-                     <i class="fas fa-fire text-xl"></i>
-                     <div>
-                         <span id="sidebar-streak-days" class="font-bold text-base">0</span>
-                         <span>días de racha</span>
-                     </div>
+                        <i class="fas fa-fire text-xl"></i>
+                        <div>
+                            <span id="sidebar-streak-days" class="font-bold text-base">0</span>
+                            <span>días de racha</span>
+                        </div>
                 </div>
                 <div class="streak-tooltip">
                     <h4 class="text-base">Niveles de la Llama</h4>
@@ -326,7 +326,7 @@
                             <i class="fas fa-fire"></i>
                             <span id="mobile-streak-days">0</span>
                         </div>
-                         <div class="streak-tooltip">
+                          <div class="streak-tooltip">
                             <h4 class="text-base">Niveles de la Llama</h4>
                             <p><strong>Nivel 1 (1+ días):</strong> Llama Naciente</p>
                             <p><strong>Nivel 2 (7+ días):</strong> Llama Fuerte</p>
@@ -353,9 +353,9 @@
                     <!-- Pestañas de cursos -->
                     <div class="border-b border-slate-700 mb-8">
                         <nav id="course-tabs" class="-mb-px flex space-x-6" aria-label="Tabs">
-                             <button data-course="ucdm" class="course-tab active font-bold py-3 px-1 text-base">Curso de Milagros</button>
-                             <button data-course="ansiedad" class="course-tab font-bold py-3 px-1 text-base">Control de Ansiedad</button>
-                             <button data-course="mentorias" class="course-tab font-bold py-3 px-1 text-base">Mentorías</button>
+                              <button data-course="ucdm" class="course-tab active font-bold py-3 px-1 text-base">Curso de Milagros</button>
+                              <button data-course="ansiedad" class="course-tab font-bold py-3 px-1 text-base">Control de Ansiedad</button>
+                              <button data-course="mentorias" class="course-tab font-bold py-3 px-1 text-base">Mentorías</button>
                         </nav>
                     </div>
 
@@ -382,13 +382,13 @@
             </main>
             
             <div id="auth-message" class="flex items-center justify-center h-screen p-8 text-center">
-                 <div>
+                <div>
                     <h1 class="text-3xl font-bold text-red-400 mb-4">Acceso Denegado</h1>
                     <p class="text-lg mt-4 text-slate-300">Necesitas iniciar sesión para ver este contenido.</p>
                     <a href="./login.html" class="mt-8 inline-block btn btn-pink font-bold py-3 px-6 rounded-lg">
                         Ir a Iniciar Sesión
                     </a>
-                 </div>
+                </div>
             </div>
         </div>
     </div>
@@ -489,6 +489,8 @@
     let courseVideos = [];
     let seenVideoIds = new Set();
     let progressDocRef = null;
+    // CORRECCIÓN: Flag para asegurar que los listeners se añaden una sola vez
+    let listenersInitialized = false; 
 
     const courseConfig = {
         'ucdm': { docId: 'videos', title: 'Curso de Milagros', description: 'Una guía paso a paso para profundizar en "Un Curso de Milagros".' },
@@ -507,7 +509,13 @@
             sidebar.classList.add('md:flex');
             mobileHeader.classList.remove('hidden');
             
-            setupEventListeners();
+            // CORRECCIÓN: Aseguramos que los listeners se configuran solo una vez
+            if (!listenersInitialized) {
+                setupEventListeners();
+                setupDelegatedEventListeners(); // <-- NUEVO: Listeners delegados
+                listenersInitialized = true;
+            }
+            
             await loadCourse(currentCourseId);
             setupStreakListener();
         } else {
@@ -538,6 +546,38 @@
         document.getElementById('comunidad-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('comunidad-modal')); });
         document.getElementById('recursos-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('recursos-modal')); });
         document.getElementById('sesion-btn')?.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('sesion-modal')); });
+    }
+
+    // CORRECCIÓN: Nueva función para manejar todos los clics de video de forma centralizada.
+    function setupDelegatedEventListeners() {
+        mainContent.addEventListener('click', (event) => {
+            const target = event.target;
+
+            // Delegación para botones de navegación (móvil y escritorio)
+            const navBtn = target.closest('.btn-nav');
+            if (navBtn && !navBtn.disabled) {
+                navigateVideo(parseInt(navBtn.dataset.direction));
+                return; // Acción manejada
+            }
+
+            // Delegación para el botón de marcar como completado
+            const markBtn = target.closest('.btn-pink, .btn-completed');
+            if (markBtn) {
+                toggleSeenStatus(parseInt(markBtn.dataset.videoId));
+                return; // Acción manejada
+            }
+
+            // Delegación para seleccionar un vídeo de la lista
+            const listItem = target.closest('.video-list-item');
+            if (listItem) {
+                // Prevenir que los clics dentro de un reproductor ya abierto lo recarguen
+                if (target.closest('.video-content-panel')) {
+                    return;
+                }
+                const videoId = parseInt(listItem.dataset.videoId);
+                loadVideo(videoId);
+            }
+        });
     }
 
     // --- Lógica de Cursos y Videos ---
@@ -603,7 +643,9 @@
         activeVideoId = videoId;
         const playerHTML = createPlayerHTML(video);
         desktopPlayerWrapper.innerHTML = playerHTML;
-        addPlayerEventListeners(desktopPlayerWrapper);
+        
+        // CORRECCIÓN: Ya no se necesitan listeners individuales aquí
+        // addPlayerEventListeners(desktopPlayerWrapper);
 
         document.querySelectorAll('.video-list-item').forEach(item => {
             const contentPanel = item.querySelector('.video-content-panel');
@@ -611,7 +653,8 @@
             item.classList.toggle('active', isActive);
             if (isActive) {
                 contentPanel.innerHTML = playerHTML;
-                addPlayerEventListeners(contentPanel);
+                // CORRECCIÓN: Ya no se necesitan listeners individuales aquí
+                // addPlayerEventListeners(contentPanel);
                  if (window.innerWidth < 1024) {
                     // FIX: Aumentamos ligeramente el timeout y cambiamos a 'start' para un scroll más fiable tras la animación.
                     setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
@@ -671,9 +714,8 @@
                 </li>`;
         }).join('');
         
-        videoList.querySelectorAll('.video-list-item').forEach(item => {
-            item.addEventListener('click', () => loadVideo(parseInt(item.dataset.videoId)));
-        });
+        // CORRECCIÓN: Se elimina el bucle que añadía listeners individuales.
+        // La nueva función `setupDelegatedEventListeners` se encarga de esto.
     }
 
     function createPlayerHTML(video) {
@@ -700,6 +742,8 @@
             </div>`;
     }
     
+    // CORRECCIÓN: Esta función ya no es necesaria y ha sido eliminada.
+    /*
     function addPlayerEventListeners(container) {
         const markBtn = container.querySelector('.btn-pink, .btn-completed');
         if (markBtn) markBtn.addEventListener('click', () => toggleSeenStatus(parseInt(markBtn.dataset.videoId)));
@@ -707,6 +751,7 @@
             if (!btn.disabled) btn.addEventListener('click', () => navigateVideo(parseInt(btn.dataset.direction)));
         });
     }
+    */
     
     function renderSkeletonLoader() {
         let skeletonHTML = '';
@@ -801,8 +846,3 @@
 
 </body>
 </html>
-
-
-
-
-
