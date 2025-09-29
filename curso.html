@@ -10,7 +10,7 @@
     
     <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -124,12 +124,10 @@
 
         .video-content-panel {
             max-height: 0; overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-            padding: 0 1rem;
+            transition: max-height 0.5s ease-in-out;
         }
         .video-list-item.active .video-content-panel {
             max-height: 1000px; /* Suficientemente grande */
-            padding: 1.5rem 0.5rem;
         }
         
         /* --- Pestañas de Curso --- */
@@ -298,7 +296,7 @@
                         
                         <!-- Reproductor (solo en escritorio) -->
                         <div class="hidden lg:block lg:col-span-2 lg:sticky lg:top-8 self-start">
-                            <div id="desktop-player-wrapper" class="card p-1.5">
+                            <div id="desktop-player-wrapper" class="card">
                                 <!-- El reproductor del video activo se insertará aquí -->
                             </div>
                         </div>
@@ -605,10 +603,10 @@
         const vimeoUrl = `https://player.vimeo.com/video/${video.vimeoId}?h=${video.vimeoHash}&title=0&byline=0&portrait=0&color=e91e63`;
         const currentIndex = courseVideos.findIndex(v => v.id === video.id);
         return `
-            <div class="aspect-w-16 aspect-h-9">
-                <iframe src="${vimeoUrl}" class="rounded-t-lg" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            <div class="w-full aspect-video">
+                <iframe src="${vimeoUrl}" class="w-full h-full rounded-t-lg" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <div class="p-6">
+            <div class="p-4 md:p-6">
                 <h3 class="text-2xl font-bold text-white">${video.title}</h3>
                 <p class="mt-2 text-slate-300">${video.description}</p>
                 <div class="mt-6 border-t border-slate-700 pt-6 flex flex-col sm:flex-row items-center gap-4">
