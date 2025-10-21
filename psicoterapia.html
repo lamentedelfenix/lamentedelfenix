@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO: Descripción para motores de búsqueda y redes sociales -->
+    <meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
+
+    <title>La Mente del Fénix - Sesiones de Psicoterapia</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+
+    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.imgur.com">
+
+    <!-- NOTA PARA VISTA PREVIA: Se incluye el script de Tailwind para que los estilos se rendericen. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- OPTIMIZACIÓN: Las fuentes y los iconos se cargan de forma asíncrona -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+
+    <!-- Estilos personalizados consistentes con la página principal -->
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fbf5e2;
+            color: #0c2f5b;
+        }
+        .text-brand-pink { color: #e91e63; }
+        .text-brand-cyan { color: #00bcd4; }
+        .btn {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: color 0.4s ease-out, background-color 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .btn-pink { background-color: #e91e63; color: white; }
+        .btn-cyan { background-color: #00bcd4; color: white; }
+        .btn-whatsapp { background-color: #25D366; color: white; }
+        
+        .btn:hover { color: #0c2f5b; }
+        .btn-whatsapp:hover { color: #128C7E; }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        .btn.btn-pink:hover::before { border: 2px solid #e91e63; }
+        .btn.btn-cyan:hover::before { border: 2px solid #00bcd4; }
+        .btn.btn-whatsapp:hover::before { border: 2px solid #25D366; }
+        
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .contact-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+        .contact-link > * {
+            transition: color 0.4s ease;
+        }
+        .contact-link:hover > i, .contact-link:hover > span { color: #e91e63; }
+        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color: #00bcd4; }
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e91e63;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.4s ease-out;
+        }
+        .contact-link.email-link::after { background-color: #00bcd4; }
+        .contact-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .pricing-card {
+            border: 2px solid #e0d9c6;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+        .pricing-card.recommended {
+            border-color: #e91e63;
+        }
+        .testimonial-image {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .testimonial-image:hover {
+            transform: scale(1.05) translateY(-5px);
+            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.15));
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="max-w-6xl mx-auto">
+
+        <header class="text-center mb-8">
+            <a href="./index.html" aria-label="Volver a la página de inicio">
+                <img src="https://i.imgur.com/B0IHYVP.webp" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
+            </a>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="text-center px-4 pt-8 pb-16">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-3xl md:text-5xl font-extrabold">
+                        Un Viaje Hacia Tu Paz Interior
+                    </h1>
+                    <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
+                        Mis sesiones de psicoterapia son un espacio seguro y amoroso donde desenredamos los nudos de la mente para que puedas recordar la verdad de quién eres: paz, amor y libertad.
+                    </p>
+                </div>
+            </section>
+        
+            <!-- Methodology Section (Simplified) -->
+            <section class="py-20 bg-white px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-8">¿Cómo funcionan mis sesiones de Psicoterapia?</h2>
+                    <p class="text-gray-700 leading-relaxed text-lg mb-6">
+                        Mis sesiones están enraizadas en los principios de <strong class="text-brand-pink">Un Curso de Milagros</strong>. Desde esta perspectiva, entendemos que todo conflicto en el presente procede de una culpa, consciente o inconsciente, cuyo origen son juicios que hiciste sin darte cuenta contra ti mismo/a u otros.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-lg mb-8">
+                        Utilizaremos el perdón como una poderosa herramienta para liberar la mente de la culpa, el miedo, el resentimiento y las percepciones erróneas que te causan dolor. No se trata de un perdón moral, sino de un cambio de perspectiva que te permite ver el mundo, y a ti mismo, desde un lugar de amor y paz.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed text-lg">
+                        Este enfoque se complementa y potencia con técnicas prácticas de <strong class="text-brand-cyan">PNL (Programación Neurolingüística)</strong> para identificar y transformar patrones de pensamiento limitantes, y herramientas de <strong class="text-yellow-500">Coaching</strong> para ayudarte a establecer objetivos claros y avanzar hacia la vida que realmente deseas.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Example Psychotherapy Section (YouTube Video) -->
+            <section class="py-20 px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-8">Una Psicoterapia de Ejemplo</h2>
+                    <p class="text-gray-700 leading-relaxed text-lg mb-8">
+                        Para que te hagas una idea más clara de cómo es una sesión, te invito a ver este ejemplo de psicoterapia en mi canal de YouTube.
+                    </p>
+                    <div class="max-w-2xl mx-auto rounded-lg shadow-xl overflow-hidden">
+                        <div class="video-container">
+                            <iframe 
+                                src="https://www.youtube.com/embed/4AS4ZmdUW_8" 
+                                title="Psicoterapia de Ejemplo" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    <a href="https://youtu.be/4AS4ZmdUW_8" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-8 rounded-lg shadow-lg text-lg mt-10 inline-block">
+                        Ver en YouTube <i class="fab fa-youtube ml-2"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Testimonials Section (WhatsApp Screenshots) -->
+            <section class="py-20 bg-white px-4">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-12">La experiencia de otros</h2>
+                    <p class="text-center text-gray-700 mb-8">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
+                    <div class="flex flex-wrap justify-center gap-8">
+                        <!-- Reseña 1 -->
+                        <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/8fNS5fp.png" alt="Reseña de cliente 1" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 2 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/o2EQNjB.png" alt="Reseña de cliente 2" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 3 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/rfAPnAz.png" alt="Reseña de cliente 3" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 4 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/zDiOzLm.png" alt="Reseña de cliente 4" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 5 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/BjoEESy.png" alt="Reseña de cliente 5" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 6 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/epb7xzc.png" alt="Reseña de cliente 6" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                        <!-- Reseña 7 -->
+                         <div class="w-full max-w-xs">
+                            <img src="https://i.imgur.com/ZxBpheZ.png" alt="Reseña de cliente 7" class="w-full h-auto testimonial-image" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pricing Section -->
+            <section id="precios" class="py-20 px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-12">Invierte en tu Bienestar</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <!-- Sesión Individual -->
+                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                            <h3 class="text-2xl font-bold mb-4">Sesión Individual</h3>
+                            <p class="text-5xl font-extrabold mb-4">55€</p>
+                            <p class="text-gray-600 mb-2">Una sesión de aproximadamente 90 minutos para abordar un tema específico y obtener claridad.</p>
+                            <p class="text-sm text-gray-500 mb-6 flex-grow">(Se paga después de la sesión)</p>
+                            <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Reservar Ahora</a>
+                        </div>
+                        
+                        <!-- Pack 5 Sesiones (Updated Price) -->
+                        <div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
+                            <h3 class="text-2xl font-bold mb-4">Pack 5 Sesiones</h3>
+                             <p class="text-5xl font-extrabold mb-2">42€<span class="text-xl font-medium">/sesión</span></p>
+                             <p class="text-gray-600 mb-6 font-semibold">(Pago único de 210€)</p>
+                            <p class="text-gray-600 mb-6 flex-grow">Un proceso de transformación más profundo y comprometido con un ahorro significativo.</p>
+                            <div class="mt-auto pt-4 flex flex-col gap-2 w-full">
+                                <a href="https://wa.me/34667752916?text=Hola!%20Me%20interesa%20el%20pack%20de%205%20sesiones." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center">
+                                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                                </a>
+                                <a href="mailto:lamentedelfenix@gmail.com?subject=Inter%C3%A9s%20en%20Pack%20de%205%20Sesiones&body=Hola!%20Me%20interesa%20el%20pack%20de%205%20sesiones." class="btn btn-cyan font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center">
+                                    <i class="fas fa-envelope mr-2"></i> Email
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Miembros -->
+                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                            <h3 class="text-2xl font-bold mb-4">Precio para Miembros</h3>
+                            <p class="text-5xl font-extrabold mb-4 text-brand-pink">35€</p>
+                            <p class="text-gray-600 mb-6 flex-grow">Un beneficio exclusivo si formas parte de la comunidad de "La Mente del Fénix".</p>
+                            <a href="https://www.lamentedelfenix.com/membresia" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Hazte Miembro</a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+             <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
+             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                     <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
+                     <span>lamentedelfenix@gmail.com</span>
+                 </a>
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-600">
+                     <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
+                     <span>@darioarrigazzi</span>
+                 </a>
+             </div>
+             <div class="text-sm text-gray-500 space-x-4 mt-8">
+                 <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a>
+                 <span>&middot;</span>
+                 <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
+                 <span>&middot;</span>
+                 <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
+                 <span>&middot;</span>
+                 <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             </div>
+             <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+</html>
+
