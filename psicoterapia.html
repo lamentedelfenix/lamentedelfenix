@@ -4,28 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO: Descripción para motores de búsqueda y redes sociales -->
-    <meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
+    <!-- SEO: Descripción para motores de búsqueda y redes sociales --><meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
 
     <title>La Mente del Fénix - Sesiones de Psicoterapia</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+    <!-- FAVICON --><link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
-    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://i.imgur.com">
 
-    <!-- NOTA PARA VISTA PREVIA: Se incluye el script de Tailwind para que los estilos se rendericen. -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- NOTA PARA VISTA PREVIA: Se incluye el script de Tailwind para que los estilos se rendericen. --><script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- OPTIMIZACIÓN: Las fuentes y los iconos se cargan de forma asíncrona -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    <!-- OPTIMIZACIÓN: Las fuentes y los iconos se cargan de forma asíncrona --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-    <!-- Estilos personalizados consistentes con la página principal -->
-    <style>
+    <!-- Estilos personalizados consistentes con la página principal --><style>
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
@@ -107,13 +101,6 @@
         .pricing-card.recommended {
             border-color: #e91e63;
         }
-        .testimonial-image {
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-        .testimonial-image:hover {
-            transform: scale(1.05) translateY(-5px);
-            filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.15));
-        }
         .video-container {
             position: relative;
             width: 100%;
@@ -128,6 +115,82 @@
             height: 100%;
             border: 0;
         }
+        /* Styles for the image modal */
+        #image-modal {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Coverflow Carousel Styles */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 620px; /* Further increased height for vertical margin */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px; /* Added perspective for 3D effect */
+            overflow: hidden; /* Hide reflections going out of bounds */
+        }
+        .testimonial-carousel {
+            position: relative;
+            width: 300px; /* Width of a single slide to define the center area */
+            height: 100%;
+            transform-style: preserve-3d;
+            cursor: grab;
+        }
+        .testimonial-carousel.grabbing {
+            cursor: grabbing;
+        }
+        .testimonial-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+            user-select: none;
+            /* Cool reflection effect */
+            -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.15)));
+        }
+        .testimonial-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            color: #0c2f5b;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .carousel-button:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .carousel-button.prev { left: 5%; }
+        .carousel-button.next { right: 5%; }
+
+        @media (max-width: 768px) {
+            .testimonial-carousel { width: 200px; }
+            .carousel-wrapper { height: 500px; } /* Further increased height for mobile */
+            .carousel-button.prev { left: 2%; }
+            .carousel-button.next { right: 2%; }
+        }
     </style>
 </head>
 <body class="p-4">
@@ -141,8 +204,7 @@
         </header>
 
         <main>
-            <!-- Hero Section -->
-            <section class="text-center px-4 pt-8 pb-16">
+            <!-- Hero Section --><section class="text-center px-4 pt-8 pb-16">
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-3xl md:text-5xl font-extrabold">
                         Un Viaje Hacia Tu Paz Interior
@@ -152,9 +214,8 @@
                     </p>
                 </div>
             </section>
-        
-            <!-- Methodology Section (Simplified) -->
-            <section class="py-20 bg-white px-4">
+            
+            <!-- Methodology Section (Simplified) --><section class="py-20 bg-white px-4">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-3xl font-bold mb-8">¿Cómo funcionan mis sesiones de Psicoterapia?</h2>
                     <p class="text-gray-700 leading-relaxed text-lg mb-6">
@@ -169,8 +230,7 @@
                 </div>
             </section>
 
-            <!-- Example Psychotherapy Section (YouTube Video) -->
-            <section class="py-20 px-4">
+            <!-- Example Psychotherapy Section (YouTube Video) --><section class="py-20 px-4">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-3xl font-bold mb-8">Una Psicoterapia de Ejemplo</h2>
                     <p class="text-gray-700 leading-relaxed text-lg mb-8">
@@ -192,52 +252,25 @@
                 </div>
             </section>
 
-            <!-- Testimonials Section (WhatsApp Screenshots) -->
-            <section class="py-20 bg-white px-4">
-                <div class="max-w-5xl mx-auto">
+            <!-- Testimonials Section (Coverflow Carousel) --><section class="py-20 bg-white px-4 overflow-x-hidden"> <!-- Added overflow-x-hidden to section --><div class="max-w-5xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">La experiencia de otros</h2>
                     <p class="text-center text-gray-700 mb-8">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
-                    <div class="flex flex-wrap justify-center gap-8">
-                        <!-- Reseña 1 -->
-                        <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/8fNS5fp.png" alt="Reseña de cliente 1" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 2 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/o2EQNjB.png" alt="Reseña de cliente 2" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 3 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/rfAPnAz.png" alt="Reseña de cliente 3" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 4 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/zDiOzLm.png" alt="Reseña de cliente 4" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 5 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/BjoEESy.png" alt="Reseña de cliente 5" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 6 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/epb7xzc.png" alt="Reseña de cliente 6" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
-                        <!-- Reseña 7 -->
-                         <div class="w-full max-w-xs">
-                            <img src="https://i.imgur.com/ZxBpheZ.png" alt="Reseña de cliente 7" class="w-full h-auto testimonial-image" loading="lazy">
-                        </div>
+                    
+                    <div class="carousel-wrapper">
+                        <div id="testimonial-carousel" class="testimonial-carousel">
+                            <!-- Slides will be injected by JavaScript --></div>
+                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
+                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
                     </div>
                 </div>
             </section>
             
-            <!-- Pricing Section -->
-            <section id="precios" class="py-20 px-4">
+            <!-- Pricing Section --><section id="precios" class="py-20 px-4">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">Invierte en tu Bienestar</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         
-                        <!-- Sesión Individual -->
-                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                        <!-- Sesión Individual --><div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
                             <h3 class="text-2xl font-bold mb-4">Sesión Individual</h3>
                             <p class="text-5xl font-extrabold mb-4">55€</p>
                             <p class="text-gray-600 mb-2">Una sesión de aproximadamente 90 minutos para abordar un tema específico y obtener claridad.</p>
@@ -245,8 +278,7 @@
                             <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Reservar Ahora</a>
                         </div>
                         
-                        <!-- Pack 5 Sesiones (Updated Price) -->
-                        <div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
+                        <!-- Pack 5 Sesiones (Updated Price) --><div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
                             <h3 class="text-2xl font-bold mb-4">Pack 5 Sesiones</h3>
                              <p class="text-5xl font-extrabold mb-2">42€<span class="text-xl font-medium">/sesión</span></p>
                              <p class="text-gray-600 mb-6 font-semibold">(Pago único de 210€)</p>
@@ -261,8 +293,7 @@
                             </div>
                         </div>
 
-                        <!-- Miembros -->
-                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                        <!-- Miembros --><div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
                             <h3 class="text-2xl font-bold mb-4">Precio para Miembros</h3>
                             <p class="text-5xl font-extrabold mb-4 text-brand-pink">35€</p>
                             <p class="text-gray-600 mb-6 flex-grow">Un beneficio exclusivo si formas parte de la comunidad de "La Mente del Fénix".</p>
@@ -274,8 +305,7 @@
             </section>
         </main>
 
-        <!-- Footer -->
-        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+        <!-- Footer --><footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
              <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
                  <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
@@ -299,6 +329,164 @@
              <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
+
+    <!-- Image Modal Structure --><div id="image-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="relative max-w-lg w-full">
+            <img id="modal-image" src="" alt="Reseña ampliada" class="w-full h-auto max-h-[90vh] object-contain rounded-lg">
+            <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Image Modal Logic ---
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+
+            function openModal(src) {
+                modalImage.src = src;
+                imageModal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            function closeModal() {
+                imageModal.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !imageModal.classList.contains('opacity-0')) closeModal();
+            });
+
+            // --- Coverflow Carousel Logic ---
+            const carousel = document.getElementById('testimonial-carousel');
+            if (carousel) {
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const images = [
+                    'https://i.imgur.com/8fNS5fp.png', 'https://i.imgur.com/o2EQNjB.png', 'https://i.imgur.com/rfAPnAz.png',
+                    'https://i.imgur.com/zDiOzLm.png', 'https://i.imgur.com/BjoEESy.png', 'https://i.imgur.com/epb7xzc.png',
+                    'https://i.imgur.com/ZxBpheZ.png'
+                ];
+                let currentIndex = Math.floor(images.length / 2); // Start in the middle
+                let slides = [];
+
+                let isDragging = false, startPos = 0, dragOffset = 0;
+
+                images.forEach((src, i) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'testimonial-slide';
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = `Reseña de cliente ${i + 1}`;
+                    img.className = 'testimonial-image';
+                    img.draggable = false;
+                    slide.appendChild(img);
+                    carousel.appendChild(slide);
+                    slides.push(slide);
+                });
+
+                function updateCarousel() {
+                    slides.forEach((slide, i) => {
+                        const offset = i - currentIndex;
+                        let transform = `scale(0)`;
+                        let opacity = '0';
+                        let zIndex = '0';
+
+                        // Only show 2 slides on each side for a cleaner look
+                        if (Math.abs(offset) < 3) {
+                            const sign = Math.sign(offset);
+                            opacity = '0.5';
+                            zIndex = `${10 - Math.abs(offset)}`;
+
+                            if (offset === 0) {
+                                // Center slide
+                                transform = `translateX(0) translateZ(0) rotateY(0) scale(1.1)`;
+                                opacity = '1';
+                            } else {
+                                // Side slides
+                                const scale = 0.8;
+                                const rotateY = -sign * 40;
+                                const translateX = sign * 200; /* Aumentado de 150px a 200px para más separación */
+                                const translateZ = -180;
+                                transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+                            }
+                        }
+
+                        slide.style.transform = transform;
+                        slide.style.opacity = opacity;
+                        slide.style.zIndex = zIndex;
+                    });
+                }
+
+                function changeSlide(direction) {
+                    const newIndex = currentIndex + direction;
+                    if (newIndex >= 0 && newIndex < slides.length) {
+                        currentIndex = newIndex;
+                        updateCarousel();
+                    }
+                }
+
+                nextBtn.addEventListener('click', () => changeSlide(1));
+                prevBtn.addEventListener('click', () => changeSlide(-1));
+
+                function getPositionX(event) {
+                    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                }
+
+                function dragStart(event) {
+                    isDragging = true;
+                    startPos = getPositionX(event);
+                    dragOffset = 0;
+                    carousel.classList.add('grabbing');
+                }
+
+                function dragging(event) {
+                    if (!isDragging) return;
+                    const currentPos = getPositionX(event);
+                    dragOffset = currentPos - startPos;
+                }
+
+                function dragEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    carousel.classList.remove('grabbing');
+                    const threshold = 80; // Min pixels to swipe to change slide
+                    if (dragOffset > threshold) {
+                        changeSlide(-1); // Swiped right
+                    } else if (dragOffset < -threshold) {
+                        changeSlide(1); // Swiped left
+                    }
+                    dragOffset = 0; // Reset for click detection
+                }
+
+                carousel.addEventListener('mousedown', dragStart);
+                carousel.addEventListener('touchstart', dragStart, { passive: true });
+                carousel.addEventListener('mousemove', dragging);
+                carousel.addEventListener('touchmove', dragging, { passive: true });
+                carousel.addEventListener('mouseup', dragEnd);
+                carousel.addEventListener('mouseleave', dragEnd);
+                carousel.addEventListener('touchend', dragEnd);
+
+                slides.forEach((slide, i) => {
+                    slide.addEventListener('click', () => {
+                        if (Math.abs(dragOffset) < 10 && i === currentIndex) {
+                            openModal(slide.querySelector('img').src);
+                        } else if (i !== currentIndex) {
+                            currentIndex = i;
+                            updateCarousel();
+                        }
+                    });
+                });
+                
+                updateCarousel(); // Initial setup
+                window.addEventListener('resize', updateCarousel); // Recalculate on resize
+            }
+        });
+    </script>
 </body>
 </html>
 
