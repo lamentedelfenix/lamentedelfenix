@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // ****** CAMBIO VISUAL 1: FONDO BLANCO ******
+    // Esto convierte el menú en una barra de navegación con fondo blanco, sombra y padding.
+    menuPlaceholder.classList.add(
+        'bg-white',       // Fondo blanco
+        'rounded-lg',     // Bordes redondeados
+        'shadow-md',      // Sombra suave
+        'p-4',            // Padding interno
+        'max-w-4xl',      // Limitamos el ancho para que coincida con el contenido
+        'mx-auto'         // Centramos la barra
+    );
+    // **********************************
+
     // 2. Definir las páginas del menú
     const menuItems = [
         { href: 'index.html', text: 'Inicio' },
@@ -14,18 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // 3. Obtener la página actual para saber cuál enlace marcar como "activo"
-    // Obtenemos la última parte de la URL (ej. "index.html" o "membresia.html")
     const pathParts = window.location.pathname.split('/');
-    const currentPage = pathParts.pop() || (pathParts.pop() || 'index.html'); // Maneja casos como "/" o "/pagina/"
+    const currentPage = pathParts.pop() || (pathParts.pop() || 'index.html'); 
 
     // 4. Construir el HTML del menú
     let menuHTML = `
-        <ul class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-6 sm:gap-10 p-4">
+        <ul class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-6 sm:gap-10">
     `;
 
     // 5. Añadir los enlaces normales (Inicio, Psicoterapia, Membresía)
     menuItems.forEach(item => {
-        // Comprobar si el href del item coincide con la página actual
         const isActive = currentPage === item.href;
         
         menuHTML += `
@@ -39,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 6. Añadir el botón especial de "Acceso Miembros" al final
-    // Usamos exactamente las clases que me pediste para mantener el efecto y color
     menuHTML += `
         <li class="w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4 flex justify-center">
+            <!-- ****** CAMBIO VISUAL 2: BOTÓN MÁS PEQUEÑO ****** -->
+            <!-- He reducido el padding (py-2 px-5), el grosor de la fuente (font-semibold) y el redondeo (rounded-lg) -->
             <a href="./login.html" 
-               class="animated-login-button inline-block py-4 px-10 text-xl font-bold rounded-full text-white">
+               class="animated-login-button inline-block py-2 px-5 text-xl font-semibold rounded-lg text-white">
                 Acceso Miembros
             </a>
         </li>
@@ -54,3 +65,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. Insertar el HTML construido en la página
     menuPlaceholder.innerHTML = menuHTML;
 });
+
