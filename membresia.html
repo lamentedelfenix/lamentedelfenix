@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Membresía La Mente del Fénix - Transforma tu Vida con UCDM</title>
+    <title>Membresía La Mente del Fénix</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Montserrat -->
@@ -13,8 +13,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Panzoom for image zooming -->
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+
+    <!-- NUEVO: Script del Menú Dinámico -->
+    <script src="menu.js" defer></script>
+
     <style>
-        html { scroll-behavior: smooth; }
         body { font-family: 'Montserrat', sans-serif; background-color: #fbf5e2; color: #0c2f5b; }
         .text-brand-pink { color: #e91e63; }
         .bg-brand-pink { background-color: #e91e63; }
@@ -36,8 +39,21 @@
             to { background-position: 200% center; }
         }
         @keyframes breathing-glow {
-            0%, 100% { text-shadow: 0 0 8px rgba(0, 188, 212, 0.4); }
-            50% { text-shadow: 0 0 25px rgba(233, 30, 99, 0.8); }
+          0%, 100% { text-shadow: 0 0 8px rgba(0, 188, 212, 0.4); }
+          50% { text-shadow: 0 0 25px rgba(233, 30, 99, 0.8); }
+        }
+
+        /* NUEVO: Estilos para el botón de login, copiados de index.html */
+        .animated-login-button {
+            background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
+            background-size: 300% auto;
+            animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .animated-login-button:hover { transform: scale(1.05); }
+        @keyframes pulsating-glow-alternating {
+            0%, 100% { box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); }
+            50% { box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 7px rgba(0, 188, 212, 0.7); }
         }
 
         .feature-icon {
@@ -90,10 +106,8 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        /* Zoomable image style */
         .zoomable-image { cursor: pointer; transition: transform 0.3s ease; }
         .zoomable-image:hover { transform: scale(1.03); }
-        /* Lightbox styles */
         .lightbox { 
             position: fixed; 
             top: 0; 
@@ -128,6 +142,19 @@
             line-height: 1; 
         }
         
+        .benefit-icon {
+            background: linear-gradient(135deg, #f0c74c, #daa520);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto;
+        }
+
         .contact-link {
             position: relative;
             text-decoration: none;
@@ -156,24 +183,15 @@
             transform-origin: bottom left;
         }
 
-        /* FAQ Accordion Styles */
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        .faq-item.active .faq-answer {
-            max-height: 200px; /* Adjust as needed */
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-        .faq-item .faq-icon {
-            transition: transform 0.3s ease-out;
-        }
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
+        /* NUEVO: Estilo para YouTube */
+        .contact-link.youtube-link:hover > i, 
+        .contact-link.youtube-link:hover > span { color: #FF0000; }
+        .contact-link.youtube-link::after { background-color: #FF0000; }
+
+        /* NUEVO: Estilo para el enlace activo del menú */
+        .active-link { 
+            color: #e91e63; 
+            border-bottom: 2px solid #e91e63; 
         }
     </style>
 </head>
@@ -193,49 +211,50 @@
              <img src="https://i.imgur.com/dgANxJU.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg">
         </header>
 
-        <!-- Botón para volver a la página principal -->
+        <!-- NUEVO: Placeholder para el Menú Dinámico -->
+        <!-- REEMPLAZA: El antiguo botón de "Volver" -->
+        <nav id="main-menu-placeholder" class="mb-8"></nav>
+
+        <!-- ELIMINADO: Botón para volver a la página principal -->
+        <!-- 
         <section class="px-4 md:px-8 -mt-4 mb-12">
-            <a href="./index.html" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300">
-                <i class="fas fa-arrow-left"></i>
-                <span>Volver a la página principal</span>
-            </a>
-        </section>
+            ...
+        </section> 
+        -->
 
         <!-- Hero Section -->
         <section class="text-center pt-8 pb-16 px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-12">Te ayudo a <span class="animated-highlight">transformar tu vida</span> como lo hice yo a través de los principios de Un Curso de Milagros.</h1>
-            <div class="text-lg md:text-xl max-w-3xl mx-auto mb-20 space-y-4">
-                <p>Soy Darío Arrigazzi y he creado la membresía La Mente del Fénix para enseñarte y acompañarte a integrar los principios que cambiaron mi vida.</p> 
-                <p>Es el único espacio que combina <span class="font-bold text-brand-pink">mentoría experta</span>, con <span class="font-bold text-brand-pink">tecnología inteligente</span> y una <span class="font-bold text-brand-pink">aplicación web exclusiva</span> para integrar estos principios espirituales de El Curso de Milagros.</p>
-            </div>
-            <a href="#pricing-card" class="btn-pink font-bold py-4 px-10 rounded-lg text-xl inline-block transition transform hover:scale-105">
-                Únete a la Membresía
-            </a>
-            <div class="mt-4 text-sm text-gray-500">Cancela cuando quieras. Cero dramas.</div>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto">El único espacio con <span class="animated-highlight">tecnología inteligente innovadora</span> para dejar de sentirte perdido/a con Un Curso de Milagros y empezar a implementarlo en tu vida.</p>
         </section>
 
-        <!-- "Who is this for?" Section -->
+        <!-- Benefits Section -->
         <section class="py-20 px-4 bg-white/50">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-12">¿Es esta membresía para ti?</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h3 class="font-bold text-xl mb-3 text-brand-pink">Esta membresía es para ti si...</h3>
-                        <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Si lees sobre espiritualidad y crecimiento personal, pero luego no sabes cómo aplicarlo.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Entiendes que tu mundo exterior es una proyección de tu mundo interior.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Buscas un acompañamiento regular pero que sea asequible.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Te sientes solo/a en tu camino y buscas una comunidad de apoyo.</span></li>
-                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i><span>Estás listo/a para dejar el victimismo y ser dueño/a de tu paz.</span></li>
-                        </ul>
+                <h2 class="text-3xl font-bold text-center mb-12">¿Qué puedes lograr con Un Curso de Milagros?</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <!-- Benefit 1 -->
+                    <div>
+                        <div class="benefit-icon"><i class="fas fa-eye"></i></div>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Transforma tu Percepción</h3>
+                        <p class="text-sm text-gray-600">Reprograma tu mente para ver la vida sin victimismo, cambiando el miedo por una percepción más amorosa y compasiva.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h3 class="font-bold text-xl mb-3 text-gray-500">Quizás no sea tu momento si...</h3>
-                        <ul class="space-y-3 text-gray-700">
-                            <li class="flex items-start"><i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i><span>Buscas una solución mágica que no requiera <span class="font-semibold">práctica y auto-observación</span>.</span></li>
-                            <li class="flex items-start"><i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i><span>No estás dispuesto/a a cuestionar tus creencias y <span class="font-semibold">mirar hacia adentro</span>.</span></li>
-                            <li class="flex items-start"><i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i><span>Prefieres acumular teoría en lugar de <span class="font-semibold">experimentar una transformación real</span>.</span></li>
-                        </ul>
+                    <!-- Benefit 2 -->
+                    <div>
+                        <div class="benefit-icon"><i class="fas fa-dove"></i></div>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Despierta tu Ser</h3>
+                        <p class="text-sm text-gray-600">Profundiza en tu conexión espiritual, accede a la experiencia de tu Ser Superior y encuentra el camino hacia tu despertar.</p>
+                    </div>
+                    <!-- Benefit 3 -->
+                    <div>
+                        <div class="benefit-icon"><i class="fas fa-key"></i></div>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Libérate del Sufrimiento</h3>
+                        <p class="text-sm text-gray-600">Aprende a disolver las creencias del ego, a sanar tus emociones y a distinguir entre el dolor inevitable y el sufrimiento opcional.</p>
+                    </div>
+                    <!-- Benefit 4 -->
+                    <div>
+                        <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="font-bold text-lg mt-4 mb-2">Recupera tu Poder</h3>
+                        <p class="text-sm text-gray-600">Toma responsabilidad sobre tu mente y tus experiencias, dejando atrás el papel de víctima para sentirte pleno y capaz.</p>
                     </div>
                 </div>
             </div>
@@ -244,43 +263,43 @@
         <!-- What you will get Section -->
         <section class="py-16 px-4 bg-white">
              <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-16">Todo lo que tienes en la membresía</h2>
+                <h2 class="text-3xl font-bold text-center mb-16">¿Qué encontrarás dentro de la membresía?</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-                    <!-- Feature 1: Mentorías Grupales -->
+                    <!-- Feature 1: Mentorías Grupales (Modified text here) -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-users"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Mentorías Grupales</h3>
-                        <p class="text-gray-600">Resuelve tus dudas y comparte con Darío Arrigazzi con más de 3 años de experiencia en Coaching y PNL y más de 2 años de experiencia en psicoterapia de UCDM.</p>
+                        <p class="text-gray-600">Sesiones en vivo con Darío Arrigazzi (especialista en Coaching, PNL y UCDM) para resolver dudas, profundizar y compartir experiencias.</p>
                     </div>
                     <!-- Feature 2: Plataforma Inteligente -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                        <h3 class="text-xl font-bold mt-4 mb-2">Tu Asistente IA de UCDM</h3>
-                        <p class="text-gray-600">¿Dudas a las 3 AM? Pregúntale a tu asistente personal, verificado y configurado para darte respuestas 100% fiables basadas en el libro, 24/7.</p>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Plataforma Inteligente</h3>
+                        <p class="text-gray-600">Tu asistente personal de UCDM, configurado cuidadosamente para darte respuestas fiables. Pregúntale dudas y obtén respuestas basadas 100% en el Curso, disponibles 24/7.</p>
                     </div>
                     <!-- Feature 3: Seguimiento de Lecciones -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-check-double"></i></div>
                         <h3 class="text-xl font-bold mt-4 mb-2">Seguimiento de Lecciones</h3>
-                        <p class="text-gray-600">Mantén la constancia con las lecciones de UCDM, un ejercicio para cada día del año.</p>
+                        <p class="text-gray-600">Una herramienta interactiva para marcar tu progreso diario en las lecciones de El Curso de Milagros y mantenerte motivado/a en tu práctica.</p>
                     </div>
                     <!-- Feature 4: Comunidad Privada -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-comment-dots"></i></div>
-                        <h3 class="text-xl font-bold mt-4 mb-2">Comunidad Privada Real</h3>
-                        <p class="text-gray-600">Conecta en nuestros grupos de WhatsApp y Telegram. Nunca más te sentirás solo/a en este camino.</p>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Comunidad Privada</h3>
+                        <p class="text-gray-600">Acceso a nuestros grupos exclusivos de WhatsApp y Telegram para conectar con otros estudiantes como tú.</p>
                     </div>
                     <!-- Feature 5: Biblioteca de Recursos -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-photo-video"></i></div>
-                        <h3 class="text-xl font-bold mt-4 mb-2">Videos, Grabaciones y Recursos</h3>
-                        <p class="text-gray-600">Acceso ilimitado a todas las grabaciones de las mentorías y materiales de estudio. Repasa cuando quieras.</p>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Biblioteca de Recursos</h3>
+                        <p class="text-gray-600">Todas las grabaciones de las mentorías y materiales de estudio adicional siempre a tu disposición en la plataforma y en Google Drive.</p>
                     </div>
                     <!-- Feature 6: Descuentos Exclusivos -->
                     <div class="feature-item text-center">
                         <div class="feature-icon"><i class="fas fa-tags"></i></div>
-                        <h3 class="text-xl font-bold mt-4 mb-2">Apoyo Personalizado</h3>
-                        <p class="text-gray-600">Accede a sesiones de psicoterapia 1 a 1 con un precio especial y único, solo para miembros.</p>
+                        <h3 class="text-xl font-bold mt-4 mb-2">Descuentos Exclusivos</h3>
+                        <p class="text-gray-600">Accede a las sesiones de psicoterapia 1 a 1 con un precio especial y único para miembros.</p>
                     </div>
                 </div>
              </div>
@@ -289,23 +308,11 @@
         <!-- Gallery Section -->
         <section class="py-20 px-4">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que verás dentro</h2>
+                <h2 class="text-3xl font-bold text-center mb-12">Algunas de las cosas que encontrarás dentro...</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <!-- NUEVO: Curso Orientativo -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
-                            <img id="curso-orientativo-img"
-                                 src="https://i.imgur.com/ip9Yh4Z.png" 
-                                 alt="Curso orientativo sobre Un Curso de Milagros" 
-                                 class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/ip9Yh4Z.png" 
-                                 data-gif-src="https://i.imgur.com/5uZzCht.gif">
-                            <p class="mt-2 font-semibold"><span class="highlight-word">Video Curso</span> de varias horas sobre El Curso de Milagros</p>
-                        </div>
-                    </div>
-                    <!-- Mapa Conceptual -->
-                    <div class="text-center">
-                        <div class="max-w-sm mx-auto">
+                            <!-- Mapa Conceptual: src apunta a la imagen estática, data-gif-src al GIF -->
                             <img id="mapa-conceptual-img" 
                                  src="https://i.imgur.com/xrTind4.png" 
                                  alt="Mapa Conceptual de UCDM" 
@@ -315,56 +322,57 @@
                             <p class="mt-2 font-semibold">Mapa Conceptual <span class="highlight-word">Interactivo</span></p>
                         </div>
                     </div>
-                    <!-- Chat IA -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
+                            <!-- Chat IA: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="chat-ia-img"
                                  src="https://i.imgur.com/RPIB19T.png" 
                                  alt="Chat con IA" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
                                  data-static-src="https://i.imgur.com/RPIB19T.png" 
                                  data-gif-src="https://i.imgur.com/LqovuKM.gif">
-                            <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclara tus dudas al instante</p>
+                            <p class="mt-2 font-semibold">Chat <span class="highlight-word">Inteligente</span> que aclarará dudas y te ayudará con frases para entrenar tu mente</p>
                         </div>
                     </div>
-                    <!-- Mensajes Diarios -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
+                            <!-- Mensajes Diarios: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="mensajes-diarios-img"
                                  src="https://i.imgur.com/D0Zh9jy.png" 
                                  alt="Mensajes Diarios" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
                                  data-static-src="https://i.imgur.com/D0Zh9jy.png" 
-                                 data-gif-src="https://i.imgur.com/kOZMMBg.gif">
-                            <p class="mt-2 font-semibold">Mensajes Diarios para <span class="highlight-word">inspirarte y compartir</span></p>
+                                 data-gif-src="https://i.imgur.com/BheekP1.gif">
+                            <p class="mt-2 font-semibold">Mensajes Diarios para ti y <span class="highlight-word">compartir</span></p>
                         </div>
                     </div>
-                    <!-- Lecciones Ritmo -->
                     <div class="text-center">
                         <div class="max-w-sm mx-auto">
+                            <!-- Lecciones Ritmo: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="lecciones-ritmo-img"
-                                 src="https://i.imgur.com/YPGafgM.png" 
+                                 src="https://i.imgur.com/XCb5yM7.png" 
                                  alt="Seguimiento de Lecciones" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/YPGafgM.png" 
-                                 data-gif-src="https://i.imgur.com/XL954On.gif">
+                                 data-static-src="https://i.imgur.com/XCb5yM7.png" 
+                                 data-gif-src="https://i.imgur.com/JLweKjE.gif">
                             <p class="mt-2 font-semibold">Las lecciones a <span class="highlight-word">tu ritmo</span></p>
                         </div>
                     </div>
-                    <!-- Rincón Inspiración -->
-                    <div class="text-center">
+                    <!-- New image added - Centered for PC view, same size -->
+                    <div class="text-center sm:col-start-1 sm:col-end-3">
                         <div class="max-w-sm mx-auto">
+                            <!-- Rincón Inspiración: src apunta a la nueva imagen estática, data-gif-src al GIF -->
                             <img id="rincon-inspiracion-img"
-                                 src="https://i.imgur.com/qOiuyzJ.png" 
+                                 src="https://i.imgur.com/g5NgVsm.png" 
                                  alt="Rincón de Inspiración" 
                                  class="zoomable-image w-full h-auto rounded-lg shadow-md border-2 border-white cursor-pointer"
-                                 data-static-src="https://i.imgur.com/qOiuyzJ.png" 
-                                 data-gif-src="https://i.imgur.com/S3IpMfK.gif">
+                                 data-static-src="https://i.imgur.com/g5NgVsm.png" 
+                                 data-gif-src="https://i.imgur.com/p7idYrx.gif">
                             <p class="mt-2 font-semibold">Rincón de <span class="highlight-word">Inspiración y Conocimiento</span></p>
                         </div>
                     </div>
                 </div>
-                <p class="text-center text-xl text-brand-pink font-bold italic mt-8">... ¡y mucho más que estamos preparando!</p>
+                <p class="text-center text-xl text-brand-pink font-bold italic mt-8">... ¡y mucho más!</p>
             </div>
         </section>
 
@@ -384,17 +392,13 @@
                 </div>
 
                 <div id="monthly-price" class="my-6">
-                    <div class="flex justify-center items-baseline">
-                        <span class="text-5xl font-extrabold">35€</span>
-                        <span class="text-gray-600 font-bold text-lg ml-2">/ mes</span>
-                    </div>
+                    <span class="text-5xl font-extrabold">35€</span>
+                    <span class="text-gray-500">/ mes</span>
                 </div>
                 <div id="annual-price" class="my-6 hidden">
-                    <div class="flex justify-center items-baseline">
-                         <span class="text-5xl font-extrabold">300€</span>
-                         <span class="text-gray-600 font-bold text-lg ml-2">/ año</span>
-                    </div>
-                    <p class="text-sm font-semibold mt-2">(Equivale a 25€/mes)</p>
+                    <span class="text-5xl font-extrabold">300€</span>
+                    <span class="text-gray-500">/ año</span>
+                    <p class="text-sm font-semibold">(Equivale a 25€/mes)</p>
                     <p class="mt-2 font-bold text-green-600">¡Ahorras 120€ al año!</p>
                     <p class="mt-2 font-bold text-yellow-600"><i class="fas fa-star mr-1"></i>¡Incluye 2 sesiones 1 a 1 gratis!</p>
                 </div>
@@ -409,49 +413,11 @@
             </div>
         </section>
 
-        <!-- FAQ Section -->
-        <section class="py-20 px-4">
-            <div class="max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h2>
-                <div class="space-y-4">
-                    <!-- FAQ Item 1 -->
-                    <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
-                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
-                            <span>¿Cómo funciona la cancelación?</span>
-                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
-                        </button>
-                        <div class="faq-answer px-5 text-gray-600">
-                            <p>Puedes cancelar tu suscripción en cualquier momento desde tu panel de usuario. No hay compromisos ni contratos. Si cancelas, seguirás teniendo acceso completo a la membresía hasta el final del ciclo de facturación que ya has pagado (ya sea mensual o anual). Después de esa fecha, tu suscripción no se renovará y no se te volverá a cobrar.</p>
-                        </div>
-                    </div>
-                    <!-- FAQ Item 2 -->
-                    <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
-                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
-                            <span>¿Qué pasa si no puedo asistir a una mentoría en vivo?</span>
-                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
-                        </button>
-                        <div class="faq-answer px-5 text-gray-600">
-                            <p>¡No te preocupes! Todas las sesiones de mentoría grupal se graban y se suben a la biblioteca de recursos en un plazo de 24-48 horas. Podrás verlas cuando quieras, las veces que quieras.</p>
-                        </div>
-                    </div>
-                     <!-- FAQ Item 3 -->
-                     <div class="faq-item bg-white/60 rounded-lg shadow-sm border border-gray-200">
-                        <button class="faq-question w-full text-left flex justify-between items-center p-5 font-semibold">
-                            <span>¿Qué métodos de pago aceptan?</span>
-                            <i class="fas fa-plus faq-icon text-brand-pink"></i>
-                        </button>
-                        <div class="faq-answer px-5 text-gray-600">
-                            <p>Aceptamos las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) a través de nuestra pasarela de pago segura Stripe.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Footer -->
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
-             <h4 class="font-bold text-lg mb-4">¿Aún tienes dudas? Contacta conmigo</h4>
-             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+             <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
+             <!-- MODIFICADO: Añadido YouTube -->
+             <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
                 <a href="mailto:lamentedelfenix@gmail.com" class="contact-link email-link flex items-center gap-2 text-gray-700">
                     <i class="fas fa-envelope text-2xl"></i>
                     <span>lamentedelfenix@gmail.com</span>
@@ -459,6 +425,11 @@
                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" class="contact-link flex items-center gap-2 text-pink-600">
                     <i class="fab fa-instagram text-2xl"></i>
                     <span>@darioarrigazzi</span>
+                </a>
+                <!-- NUEVO: Enlace a YouTube -->
+                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-600">
+                    <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
+                    <span>Canal de YouTube</span>
                 </a>
              </div>
              <div class="text-sm text-gray-500 space-x-4 mt-8">
@@ -484,11 +455,8 @@
 
             let panzoomInstance = null;
 
+            // Map of image IDs to their GIF and static URLs
             const imageSources = {
-                'curso-orientativo-img': { 
-                    static: 'https://i.imgur.com/ip9Yh4Z.png', 
-                    gif: 'https://i.imgur.com/5uZzCht.gif'
-                },
                 'mapa-conceptual-img': { 
                     static: 'https://i.imgur.com/xrTind4.png', 
                     gif: 'https://i.imgur.com/DiOIB3w.gif' 
@@ -499,15 +467,15 @@
                 },
                 'mensajes-diarios-img': { 
                     static: 'https://i.imgur.com/D0Zh9jy.png', 
-                    gif: 'https://i.imgur.com/kOZMMBg.gif'
+                    gif: 'https://i.imgur.com/BheekP1.gif'
                 },
                 'lecciones-ritmo-img': { 
-                    static: 'https://i.imgur.com/YPGafgM.png', 
-                    gif: 'https://i.imgur.com/XL954On.gif'
+                    static: 'https://i.imgur.com/XCb5yM7.png', 
+                    gif: 'https://i.imgur.com/JLweKjE.gif'
                 },
                 'rincon-inspiracion-img': { 
-                    static: 'https://i.imgur.com/qOiuyzJ.png', 
-                    gif: 'https://i.imgur.com/S3IpMfK.gif'
+                    static: 'https://i.imgur.com/g5NgVsm.png', 
+                    gif: 'https://i.imgur.com/p7idYrx.gif'
                 }
             };
 
@@ -534,6 +502,11 @@
                     panzoomInstance = Panzoom(lightboxImg, {
                         maxScale: 10,
                         minScale: 0.7,
+                        handleStartEvent: (e) => {
+                            if (e.touches && e.touches.length === 1) { 
+                                e.preventDefault();
+                            }
+                        }
                     });
                 });
             });
@@ -584,9 +557,6 @@
             const monthlyLink = "https://buy.stripe.com/6oU5kC1GA9xegDLggx3F600"; 
             const annualLink = "https://buy.stripe.com/14AaEW5WQ7p62MV5BT3F601";
 
-            // Set initial state
-            paymentLink.href = monthlyLink;
-
             toggle.addEventListener('change', () => {
                 if (toggle.checked) { // Anual seleccionado
                     monthlyPrice.classList.add('hidden');
@@ -608,21 +578,9 @@
                     monthlyLabel.classList.add('text-brand-pink');
                 }
             });
-
-            // --- Lógica del Acordeón de FAQ ---
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    const currentlyActive = document.querySelector('.faq-item.active');
-                    if (currentlyActive && currentlyActive !== item) {
-                        currentlyActive.classList.remove('active');
-                    }
-                    item.classList.toggle('active');
-                });
-            });
+            // Establece el enlace inicial a mensual
+            paymentLink.href = monthlyLink; 
         });
     </script>
 </body>
 </html>
-
