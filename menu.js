@@ -1,42 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Encontrar el lugar donde irá el menú
-    const menuPlaceholder = document.getElementById('main-menu-placeholder');
-    if (!menuPlaceholder) {
-        console.error('Elemento #main-menu-placeholder no encontrado. El menú no se puede cargar.');
+
+    // --- ARREGLO 1: Inyectar el CSS para el enlace activo ---
+    // (Esto estaba bien, pero el ARREGLO 3 lo hace funcionar)
+    const style = document.createElement('style');
+    style.textContent = `
+        .active-link { 
+            color: #e91e63 !important; 
+            border-bottom: 2px solid #e91e63; 
+        }
+    `;
+    document.head.appendChild(style);
+
+    // --- ARREGLO 2: Crear el <nav> dinámicamente ---
+    const header = document.querySelector('header');
+    if (!header) {
+        console.error('<header> no encontrado. El menú no se puede insertar.');
         return;
     }
+    const navMenu = document.createElement('nav');
 
-    // ****** CAMBIO VISUAL 1: FONDO BLANCO ******
-    // Esto convierte el menú en una barra de navegación con fondo blanco, sombra y padding.
-    menuPlaceholder.classList.add(
+    // --- CAMBIO VISUAL (ANCHO): Ajustado a 'max-w-6xl' ---
+    // Ahora el menú tendrá el mismo ancho que tu banner (max-w-6xl)
+    // Esto debería solucionar el problema del fondo blanco que no veías en escritorio.
+    navMenu.classList.add(
         'bg-white',       // Fondo blanco
         'rounded-lg',     // Bordes redondeados
         'shadow-md',      // Sombra suave
         'p-4',            // Padding interno
-        'max-w-4xl',      // Limitamos el ancho para que coincida con el contenido
-        'mx-auto'         // Centramos la barra
+        'max-w-6xl',      // <-- CAMBIADO DE 4xl a 6xl
+        'mx-auto',        // Centramos
+        'mb-8'            // Margen inferior
     );
-    // **********************************
 
-    // 2. Definir las páginas del menú
+    // 4. Definir las páginas del menú
     const menuItems = [
         { href: 'index.html', text: 'Inicio' },
         { href: 'psicoterapia.html', text: 'Psicoterapia' },
         { href: 'membresia.html', text: 'Membresía' }
     ];
 
-    // 3. Obtener la página actual para saber cuál enlace marcar como "activo"
-    const pathParts = window.location.pathname.split('/');
-    const currentPage = pathParts.pop() || (pathParts.pop() || 'index.html'); 
+    // --- ARREGLO 3 (PÁGINA ACTIVA): Lógica de detección de página ---
+    // Esta nueva lógica es mucho más robusta y SÍ detectará la página activa.
+    const currentPath = window.location.pathname;
 
-    // 4. Construir el HTML del menú
+    // 6. Construir el HTML del menú
     let menuHTML = `
-        <ul class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-6 sm:gap-10">
+        <!-- --- ARREGLO 4 (MÓVIL): Menú responsive --- -->
+        <!-- Cambiado de 'flex-col sm:flex-row' a 'flex-row flex-wrap' -->
+        <!-- Esto hace que los items fluyan horizontalmente en móvil en lugar de apilarse -->
+        <ul class="flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-4 sm:gap-x-10">
     `;
 
-    // 5. Añadir los enlaces normales (Inicio, Psicoterapia, Membresía)
+    // 7. Añadir los enlaces normales
     menuItems.forEach(item => {
-        const isActive = currentPage === item.href;
+        // --- Lógica de 'isActive' mejorada ---
+        const isActive = currentPath.endsWith(item.href) || 
+                         (currentPath.endsWith('/') && item.href === 'index.html');
         
         menuHTML += `
             <li>
@@ -48,21 +67,23 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     });
 
-    // 6. Añadir el botón especial de "Acceso Miembros" al final
+    // 8. Añadir el botón especial de "Acceso Miembros"
     menuHTML += `
         <li class="w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4 flex justify-center">
-            <!-- ****** CAMBIO VISUAL 2: BOTÓN MÁS PEQUEÑO ****** -->
-            <!-- He reducido el padding (py-2 px-5), el grosor de la fuente (font-semibold) y el redondeo (rounded-lg) -->
             <a href="./login.html" 
-               class="animated-login-button inline-block py-2 px-5 text-xl font-semibold rounded-lg text-white">
-                Acceso Miembros
+               class="animated-login-button inline-flex items-center py-1.5 px-4 text-lg font-semibold rounded-md text-white">
+                <i class="fas fa-key mr-2 text-sm"></i>
+                <span>Acceso Miembros</span>
             </a>
         </li>
     `;
 
     menuHTML += `</ul>`;
 
-    // 7. Insertar el HTML construido en la página
-    menuPlaceholder.innerHTML = menuHTML;
+    // 9. Insertar el HTML construido en el <nav>
+    navMenu.innerHTML = menuHTML;
+
+    // 10. Insertar el <nav> completo en la página, DESPUÉS del <header>
+    header.parentNode.insertBefore(navMenu, header.nextSibling);
 });
 
