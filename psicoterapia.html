@@ -4,22 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO: Descripción para motores de búsqueda y redes sociales --><meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
+    <!-- SEO: Descripción para motores de búsqueda y redes sociales -->
+    <meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
 
     <title>La Mente del Fénix - Sesiones de Psicoterapia</title>
 
-    <!-- FAVICON --><link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
-    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://i.imgur.com">
 
-    <!-- NOTA PARA VISTA PREVIA: Se incluye el script de Tailwind para que los estilos se rendericen. --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Script de Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- OPTIMIZACIÓN: Las fuentes y los iconos se cargan de forma asíncrona --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    <!-- Fuentes e Iconos -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-    <!-- Estilos personalizados consistentes con la página principal --><style>
+    <!-- NUEVO: Script del Menú Dinámico -->
+    <script src="menu.js" defer></script>
+
+    <!-- Estilos personalizados -->
+    <style>
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
@@ -90,6 +99,34 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
+        
+        /* NUEVO: Estilo para YouTube */
+        .contact-link.youtube-link:hover > i, 
+        .contact-link.youtube-link:hover > span { color: #FF0000; }
+        .contact-link.youtube-link::after { background-color: #FF0000; }
+
+        /* NUEVO: Estilo para el enlace activo del menú */
+        .active-link { 
+            color: #e91e63; 
+            border-bottom: 2px solid #e91e63; 
+        }
+
+        /* NUEVO: Estilos para el botón de login, del menu.js */
+        @keyframes text-flow {
+            to { background-position: 200% center; }
+        }
+        .animated-login-button {
+            background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
+            background-size: 300% auto;
+            animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .animated-login-button:hover { transform: scale(1.05); }
+        @keyframes pulsating-glow-alternating {
+            0%, 100% { box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); }
+            50% { box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 7px rgba(0, 188, 212, 0.7); }
+        }
+
         .pricing-card {
             border: 2px solid #e0d9c6;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -203,8 +240,12 @@
             </a>
         </header>
 
+        <!-- NUEVO: Placeholder para el Menú Dinámico -->
+        <nav id="main-menu-placeholder" class="mb-8"></nav>
+
         <main>
-            <!-- Hero Section --><section class="text-center px-4 pt-8 pb-16">
+            <!-- Hero Section -->
+            <section class="text-center px-4 pt-8 pb-16">
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-3xl md:text-5xl font-extrabold">
                         Un Viaje Hacia Tu Paz Interior
@@ -215,7 +256,8 @@
                 </div>
             </section>
             
-            <!-- Methodology Section (Simplified) --><section class="py-20 bg-white px-4">
+            <!-- Methodology Section (Simplified) -->
+            <section class="py-20 bg-white px-4">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-3xl font-bold mb-8">¿Cómo funcionan mis sesiones de Psicoterapia?</h2>
                     <p class="text-gray-700 leading-relaxed text-lg mb-6">
@@ -230,7 +272,8 @@
                 </div>
             </section>
 
-            <!-- Example Psychotherapy Section (YouTube Video) --><section class="py-20 px-4">
+            <!-- Example Psychotherapy Section (YouTube Video) -->
+            <section class="py-20 px-4">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-3xl font-bold mb-8">Una Psicoterapia de Ejemplo</h2>
                     <p class="text-gray-700 leading-relaxed text-lg mb-8">
@@ -252,25 +295,30 @@
                 </div>
             </section>
 
-            <!-- Testimonials Section (Coverflow Carousel) --><section class="py-20 bg-white px-4 overflow-x-hidden"> <!-- Added overflow-x-hidden to section --><div class="max-w-5xl mx-auto">
+            <!-- Testimonials Section (Coverflow Carousel) -->
+            <section class="py-20 bg-white px-4 overflow-x-hidden"> <!-- Added overflow-x-hidden to section -->
+                <div class="max-w-5xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">La experiencia de otros</h2>
                     <p class="text-center text-gray-700 mb-8">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
                     
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel">
-                            <!-- Slides will be injected by JavaScript --></div>
+                            <!-- Slides will be injected by JavaScript -->
+                        </div>
                         <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
                         <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
                     </div>
                 </div>
             </section>
             
-            <!-- Pricing Section --><section id="precios" class="py-20 px-4">
+            <!-- Pricing Section -->
+            <section id="precios" class="py-20 px-4">
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">Invierte en tu Bienestar</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         
-                        <!-- Sesión Individual --><div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                        <!-- Sesión Individual -->
+                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
                             <h3 class="text-2xl font-bold mb-4">Sesión Individual</h3>
                             <p class="text-5xl font-extrabold mb-4">55€</p>
                             <p class="text-gray-600 mb-2">Una sesión de aproximadamente 90 minutos para abordar un tema específico y obtener claridad.</p>
@@ -278,7 +326,8 @@
                             <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Reservar Ahora</a>
                         </div>
                         
-                        <!-- Pack 5 Sesiones (Updated Price) --><div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
+                        <!-- Pack 5 Sesiones (Updated Price) -->
+                        <div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
                             <h3 class="text-2xl font-bold mb-4">Pack 5 Sesiones</h3>
                              <p class="text-5xl font-extrabold mb-2">42€<span class="text-xl font-medium">/sesión</span></p>
                              <p class="text-gray-600 mb-6 font-semibold">(Pago único de 210€)</p>
@@ -293,7 +342,8 @@
                             </div>
                         </div>
 
-                        <!-- Miembros --><div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
+                        <!-- Miembros -->
+                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
                             <h3 class="text-2xl font-bold mb-4">Precio para Miembros</h3>
                             <p class="text-5xl font-extrabold mb-4 text-brand-pink">35€</p>
                             <p class="text-gray-600 mb-6 flex-grow">Un beneficio exclusivo si formas parte de la comunidad de "La Mente del Fénix".</p>
@@ -305,9 +355,10 @@
             </section>
         </main>
 
-        <!-- Footer --><footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+        <!-- Footer -->
+        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
-             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+             <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
                  <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
                      <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
                      <span>lamentedelfenix@gmail.com</span>
@@ -315,6 +366,11 @@
                  <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-600">
                      <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
                      <span>@darioarrigazzi</span>
+                 </a>
+                 <!-- NUEVO: Enlace a YouTube -->
+                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-600">
+                     <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
+                     <span>Canal de YouTube</span>
                  </a>
              </div>
              <div class="text-sm text-gray-500 space-x-4 mt-8">
@@ -330,7 +386,8 @@
         </footer>
     </div>
 
-    <!-- Image Modal Structure --><div id="image-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+    <!-- Image Modal Structure -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
         <div class="relative max-w-lg w-full">
             <img id="modal-image" src="" alt="Reseña ampliada" class="w-full h-auto max-h-[90vh] object-contain rounded-lg">
             <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none">&times;</button>
@@ -396,8 +453,8 @@
                         let opacity = '0';
                         let zIndex = '0';
 
-                        // Only show 2 slides on each side for a cleaner look
-                        if (Math.abs(offset) < 3) {
+                        // MODIFICADO: Cambiado de < 3 a < 2 para mostrar solo 3 slides
+                        if (Math.abs(offset) < 2) { // <-- AQUÍ ESTÁ EL CAMBIO
                             const sign = Math.sign(offset);
                             opacity = '0.5';
                             zIndex = `${10 - Math.abs(offset)}`;
@@ -409,8 +466,9 @@
                             } else {
                                 // Side slides
                                 const scale = 0.8;
-                                const rotateY = -sign * 40;
-                                const translateX = sign * 200; /* Aumentado de 150px a 200px para más separación */
+                                // MODIFICADO: Aumentado ángulo y separación
+                                const rotateY = -sign * 45; 
+                                const translateX = sign * 220; 
                                 const translateZ = -180;
                                 transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
                             }
