@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     
     <!-- SEO: Descripción para motores de búsqueda y redes sociales -->
     <meta name="description" content="Psicoterapia y Coaching con Darío Arrigazzi. Descubre herramientas basadas en Un Curso De Milagros y PNL para transformar tu mente, encontrar la paz y alcanzar tus objetivos.">
@@ -20,16 +20,17 @@
     <!-- OPTIMIZACIÓN: Precargar la imagen principal (LCP) -->
     <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/B0IHYVP.webp" type="image/webp">
 
-    <!-- NOTA PARA VISTA PREVIA: Se incluye el script de Tailwind para que los estilos se rendericen.
-         En un entorno de producción, esto debería ser reemplazado por un archivo CSS compilado. -->
+    <!-- Script de Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- OPTIMIZACIÓN: Las fuentes y los iconos se cargan de forma asíncrona -->
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-    <!-- NOTA PARA VISTA PREVIA: Se incluyen los estilos personalizados aquí para la renderización.
-         En producción, deberían estar en el archivo CSS compilado junto con Tailwind. -->
+    <!-- Script del Menú Dinámico -->
+    <script src="menu.js" defer></script>
+
+    <!-- Estilos personalizados -->
     <style>
         html { scroll-behavior: smooth; }
         body {
@@ -107,7 +108,17 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-        /* CORRECCIÓN: Se añade 'position: relative' para contener las imágenes absolutas. */
+        /* NUEVO: Estilo para YouTube */
+        .contact-link.youtube-link:hover > i, 
+        .contact-link.youtube-link:hover > span { color: #FF0000; }
+        .contact-link.youtube-link::after { background-color: #FF0000; }
+
+        /* NUEVO: Estilo para el enlace activo del menú */
+        .active-link { 
+            color: #e91e63; 
+            border-bottom: 2px solid #e91e63; 
+        }
+
         .profile-image-container {
             position: relative;
         }
@@ -135,6 +146,7 @@
             -webkit-background-clip: text; background-clip: text;
             animation: text-flow 10s linear infinite;
         }
+        /* Estilos para el botón de login, ahora usado por el menú */
         .animated-login-button {
             background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
             background-size: 300% auto;
@@ -156,6 +168,9 @@
             <img src="https://i.imgur.com/B0IHYVP.webp" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
         </header>
 
+        <!-- NUEVO: Placeholder para el Menú Dinámico -->
+        <nav id="main-menu-placeholder" class="mb-8"></nav>
+
         <main>
             <!-- Hero Section -->
             <section class="text-center px-4 pb-16">
@@ -170,10 +185,7 @@
                         <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
                             Conoce mis Servicios
                         </a>
-                        <a href="#login-section" class="inline-flex items-center gap-2 text-gray-600 hover:text-brand-pink font-semibold transition-colors duration-300 border-b-2 border-dotted border-gray-400 hover:border-brand-pink pb-1 whitespace-nowrap">
-                            <i class="fas fa-key text-base" aria-hidden="true"></i>
-                            <span>¿Ya eres miembro? Acceder Aquí</span>
-                        </a>
+                        <!-- ELIMINADO: Enlace a la sección de login -->
                     </div>
                 </div>
             </section>
@@ -227,22 +239,19 @@
                 </div>
             </section>
 
-            <!-- Login Section -->
+            <!-- ELIMINADO: Sección de Login -->
+            <!-- 
             <section id="login-section" class="py-20 text-center px-4">
-                <div class="max-w-2xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-6">Acceso para Miembros</h2>
-                    <p class="text-gray-700 mb-8">Si ya formas parte de La Mente del Fénix, puedes acceder a todo el contenido desde aquí.</p>
-                    <a href="./login.html" class="animated-login-button inline-block py-4 px-10 text-xl font-bold rounded-full text-white">
-                        Ya soy Miembro. Entrar
-                    </a>
-                </div>
+                ...
             </section>
+            -->
         </main>
 
         <!-- Footer -->
         <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
              <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
-             <div class="flex flex-col sm:flex-row justify-center items-center gap-8">
+             <!-- MODIFICADO: Añadido YouTube -->
+             <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
                  <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
                      <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
                      <span>lamentedelfenix@gmail.com</span>
@@ -250,6 +259,11 @@
                  <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-600">
                      <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
                      <span>@darioarrigazzi</span>
+                 </a>
+                 <!-- NUEVO: Enlace a YouTube -->
+                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-600">
+                     <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
+                     <span>Canal de YouTube</span>
                  </a>
              </div>
              <div class="text-sm text-gray-500 space-x-4 mt-8">
@@ -266,4 +280,3 @@
     </div>
 </body>
 </html>
-
