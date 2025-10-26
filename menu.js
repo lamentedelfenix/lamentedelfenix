@@ -42,9 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { href: 'membresia.html', text: 'Membresía' }
     ];
 
-    // --- Lógica de detección de página activa ---
-    // (Tu lógica estaba correcta y se mantiene)
-    const currentPath = window.location.pathname;
+    // --- ARREGLO 1 (PÁGINA ACTIVA): Lógica de detección de página MEJORADA ---
+    const currentPath = window.location.pathname; // e.g., "/psicoterapia.html" o "/"
+    // Extrae el nombre del archivo de la ruta (e.g., "psicoterapia.html", "index.html", o "")
+    const currentPageFile = currentPath.substring(currentPath.lastIndexOf('/') + 1);
 
     // --- MEJORA MÓVIL: Nueva estructura HTML con menú hamburguesa ---
     let menuHTML = `
@@ -53,12 +54,22 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <!-- Título "Menú" visible solo en móvil -->
             <span class="text-xl font-semibold text-gray-800 sm:hidden">Menú</span>
-            
-            <!-- Botón Hamburger (visible solo en móvil) -->
-            <button id="menu-toggle" aria-label="Abrir menú" class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-pink">
-                <!-- Asumo que FontAwesome está cargado (basado en tu botón de login) -->
-                <i class="fas fa-bars text-2xl"></i> 
-            </button>
+
+            <!-- --- ARREGLO 2 (MÓVIL): Contenedor para botones de la derecha (móvil) --- -->
+            <div class="flex items-center gap-x-2 sm:hidden">
+                
+                <!-- Botón "Acceso Miembros" (visible SOLO en móvil, siempre visible) -->
+                <a href="./login.html" 
+                   class="animated-login-button inline-flex items-center py-1.5 px-3 text-sm font-semibold rounded-md text-white">
+                   <i class="fas fa-key mr-1.5 text-xs"></i>
+                   <span>Acceso</span> <!-- Texto acortado para móvil -->
+                </a>
+
+                <!-- Botón Hamburger (visible solo en móvil) -->
+                <button id="menu-toggle" aria-label="Abrir menú" class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-pink">
+                    <i class="fas fa-bars text-2xl"></i> 
+                </button>
+            </div>
             
             <!-- Menú de ESCRITORIO (oculto en móvil, visible desde sm) -->
             <ul id="menu-list-desktop" class="hidden sm:flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-4 sm:gap-x-10">
@@ -66,8 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Añadir los enlaces al MENÚ DE ESCRITORIO ---
     menuItems.forEach(item => {
-        const isActive = currentPath.endsWith(item.href) || 
-                         (currentPath.endsWith('/') && item.href === 'index.html');
+        
+        // --- ARREGLO 1 (PÁGINA ACTIVA): Aplicando la nueva lógica ---
+        let isActive = false;
+        if (item.href === 'index.html') {
+            // Es 'Inicio'. Se activa si la URL es "" (raíz) o "index.html"
+            isActive = (currentPageFile === '' || currentPageFile === 'index.html');
+        } else {
+            // Es otra página. Compara directamente el nombre del archivo
+            isActive = (currentPageFile === item.href);
+        }
         
         menuHTML += `
             <li>
@@ -80,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Añadir el botón "Acceso Miembros" al MENÚ DE ESCRITORIO ---
+    // (Este no cambia, se oculta en móvil)
     menuHTML += `
             <li class="w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4 flex justify-center sm:justify-start">
                 <a href="./login.html" 
@@ -97,10 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     // --- Añadir los enlaces al MENÚ MÓVIL ---
-    // (Los duplicamos para tener un control limpio del layout)
     menuItems.forEach(item => {
-        const isActive = currentPath.endsWith(item.href) || 
-                         (currentPath.endsWith('/') && item.href === 'index.html');
+
+        // --- ARREGLO 1 (PÁGINA ACTIVA): Aplicando la nueva lógica también aquí ---
+        let isActive = false;
+        if (item.href === 'index.html') {
+            isActive = (currentPageFile === '' || currentPageFile === 'index.html');
+        } else {
+            isActive = (currentPageFile === item.href);
+        }
         
         menuHTML += `
             <li>
@@ -112,15 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     });
 
-    // --- Añadir el botón "Acceso Miembros" al MENÚ MÓVIL ---
+    // --- ARREGLO 2 (MÓVIL): El botón "Acceso Miembros" se ELIMINA de aquí ---
+    // Ya no es necesario porque está siempre visible en el header móvil.
     menuHTML += `
-            <li class="w-full mt-4 flex justify-center">
-                <a href="./login.html" 
-                   class="animated-login-button inline-flex items-center py-1.5 px-4 text-lg font-semibold rounded-md text-white">
-                   <i class="fas fa-key mr-2 text-sm"></i>
-                   <span>Acceso Miembros</span>
-                </a>
-            </li>
         </ul>
     </div>
     `;
@@ -132,21 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
     header.parentNode.insertBefore(navMenu, header.nextSibling);
 
     // --- LÓGICA HAMBURGER (NUEVO) ---
-    // Obtenemos los elementos DESPUÉS de que han sido añadidos al DOM
+    // (Sin cambios, sigue funcionando igual)
     const menuToggle = document.getElementById('menu-toggle');
     const menuLinksMobile = document.getElementById('menu-links-mobile');
     
     if (menuToggle && menuLinksMobile) {
         menuToggle.addEventListener('click', () => {
-            // Muestra u oculta el menú
             menuLinksMobile.classList.toggle('hidden');
-            
-            // Cambia el icono de barras a 'X' y viceversa
             const icon = menuToggle.querySelector('i');
             if (icon) {
                 if (menuLinksMobile.classList.contains('hidden')) {
-                    icon.classList.remove('fa-times'); // Icono 'X'
-                    icon.classList.add('fa-bars');   // Icono 'hamburguesa'
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
                     menuToggle.setAttribute('aria-label', 'Abrir menú');
                 } else {
                     icon.classList.remove('fa-bars');
@@ -157,3 +173,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
