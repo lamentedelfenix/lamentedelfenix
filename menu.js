@@ -41,11 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { href: 'membresia.html', text: 'Membresía' }
     ];
 
-    // --- CORRECCIÓN 1: Lógica de página activa MEJORADA ---
-    // Obtenemos solo el nombre del archivo para una comparación más robusta.
+    // --- CORRECCIÓN 1 (Revisada): Lógica de página activa MÁS ROBUSTA ---
+    // Maneja casos como '/', '/pagina.html' y '/pagina.html/'
     const currentPath = window.location.pathname;
-    const currentFile = currentPath.split('/').pop();
+    const pathParts = currentPath.split('/').filter(part => part.trim() !== ''); // Filtra strings vacíos
+    
+    // Obtiene el último elemento (ej. 'membresia.html') o 'index.html' si está vacío (es la raíz)
+    let currentFile = pathParts.pop() || 'index.html';
 
+    // Asegurarse de que si es un archivo, tenga la extensión .html para comparar
+    // Esto es por si acaso el servidor omite las extensiones
+    if (currentFile !== 'index.html' && !currentFile.endsWith('.html')) {
+         // Esto es una suposición; si las URLs son limpias (sin .html), necesitaríamos otra lógica.
+         // Pero basándonos en los archivos, los enlaces SÍ tienen .html
+         // Si la lógica falla, podría ser por esto.
+         // De momento, la lógica simple es la mejor:
+         currentFile = pathParts.pop() || 'index.html';
+    }
+    
     // --- CORRECCIÓN 2: Centrado en Escritorio (sm:justify-center) ---
     // Añadimos 'flex-wrap' para robustez y 'sm:justify-center' para centrar
     // el menú de escritorio.
@@ -66,15 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Añadir los enlaces al MENÚ DE ESCRITORIO ---
     menuItems.forEach(item => {
-        // --- CORRECCIÓN 1 (continuación) ---
-        let isActive = false;
-        // Si el archivo está vacío (es la raíz '/') o es 'index.html'
-        if (currentFile === '' || currentFile === 'index.html') {
-            isActive = (item.href === 'index.html');
-        } else {
-            // Compara 'membresia.html' con 'membresia.html', etc.
-            isActive = (item.href === currentFile);
-        }
+        // --- CORRECCIÓN 1 (Revisada, continuación) ---
+        // Compara directamente el href del item con el archivo actual.
+        const isActive = (item.href === currentFile);
         
         menuHTML += `
             <li>
@@ -105,13 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Añadir los enlaces al MENÚ MÓVIL ---
     menuItems.forEach(item => {
-        // --- CORRECCIÓN 1 (repetir lógica) ---
-        let isActive = false;
-        if (currentFile === '' || currentFile === 'index.html') {
-            isActive = (item.href === 'index.html');
-        } else {
-            isActive = (item.href === currentFile);
-        }
+        // --- CORRECCIÓN 1 (Revisada, continuación) ---
+        // Compara directamente el href del item con el archivo actual.
+        const isActive = (item.href === currentFile);
         
         menuHTML += `
             <li>
@@ -167,3 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
