@@ -8,48 +8,40 @@ document.addEventListener('DOMContentLoaded', () => {
             border-bottom: 2px solid #e91e63; 
         }
 
-        /* --- INICIO DE NUEVOS ESTILOS "WOW" --- */
+        /* --- INICIO DE NUEVOS ESTILOS (VERSIÓN PUSH-DOWN) --- */
 
-        /* 1. Fondo del menú: con blur y animación de clip-path */
+        /* 1. Fondo del menú: Animación con max-height para empujar el contenido */
         #menu-links-mobile {
-            /* Usamos clip-path para un 'reveal' suave de arriba a abajo */
-            transition: clip-path 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            clip-path: inset(0 0 100% 0); /* (top right bottom left) - Se revela de arriba a abajo */
+            /* Usamos max-height para la animación de apertura/cierre */
+            transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            max-height: 0; /* Colapsado por defecto */
+            overflow: hidden; /* ¡Importante para que max-height funcione! */
             
-            /* Estilo de fondo: semitransparente con blur */
-            /* Usamos el color de fondo de tu body (#fbf5e2) pero con transparencia */
-            background: rgba(251, 245, 226, 0.9); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px); /* Soporte para Safari */
-            
-            /* Posicionamiento: lo sacamos del flow para que se superponga */
-            /* Lo hacemos 'absolute' relativo al 'nav' (que ya es max-w-6xl mx-auto) */
-            position: absolute;
-            left: 0;
-            right: 0;
-            z-index: 40; /* Debajo de la barra de menú (que pondremos en z-index: 50) */
-            
-            /* Ajustes de layout */
-            margin-top: 1rem; /* El 'mt-4' original */
+            /* Estilo: fondo blanco, ya no es 'absolute' */
+            background: white;
             border-radius: 0.5rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            
+            /* Esta es la separación entre la barra de menú y el desplegable */
+            /* Se colapsará a 0 junto con max-height */
+            margin-top: 1rem; 
         }
         
         #menu-links-mobile.menu-open {
-            clip-path: inset(0 0 0% 0);
+            max-height: 500px; /* Altura suficiente para mostrar los enlaces */
         }
         
-        /* 2. Barra de menú: asegurar que esté por encima del blur */
-        /* El <div> hijo directo del placeholder es el que contiene todo */
+        /* 2. Barra de menú: El 'header' del menú */
         #main-menu-placeholder > div { 
-            position: relative;
-            z-index: 50;
-            /* El fondo blanco original del menú se mantiene en el 'header' del menú */
+            /* El fondo blanco y la sombra están en la barra superior */
             background: white; 
-            border-radius: 0.5rem; /* Asegurar que sea consistente */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: relative; /* Para el z-index */
+            z-index: 50; /* Asegura que esté sobre el desplegable si se solapan */
         }
 
-        /* 3. Animación del icono: rotación suave */
+        /* 3. Animación del icono: rotación suave (Se mantiene) */
         #menu-toggle i {
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
@@ -57,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             transform: rotate(180deg);
         }
 
-        /* 4. Animación de los enlaces: escalonados (staggered) */
+        /* 4. Animación de los enlaces: escalonados (Se mantiene) */
         #menu-links-mobile li {
             opacity: 0;
             transform: scale(0.9) translateY(-10px);
@@ -87,15 +79,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Añadir las clases de estilo al placeholder existente ---
+    // Quitamos 'relative' que ya no es necesario
     navPlaceholder.classList.add(
-        'bg-transparent', // Quitamos el fondo blanco de aquí
+        'bg-transparent', 
         'rounded-lg', 
-        // 'shadow-md', // La sombra ahora la controla el <div> interno
-        'p-0', // Quitamos el padding de aquí
+        'p-0', 
         'max-w-6xl',
-        'mx-auto',
-        'relative' // Necesario para posicionar el menú desplegable
+        'mx-auto'
     );
+    // IMPORTANTE: Quitamos el 'mb-8' del placeholder si existía,
+    // porque el 'mb-8' de tus HTML originales ahora debe estar
+    // en el contenedor principal del div, no en el placeholder.
+    // Lo controlaremos desde el HTML inyectado.
+    navPlaceholder.classList.remove('mb-8');
+
 
     // --- Definir las páginas del menú ---
     const menuItems = [
@@ -109,20 +106,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Estructura HTML del menú (con menú hamburguesa) ---
     // CAMBIO: Añadimos 'p-4' y 'shadow-md' al <div> interno
+    // y el 'mb-8' (margen original de tus páginas) se mueve aquí.
     let menuHTML = `
         <!-- Contenedor principal del nav (Header del menú) -->
-        <div class="flex justify-between items-center p-4 shadow-md rounded-lg">
-            
-            <!-- Título "Menú" visible solo en móvil -->
-            <span id="menu-title-mobile" class="text-xl font-semibold text-gray-800 sm:hidden">Menú</span>
-            
-            <!-- Botón Hamburger (visible solo en móvil) -->
-            <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500">
-                <i class="fas fa-bars text-2xl"></i> 
-            </button>
-            
-            <!-- Menú de ESCRITORIO (oculto en móvil, visible desde sm) -->
-            <ul id="menu-list-desktop" class="hidden sm:flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-4 sm:gap-x-10 flex-grow">
+        <!-- Aplicamos el 'mb-8' aquí para que el margen esté después de todo el menú -->
+        <div class="mb-8"> 
+            <div class="flex justify-between items-center p-4 rounded-lg">
+                
+                <!-- Título "Menú" visible solo en móvil -->
+                <span id="menu-title-mobile" class="text-xl font-semibold text-gray-800 sm:hidden">Menú</span>
+                
+                <!-- Botón Hamburger (visible solo en móvil) -->
+                <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500">
+                    <i class="fas fa-bars text-2xl"></i> 
+                </button>
+                
+                <!-- Menú de ESCRITORIO (oculto en móvil, visible desde sm) -->
+                <ul id="menu-list-desktop" class="hidden sm:flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-4 sm:gap-x-10 flex-grow">
     `;
 
     // --- Añadir los enlaces al MENÚ DE ESCRITORIO ---
@@ -154,8 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </div> <!-- Fin del header del menú -->
 
     <!-- --- Menú Desplegable MÓVIL --- -->
-    <!-- CAMBIO: Quitadas las clases de Tailwind de layout (mt-4, border-t, pt-4) -->
-    <!-- ¡Ahora se controla todo por el CSS inyectado! -->
+    <!-- CORRECCIÓN: Quitamos el 'margin-top: 1rem' del CSS, ahora está en el HTML (mt-4) -->
+    <!-- y como está dentro del div colapsable, desaparecerá correctamente. -->
     <div id="menu-links-mobile" class="sm:hidden">
         <!-- CAMBIO: Añadido padding (p-6) al <ul> para espaciar los enlaces del borde -->
         <ul class="flex flex-col items-center gap-y-4 p-6">
@@ -188,6 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </li>
         </ul>
     </div>
+    
+    </div> <!-- Cierre del <div> que envuelve todo (el que tiene mb-8) -->
     `;
 
     // 9. Insertar el HTML construido en el <nav> placeholder
