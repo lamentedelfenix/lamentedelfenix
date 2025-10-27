@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         /* 2. Barra de menú: El 'header' del menú */
-        #main-menu-placeholder > div { 
+        #main-menu-placeholder > div > div:first-child { 
             /* El fondo blanco y la sombra están en la barra superior */
+            /* Aplicado al div:first-child para que el div.mb-8 no lo coja */
             background: white; 
             border-radius: 0.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -79,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Añadir las clases de estilo al placeholder existente ---
-    // Quitamos 'relative' que ya no es necesario
     navPlaceholder.classList.add(
         'bg-transparent', 
         'rounded-lg', 
@@ -87,10 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'max-w-6xl',
         'mx-auto'
     );
-    // IMPORTANTE: Quitamos el 'mb-8' del placeholder si existía,
-    // porque el 'mb-8' de tus HTML originales ahora debe estar
-    // en el contenedor principal del div, no en el placeholder.
-    // Lo controlaremos desde el HTML inyectado.
     navPlaceholder.classList.remove('mb-8');
 
 
@@ -105,21 +101,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const pathEnd = window.location.pathname.split('/').pop();
 
     // --- Estructura HTML del menú (con menú hamburguesa) ---
-    // CAMBIO: Añadimos 'p-4' y 'shadow-md' al <div> interno
-    // y el 'mb-8' (margen original de tus páginas) se mueve aquí.
     let menuHTML = `
         <!-- Contenedor principal del nav (Header del menú) -->
-        <!-- Aplicamos el 'mb-8' aquí para que el margen esté después de todo el menú -->
         <div class="mb-8"> 
-            <div class="flex justify-between items-center p-4 rounded-lg">
+            <!-- CAMBIO: Padding 'p-4' cambiado a 'py-2 px-4' para simetría -->
+            <div class="flex justify-between items-center py-2 px-4 rounded-lg">
                 
                 <!-- Título "Menú" visible solo en móvil -->
                 <span id="menu-title-mobile" class="text-xl font-semibold text-gray-800 sm:hidden">Menú</span>
                 
-                <!-- Botón Hamburger (visible solo en móvil) -->
-                <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500">
-                    <i class="fas fa-bars text-2xl"></i> 
-                </button>
+                <!-- NUEVO: Contenedor para botones derechos (solo móvil) -->
+                <div class="sm:hidden flex items-center gap-2">
+                    
+                    <!-- NUEVO: Botón de Llave (Icono) -->
+                    <a href="https://lamentedelfenix.com/login" 
+                       class="animated-login-button inline-flex items-center justify-center w-10 h-10 p-2 rounded-md text-white"
+                       aria-label="Acceso Miembros">
+                       <i class="fas fa-key text-lg"></i>
+                    </a>
+
+                    <!-- Botón Hamburger (Movido aquí) -->
+                    <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pink-500">
+                        <i class="fas fa-bars text-2xl"></i> 
+                    </button>
+                </div>
                 
                 <!-- Menú de ESCRITORIO (oculto en móvil, visible desde sm) -->
                 <ul id="menu-list-desktop" class="hidden sm:flex flex-row flex-wrap justify-center items-center gap-x-8 gap-y-4 sm:gap-x-10 flex-grow">
@@ -154,10 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div> <!-- Fin del header del menú -->
 
     <!-- --- Menú Desplegable MÓVIL --- -->
-    <!-- CORRECCIÓN: Quitamos el 'margin-top: 1rem' del CSS, ahora está en el HTML (mt-4) -->
-    <!-- y como está dentro del div colapsable, desaparecerá correctamente. -->
     <div id="menu-links-mobile" class="sm:hidden">
-        <!-- CAMBIO: Añadido padding (p-6) al <ul> para espaciar los enlaces del borde -->
         <ul class="flex flex-col items-center gap-y-4 p-6">
     `;
 
@@ -177,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     });
 
-    // --- Añadir el botón "Acceso Miembros" al MENÚ MÓVIL ---
+    // --- Añadir el botón "Acceso Miembros" al MENÚ MÓVIL (Se mantiene) ---
     menuHTML += `
             <li class="w-full mt-4 flex justify-center">
                 <a href="https://lamentedelfenix.com/login" 
