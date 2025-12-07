@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
+    <!-- Script del menú externo -->
     <script src="menu.js" defer></script>
 
     <style>
@@ -105,12 +106,6 @@
         .contact-link.youtube-link:hover > span { color: #FF0000; }
         .contact-link.youtube-link::after { background-color: #FF0000; }
 
-        /* NUEVO: Estilo para el enlace activo del menú */
-        .active-link { 
-            color: #e91e63; 
-            border-bottom: 2px solid #e91e63; 
-        }
-
         .profile-image-container {
             position: relative;
         }
@@ -138,12 +133,14 @@
             -webkit-background-clip: text; background-clip: text;
             animation: text-flow 10s linear infinite;
         }
-        /* Estilos para el botón de login, ahora usado por el menú */
+        /* Estilos para el botón de login, utilizado por menu.js */
         .animated-login-button {
             background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
             background-size: 300% auto;
             animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
         .animated-login-button:hover { transform: scale(1.05); }
         @keyframes pulsating-glow-alternating {
@@ -160,6 +157,7 @@
             <img src="https://i.imgur.com/B0IHYVP.webp" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
         </header>
 
+        <!-- Placeholder para el menú. El contenido es inyectado por menu.js -->
         <nav id="main-menu-placeholder" class="mb-8"></nav>
 
         <main>
@@ -191,21 +189,34 @@
                         <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
                         
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            ¿Sientes que, sin saber cómo, acabas repitiendo las mismas situaciones? ¿Parejas conflictivas, bloqueos con el dinero, problemas que vuelven una y otra vez?
+                            ¿Sientes que tropiezas una y otra vez con la misma piedra? A veces, sin saber cómo, nos encontramos repitiendo patrones dolorosos: relaciones que no funcionan, inestabilidad económica o bloqueos que parecen no tener fin.
                         </p>
+                        
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            A menudo, lo que creemos que es un problema <em>presente</em> (con un jefe, la comida o una relación) es en realidad una proyección de nuestro pasado. Y lo sé, porque yo mismo lo viví.
+                            A menudo creemos que luchamos contra un jefe difícil, una crisis o una pareja conflictiva, pero en realidad estamos luchando contra una proyección de nuestro pasado. Lo sé porque yo mismo caminé por ese laberinto.
                         </p>
+                        
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            Mi camino comenzó en un hogar caótico, y durante años, vi cómo esos patrones invisibles afectaban mi confianza y mi estabilidad como adulto. Creía que luchaba contra problemas "de ahora".
+                            Mi viaje comenzó en un hogar caótico. Durante años, esos patrones invisibles sabotearon mi confianza y estabilidad, haciéndome creer que el mundo estaba en mi contra. Pero la salida no estaba fuera, estaba dentro.
                         </p>
+                        
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            Encontré las respuestas en Un Curso de Milagros, la PNL y el Coaching. No como simple teoría, sino como herramientas prácticas para <em>reinterpretar</em> ese pasado. Al sanar la raíz, los problemas presentes se disolvieron.
+                            Encontré la llave en la integración de Un Curso de Milagros, la PNL y el Coaching. Estas no fueron solo teorías para mí, sino las herramientas prácticas que me permitieron reinterpretar mi historia y sanar la raíz del dolor.
                         </p>
-                        <p class="text-gray-700 leading-relaxed">
-                            Mi misión es guiarte en ese mismo proceso. Dejar de luchar contra la sombra (el problema actual) y sanar la herida original. Porque la práctica es lo que transforma.
-                        </buyp>
-                        <p class="mt-12 md:mt-6 text-center animated-quote text-xl md:text-2xl">
+                        
+                        <p class="text-gray-700 leading-relaxed mb-6">
+                            Hoy, mi misión es acompañarte a hacer lo mismo: dejar de pelear con los efectos de tu vida para sanar las causas. Porque cuando sanas la percepción, el mundo que ves cambia automáticamente.
+                        </p>
+                        
+                        <!-- NUEVA LLAMADA A LA ACCIÓN -->
+                        <div class="text-center md:text-left">
+                            <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-2 px-6 rounded-lg inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
+                                <span>¿Te resuena esto? Descubre mi método</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <p class="mt-12 md:mt-8 text-center animated-quote text-xl md:text-2xl">
                             "En nuestra mente todos tenemos una máquina del tiempo en la que podemos viajar a nuestro pasado y reinterpretarlo, transformando con ello la percepción que teníamos de nosotros mismos y de nuestro pasado, haciendo que automáticamente nuestro presente se transforme."
                         </p>
                     </div>
