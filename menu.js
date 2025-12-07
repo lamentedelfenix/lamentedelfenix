@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="sm:hidden flex items-center gap-2">
                     
                     <!-- NUEVO: Botón de Llave (Icono) -->
-                    <a href="https://lamentedelfenix.com/login" 
+                    <a href="https://www.lamentedelfenix.com/login" 
                        class="animated-login-button inline-flex items-center justify-center w-10 h-10 p-2 rounded-md text-white"
                        aria-label="Acceso Miembros">
                        <i class="fas fa-key text-lg"></i>
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Añadir el botón "Acceso Miembros" al MENÚ DE ESCRITORIO ---
     menuHTML += `
             <li class="w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4 flex justify-center sm:justify-start">
-                <a href="https://lamentedelfenix.com/login" 
+                <a href="https://www.lamentedelfenix.com/login" 
                    class="animated-login-button inline-flex items-center py-1.5 px-4 text-lg font-semibold rounded-md text-white">
                    <i class="fas fa-key mr-2 text-sm"></i>
                    <span>Acceso Miembros</span>
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Añadir el botón "Acceso Miembros" al MENÚ MÓVIL (Se mantiene) ---
     menuHTML += `
             <li class="w-full mt-4 flex justify-center">
-                <a href="https://lamentedelfenix.com/login" 
+                <a href="https://www.lamentedelfenix.com/login" 
                    class="animated-login-button inline-flex items-center py-1.5 px-4 text-lg font-semibold rounded-md text-white">
                    <i class="fas fa-key mr-2 text-sm"></i>
                    <span>Acceso Miembros</span>
@@ -224,4 +224,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
