@@ -24,9 +24,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-    <!-- NUEVO: Script del Menú Dinámico -->
-    <script src="menu.js" defer></script>
-
     <!-- Estilos personalizados -->
     <style>
         html { scroll-behavior: smooth; }
@@ -104,28 +101,6 @@
         .contact-link.youtube-link:hover > i, 
         .contact-link.youtube-link:hover > span { color: #FF0000; }
         .contact-link.youtube-link::after { background-color: #FF0000; }
-
-        /* NUEVO: Estilo para el enlace activo del menú */
-        .active-link { 
-            color: #e91e63; 
-            border-bottom: 2px solid #e91e63; 
-        }
-
-        /* NUEVO: Estilos para el botón de login, del menu.js */
-        @keyframes text-flow {
-            to { background-position: 200% center; }
-        }
-        .animated-login-button {
-            background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
-            background-size: 300% auto;
-            animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .animated-login-button:hover { transform: scale(1.05); }
-        @keyframes pulsating-glow-alternating {
-            0%, 100% { box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); }
-            50% { box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 7px rgba(0, 188, 212, 0.7); }
-        }
 
         .pricing-card {
             border: 2px solid #e0d9c6;
@@ -240,63 +215,96 @@
             </a>
         </header>
 
-        <!-- NUEVO: Placeholder para el Menú Dinámico -->
-        <nav id="main-menu-placeholder" class="mb-8"></nav>
+        <!-- Botón para volver atrás -->
+        <div class="text-center mb-12">
+            <a href="./index.html" class="inline-flex items-center gap-2 text-brand-pink font-bold hover:text-brand-cyan transition-colors text-lg">
+                <i class="fas fa-arrow-left"></i> Volver a la página principal
+            </a>
+        </div>
 
         <main>
             <!-- Hero Section -->
-            <section class="text-center px-4 pt-8 pb-16">
+            <section class="text-center px-4 pt-4 pb-16">
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-3xl md:text-5xl font-extrabold">
                         Un Viaje Hacia Tu Paz Interior
                     </h1>
                     <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
-                        Mis sesiones de psicoterapia son un espacio seguro y amoroso donde desenredamos los nudos de la mente para que puedas recordar la verdad de quién eres: paz, amor y libertad.
+                        Mis sesiones intensivas de reprogramación combinan la psicoterapia de Un Curso de Milagros, PNL y el cambio de identidad para deshacer tus creencias limitantes. Un espacio seguro para desenredar los nudos de la mente, restablecer tu conexión con Dios y recordar la verdad de quién eres.
                     </p>
                 </div>
             </section>
             
-            <!-- Methodology Section (Simplified) -->
+            <!-- NUEVO: Para quién es (Fondo Blanco) -->
             <section class="py-20 bg-white px-4">
-                <div class="max-w-4xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-8">¿Cómo funcionan mis sesiones de Psicoterapia?</h2>
-                    <p class="text-gray-700 leading-relaxed text-lg mb-6">
-                        Mis sesiones están enraizadas en los principios de <strong class="text-brand-pink">Un Curso de Milagros</strong>. Desde esta perspectiva, entendemos que todo conflicto en el presente procede de una culpa, consciente o inconsciente, cuyo origen son juicios que hiciste sin darte cuenta contra ti mismo/a u otros.
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-8">¿Para quién es esta sesión?</h2>
+                    <p class="text-center text-lg text-gray-700 mb-10 max-w-3xl mx-auto">
+                        Esta sesión está diseñada para personas <strong class="text-brand-pink">realmente comprometidas</strong> con su cambio. Si estás atravesando alguno de estos conflictos, puedo ayudarte:
                     </p>
-                    <p class="text-gray-700 leading-relaxed text-lg mb-8">
-                        Utilizaremos el perdón como una poderosa herramienta para liberar la mente de la culpa, el miedo, el resentimiento y las percepciones erróneas que te causan dolor. No se trata de un perdón moral, sino de un cambio de perspectiva que te permite ver el mundo, y a ti mismo, desde un lugar de amor y paz.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed text-lg">
-                        Este enfoque se complementa y potencia con técnicas prácticas de <strong class="text-brand-cyan">PNL (Programación Neurolingüística)</strong> para identificar y transformar patrones de pensamiento limitantes, y herramientas de <strong class="text-yellow-500">Coaching</strong> para ayudarte a establecer objetivos claros y avanzar hacia la vida que realmente deseas.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Example Psychotherapy Section (YouTube Video) -->
-            <section class="py-20 px-4">
-                <div class="max-w-4xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-8">Una Psicoterapia de Ejemplo</h2>
-                    <p class="text-gray-700 leading-relaxed text-lg mb-8">
-                        Para que te hagas una idea más clara de cómo es una sesión, te invito a ver este ejemplo de psicoterapia en mi canal de YouTube.
-                    </p>
-                    <div class="max-w-2xl mx-auto rounded-lg shadow-xl overflow-hidden">
-                        <div class="video-container">
-                            <iframe 
-                                src="https://www.youtube.com/embed/4AS4ZmdUW_8" 
-                                title="Psicoterapia de Ejemplo" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                            </iframe>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center transition-transform hover:-translate-y-1">
+                            <i class="fas fa-heart-broken text-brand-pink text-4xl mb-4"></i>
+                            <h3 class="font-bold text-xl mb-2">Relaciones</h3>
+                            <p class="text-sm text-gray-600">Conflictos de pareja constantes, falta de entendimiento o patrones tóxicos repetitivos.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center transition-transform hover:-translate-y-1">
+                            <i class="fas fa-wallet text-brand-pink text-4xl mb-4"></i>
+                            <h3 class="font-bold text-xl mb-2">Dinero</h3>
+                            <p class="text-sm text-gray-600">Bloqueos económicos, inestabilidad laboral y sensación constante de escasez.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center transition-transform hover:-translate-y-1">
+                            <i class="fas fa-battery-empty text-brand-pink text-4xl mb-4"></i>
+                            <h3 class="font-bold text-xl mb-2">Autoestima y Apatía</h3>
+                            <p class="text-sm text-gray-600">Inseguridad profunda, estados de vacío, estancamiento o falta de sentido vital.</p>
+                            <div class="mt-4 inline-block bg-pink-100 text-brand-pink text-xs px-3 py-2 rounded-lg font-semibold leading-tight">
+                                Especialmente recomendado: Yo vengo de una muy baja autoestima y un estado de apatía generalizado.
+                            </div>
                         </div>
                     </div>
-                    <a href="https://youtu.be/4AS4ZmdUW_8" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-8 rounded-lg shadow-lg text-lg mt-10 inline-block">
-                        Ver en YouTube <i class="fab fa-youtube ml-2"></i>
-                    </a>
                 </div>
             </section>
 
-            <!-- Testimonials Section (Coverflow Carousel) -->
-            <section class="py-20 bg-white px-4 overflow-x-hidden"> <!-- Added overflow-x-hidden to section -->
+            <!-- NUEVO: El Proceso (Fondo Beige del body) -->
+            <section class="py-20 px-4">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-4">¿Cómo lo haremos?</h2>
+                    <p class="text-center text-gray-700 mb-12 text-lg max-w-2xl mx-auto font-medium">
+                        Te guiaré paso a paso utilizando exactamente los mismos métodos que me funcionaron a mí, Darío Arrigazzi, para transformar mi vida.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Paso 1 -->
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-cyan flex flex-col items-center text-center relative mt-4">
+                            <div class="absolute -top-6 w-12 h-12 bg-cyan-100 text-brand-cyan rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#fbf5e2]">1</div>
+                            <h3 class="font-bold text-lg mb-2 mt-4">Origen</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Exponemos tu problema actual e identificamos juntos el origen real del conflicto.</p>
+                        </div>
+                        <!-- Paso 2 -->
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-cyan flex flex-col items-center text-center relative mt-4">
+                            <div class="absolute -top-6 w-12 h-12 bg-cyan-100 text-brand-cyan rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#fbf5e2]">2</div>
+                            <h3 class="font-bold text-lg mb-2 mt-4">Liberación</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Fase de entrega. Soltamos los bloqueos y cargas para reconectar con tu verdadero ser.</p>
+                        </div>
+                        <!-- Paso 3 -->
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-cyan flex flex-col items-center text-center relative mt-4">
+                            <div class="absolute -top-6 w-12 h-12 bg-cyan-100 text-brand-cyan rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#fbf5e2]">3</div>
+                            <h3 class="font-bold text-lg mb-2 mt-4">Plan de Acción</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Definimos pasos claros para las próximas semanas, asegurando que los cambios se mantengan.</p>
+                        </div>
+                        <!-- Paso 4 -->
+                        <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-cyan flex flex-col items-center text-center relative mt-4">
+                            <div class="absolute -top-6 w-12 h-12 bg-cyan-100 text-brand-cyan rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#fbf5e2]">4</div>
+                            <h3 class="font-bold text-lg mb-2 mt-4">Meditación</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Tras la sesión, recibirás una meditación totalmente adaptada a tu caso para seguir trabajando.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section (Coverflow Carousel) - (Fondo Blanco) -->
+            <section class="py-20 bg-white px-4 overflow-x-hidden">
                 <div class="max-w-5xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">La experiencia de otros</h2>
                     <p class="text-center text-gray-700 mb-8">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
@@ -313,44 +321,51 @@
             
             <!-- Pricing Section -->
             <section id="precios" class="py-20 px-4">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-12">Invierte en tu Bienestar</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        
-                        <!-- Sesión Individual -->
-                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
-                            <h3 class="text-2xl font-bold mb-4">Sesión Individual</h3>
-                            <p class="text-5xl font-extrabold mb-4">55€</p>
-                            <p class="text-gray-600 mb-2">Una sesión de aproximadamente 90 minutos para abordar un tema específico y obtener claridad.</p>
-                            <p class="text-sm text-gray-500 mb-6 flex-grow">(Se paga después de la sesión)</p>
-                            <a href="https://calendly.com/lamentedelfenix/sesion-de-reprogramacion-consciente" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Reservar Ahora</a>
-                        </div>
-                        
-                        <!-- Pack 5 Sesiones (Updated Price) -->
-                        <div class="pricing-card recommended rounded-lg p-8 text-center flex flex-col bg-white relative">
-                            <h3 class="text-2xl font-bold mb-4">Pack 5 Sesiones</h3>
-                             <p class="text-5xl font-extrabold mb-2">42€<span class="text-xl font-medium">/sesión</span></p>
-                             <p class="text-gray-600 mb-6 font-semibold">(Pago único de 210€)</p>
-                            <p class="text-gray-600 mb-6 flex-grow">Un proceso de transformación más profundo y comprometido con un ahorro significativo.</p>
-                            <div class="mt-auto pt-4 flex flex-col gap-2 w-full">
-                                <a href="https://wa.me/34667752916?text=Hola!%20Me%20interesa%20el%20pack%20de%205%20sesiones." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center">
-                                    <i class="fab fa-whatsapp mr-2"></i> WhatsApp
-                                </a>
-                                <a href="mailto:lamentedelfenix@gmail.com?subject=Inter%C3%A9s%20en%20Pack%20de%205%20Sesiones&body=Hola!%20Me%20interesa%20el%20pack%20de%205%20sesiones." class="btn btn-cyan font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center">
-                                    <i class="fas fa-envelope mr-2"></i> Email
-                                </a>
+                <div class="max-w-xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-12">Reserva tu Sesión</h2>
+                    
+                    <div class="pricing-card recommended rounded-lg p-8 flex flex-col bg-white relative">
+                        <h3 class="text-2xl font-bold mb-6 text-center">Sesión Intensiva de Desbloqueo</h3>
+                        <div class="flex flex-col gap-4 mb-8 mx-auto w-fit text-brand-cyan font-bold">
+                            <div class="flex items-center gap-3 text-left">
+                                <i class="far fa-clock text-xl w-6 text-center"></i> 
+                                <div class="leading-tight">
+                                    <span class="block text-xs font-normal text-gray-500">Aproximadamente</span>
+                                    <span class="block text-lg">1h 30m</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 text-left">
+                                <i class="fas fa-tag text-xl w-6 text-center"></i> 
+                                <div class="leading-tight">
+                                    <span class="block text-lg">$210 USD</span>
+                                    <span class="block text-xs font-normal text-gray-500">(aprox. 200€)</span>
+                                </div>
                             </div>
                         </div>
+                        <ul class="text-gray-700 flex-grow mb-8 space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-search text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                <span><strong>Identificación</strong> profunda de tus necesidades y bloqueos actuales.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-unlock-alt text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                <span><strong>Proceso guiado</strong> de concienciación, entrega y liberación de cargas.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-clipboard-check text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                <span><strong>Diseño de un plan de acción</strong> y meditación a tu medida para seguir en casa.</span>
+                            </li>
+                        </ul>
 
-                        <!-- Miembros -->
-                        <div class="pricing-card rounded-lg p-8 text-center flex flex-col bg-gray-50">
-                            <h3 class="text-2xl font-bold mb-4">Precio para Miembros</h3>
-                            <p class="text-5xl font-extrabold mb-4 text-brand-pink">35€</p>
-                            <p class="text-gray-600 mb-6 flex-grow">Un beneficio exclusivo si formas parte de la comunidad de "La Mente del Fénix".</p>
-                            <a href="https://www.lamentedelfenix.com/membresia" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg mt-auto w-full">Hazte Miembro</a>
+                        <!-- Garantía -->
+                        <div class="mb-6 p-4 bg-green-50 rounded-lg flex items-start gap-3 text-sm text-gray-700 border border-green-100 text-left">
+                            <i class="fas fa-shield-alt text-green-600 text-lg mt-0.5"></i>
+                            <p><strong>Garantía de Satisfacción 100%:</strong> Si al finalizar la sesión sientes que no te ha aportado valor, te devuelvo tu dinero sin hacer preguntas.</p>
                         </div>
 
+                        <a href="https://buy.stripe.com/aFa3cufxqfVCfzH3tL3F605" target="_blank" rel="noopener noreferrer" class="btn btn-cyan font-bold py-3 px-6 rounded-lg text-center w-full mt-auto text-lg shadow-md hover:shadow-lg">Reservar Sesión</a>
                     </div>
+
                 </div>
             </section>
         </main>
@@ -367,7 +382,6 @@
                      <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
                      <span>@darioarrigazzi</span>
                  </a>
-                 <!-- NUEVO: Enlace a YouTube -->
                  <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-600">
                      <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
                      <span>Canal de YouTube</span>
@@ -454,7 +468,7 @@
                         let zIndex = '0';
 
                         // MODIFICADO: Cambiado de < 3 a < 2 para mostrar solo 3 slides
-                        if (Math.abs(offset) < 2) { // <-- AQUÍ ESTÁ EL CAMBIO
+                        if (Math.abs(offset) < 2) { 
                             const sign = Math.sign(offset);
                             opacity = '0.5';
                             zIndex = `${10 - Math.abs(offset)}`;
@@ -547,4 +561,3 @@
     </script>
 </body>
 </html>
-
