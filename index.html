@@ -98,7 +98,6 @@
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-        /* NUEVO: Estilo para YouTube */
         .contact-link.youtube-link:hover > i, 
         .contact-link.youtube-link:hover > span { color: #FF0000; }
         .contact-link.youtube-link::after { background-color: #FF0000; }
@@ -129,20 +128,6 @@
             background-size: 200% auto;
             -webkit-background-clip: text; background-clip: text;
             animation: text-flow 10s linear infinite;
-        }
-        /* Estilos para el botón de login, utilizado por menu.js */
-        .animated-login-button {
-            background-image: linear-gradient(120deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
-            background-size: 300% auto;
-            animation: text-flow 8s linear infinite, pulsating-glow-alternating 4s infinite ease-in-out;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .animated-login-button:hover { transform: scale(1.05); }
-        @keyframes pulsating-glow-alternating {
-            0%, 100% { box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 0 20px 4px rgba(233, 30, 99, 0.5); }
-            50% { box-shadow: 0 15px 30px rgba(0,0,0,0.2), 0 0 30px 7px rgba(0, 188, 212, 0.7); }
         }
     </style>
 </head>
@@ -290,9 +275,14 @@
                                         <i class="fas fa-clipboard-check text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
                                         <span><strong>Diseño de un plan de acción</strong> y meditación a tu medida para seguir en casa.</span>
                                     </li>
+                                    <!-- Beneficios añadidos -->
                                     <li class="flex items-start">
                                         <i class="fab fa-whatsapp text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
                                         <span><strong>Soporte vía WhatsApp</strong> durante 1 semana para resolver dudas y acompañarte en tu proceso.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-video text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong>Grabación confidencial:</strong> Llévate el vídeo de la sesión (opcional) para repasar y asentar aprendizajes.</span>
                                     </li>
                                 </ul>
                                 <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-3 px-6 rounded-lg text-center w-full mt-auto">Más Información</a>
