@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="Acompañamiento con Darío Arrigazzi para superar bloqueos, sanar traumas del pasado y transformar tu mente. Desbloquea tu verdadero potencial y cambia tu vida.">
+    <meta name="description" content="Acompañamiento con Darío Arrigazzi para superar bloqueos, liberar cargas del pasado y transformar tu mente. Desbloquea tu verdadero potencial y cambia tu vida.">
 
-    <title>Terapia y Superación de Bloqueos | Darío Arrigazzi</title>
+    <title>Acompañamiento y Superación de Bloqueos | Darío Arrigazzi</title>
 
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
@@ -129,6 +129,80 @@
             -webkit-background-clip: text; background-clip: text;
             animation: text-flow 10s linear infinite;
         }
+
+        /* Carrusel y Modal Styles */
+        #image-modal {
+            transition: opacity 0.3s ease;
+        }
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 620px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px; 
+            overflow: hidden; 
+        }
+        .testimonial-carousel {
+            position: relative;
+            width: 300px; 
+            height: 100%;
+            transform-style: preserve-3d;
+            cursor: grab;
+        }
+        .testimonial-carousel.grabbing {
+            cursor: grabbing;
+        }
+        .testimonial-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+            user-select: none;
+            -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.15)));
+        }
+        .testimonial-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Garantiza que los pantallazos verticales no se corten */
+            pointer-events: none;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            color: #0c2f5b;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .carousel-button:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .carousel-button.prev { left: 5%; }
+        .carousel-button.next { right: 5%; }
+
+        @media (max-width: 768px) {
+            .testimonial-carousel { width: 220px; }
+            .carousel-wrapper { height: 500px; } 
+            .carousel-button.prev { left: 2%; }
+            .carousel-button.next { right: 2%; }
+        }
     </style>
 </head>
 <body class="p-4">
@@ -142,15 +216,16 @@
         <main>
             <section class="text-center px-4 pb-16">
                 <div class="max-w-4xl mx-auto">
+                    <!-- 1. Título orientado al dolor/beneficio -->
                     <h1 class="text-3xl md:text-5xl font-extrabold">
-                        Despierta tu Potencial. Transforma tu Mente.
+                        Libérate de los bloqueos del pasado y recupera el control de tu vida.
                     </h1>
-                    <p class="text-xl md:text-3xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
-                        Descubre las herramientas prácticas para superar tus bloqueos, encontrar la paz mental y alcanzar los objetivos que siempre has deseado.
+                    <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
+                        Un acompañamiento intensivo para liberar tus bloqueos emocionales, soltar el estancamiento y encontrar la paz mental que te mereces.
                     </p>
                     <div class="mt-10 flex flex-col items-center gap-4">
                         <a href="#servicios" class="btn btn-pink font-bold py-3 px-8 rounded-lg shadow-lg text-lg">
-                            Conoce mis Servicios
+                            Descubre cómo puedo ayudarte
                         </a>
                     </div>
                 </div>
@@ -167,12 +242,13 @@
                     <div class="md:col-span-2">
                         <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
                         
+                        <!-- 2. Negritas estratégicas para lectura rápida (F pattern) -->
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            Tuve una infancia difícil y muy traumática que me llenó de miedos e inseguridades. Aunque alcancé cierto éxito profesional impulsando desde sus inicios el grupo empresarial <strong>Lovenature Superfoods</strong> junto a mis hermanos, y ejerciendo como Director de Operaciones y Logística, la verdadera transformación llegó después.
+                            Tuve una <strong>infancia muy traumática</strong>. Crecí en un entorno de violencia extrema, presenciando el maltrato de mi padre hacia mi madre y hermanos. Esto me dejó con una autoestima nula, viviendo en un estado constante de miedo, terror y culpa. Aunque años después alcancé el éxito profesional impulsando la empresa <strong>Lovenature Superfoods</strong> como Director de Operaciones, por dentro seguía roto.
                         </p>
                         
                         <p class="text-gray-700 mb-4 leading-relaxed">
-                            Al dejar la empresa, me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins. Fue entonces cuando logré sanar mis traumas, reprogramar mis creencias limitantes y soltar mis emociones reprimidas.
+                            Al dejar la empresa, me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins. Fue entonces cuando logré <strong>superar mis bloqueos más profundos, reprogramar mi mente y liberar las emociones reprimidas de mi pasado</strong>.
                         </p>
                         
                         <p class="text-gray-700 mb-6 leading-relaxed">
@@ -181,7 +257,7 @@
                         
                         <div class="text-center md:text-left">
                             <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-2 px-6 rounded-lg inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
-                                <span>¿Te resuena esto? Descubre mi método</span>
+                                <span>¿Te resuena esto? Conoce mi historia</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -193,7 +269,22 @@
                 </div>
             </section>
 
-            <section id="servicios" class="py-20 px-4">
+            <!-- 3. Prueba Social (Carrusel) -->
+            <section class="py-16 bg-[#fbf5e2] px-4 overflow-x-hidden">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center mb-8">El resultado de este trabajo</h2>
+                    
+                    <div class="carousel-wrapper">
+                        <div id="testimonial-carousel" class="testimonial-carousel">
+                            <!-- Slides -->
+                        </div>
+                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
+                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="servicios" class="py-20 px-4 bg-white">
                 <div class="max-w-6xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-12">¿Cómo puedo ayudarte?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -207,10 +298,10 @@
                                 </div>
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
-                                <div class="h-20 flex items-center justify-center mb-2">
+                                <div class="min-h-[5rem] flex items-center justify-center mb-4">
                                     <h3 class="text-2xl font-bold text-center leading-tight">Escuela Mente Fénix</h3>
                                 </div>
-                                <div class="h-20 flex flex-col justify-center gap-3 mb-6 mx-auto w-fit text-brand-pink font-bold">
+                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-brand-pink font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="fas fa-tag text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
@@ -222,15 +313,15 @@
                                 <ul class="text-gray-700 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
                                         <i class="fas fa-video text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Llamadas grupales semanales</strong> en vivo (quedan guardadas).</span>
+                                        <span><strong>Mentoría semanal en vivo:</strong> Resuelve tus atascos cara a cara (sesiones grabadas).</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-graduation-cap text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Curso de Inicio Rápido</strong>, Bóveda de Masterclasses y recursos extra.</span>
+                                        <span><strong>Ruta paso a paso:</strong> Acceso a cursos, bóveda de masterclasses y recursos exclusivos.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-users text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Comunidad activa:</strong> Foro para reportar victorias y resolver atascos diarios.</span>
+                                        <span><strong>Tribu Fénix:</strong> Una comunidad privada para celebrar victorias y apoyarte a diario.</span>
                                     </li>
                                 </ul>
                                 <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" class="btn btn-pink font-bold py-3 px-6 rounded-lg text-center w-full mt-auto opacity-90">Ver Escuela (Próximamente)</a>
@@ -243,10 +334,10 @@
                                 <img src="https://i.imgur.com/8eaPrNd.jpeg" alt="Sesión 1:1 Intensiva de Desbloqueo" class="w-full h-full object-cover object-top">
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
-                                <div class="h-20 flex items-center justify-center mb-2">
+                                <div class="min-h-[5rem] flex items-center justify-center mb-4">
                                     <h3 class="text-2xl font-bold text-center leading-tight">Sesión 1:1 Intensiva de Desbloqueo</h3>
                                 </div>
-                                <div class="h-20 flex flex-col justify-center gap-3 mb-6 mx-auto w-fit text-brand-cyan font-bold">
+                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-brand-cyan font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="far fa-clock text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
@@ -265,27 +356,26 @@
                                 <ul class="text-gray-700 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
                                         <i class="fas fa-search text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Identificación</strong> profunda de tus necesidades y bloqueos actuales.</span>
+                                        <span><strong>Claridad absoluta:</strong> Descubre la raíz exacta que te mantiene bloqueado hoy.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-unlock-alt text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Proceso guiado</strong> de concienciación, entrega y liberación de cargas.</span>
+                                        <span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-clipboard-check text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Diseño de un plan de acción</strong> y meditación a tu medida para seguir en casa.</span>
+                                        <span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span>
                                     </li>
-                                    <!-- Beneficios añadidos -->
                                     <li class="flex items-start">
                                         <i class="fab fa-whatsapp text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Soporte vía WhatsApp</strong> durante 1 semana para resolver dudas y acompañarte en tu proceso.</span>
+                                        <span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 7 días tras la sesión.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-video text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Grabación confidencial:</strong> Llévate el vídeo de la sesión (opcional) para repasar y asentar aprendizajes.</span>
+                                        <span><strong>Grabación de la sesión</strong> (opcional) para que repases tus mayores revelaciones en frío.</span>
                                     </li>
                                 </ul>
-                                <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-3 px-6 rounded-lg text-center w-full mt-auto">Más Información</a>
+                                <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-3 px-6 rounded-lg text-center w-full mt-auto">Ver detalles y reservar</a>
                             </div>
                         </div>
 
@@ -298,10 +388,10 @@
                                 </div>
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
-                                <div class="h-20 flex items-center justify-center mb-2">
+                                <div class="min-h-[5rem] flex items-center justify-center mb-4">
                                     <h3 class="text-2xl font-bold text-center leading-tight">Máster de Transformación<br>Mente Fénix</h3>
                                 </div>
-                                <div class="h-20 flex flex-col justify-center gap-3 mb-6 mx-auto w-fit text-gray-800 font-bold">
+                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-gray-800 font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="far fa-calendar-alt text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
@@ -320,15 +410,15 @@
                                 <ul class="text-gray-700 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
                                         <i class="fas fa-sync-alt text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Cambio de identidad de 180º:</strong> Reestructuración profunda y creación de nuevos hábitos.</span>
+                                        <span><strong>Transformación radical:</strong> Reestructura tu identidad y crea la vida que realmente deseas.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-spa text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Conexión espiritual</strong> exhaustiva para soltar resistencias, apegos y entrenar tu mente.</span>
+                                        <span><strong>Reprogramación profunda:</strong> Suelta resistencias, apegos y aprende a dominar tu mente.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-user-friends text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Sesiones semanales íntimas</strong> con un grupo muy reducido para asegurar tu evolución.</span>
+                                        <span><strong>Acompañamiento premium:</strong> Trabajo en un grupo ultra reducido para asegurar tu éxito.</span>
                                     </li>
                                 </ul>
                                 <button disabled class="bg-gray-300 text-gray-600 font-bold py-3 px-6 rounded-lg text-center w-full mt-auto cursor-not-allowed">Apertura Próximamente</button>
@@ -341,7 +431,7 @@
 
         </main>
 
-        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center">
+        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center bg-[#fbf5e2]">
              <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
              <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
                  <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
@@ -369,5 +459,161 @@
              <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
+
+    <!-- Modal de Imagen -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="relative max-w-lg w-full">
+            <img id="modal-image" src="" alt="Reseña ampliada" class="w-full h-auto max-h-[90vh] object-contain rounded-lg">
+            <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Modal Logic
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+
+            function openModal(src) {
+                modalImage.src = src;
+                imageModal.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            function closeModal() {
+                imageModal.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !imageModal.classList.contains('opacity-0')) closeModal();
+            });
+
+            // Carousel Logic
+            const carousel = document.getElementById('testimonial-carousel');
+            if (carousel) {
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                const images = [
+                    'https://i.imgur.com/8fNS5fp.png', 'https://i.imgur.com/o2EQNjB.png', 'https://i.imgur.com/rfAPnAz.png',
+                    'https://i.imgur.com/zDiOzLm.png', 'https://i.imgur.com/BjoEESy.png', 'https://i.imgur.com/epb7xzc.png',
+                    'https://i.imgur.com/ZxBpheZ.png'
+                ];
+                let currentIndex = Math.floor(images.length / 2);
+                let slides = [];
+
+                let isDragging = false, startPos = 0, dragOffset = 0;
+
+                images.forEach((src, i) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'testimonial-slide';
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = `Reseña de cliente ${i + 1}`;
+                    img.className = 'testimonial-image';
+                    img.draggable = false;
+                    slide.appendChild(img);
+                    carousel.appendChild(slide);
+                    slides.push(slide);
+                });
+
+                function updateCarousel() {
+                    slides.forEach((slide, i) => {
+                        const offset = i - currentIndex;
+                        let transform = `scale(0)`;
+                        let opacity = '0';
+                        let zIndex = '0';
+
+                        if (Math.abs(offset) < 2) { 
+                            const sign = Math.sign(offset);
+                            opacity = '0.5';
+                            zIndex = `${10 - Math.abs(offset)}`;
+
+                            if (offset === 0) {
+                                transform = `translateX(0) translateZ(0) rotateY(0) scale(1.1)`;
+                                opacity = '1';
+                            } else {
+                                const scale = 0.8;
+                                const rotateY = -sign * 45; 
+                                const translateX = sign * 220; 
+                                const translateZ = -180;
+                                transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+                            }
+                        }
+
+                        slide.style.transform = transform;
+                        slide.style.opacity = opacity;
+                        slide.style.zIndex = zIndex;
+                    });
+                }
+
+                function changeSlide(direction) {
+                    const newIndex = currentIndex + direction;
+                    if (newIndex >= 0 && newIndex < slides.length) {
+                        currentIndex = newIndex;
+                        updateCarousel();
+                    }
+                }
+
+                nextBtn.addEventListener('click', () => changeSlide(1));
+                prevBtn.addEventListener('click', () => changeSlide(-1));
+
+                function getPositionX(event) {
+                    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                }
+
+                function dragStart(event) {
+                    isDragging = true;
+                    startPos = getPositionX(event);
+                    dragOffset = 0;
+                    carousel.classList.add('grabbing');
+                }
+
+                function dragging(event) {
+                    if (!isDragging) return;
+                    const currentPos = getPositionX(event);
+                    dragOffset = currentPos - startPos;
+                }
+
+                function dragEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    carousel.classList.remove('grabbing');
+                    const threshold = 80; 
+                    if (dragOffset > threshold) {
+                        changeSlide(-1);
+                    } else if (dragOffset < -threshold) {
+                        changeSlide(1);
+                    }
+                    dragOffset = 0; 
+                }
+
+                carousel.addEventListener('mousedown', dragStart);
+                carousel.addEventListener('touchstart', dragStart, { passive: true });
+                carousel.addEventListener('mousemove', dragging);
+                carousel.addEventListener('touchmove', dragging, { passive: true });
+                carousel.addEventListener('mouseup', dragEnd);
+                carousel.addEventListener('mouseleave', dragEnd);
+                carousel.addEventListener('touchend', dragEnd);
+
+                slides.forEach((slide, i) => {
+                    slide.addEventListener('click', () => {
+                        if (Math.abs(dragOffset) < 10 && i === currentIndex) {
+                            openModal(slide.querySelector('img').src);
+                        } else if (i !== currentIndex) {
+                            currentIndex = i;
+                            updateCarousel();
+                        }
+                    });
+                });
+                
+                updateCarousel(); 
+                window.addEventListener('resize', updateCarousel);
+            }
+        });
+    </script>
 </body>
 </html>
