@@ -12,9 +12,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://i.imgur.com">
 
-    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/B0IHYVP.webp" type="image/webp">
+    <!-- Preload actualizado al nuevo banner en formato png -->
+    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/gnzjl8g.png" type="image/png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -25,11 +25,12 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #fbf5e2;
-            color: #0c2f5b;
+            background-color: #2b2b2b; /* Fondo oscuro solicitado */
+            color: #fbf5e2; /* Texto crema/hueso a juego con el banner */
         }
         .text-brand-pink { color: #e91e63; }
-        .text-brand-cyan { color: #00bcd4; }
+        .text-brand-gold { color: #d4af37; } /* Sustituimos el cyan por dorado acorde al logo */
+        
         .btn {
             position: relative;
             z-index: 1;
@@ -38,9 +39,7 @@
             border: 2px solid transparent;
         }
         .btn-pink { background-color: #e91e63; color: white; }
-        .btn-cyan { background-color: #00bcd4; color: white; }
-        
-        .btn:hover { color: #0c2f5b; }
+        .btn-gold { background-color: #d4af37; color: #1a1a1a; }
         
         .btn::before {
             content: '';
@@ -49,27 +48,30 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #ffffff;
+            background: #1a1a1a; /* Fondo del hover oscuro */
             z-index: -1;
             transform: scaleX(0);
             transform-origin: right;
             transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
         .btn.btn-pink:hover::before { border: 2px solid #e91e63; }
-        .btn.btn-cyan:hover::before { border: 2px solid #00bcd4; }
+        .btn.btn-gold:hover::before { border: 2px solid #d4af37; }
+        
+        .btn.btn-pink:hover { color: #e91e63; }
+        .btn.btn-gold:hover { color: #d4af37; }
         
         .btn:hover::before {
             transform: scaleX(1);
             transform-origin: left;
         }
         .service-card {
-            background-color: white;
-            border: 1px solid #e0d9c6;
+            background-color: #333333; /* Tarjetas oscuras */
+            border: 1px solid #444444;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .service-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
         }
         .contact-link {
             position: relative;
@@ -80,7 +82,7 @@
             transition: color 0.4s ease;
         }
         .contact-link:hover > i, .contact-link:hover > span { color: #e91e63; }
-        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color: #00bcd4; }
+        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color: #d4af37; }
         .contact-link::after {
             content: '';
             position: absolute;
@@ -93,7 +95,7 @@
             transform-origin: bottom right;
             transition: transform 0.4s ease-out;
         }
-        .contact-link.email-link::after { background-color: #00bcd4; }
+        .contact-link.email-link::after { background-color: #d4af37; }
         .contact-link:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
@@ -114,7 +116,7 @@
         }
         .default-image { transform: scaleX(-1); }
         .highlight-word {
-            background: linear-gradient(120deg, #00bcd4 0%, #e91e63 100%);
+            background: linear-gradient(120deg, #d4af37 0%, #e91e63 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
@@ -124,7 +126,7 @@
         }
         .animated-quote {
             font-style: italic; color: transparent;
-            background-image: linear-gradient(90deg, #00bcd4, #e91e63, #0c2f5b, #00bcd4);
+            background-image: linear-gradient(90deg, #d4af37, #e91e63, #fbf5e2, #d4af37);
             background-size: 200% auto;
             -webkit-background-clip: text; background-clip: text;
             animation: text-flow 10s linear infinite;
@@ -170,20 +172,21 @@
         .testimonial-image {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Garantiza que los pantallazos verticales no se corten */
+            object-fit: contain;
             pointer-events: none;
         }
         .carousel-button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(43, 43, 43, 0.8); /* Botones oscuros */
+            border: 1px solid #555;
             border-radius: 9999px;
             width: 3rem;
             height: 3rem;
-            color: #0c2f5b;
+            color: #fbf5e2;
             font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             transition: background-color 0.2s ease, transform 0.2s ease;
             z-index: 20;
             display: flex;
@@ -191,7 +194,8 @@
             align-items: center;
         }
         .carousel-button:hover {
-            background-color: white;
+            background-color: #d4af37;
+            color: #1a1a1a;
             transform: translateY(-50%) scale(1.1);
         }
         .carousel-button.prev { left: 5%; }
@@ -210,17 +214,18 @@
     <div class="max-w-6xl mx-auto">
 
         <header class="text-center mb-8">
-            <img src="https://i.imgur.com/B0IHYVP.webp" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
+            <!-- Nuevo Banner -->
+            <img src="https://i.imgur.com/gnzjl8g.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
         </header>
 
         <main>
             <section class="text-center px-4 pb-16">
                 <div class="max-w-4xl mx-auto">
                     <!-- 1. Título orientado al dolor/beneficio -->
-                    <h1 class="text-3xl md:text-5xl font-extrabold">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-[#fbf5e2]">
                         Libérate de los bloqueos del pasado y recupera el control de tu vida.
                     </h1>
-                    <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium">
+                    <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium text-[#fbf5e2]/80">
                         Un acompañamiento intensivo para liberar tus bloqueos emocionales, soltar el estancamiento y encontrar la paz mental que te mereces.
                     </p>
                     <div class="mt-10 flex flex-col items-center gap-4">
@@ -231,33 +236,33 @@
                 </div>
             </section>
         
-            <section class="py-20 bg-white px-4">
+            <section class="py-20 bg-[#2b2b2b] px-4">
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
                     <div class="md:col-span-1">
-                        <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-xl border-4 border-white overflow-hidden">
+                        <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-2xl border-4 border-[#1a1a1a] overflow-hidden">
                             <img src="https://i.imgur.com/T6RLxgX.webp" alt="Retrato de Darío Arrigazzi" class="profile-image default-image" loading="lazy" decoding="async" width="256" height="256">
                             <img src="https://i.imgur.com/XlmLArU.webp" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image" loading="lazy" decoding="async" width="256" height="256">
                         </div>
                     </div>
                     <div class="md:col-span-2">
-                        <h2 class="text-3xl font-bold mb-4">Sobre Mí: Darío Arrigazzi</h2>
+                        <h2 class="text-3xl font-bold mb-4 text-[#fbf5e2]">Sobre Mí: Darío Arrigazzi</h2>
                         
                         <!-- 2. Negritas estratégicas para lectura rápida (F pattern) -->
-                        <p class="text-gray-700 mb-4 leading-relaxed">
-                            Tuve una <strong>infancia muy traumática</strong>. Crecí en un entorno de violencia extrema, presenciando el maltrato de mi padre hacia mi madre y hermanos. Esto me dejó con una autoestima nula, viviendo en un estado constante de miedo, terror y culpa. Aunque años después alcancé el éxito profesional impulsando la empresa <strong>Lovenature Superfoods</strong> como Director de Operaciones, por dentro seguía roto.
+                        <p class="text-[#fbf5e2]/80 mb-4 leading-relaxed">
+                            Tuve una <strong class="text-[#d4af37]">infancia muy traumática</strong>. Crecí en un entorno de violencia extrema, presenciando el maltrato de mi padre hacia mi madre y hermanos. Esto me dejó con una autoestima nula, viviendo en un estado constante de miedo, terror y culpa. Aunque años después alcancé el éxito profesional impulsando la empresa <strong class="text-[#d4af37]">Lovenature Superfoods</strong> como Director de Operaciones, por dentro seguía roto.
                         </p>
                         
-                        <p class="text-gray-700 mb-4 leading-relaxed">
-                            Al dejar la empresa, me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins. Fue entonces cuando logré <strong>superar mis bloqueos más profundos, reprogramar mi mente y liberar las emociones reprimidas de mi pasado</strong>.
+                        <p class="text-[#fbf5e2]/80 mb-4 leading-relaxed">
+                            Al dejar la empresa, me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins. Fue entonces cuando logré <strong class="text-[#d4af37]">superar mis bloqueos más profundos, reprogramar mi mente y liberar las emociones reprimidas de mi pasado</strong>.
                         </p>
                         
-                        <p class="text-gray-700 mb-6 leading-relaxed">
+                        <p class="text-[#fbf5e2]/80 mb-6 leading-relaxed">
                             Hoy utilizo toda esta experiencia vital y profesional para enseñarte, paso a paso, cómo liberarte de tu pasado y desbloquear tu verdadero potencial.
                         </p>
                         
                         <div class="text-center md:text-left">
-                            <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-2 px-6 rounded-lg inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
-                                <span>¿Te resuena esto? Conoce mi historia</span>
+                            <a href="#servicios" class="btn btn-gold font-bold py-2 px-6 rounded-lg inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-1">
+                                <span>¿Te resuena? Así te puedo ayudar</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -270,9 +275,9 @@
             </section>
 
             <!-- 3. Prueba Social (Carrusel) -->
-            <section class="py-16 bg-[#fbf5e2] px-4 overflow-x-hidden">
+            <section class="py-16 bg-[#1a1a1a] px-4 overflow-x-hidden rounded-lg shadow-inner">
                 <div class="max-w-5xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-8">El resultado de este trabajo</h2>
+                    <h2 class="text-3xl font-bold text-center mb-8 text-[#fbf5e2]">El resultado de este trabajo</h2>
                     
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel">
@@ -284,44 +289,44 @@
                 </div>
             </section>
 
-            <section id="servicios" class="py-20 px-4 bg-white">
+            <section id="servicios" class="py-20 px-4 bg-[#2b2b2b]">
                 <div class="max-w-6xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-12">¿Cómo puedo ayudarte?</h2>
+                    <h2 class="text-3xl font-bold text-center mb-12 text-[#fbf5e2]">¿Cómo puedo ayudarte?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         
                         <!-- TARJETA 1: ESCUELA MENTE FÉNIX -->
                         <div class="service-card rounded-lg flex flex-col overflow-hidden">
-                            <div class="relative w-full aspect-[1/0.85] overflow-hidden">
-                                <img src="https://i.imgur.com/Mt550b5.jpeg" alt="Escuela Mente Fénix" class="w-full h-full object-cover object-top">
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] -rotate-6 bg-[#e91e63] text-white text-center font-black py-2 shadow-lg z-10 tracking-widest text-xl uppercase border-y-2 border-white">
+                            <div class="relative w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
+                                <img src="https://i.imgur.com/Mt550b5.jpeg" alt="Escuela Mente Fénix" class="w-full h-full object-cover object-top opacity-90">
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] -rotate-6 bg-[#e91e63] text-white text-center font-black py-2 shadow-lg z-10 tracking-widest text-xl uppercase border-y-2 border-[#1a1a1a]">
                                     Muy Pronto
                                 </div>
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
                                 <div class="min-h-[5rem] flex items-center justify-center mb-4">
-                                    <h3 class="text-2xl font-bold text-center leading-tight">Escuela Mente Fénix</h3>
+                                    <h3 class="text-2xl font-bold text-center leading-tight text-[#fbf5e2]">Escuela Mente Fénix</h3>
                                 </div>
                                 <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-brand-pink font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="fas fa-tag text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
-                                            <span class="block text-lg">$55 USD <span class="text-sm font-normal">/ mes</span></span>
-                                            <span class="block text-xs font-normal text-gray-500">(aprox. 51€ / mes)</span>
+                                            <span class="block text-lg">$55 USD <span class="text-sm font-normal text-[#fbf5e2]/60">/ mes</span></span>
+                                            <span class="block text-xs font-normal text-[#fbf5e2]/60">(aprox. 51€ / mes)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <ul class="text-gray-700 flex-grow mb-8 space-y-4">
+                                <ul class="text-[#fbf5e2]/80 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
                                         <i class="fas fa-video text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Mentoría semanal en vivo:</strong> Resuelve tus atascos cara a cara (sesiones grabadas).</span>
+                                        <span><strong class="text-[#fbf5e2]">Mentoría semanal en vivo:</strong> Resuelve tus atascos cara a cara (sesiones grabadas).</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-graduation-cap text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Ruta paso a paso:</strong> Acceso a cursos, bóveda de masterclasses y recursos exclusivos.</span>
+                                        <span><strong class="text-[#fbf5e2]">Ruta paso a paso:</strong> Acceso a cursos, bóveda de masterclasses y recursos exclusivos.</span>
                                     </li>
                                     <li class="flex items-start">
                                         <i class="fas fa-users text-brand-pink mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Tribu Fénix:</strong> Una comunidad privada para celebrar victorias y apoyarte a diario.</span>
+                                        <span><strong class="text-[#fbf5e2]">Tribu Fénix:</strong> Una comunidad privada para celebrar victorias y apoyarte a diario.</span>
                                     </li>
                                 </ul>
                                 <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" class="btn btn-pink font-bold py-3 px-6 rounded-lg text-center w-full mt-auto opacity-90">Ver Escuela (Próximamente)</a>
@@ -330,18 +335,18 @@
 
                         <!-- TARJETA 2: SESIÓN INTENSIVA -->
                         <div class="service-card rounded-lg flex flex-col overflow-hidden">
-                            <div class="w-full aspect-[1/0.85] overflow-hidden">
-                                <img src="https://i.imgur.com/8eaPrNd.jpeg" alt="Sesión 1:1 Intensiva de Desbloqueo" class="w-full h-full object-cover object-top">
+                            <div class="w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
+                                <img src="https://i.imgur.com/8eaPrNd.jpeg" alt="Sesión 1:1 Intensiva de Desbloqueo" class="w-full h-full object-cover object-top opacity-90">
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
                                 <div class="min-h-[5rem] flex items-center justify-center mb-4">
-                                    <h3 class="text-2xl font-bold text-center leading-tight">Sesión 1:1 Intensiva de Desbloqueo</h3>
+                                    <h3 class="text-2xl font-bold text-center leading-tight text-[#fbf5e2]">Sesión 1:1 Intensiva de Desbloqueo</h3>
                                 </div>
-                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-brand-cyan font-bold">
+                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-brand-gold font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="far fa-clock text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
-                                            <span class="block text-xs font-normal text-gray-500">Aproximadamente</span>
+                                            <span class="block text-xs font-normal text-[#fbf5e2]/60">Aproximadamente</span>
                                             <span class="block text-lg">1h 30m</span>
                                         </div>
                                     </div>
@@ -349,53 +354,53 @@
                                         <i class="fas fa-tag text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
                                             <span class="block text-lg">$210 USD</span>
-                                            <span class="block text-xs font-normal text-gray-500">(aprox. 200€)</span>
+                                            <span class="block text-xs font-normal text-[#fbf5e2]/60">(aprox. 200€)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <ul class="text-gray-700 flex-grow mb-8 space-y-4">
+                                <ul class="text-[#fbf5e2]/80 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
-                                        <i class="fas fa-search text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Claridad absoluta:</strong> Descubre la raíz exacta que te mantiene bloqueado hoy.</span>
+                                        <i class="fas fa-search text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Claridad absoluta:</strong> Descubre la raíz exacta que te mantiene bloqueado hoy.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fas fa-unlock-alt text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span>
+                                        <i class="fas fa-unlock-alt text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fas fa-clipboard-check text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span>
+                                        <i class="fas fa-clipboard-check text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fab fa-whatsapp text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 7 días tras la sesión.</span>
+                                        <i class="fab fa-whatsapp text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 7 días tras la sesión.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fas fa-video text-brand-cyan mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Grabación de la sesión</strong> (opcional) para que repases tus mayores revelaciones en frío.</span>
+                                        <i class="fas fa-video text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Grabación de la sesión</strong> (opcional) para que repases tus mayores revelaciones en frío.</span>
                                     </li>
                                 </ul>
-                                <a href="./psicoterapia.html" class="btn btn-cyan font-bold py-3 px-6 rounded-lg text-center w-full mt-auto">Ver detalles y reservar</a>
+                                <a href="./psicoterapia.html" class="btn btn-gold font-bold py-3 px-6 rounded-lg text-center w-full mt-auto">Ver detalles y reservar</a>
                             </div>
                         </div>
 
                         <!-- TARJETA 3: MASTER -->
-                        <div class="service-card rounded-lg flex flex-col overflow-hidden border-brand-cyan">
-                            <div class="relative w-full aspect-[1/0.85] overflow-hidden">
-                                <img src="https://i.imgur.com/r3Xlw1B.jpeg" alt="Máster de Transformación Mente Fénix" class="w-full h-full object-cover object-top">
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] -rotate-6 bg-gray-800 text-white text-center font-black py-2 shadow-lg z-10 tracking-widest text-xl uppercase border-y-2 border-white">
+                        <div class="service-card rounded-lg flex flex-col overflow-hidden">
+                            <div class="relative w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
+                                <img src="https://i.imgur.com/r3Xlw1B.jpeg" alt="Máster de Transformación Mente Fénix" class="w-full h-full object-cover object-top opacity-90">
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] -rotate-6 bg-[#111111] text-[#d4af37] text-center font-black py-2 shadow-lg z-10 tracking-widest text-xl uppercase border-y-2 border-[#333]">
                                     Muy Pronto
                                 </div>
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
                                 <div class="min-h-[5rem] flex items-center justify-center mb-4">
-                                    <h3 class="text-2xl font-bold text-center leading-tight">Máster de Transformación<br>Mente Fénix</h3>
+                                    <h3 class="text-2xl font-bold text-center leading-tight text-[#fbf5e2]">Máster de Transformación<br>Mente Fénix</h3>
                                 </div>
-                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-gray-800 font-bold">
+                                <div class="min-h-[5rem] flex flex-col justify-center gap-3 mb-8 mx-auto w-fit text-[#fbf5e2] font-bold">
                                     <div class="flex items-center gap-3 text-left">
                                         <i class="far fa-calendar-alt text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
-                                            <span class="block text-xs font-normal text-gray-500">Duración</span>
+                                            <span class="block text-xs font-normal text-[#fbf5e2]/60">Duración</span>
                                             <span class="block text-lg">3 Meses</span>
                                         </div>
                                     </div>
@@ -403,25 +408,25 @@
                                         <i class="fas fa-tag text-xl w-6 text-center"></i> 
                                         <div class="leading-tight">
                                             <span class="block text-lg">$1,050 USD</span>
-                                            <span class="block text-xs font-normal text-gray-500">(aprox. 997€)</span>
+                                            <span class="block text-xs font-normal text-[#fbf5e2]/60">(aprox. 997€)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <ul class="text-gray-700 flex-grow mb-8 space-y-4">
+                                <ul class="text-[#fbf5e2]/80 flex-grow mb-8 space-y-4">
                                     <li class="flex items-start">
-                                        <i class="fas fa-sync-alt text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Transformación radical:</strong> Reestructura tu identidad y crea la vida que realmente deseas.</span>
+                                        <i class="fas fa-sync-alt text-[#fbf5e2]/60 mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Transformación radical:</strong> Reestructura tu identidad y crea la vida que realmente deseas.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fas fa-spa text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Reprogramación profunda:</strong> Suelta resistencias, apegos y aprende a dominar tu mente.</span>
+                                        <i class="fas fa-spa text-[#fbf5e2]/60 mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Reprogramación profunda:</strong> Suelta resistencias, apegos y aprende a dominar tu mente.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <i class="fas fa-user-friends text-gray-800 mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                        <span><strong>Acompañamiento premium:</strong> Trabajo en un grupo ultra reducido para asegurar tu éxito.</span>
+                                        <i class="fas fa-user-friends text-[#fbf5e2]/60 mt-1 w-6 text-center mr-3 shrink-0"></i>
+                                        <span><strong class="text-[#fbf5e2]">Acompañamiento premium:</strong> Trabajo en un grupo ultra reducido para asegurar tu éxito.</span>
                                     </li>
                                 </ul>
-                                <button disabled class="bg-gray-300 text-gray-600 font-bold py-3 px-6 rounded-lg text-center w-full mt-auto cursor-not-allowed">Apertura Próximamente</button>
+                                <button disabled class="bg-[#333] text-[#fbf5e2]/60 font-bold py-3 px-6 rounded-lg text-center w-full mt-auto cursor-not-allowed">Apertura Próximamente</button>
                             </div>
                         </div>
 
@@ -431,23 +436,23 @@
 
         </main>
 
-        <footer class="mt-20 py-8 border-t-2 border-dashed border-gray-300 text-center bg-[#fbf5e2]">
-             <h4 class="font-bold text-lg mb-4">Contacta conmigo</h4>
+        <footer class="mt-20 py-8 border-t border-gray-700 text-center bg-[#1a1a1a] rounded-lg shadow-inner">
+             <h4 class="font-bold text-lg mb-4 text-[#fbf5e2]">Contacta conmigo</h4>
              <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
-                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-gray-700">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-[#fbf5e2]/80">
                      <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
                      <span>lamentedelfenix@gmail.com</span>
                  </a>
-                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-600">
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-500">
                      <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
                      <span>@darioarrigazzi</span>
                  </a>
-                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-600">
+                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-500">
                      <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
                      <span>Canal de YouTube</span>
                  </a>
              </div>
-             <div class="text-sm text-gray-500 space-x-4 mt-8">
+             <div class="text-sm text-[#fbf5e2]/60 space-x-4 mt-8">
                  <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a>
                  <span>&middot;</span>
                  <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
@@ -456,15 +461,15 @@
                  <span>&middot;</span>
                  <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
              </div>
-             <p class="text-sm text-gray-500 mt-4">&copy; 2025 La Mente del Fénix. Todos los derechos reservados.</p>
+             <p class="text-sm text-[#fbf5e2]/50 mt-4">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
 
     <!-- Modal de Imagen -->
-    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
         <div class="relative max-w-lg w-full">
             <img id="modal-image" src="" alt="Reseña ampliada" class="w-full h-auto max-h-[90vh] object-contain rounded-lg">
-            <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none">&times;</button>
+            <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 hover:bg-gray-600 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none transition-colors">&times;</button>
         </div>
     </div>
 
