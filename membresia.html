@@ -108,7 +108,7 @@
         /* Animación del carrusel de mentores corregida y fluida */
         @keyframes scroll-mentors {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Ajuste exacto al 50% de la pista */
+            100% { transform: translateX(-50%); } 
         }
         .mentors-track {
             display: flex;
@@ -176,7 +176,7 @@
                 </div>
                 <div class="max-w-3xl mx-auto bg-[#1a1a1a] p-2 rounded-2xl shadow-xl border border-[#444]">
                     <div class="relative w-full overflow-hidden rounded-xl" style="padding-top: 56.25%;">
-                        <!-- Sustituye VIDEO_ID por el ID de tu video oculto de YouTube. Ejemplo: Si tu enlace es youtube.com/watch?v=dQw4w9WgXcQ, pon dQw4w9WgXcQ -->
+                        <!-- Sustituye VIDEO_ID por el ID de tu video oculto de YouTube. -->
                         <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/VIDEO_ID" title="Mi historia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
@@ -184,7 +184,8 @@
 
             <!-- Mentores (Autoridad visual reducida) -->
             <section class="mb-16 bg-[#1a1a1a] py-6 rounded-2xl border border-[#444] overflow-hidden shadow-sm">
-                <h2 class="text-lg md:text-xl font-bold text-center mb-6 text-[#fbf5e2]/90">Algunos de mis mentores con los que me he formado y me sigo formando</h2>
+                <!-- Se ha añadido mb-10, px-4 y leading-snug para que no roce el recuadro en móviles -->
+                <h2 class="text-lg md:text-xl font-bold text-center mb-10 px-4 leading-snug text-[#fbf5e2]/90">Algunos de mis mentores con los que me he formado y me sigo formando</h2>
                 
                 <div class="relative w-full overflow-hidden">
                     <!-- Efecto de difuminado en los bordes -->
@@ -235,6 +236,57 @@
                                 <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Qué incluye -->
+            <section class="py-12 px-4 md:px-8 bg-[#333] rounded-2xl mb-16 shadow-lg border border-[#444]">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-10 text-[#fbf5e2]">El Método Fénix a tu disposición</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Beneficio 1 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
+                            <i class="fas fa-video text-2xl text-brand-pink"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Mentorías Semanales</h3>
+                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
+                            Resolución de dudas en directo y guía paso a paso para no estancarte en tu proceso.
+                        </p>
+                    </div>
+                    
+                    <!-- Beneficio 2 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
+                            <i class="fas fa-layer-group text-2xl text-brand-pink"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Contenido Creciente</h3>
+                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
+                            Decenas de horas de contenido en video y módulos nuevos que se añaden mes a mes.
+                        </p>
+                    </div>
+
+                    <!-- Beneficio 3 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
+                            <i class="fas fa-dumbbell text-2xl text-brand-pink"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Retos y Ejercicios</h3>
+                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
+                            Dinámicas prácticas frecuentes para asegurar que pasas a la acción y ves un avance real.
+                        </p>
+                    </div>
+                    
+                    <!-- Beneficio 4 -->
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
+                            <i class="fas fa-fire text-2xl text-brand-pink"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">La Tribu Fénix</h3>
+                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
+                            Una comunidad privada libre de juicios para compartir victorias y apoyarte a diario.
+                        </p>
                     </div>
                 </div>
             </section>
