@@ -164,6 +164,7 @@
         .testimonial-image {
             width: 100%;
             height: auto;
+            max-height: 100%;
             object-fit: contain;
             pointer-events: none;
         }
@@ -194,7 +195,7 @@
         .carousel-button.next { right: 5%; }
 
         @media (max-width: 768px) {
-            .testimonial-carousel { width: 200px; }
+            .testimonial-carousel { width: 220px; }
             .carousel-wrapper { height: 500px; } 
             .carousel-button.prev { left: 2%; }
             .carousel-button.next { right: 2%; }
@@ -205,10 +206,10 @@
 
     <div class="max-w-6xl mx-auto">
 
-        <header class="text-center mb-16 md:mb-24">
+        <header class="text-center mb-16 md:mb-24 -mx-4 md:mx-0">
             <a href="./index.html" aria-label="Volver a la página de inicio">
                 <!-- Nuevo Banner -->
-                <img src="https://i.imgur.com/DPUxfhf.png" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg" width="1200" height="400">
+                <img src="https://i.imgur.com/DPUxfhf.png" alt="Banner La Mente del Fénix" class="w-full h-auto md:rounded-lg shadow-lg" width="1200" height="400">
             </a>
         </header>
 
@@ -316,8 +317,8 @@
             <!-- Biografía Corta -->
             <section class="py-20 px-4">
                 <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
-                    <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-full overflow-hidden border-4 border-[#1a1a1a] shadow-xl">
-                        <img src="https://i.imgur.com/T6RLxgX.webp" alt="Darío Arrigazzi" class="w-full h-full object-cover">
+                    <div class="w-full max-w-sm mx-auto shrink-0 shadow-2xl rounded-2xl overflow-hidden border border-[#444] cursor-pointer hover:opacity-90 transition-opacity" onclick="openModal('https://i.imgur.com/2Shoaen.jpeg')">
+                        <img src="https://i.imgur.com/2Shoaen.jpeg" alt="Darío Arrigazzi" class="w-full h-auto object-cover">
                     </div>
                     <div>
                         <h2 class="text-3xl font-bold mb-4 text-[#fbf5e2]">¿Quién te acompañará?</h2>
@@ -455,10 +456,11 @@
             const modalImage = document.getElementById('modal-image');
             const modalClose = document.getElementById('modal-close');
 
-            function openModal(src) {
+            // Hacemos openModal global para que funcione el onclick
+            window.openModal = function(src) {
                 modalImage.src = src;
                 imageModal.classList.remove('opacity-0', 'pointer-events-none');
-            }
+            };
 
             function closeModal() {
                 imageModal.classList.add('opacity-0', 'pointer-events-none');
@@ -478,9 +480,9 @@
                 const prevBtn = document.getElementById('prev-btn');
                 const nextBtn = document.getElementById('next-btn');
                 const images = [
-                    'https://i.imgur.com/8fNS5fp.png', 'https://i.imgur.com/o2EQNjB.png', 'https://i.imgur.com/rfAPnAz.png',
-                    'https://i.imgur.com/zDiOzLm.png', 'https://i.imgur.com/BjoEESy.png', 'https://i.imgur.com/epb7xzc.png',
-                    'https://i.imgur.com/ZxBpheZ.png'
+                    'https://i.imgur.com/xXAb3d8.png', 'https://i.imgur.com/PS3d8wq.png', 'https://i.imgur.com/Sb8Y6Ge.png',
+                    'https://i.imgur.com/Dfy0vTn.png', 'https://i.imgur.com/3fCoISM.png', 'https://i.imgur.com/fyv6Jjn.png',
+                    'https://i.imgur.com/A8YMBoi.png'
                 ];
                 let currentIndex = Math.floor(images.length / 2); // Start in the middle
                 let slides = [];
