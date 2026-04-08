@@ -435,7 +435,7 @@
     </div>
 
     <!-- Botón Flotante Móvil (Sticky CTA) -->
-    <div class="fixed bottom-0 left-0 w-full p-4 bg-[#1a1a1a] border-t border-gray-700 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.5)] z-40 md:hidden">
+    <div id="sticky-cta" class="fixed bottom-0 left-0 w-full p-4 bg-[#1a1a1a] border-t border-gray-700 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.5)] z-40 md:hidden transition-transform duration-300">
         <a href="#precios" class="btn btn-gold font-bold py-3 px-6 rounded-lg text-center block w-full text-lg shadow-md">
             Reservar Mi Sesión
         </a>
@@ -563,41 +563,61 @@
                 }
 
                 function dragEnd() {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    carousel.classList.remove('grabbing');
-                    const threshold = 80; // Min pixels to swipe to change slide
-                    if (dragOffset > threshold) {
-                        changeSlide(-1); // Swiped right
-                    } else if (dragOffset < -threshold) {
-                        changeSlide(1); // Swiped left
-                    }
-                    dragOffset = 0; // Reset for click detection
+                if (!isDragging) return;
+                isDragging = false;
+                carousel.classList.remove('grabbing');
+                const threshold = 80; // Min pixels to swipe to change slide
+                if (dragOffset > threshold) {
+                    changeSlide(-1); // Swiped right
+                } else if (dragOffset < -threshold) {
+                    changeSlide(1); // Swiped left
                 }
-
-                carousel.addEventListener('mousedown', dragStart);
-                carousel.addEventListener('touchstart', dragStart, { passive: true });
-                carousel.addEventListener('mousemove', dragging);
-                carousel.addEventListener('touchmove', dragging, { passive: true });
-                carousel.addEventListener('mouseup', dragEnd);
-                carousel.addEventListener('mouseleave', dragEnd);
-                carousel.addEventListener('touchend', dragEnd);
-
-                slides.forEach((slide, i) => {
-                    slide.addEventListener('click', () => {
-                        if (Math.abs(dragOffset) < 10 && i === currentIndex) {
-                            openModal(slide.querySelector('img').src);
-                        } else if (i !== currentIndex) {
-                            currentIndex = i;
-                            updateCarousel();
-                        }
-                    });
-                });
-                
-                updateCarousel(); // Initial setup
-                window.addEventListener('resize', updateCarousel); // Recalculate on resize
+                dragOffset = 0; // Reset for click detection
             }
-        });
-    </script>
+
+            carousel.addEventListener('mousedown', dragStart);
+            carousel.addEventListener('touchstart', dragStart, { passive: true });
+            carousel.addEventListener('mousemove', dragging);
+            carousel.addEventListener('touchmove', dragging, { passive: true });
+            carousel.addEventListener('mouseup', dragEnd);
+            carousel.addEventListener('mouseleave', dragEnd);
+            carousel.addEventListener('touchend', dragEnd);
+
+            slides.forEach((slide, i) => {
+                slide.addEventListener('click', () => {
+                    if (Math.abs(dragOffset) < 10 && i === currentIndex) {
+                        openModal(slide.querySelector('img').src);
+                    } else if (i !== currentIndex) {
+                        currentIndex = i;
+                        updateCarousel();
+                    }
+                });
+            });
+            
+            updateCarousel(); // Initial setup
+            window.addEventListener('resize', updateCarousel); // Recalculate on resize
+        }
+
+        // --- Lógica para ocultar el botón flotante en la zona de precios ---
+        const pricingSection = document.getElementById('precios');
+        const stickyCta = document.getElementById('sticky-cta');
+
+        if (pricingSection && stickyCta) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Ocultar botón (deslizar hacia abajo)
+                        stickyCta.classList.add('translate-y-full');
+                    } else {
+                        // Mostrar botón
+                        stickyCta.classList.remove('translate-y-full');
+                    }
+                });
+            }, { threshold: 0.1 }); // Se activa cuando el 10% de la sección es visible
+
+            observer.observe(pricingSection);
+        }
+    });
+</script>
 </body>
 </html>
