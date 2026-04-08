@@ -113,11 +113,9 @@
         .mentors-track {
             display: flex;
             width: max-content;
-            animation: scroll-mentors 20s linear infinite;
+            animation: scroll-mentors 40s linear infinite; /* Velocidad reducida */
         }
-        .mentors-track:hover {
-            animation-play-state: paused;
-        }
+        /* Eliminada la pausa al hacer hover para evitar el bug en móviles */
     </style>
 </head>
 <body class="p-4">
@@ -193,75 +191,75 @@
                     <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#1a1a1a] to-transparent z-10 pointer-events-none"></div>
                     
                     <div class="mentors-track">
-                        <!-- MITAD 1 (10 imágenes para garantizar que llene pantallas grandes) -->
+                        <!-- MITAD 1 -->
                         <div class="flex gap-4 pr-4 shrink-0">
                             <!-- Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
+                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto">
+                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto">
+                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto">
+                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
+                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <!-- Repetición del Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
+                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto">
+                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto">
+                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto">
+                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
+                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="" class="w-full h-auto">
                             </div>
                         </div>
                         
-                        <!-- MITAD 2 (Clon exacto de la Mitad 1 para un bucle perfecto invisible) -->
+                        <!-- MITAD 2 (Clon exacto) -->
                         <div class="flex gap-4 pr-4 shrink-0">
                             <!-- Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
+                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto">
+                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto">
+                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto">
+                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
+                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <!-- Repetición del Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
+                                <img src="https://i.imgur.com/ianY9DI.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto">
+                                <img src="https://i.imgur.com/TsvH3tr.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto">
+                                <img src="https://i.imgur.com/JHBE5uz.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto">
+                                <img src="https://i.imgur.com/cQATfKJ.jpeg" alt="" class="w-full h-auto">
                             </div>
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
-                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
+                                <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="" class="w-full h-auto">
                             </div>
                         </div>
                     </div>
