@@ -216,11 +216,14 @@
         .mentors-track {
             display: flex;
             width: max-content;
-            animation: scroll-mentors 20s linear infinite;
+            animation: scroll-mentors 40s linear infinite; /* Velocidad reducida */
         }
-        .mentors-track:hover {
-            animation-play-state: paused;
-        }
+        /* Eliminada la pausa al hacer hover para evitar el bug en móviles */
+
+        /* Ocultar barra de desplazamiento para el carrusel de testimonios */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .scroll-smooth-custom { scroll-behavior: smooth; }
     </style>
 </head>
 <body class="p-4">
@@ -253,9 +256,8 @@
             <section class="py-20 bg-[#2b2b2b] px-4">
                 <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
                     <div class="md:col-span-1">
-                        <div class="profile-image-container rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto shadow-2xl border-4 border-[#1a1a1a] overflow-hidden">
-                            <img src="https://i.imgur.com/T6RLxgX.webp" alt="Retrato de Darío Arrigazzi" class="profile-image default-image" loading="lazy" decoding="async" width="256" height="256">
-                            <img src="https://i.imgur.com/XlmLArU.webp" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image" loading="lazy" decoding="async" width="256" height="256">
+                        <div class="w-full max-w-sm mx-auto shadow-2xl rounded-2xl overflow-hidden border border-[#444] cursor-pointer hover:opacity-90 transition-opacity" onclick="openModal('https://i.imgur.com/2Shoaen.jpeg')">
+                            <img src="https://i.imgur.com/2Shoaen.jpeg" alt="Darío mirando el atardecer" class="w-full h-auto object-cover" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="md:col-span-2">
@@ -289,7 +291,7 @@
             </section>
 
             <!-- Mentores (Autoridad visual) -->
-            <section class="mb-16 bg-[#1a1a1a] py-6 rounded-2xl border border-[#444] overflow-hidden shadow-sm max-w-5xl mx-auto">
+            <section class="mb-16 bg-[#1a1a1a] py-6 rounded-2xl border border-[#444] overflow-hidden shadow-sm max-w-5xl mx-auto mt-16 md:mt-0">
                 <h2 class="text-lg md:text-xl font-bold text-center mb-10 px-4 leading-snug text-[#fbf5e2]/90">Algunos de mis mentores con los que me he formado y me han guiado</h2>
                 
                 <div class="relative w-full overflow-hidden">
@@ -373,11 +375,10 @@
                 </div>
             </section>
 
-            <!-- 3. Prueba Social (Carrusel) -->
+            <!-- 3. Prueba Social (Carrusel 3D) -->
             <section class="py-16 bg-[#1a1a1a] px-4 overflow-x-hidden rounded-lg shadow-inner">
                 <div class="max-w-5xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-8 text-[#fbf5e2]">El resultado de este trabajo</h2>
-                    
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel">
                             <!-- Slides -->
@@ -574,20 +575,23 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Modal Logic
+        // Lógica Global del Modal
+        function openModal(src) {
             const imageModal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
+            modalImage.src = src;
+            imageModal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeModal() {
+            const imageModal = document.getElementById('image-modal');
+            imageModal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Eventos del Modal
+            const imageModal = document.getElementById('image-modal');
             const modalClose = document.getElementById('modal-close');
-
-            function openModal(src) {
-                modalImage.src = src;
-                imageModal.classList.remove('opacity-0', 'pointer-events-none');
-            }
-
-            function closeModal() {
-                imageModal.classList.add('opacity-0', 'pointer-events-none');
-            }
 
             modalClose.addEventListener('click', closeModal);
             imageModal.addEventListener('click', (e) => {
@@ -597,15 +601,15 @@
                 if (e.key === 'Escape' && !imageModal.classList.contains('opacity-0')) closeModal();
             });
 
-            // Carousel Logic
+            // Lógica del Carrusel 3D
             const carousel = document.getElementById('testimonial-carousel');
             if (carousel) {
                 const prevBtn = document.getElementById('prev-btn');
                 const nextBtn = document.getElementById('next-btn');
                 const images = [
-                    'https://i.imgur.com/8fNS5fp.png', 'https://i.imgur.com/o2EQNjB.png', 'https://i.imgur.com/rfAPnAz.png',
-                    'https://i.imgur.com/zDiOzLm.png', 'https://i.imgur.com/BjoEESy.png', 'https://i.imgur.com/epb7xzc.png',
-                    'https://i.imgur.com/ZxBpheZ.png'
+                    'https://i.imgur.com/xXAb3d8.png', 'https://i.imgur.com/PS3d8wq.png', 'https://i.imgur.com/Sb8Y6Ge.png',
+                    'https://i.imgur.com/Dfy0vTn.png', 'https://i.imgur.com/3fCoISM.png', 'https://i.imgur.com/fyv6Jjn.png',
+                    'https://i.imgur.com/A8YMBoi.png'
                 ];
                 let currentIndex = Math.floor(images.length / 2);
                 let slides = [];
