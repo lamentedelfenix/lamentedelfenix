@@ -1,23 +1,104 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-ES">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Acompañamiento con Darío Arrigazzi para superar bloqueos, liberar cargas del pasado y transformar tu mente. Desbloquea tu verdadero potencial y cambia tu vida.">
 
-    <title>Acompañamiento y Superación de Bloqueos | Darío Arrigazzi</title>
+    <!-- SEO básico -->
+    <title>Coach de Transformación Personal | Darío Arrigazzi — La Mente del Fénix</title>
+    <meta name="description" content="Coach Darío Arrigazzi: supera tus bloqueos emocionales, reprograma tu mente y transforma tu vida. Sesiones 1:1 intensivas y escuela online.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Darío Arrigazzi">
+    <meta name="geo.region" content="ES">
 
+    <!-- Canonical -->
+    <link rel="canonical" href="https://www.lamentedelfenix.com/">
+
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.lamentedelfenix.com/">
+    <meta property="og:title" content="Coach de Transformación Personal | Darío Arrigazzi">
+    <meta property="og:description" content="Supera tus bloqueos emocionales y recupera el control de tu vida. Sesiones 1:1 y escuela online con Darío Arrigazzi.">
+    <meta property="og:image" content="https://i.imgur.com/DPUxfhf.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="400">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:site_name" content="La Mente del Fénix">
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Coach de Transformación Personal | Darío Arrigazzi">
+    <meta name="twitter:description" content="Supera tus bloqueos emocionales y recupera el control de tu vida. Sesiones 1:1 y escuela online.">
+    <meta name="twitter:image" content="https://i.imgur.com/DPUxfhf.png">
+
+    <!-- Schema JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://www.lamentedelfenix.com/#dario",
+          "name": "Darío Arrigazzi",
+          "jobTitle": "Coach de Transformación Personal",
+          "url": "https://www.lamentedelfenix.com/",
+          "image": "https://i.imgur.com/2Shoaen.jpeg",
+          "sameAs": [
+            "https://www.instagram.com/darioarrigazzi/",
+            "https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA"
+          ],
+          "knowsAbout": ["Coaching", "PNL", "Bloqueos emocionales", "Transformación personal", "Un Curso de Milagros"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.lamentedelfenix.com/#website",
+          "url": "https://www.lamentedelfenix.com/",
+          "name": "La Mente del Fénix",
+          "description": "Acompañamiento personal para superar bloqueos emocionales y transformar tu vida.",
+          "author": { "@id": "https://www.lamentedelfenix.com/#dario" }
+        },
+        {
+          "@type": "Service",
+          "name": "Sesión 1:1 Intensiva de Desbloqueo",
+          "description": "Sesión individual de 90 minutos para identificar y liberar bloqueos emocionales del pasado, con plan de acción personalizado y 7 días de soporte por WhatsApp.",
+          "provider": { "@id": "https://www.lamentedelfenix.com/#dario" },
+          "url": "https://www.lamentedelfenix.com/psicoterapia.html",
+          "offers": {
+            "@type": "Offer",
+            "price": "210",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "Service",
+          "name": "Escuela Mente Fénix",
+          "description": "Membresía mensual con mentoría semanal en directo, ruta de contenido, retos prácticos y comunidad privada para la transformación personal.",
+          "provider": { "@id": "https://www.lamentedelfenix.com/#dario" },
+          "url": "https://www.lamentedelfenix.com/membresia.html",
+          "offers": {
+            "@type": "Offer",
+            "price": "55",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
+    <!-- Preconnect para fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Preload actualizado al nuevo banner en formato png -->
+    <!-- Preload del banner hero (LCP) -->
     <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/DPUxfhf.png" type="image/png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
@@ -25,11 +106,11 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #2b2b2b; /* Fondo oscuro solicitado */
-            color: #fbf5e2; /* Texto crema/hueso a juego con el banner */
+            background-color: #2b2b2b;
+            color: #fbf5e2;
         }
         .text-brand-pink { color: #e91e63; }
-        .text-brand-gold { color: #d4af37; } /* Sustituimos el cyan por dorado acorde al logo */
+        .text-brand-gold { color: #d4af37; }
         
         .btn {
             position: relative;
@@ -48,7 +129,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a1a1a; /* Fondo del hover oscuro */
+            background: #1a1a1a;
             z-index: -1;
             transform: scaleX(0);
             transform-origin: right;
@@ -65,7 +146,7 @@
             transform-origin: left;
         }
         .service-card {
-            background-color: #333333; /* Tarjetas oscuras */
+            background-color: #333333;
             border: 1px solid #444444;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -132,7 +213,6 @@
             animation: text-flow 10s linear infinite;
         }
 
-        /* Carrusel y Modal Styles */
         #image-modal {
             transition: opacity 0.3s ease;
         }
@@ -179,7 +259,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(43, 43, 43, 0.8); /* Botones oscuros */
+            background-color: rgba(43, 43, 43, 0.8);
             border: 1px solid #555;
             border-radius: 9999px;
             width: 3rem;
@@ -208,7 +288,6 @@
             .carousel-button.next { right: 2%; }
         }
 
-        /* Animación del carrusel de mentores */
         @keyframes scroll-mentors {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); } 
@@ -216,11 +295,9 @@
         .mentors-track {
             display: flex;
             width: max-content;
-            animation: scroll-mentors 40s linear infinite; /* Velocidad reducida */
+            animation: scroll-mentors 40s linear infinite;
         }
-        /* Eliminada la pausa al hacer hover para evitar el bug en móviles */
 
-        /* Ocultar barra de desplazamiento para el carrusel de testimonios */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .scroll-smooth-custom { scroll-behavior: smooth; }
@@ -231,14 +308,12 @@
     <div class="max-w-6xl mx-auto">
 
         <header class="text-center mb-16 md:mb-24 -mx-4 md:mx-0">
-            <!-- Nuevo Banner -->
             <img src="https://i.imgur.com/DPUxfhf.png" alt="Banner La Mente del Fénix" class="w-full h-auto md:rounded-lg shadow-lg" width="1200" height="400" fetchpriority="high" decoding="async">
         </header>
 
         <main>
             <section class="text-center px-4 pb-16">
                 <div class="max-w-4xl mx-auto">
-                    <!-- 1. Título orientado al dolor/beneficio -->
                     <h1 class="text-3xl md:text-5xl font-extrabold text-[#fbf5e2]">
                         Libérate de los bloqueos del pasado y recupera el control de tu vida.
                     </h1>
@@ -263,7 +338,6 @@
                     <div class="md:col-span-2">
                         <h2 class="text-3xl font-bold mb-4 text-[#fbf5e2]">Sobre Mí: Darío Arrigazzi</h2>
                         
-                        <!-- 2. Negritas estratégicas para lectura rápida (F pattern) -->
                         <p class="text-[#fbf5e2]/80 mb-4 leading-relaxed">
                             Tuve una <strong class="text-[#d4af37]">infancia muy traumática</strong>. Crecí en un entorno de violencia extrema, presenciando el maltrato de mi padre hacia mi madre y hermanos. Esto me dejó con una autoestima nula, viviendo en un estado constante de miedo, terror y culpa. Aunque años después alcancé el éxito profesional impulsando la empresa <strong class="text-[#d4af37]">Lovenature Superfoods</strong> como Director de Operaciones, por dentro seguía roto.
                         </p>
@@ -290,19 +364,15 @@
                 </div>
             </section>
 
-            <!-- Mentores (Autoridad visual) -->
             <section class="mb-16 bg-[#1a1a1a] py-6 rounded-2xl border border-[#444] overflow-hidden shadow-sm max-w-5xl mx-auto mt-16 md:mt-0">
                 <h2 class="text-lg md:text-xl font-bold text-center mb-10 px-4 leading-snug text-[#fbf5e2]/90">Algunos de mis mentores con los que me he formado y me han guiado</h2>
                 
                 <div class="relative w-full overflow-hidden">
-                    <!-- Efecto de difuminado en los bordes -->
                     <div class="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#1a1a1a] to-transparent z-10 pointer-events-none"></div>
                     <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#1a1a1a] to-transparent z-10 pointer-events-none"></div>
                     
                     <div class="mentors-track">
-                        <!-- MITAD 1 -->
                         <div class="flex gap-4 pr-4 shrink-0">
-                            <!-- Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
                             </div>
@@ -318,7 +388,6 @@
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
                             </div>
-                            <!-- Repetición del Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
                             </div>
@@ -336,9 +405,7 @@
                             </div>
                         </div>
                         
-                        <!-- MITAD 2 (Clon exacto) -->
                         <div class="flex gap-4 pr-4 shrink-0">
-                            <!-- Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
                             </div>
@@ -354,7 +421,6 @@
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto">
                             </div>
-                            <!-- Repetición del Set 1 -->
                             <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white">
                                 <img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto">
                             </div>
@@ -375,13 +441,11 @@
                 </div>
             </section>
 
-            <!-- 3. Prueba Social (Carrusel 3D) -->
             <section class="py-16 bg-[#1a1a1a] px-4 overflow-x-hidden rounded-lg shadow-inner">
                 <div class="max-w-5xl mx-auto">
                     <h2 class="text-3xl font-bold text-center mb-8 text-[#fbf5e2]">El resultado de este trabajo</h2>
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel">
-                            <!-- Slides -->
                         </div>
                         <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
                         <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
@@ -394,7 +458,6 @@
                     <h2 class="text-3xl font-bold text-center mb-12 text-[#fbf5e2]">¿Cómo puedo ayudarte?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         
-                        <!-- TARJETA 1: ESCUELA MENTE FÉNIX (ACTUALIZADA) -->
                         <div class="service-card rounded-lg flex flex-col overflow-hidden border-[#e91e63]">
                             <div class="relative w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
                                 <img src="https://i.imgur.com/Mt550b5.jpeg" alt="Escuela Mente Fénix" class="w-full h-full object-cover object-top opacity-100">
@@ -434,7 +497,6 @@
                             </div>
                         </div>
 
-                        <!-- TARJETA 2: SESIÓN INTENSIVA -->
                         <div class="service-card rounded-lg flex flex-col overflow-hidden">
                             <div class="w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
                                 <img src="https://i.imgur.com/8eaPrNd.jpeg" alt="Sesión 1:1 Intensiva de Desbloqueo" class="w-full h-full object-cover object-top opacity-90">
@@ -485,7 +547,6 @@
                             </div>
                         </div>
 
-                        <!-- TARJETA 3: MASTER -->
                         <div class="service-card rounded-lg flex flex-col overflow-hidden">
                             <div class="relative w-full aspect-[1/0.85] overflow-hidden border-b border-[#444]">
                                 <img src="https://i.imgur.com/r3Xlw1B.jpeg" alt="Máster de Transformación Mente Fénix" class="w-full h-full object-cover object-top opacity-90">
@@ -575,7 +636,6 @@
     </div>
 
     <script>
-        // Lógica Global del Modal
         function openModal(src) {
             const imageModal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
@@ -589,7 +649,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Eventos del Modal
             const imageModal = document.getElementById('image-modal');
             const modalClose = document.getElementById('modal-close');
 
@@ -601,7 +660,6 @@
                 if (e.key === 'Escape' && !imageModal.classList.contains('opacity-0')) closeModal();
             });
 
-            // Lógica del Carrusel 3D
             const carousel = document.getElementById('testimonial-carousel');
             if (carousel) {
                 const prevBtn = document.getElementById('prev-btn');
