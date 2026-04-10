@@ -4,620 +4,499 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO: Descripción para motores de búsqueda y redes sociales -->
     <meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
 
     <title>La Mente del Fénix - Sesiones de Psicoterapia</title>
 
-    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
-    <!-- OPTIMIZACIÓN: Pre-conectar a los dominios de recursos críticos -->
+    <!-- DNS / preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Preload actualizado al nuevo banner -->
-    <link rel="preload" fetchpriority="high" as="image" href="https://i.imgur.com/DPUxfhf.png" type="image/png">
+    <!-- Preload LCP (Banner local) -->
+    <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
 
-    <!-- Script de Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fuentes e Iconos -->
+    <!-- Fuentes e Iconos diferidos -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+    
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-    <!-- Estilos personalizados -->
     <style>
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #2b2b2b; /* Fondo oscuro */
-            color: #fbf5e2; /* Texto crema/hueso a juego con el banner */
-        }
-        .text-brand-pink { color: #e91e63; }
-        .text-brand-gold { color: #d4af37; } /* Sustituto del cyan */
+        /* RESET & BASE */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:'Montserrat',sans-serif;background-color:#2b2b2b;color:#fbf5e2;line-height:1.6;padding:1rem}
+        img{max-width:100%;height:auto;display:block}
+        a{text-decoration:none;transition:all .3s ease}
         
-        .border-brand-gold { border-color: #d4af37; }
-        .bg-brand-gold { background-color: #d4af37; }
+        .container{max-width:72rem;margin:0 auto}
 
-        .btn {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            transition: color 0.4s ease-out, background-color 0.3s ease;
-            border: 2px solid transparent;
+        /* HEADER & BANNER */
+        header{text-align:center;margin-bottom:4rem}
+        .banner-wrap{
+            width:100%;
+            aspect-ratio:1200/400;
+            background-color:#1a1a1a;
+            overflow:hidden;
+            border-radius:0.5rem;
+            box-shadow:0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom:2rem
         }
-        .btn-pink { background-color: #e91e63; color: white; }
-        .btn-gold { background-color: #d4af37; color: #1a1a1a; }
-        .btn-whatsapp { background-color: #25D366; color: white; }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1a1a1a; /* Fondo del hover oscuro */
-            z-index: -1;
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-        }
-        .btn.btn-pink:hover::before { border: 2px solid #e91e63; }
-        .btn.btn-gold:hover::before { border: 2px solid #d4af37; }
-        .btn.btn-whatsapp:hover::before { border: 2px solid #25D366; }
-        
-        .btn.btn-pink:hover { color: #e91e63; }
-        .btn.btn-gold:hover { color: #d4af37; }
-        .btn.btn-whatsapp:hover { color: #25D366; }
-        
-        .btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-        .contact-link {
-            position: relative;
-            text-decoration: none;
-            padding-bottom: 5px;
-        }
-        .contact-link > * {
-            transition: color 0.4s ease;
-        }
-        .contact-link:hover > i, .contact-link:hover > span { color: #e91e63; }
-        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color: #d4af37; }
-        .contact-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #e91e63;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.4s ease-out;
-        }
-        .contact-link.email-link::after { background-color: #d4af37; }
-        .contact-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-        
-        /* NUEVO: Estilo para YouTube */
-        .contact-link.youtube-link:hover > i, 
-        .contact-link.youtube-link:hover > span { color: #FF0000; }
-        .contact-link.youtube-link::after { background-color: #FF0000; }
+        @media(max-width:768px){.banner-wrap{margin-left:-1rem;margin-right:-1rem;width:calc(100% + 2rem);border-radius:0}}
+        .banner-img{width:100%;height:100%;object-fit:cover}
 
-        .pricing-card {
-            background-color: #333333; /* Fondo tarjeta oscuro */
-            border: 2px solid #444444;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .pricing-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-        }
-        .pricing-card.recommended {
-            border-color: #e91e63;
-        }
+        .back-link-wrap{text-align:center;margin-bottom:3rem}
+        .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:#d4af37;font-weight:700;font-size:1.125rem}
+        .back-link:hover{color:#e91e63}
+
+        /* HERO */
+        .hero-text{text-align:center;max-width:56rem;margin:0 auto 5rem;padding:0 1rem}
+        h1{font-size:2.25rem;font-weight:800;line-height:1.2;margin-bottom:1.5rem}
+        @media(min-width:768px){h1{font-size:3rem}}
+        .hero-p{font-size:1.25rem;color:rgba(251,245,226,0.8);font-weight:500}
+
+        /* SECTIONS GENERAL */
+        section{padding:5rem 1rem;border-radius:0.75rem}
+        .dark-bg{background-color:#1a1a1a;box-shadow:inset 0 2px 4px rgba(0,0,0,0.3)}
+        .section-title{font-size:1.875rem;font-weight:700;text-align:center;margin-bottom:2rem}
+        .section-desc{text-align:center;font-size:1.125rem;color:rgba(251,245,226,0.8);max-width:48rem;margin:0 auto 2.5rem}
+        .text-brand-gold{color:#d4af37}
+
+        /* GRID CARDS */
+        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+        @media(max-width:768px){.grid-3{grid-template-columns:1fr}}
         
-        /* Styles for the image modal */
-        #image-modal {
-            transition: opacity 0.3s ease;
-        }
+        .card{background-color:#333;padding:1.5rem;border-radius:0.75rem;border:1px solid #444;text-align:center;transition:transform 0.3s ease}
+        .card:hover{transform:translateY(-5px)}
+        .card i{font-size:2.5rem;color:#e91e63;margin-bottom:1rem}
+        .card h3{font-size:1.25rem;font-weight:700;margin-bottom:0.5rem}
+        .card p{font-size:0.875rem;color:rgba(251,245,226,0.7)}
 
-        /* Coverflow Carousel Styles */
-        .carousel-wrapper {
-            position: relative;
-            width: 100%;
-            height: 620px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1200px; 
-            overflow: hidden; 
-        }
-        .testimonial-carousel {
-            position: relative;
-            width: 300px; 
-            height: 100%;
-            transform-style: preserve-3d;
-            cursor: grab;
-        }
-        .testimonial-carousel.grabbing {
-            cursor: grabbing;
-        }
-        .testimonial-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
-            user-select: none;
-            -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.15)));
-        }
-        .testimonial-image {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-        .carousel-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(43, 43, 43, 0.8); /* Botones oscuros */
-            border: 1px solid #555;
-            border-radius: 9999px;
-            width: 3rem;
-            height: 3rem;
-            color: #fbf5e2;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            z-index: 20;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .carousel-button:hover {
-            background-color: #d4af37;
-            color: #1a1a1a;
-            transform: translateY(-50%) scale(1.1);
-        }
-        .carousel-button.prev { left: 5%; }
-        .carousel-button.next { right: 5%; }
+        /* STEPS */
+        .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+        @media(max-width:1024px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:640px){.grid-4{grid-template-columns:1fr}}
 
-        @media (max-width: 768px) {
-            .testimonial-carousel { width: 220px; }
-            .carousel-wrapper { height: 500px; } 
-            .carousel-button.prev { left: 2%; }
-            .carousel-button.next { right: 2%; }
+        .step-card{
+            background-color:#333;padding:1.5rem;border-radius:0.75rem;border-top:4px solid #d4af37;
+            position:relative;text-align:center;margin-top:1.5rem
         }
+        .step-num{
+            position:absolute;top:-1.5rem;left:50%;transform:translateX(-50%);
+            width:3rem;height:3rem;background-color:#1a1a1a;color:#d4af37;
+            border-radius:50%;display:flex;align-items:center;justify-content:center;
+            font-weight:800;font-size:1.25rem;border:4px solid #2b2b2b
+        }
+        .step-card h3{margin-top:1rem;font-weight:700;margin-bottom:0.5rem}
+        .step-card p{font-size:0.875rem;color:rgba(251,245,226,0.7)}
+
+        /* BIO SECTION */
+        .bio-flex{display:flex;align-items:center;gap:2.5rem;max-width:60rem;margin:0 auto}
+        @media(max-width:768px){.bio-flex{flex-direction:column}}
+        .bio-img-wrap{
+            width:100%;max-width:24rem;flex-shrink:0;border-radius:1rem;
+            overflow:hidden;border:1px solid #444;box-shadow:0 20px 25px rgba(0,0,0,0.5);cursor:pointer
+        }
+        .bio-img-wrap:hover{opacity:0.9}
+        .bio-content h2{font-size:1.875rem;font-weight:700;margin-bottom:1rem}
+        .bio-text{font-size:1.125rem;color:rgba(251,245,226,0.8);display:flex;flex-direction:column;gap:1rem}
+
+        /* PRICING */
+        .pricing-wrap{max-width:32rem;margin:0 auto}
+        .pricing-card{
+            background-color:#333;border:2px solid #e91e63;border-radius:1rem;
+            padding:2rem;display:flex;flex-direction:column;position:relative;
+            box-shadow:0 15px 30px rgba(0,0,0,0.5);transition:transform 0.3s ease
+        }
+        .pricing-card:hover{transform:translateY(-8px)}
+        .pricing-card h3{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:1.5rem}
+        
+        .meta-list{margin:0 auto 2rem;display:flex;flex-direction:column;gap:1rem;width:fit-content}
+        .meta-item{display:flex;align-items:center;gap:0.75rem;font-weight:700;color:#d4af37}
+        .meta-item i{width:1.5rem;text-align:center;font-size:1.25rem}
+        .meta-sub{display:block;font-size:0.75rem;font-weight:400;color:rgba(251,245,226,0.6)}
+        .meta-main{display:block;font-size:1.125rem}
+
+        .features-list{list-style:none;margin-bottom:2rem;display:flex;flex-direction:column;gap:1rem}
+        .features-list li{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.95rem;color:rgba(251,245,226,0.8)}
+        .features-list li i{color:#d4af37;margin-top:0.25rem;flex-shrink:0}
+        .features-list strong{color:#fbf5e2}
+
+        /* GUARANTEE */
+        .guarantee-box{
+            background-color:#1a2e20;border:1px solid #25422d;padding:1rem;
+            border-radius:0.5rem;display:flex;gap:0.75rem;margin-bottom:1.5rem;color:#e2f1e7;font-size:0.875rem
+        }
+        .guarantee-box i{color:#4ade80;font-size:1.25rem}
+        .guarantee-box strong{color:#4ade80}
+
+        /* BUTTONS */
+        .btn{
+            display:block;width:100%;padding:1rem;text-align:center;border-radius:0.5rem;
+            font-weight:700;font-size:1.125rem;position:relative;z-index:1;overflow:hidden;
+            border:2px solid transparent;cursor:pointer
+        }
+        .btn-gold{background-color:#d4af37;color:#1a1a1a}
+        .btn::before{
+            content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+            background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;
+            transition:transform 0.4s cubic-bezier(0.45,0.05,0.55,0.95)
+        }
+        .btn:hover::before{transform:scaleX(1);transform-origin:left}
+        .btn-gold:hover{color:#d4af37;border-color:#d4af37}
+
+        .trust-badges{margin-top:1.5rem;text-align:center;color:rgba(251,245,226,0.4);font-size:0.875rem}
+        .trust-icons{display:flex;justify-content:center;gap:0.75rem;font-size:1.5rem;margin-top:0.5rem}
+
+        /* TESTIMONIALS CAROUSEL (Coverflow) */
+        .carousel-wrapper{position:relative;width:100%;height:620px;display:flex;justify-content:center;align-items:center;perspective:1200px;overflow:hidden}
+        .testimonial-carousel{position:relative;width:300px;height:100%;transform-style:preserve-3d;cursor:grab}
+        .testimonial-carousel.grabbing{cursor:grabbing}
+        .testimonial-slide{
+            position:absolute;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;
+            transition:transform 0.5s cubic-bezier(.77,0,.175,1),opacity .5s ease;user-select:none;
+            -webkit-box-reflect:below 5px -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(70%,transparent),to(rgba(250,250,250,.15)))
+        }
+        .testimonial-image{width:100%;height:auto;max-height:100%;object-fit:contain;pointer-events:none}
+        .carousel-button{
+            position:absolute;top:50%;transform:translateY(-50%);background-color:rgba(43,43,43,0.8);
+            border:1px solid #555;border-radius:50%;width:3rem;height:3rem;color:#fbf5e2;
+            font-size:1.5rem;display:flex;justify-content:center;align-items:center;cursor:pointer;z-index:20
+        }
+        .carousel-button:hover{background-color:#d4af37;color:#1a1a1a;transform:translateY(-50%) scale(1.1)}
+        .carousel-button.prev{left:5%}
+        .carousel-button.next{right:5%}
+        @media(max-width:768px){.carousel-wrapper{height:500px}.testimonial-carousel{width:220px}}
+
+        /* FOOTER */
+        .site-footer{margin-top:5rem;padding:2rem;border-top:1px solid #444;text-align:center;background-color:#1a1a1a;border-radius:0.5rem}
+        .footer-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;margin-bottom:2rem}
+        .contact-link{display:flex;align-items:center;gap:0.5rem;color:rgba(251,245,226,0.8)}
+        .contact-link:hover i{color:#e91e63}
+        .contact-link.insta:hover{color:#ec4899}
+        .contact-link.yt:hover{color:#ef4444}
+        .legal-links{margin-top:2rem;font-size:0.875rem;color:rgba(251,245,226,0.6)}
+        .legal-links a{color:inherit;margin:0 0.5rem}
+        .copy{font-size:0.875rem;color:rgba(251,245,226,0.5);margin-top:1rem}
+
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center;padding:1rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s}
+        .modal-overlay.active{opacity:1;pointer-events:all}
+        .modal-inner{position:relative;max-width:32rem;width:100%}
+        .modal-inner img{width:100%;height:auto;max-height:90vh;object-contain;border-radius:0.5rem}
+        .modal-close{position:absolute;top:-1rem;right:-1rem;background:#333;color:#fff;border:none;width:2.5rem;height:2.5rem;border-radius:50%;cursor:pointer;font-size:1.5rem}
+
+        /* STICKY CTA */
+        .sticky-cta{position:fixed;bottom:0;left:0;width:100%;padding:1rem;background:#1a1a1a;border-top:1px solid #444;z-index:50;transition:transform 0.3s}
+        .sticky-cta.hidden{transform:translateY(100%)}
+        @media(min-width:768px){.sticky-cta{display:none}}
     </style>
 </head>
-<body class="p-4 pb-24 md:pb-4"> <!-- Añadido pb-24 en móvil para el botón flotante -->
+<body class="pb-24 md:pb-4">
 
-    <div class="max-w-6xl mx-auto">
+    <div class="container">
 
-        <header class="text-center mb-16 md:mb-24 -mx-4 md:mx-0">
+        <header>
             <a href="./index.html" aria-label="Volver a la página de inicio">
-                <!-- Nuevo Banner -->
-                <img src="https://i.imgur.com/DPUxfhf.png" alt="Banner La Mente del Fénix" class="w-full h-auto md:rounded-lg shadow-lg" width="1200" height="400">
+                <div class="banner-wrap">
+                    <img src="./assets/banner.webp" 
+                         alt="Banner La Mente del Fénix" 
+                         class="banner-img" 
+                         width="1200" height="400" 
+                         fetchpriority="high"
+                         loading="eager"
+                         decoding="sync">
+                </div>
             </a>
+            <div class="back-link-wrap">
+                <a href="./index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Volver a la página principal
+                </a>
+            </div>
         </header>
-
-        <!-- Botón para volver atrás -->
-        <div class="text-center mb-12">
-            <a href="./index.html" class="inline-flex items-center gap-2 text-[#d4af37] font-bold hover:text-[#e91e63] transition-colors text-lg">
-                <i class="fas fa-arrow-left"></i> Volver a la página principal
-            </a>
-        </div>
 
         <main>
             <!-- Hero Section -->
-            <section class="text-center px-4 pt-4 pb-16">
-                <div class="max-w-4xl mx-auto">
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-[#fbf5e2]">
-                        Desbloquea Tu Mente y Logra un Gran Avance en Solo 90 Minutos
-                    </h1>
-                    <p class="text-xl md:text-2xl mt-4 md:mt-6 max-w-3xl mx-auto font-medium text-[#fbf5e2]/80">
-                        Mis sesiones intensivas de reprogramación combinan la psicoterapia de Un Curso de Milagros, PNL y el cambio de identidad para deshacer tus creencias limitantes. Un espacio seguro para desenredar los nudos de la mente, restablecer tu conexión con Dios y recordar la verdad de quién eres.
-                    </p>
-                </div>
-            </section>
+            <div class="hero-text">
+                <h1>Desbloquea Tu Mente y Logra un Gran Avance en Solo 90 Minutos</h1>
+                <p class="hero-p">
+                    Mis sesiones intensivas de reprogramación combinan la psicoterapia de Un Curso de Milagros, PNL y el cambio de identidad para deshacer tus creencias limitantes. Un espacio seguro para desenredar los nudos de la mente, restablecer tu conexión con Dios y recordar la verdad de quién eres.
+                </p>
+            </div>
             
             <!-- Para quién es -->
-            <section class="py-20 bg-[#1a1a1a] px-4 rounded-lg shadow-inner">
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-8 text-[#fbf5e2]">¿Para quién es esta sesión?</h2>
-                    <p class="text-center text-lg text-[#fbf5e2]/80 mb-10 max-w-3xl mx-auto">
-                        Esta sesión está diseñada para personas <strong class="text-[#d4af37]">realmente comprometidas</strong> con su cambio. Si estás atravesando alguno de estos conflictos, puedo ayudarte:
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-[#333333] p-6 rounded-xl border border-[#444444] shadow-sm text-center transition-transform hover:-translate-y-1">
-                            <i class="fas fa-heart-broken text-brand-pink text-4xl mb-4"></i>
-                            <h3 class="font-bold text-xl mb-2 text-[#fbf5e2]">Relaciones</h3>
-                            <p class="text-sm text-[#fbf5e2]/70">Conflictos de pareja constantes, falta de entendimiento o patrones tóxicos repetitivos.</p>
-                        </div>
-                        <div class="bg-[#333333] p-6 rounded-xl border border-[#444444] shadow-sm text-center transition-transform hover:-translate-y-1">
-                            <i class="fas fa-wallet text-brand-pink text-4xl mb-4"></i>
-                            <h3 class="font-bold text-xl mb-2 text-[#fbf5e2]">Dinero</h3>
-                            <p class="text-sm text-[#fbf5e2]/70">Bloqueos económicos, inestabilidad laboral y sensación constante de escasez.</p>
-                        </div>
-                        <div class="bg-[#333333] p-6 rounded-xl border border-[#444444] shadow-sm text-center transition-transform hover:-translate-y-1">
-                            <i class="fas fa-battery-empty text-brand-pink text-4xl mb-4"></i>
-                            <h3 class="font-bold text-xl mb-2 text-[#fbf5e2]">Autoestima y Apatía</h3>
-                            <p class="text-sm text-[#fbf5e2]/70">Inseguridad profunda, estados de vacío, estancamiento o falta de sentido vital.</p>
-                        </div>
+            <section class="dark-bg">
+                <h2 class="section-title">¿Para quién es esta sesión?</h2>
+                <p class="section-desc">
+                    Esta sesión está diseñada para personas <strong class="text-brand-gold">realmente comprometidas</strong> con su cambio. Si estás atravesando alguno de estos conflictos, puedo ayudarte:
+                </p>
+                <div class="grid-3">
+                    <div class="card">
+                        <i class="fas fa-heart-broken"></i>
+                        <h3>Relaciones</h3>
+                        <p>Conflictos de pareja constantes, falta de entendimiento o patrones tóxicos repetitivos.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-wallet"></i>
+                        <h3>Dinero</h3>
+                        <p>Bloqueos económicos, inestabilidad laboral y sensación constante de escasez.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-battery-empty"></i>
+                        <h3>Autoestima y Apatía</h3>
+                        <p>Inseguridad profunda, estados de vacío, estancamiento o falta de sentido vital.</p>
                     </div>
                 </div>
             </section>
 
             <!-- El Proceso -->
-            <section class="py-20 px-4">
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-4 text-[#fbf5e2]">¿Cómo lo haremos?</h2>
-                    <p class="text-center text-[#fbf5e2]/80 mb-12 text-lg max-w-2xl mx-auto font-medium">
-                        Te guiaré paso a paso utilizando exactamente los mismos métodos que me funcionaron a mí, Darío Arrigazzi, para transformar mi vida.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <!-- Paso 1 -->
-                        <div class="bg-[#333333] p-6 rounded-xl shadow-md border-t-4 border-brand-gold flex flex-col items-center text-center relative mt-4">
-                            <div class="absolute -top-6 w-12 h-12 bg-[#1a1a1a] text-brand-gold rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#2b2b2b]">1</div>
-                            <h3 class="font-bold text-lg mb-2 mt-4 text-[#fbf5e2]">Origen</h3>
-                            <p class="text-[#fbf5e2]/70 text-sm leading-relaxed">Exponemos tu problema actual e identificamos juntos el origen real del conflicto.</p>
-                        </div>
-                        <!-- Paso 2 -->
-                        <div class="bg-[#333333] p-6 rounded-xl shadow-md border-t-4 border-brand-gold flex flex-col items-center text-center relative mt-4">
-                            <div class="absolute -top-6 w-12 h-12 bg-[#1a1a1a] text-brand-gold rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#2b2b2b]">2</div>
-                            <h3 class="font-bold text-lg mb-2 mt-4 text-[#fbf5e2]">Liberación</h3>
-                            <p class="text-[#fbf5e2]/70 text-sm leading-relaxed">Fase de entrega. Soltamos los bloqueos y cargas para reconectar con tu verdadero ser.</p>
-                        </div>
-                        <!-- Paso 3 -->
-                        <div class="bg-[#333333] p-6 rounded-xl shadow-md border-t-4 border-brand-gold flex flex-col items-center text-center relative mt-4">
-                            <div class="absolute -top-6 w-12 h-12 bg-[#1a1a1a] text-brand-gold rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#2b2b2b]">3</div>
-                            <h3 class="font-bold text-lg mb-2 mt-4 text-[#fbf5e2]">Plan de Acción</h3>
-                            <p class="text-[#fbf5e2]/70 text-sm leading-relaxed">Definimos pasos claros para las próximas semanas, asegurando que los cambios se mantengan.</p>
-                        </div>
-                        <!-- Paso 4 -->
-                        <div class="bg-[#333333] p-6 rounded-xl shadow-md border-t-4 border-brand-gold flex flex-col items-center text-center relative mt-4">
-                            <div class="absolute -top-6 w-12 h-12 bg-[#1a1a1a] text-brand-gold rounded-full flex items-center justify-center font-bold text-xl border-4 border-[#2b2b2b]">4</div>
-                            <h3 class="font-bold text-lg mb-2 mt-4 text-[#fbf5e2]">Meditación</h3>
-                            <p class="text-[#fbf5e2]/70 text-sm leading-relaxed">Tras la sesión, recibirás una meditación totalmente adaptada a tu caso para seguir trabajando.</p>
-                        </div>
+            <section>
+                <h2 class="section-title">¿Cómo lo haremos?</h2>
+                <p class="section-desc">
+                    Te guiaré paso a paso utilizando exactamente los mismos métodos que me funcionaron a mí, Darío Arrigazzi, para transformar mi vida.
+                </p>
+                <div class="grid-4">
+                    <div class="step-card">
+                        <div class="step-num">1</div>
+                        <h3>Origen</h3>
+                        <p>Exponemos tu problema actual e identificamos juntos el origen real del conflicto.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">2</div>
+                        <h3>Liberación</h3>
+                        <p>Fase de entrega. Soltamos los bloqueos y cargas para reconectar con tu verdadero ser.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">3</div>
+                        <h3>Plan de Acción</h3>
+                        <p>Definimos pasos claros para las próximas semanas, asegurando que los cambios se mantengan.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">4</div>
+                        <h3>Meditación</h3>
+                        <p>Tras la sesión, recibirás una meditación totalmente adaptada a tu caso para seguir trabajando.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Testimonials Section -->
-            <section class="py-20 bg-[#1a1a1a] px-4 overflow-x-hidden rounded-lg shadow-inner">
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-12 text-[#fbf5e2]">La experiencia de otros</h2>
-                    <p class="text-center text-[#fbf5e2]/80 mb-8">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
-                    
-                    <div class="carousel-wrapper">
-                        <div id="testimonial-carousel" class="testimonial-carousel">
-                            <!-- Slides will be injected by JavaScript -->
-                        </div>
-                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
-                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
-                    </div>
+            <section class="dark-bg">
+                <h2 class="section-title">La experiencia de otros</h2>
+                <p class="section-desc">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
+                <div class="carousel-wrapper">
+                    <div id="testimonial-carousel" class="testimonial-carousel"></div>
+                    <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
+                    <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
                 </div>
             </section>
 
-            <!-- Biografía Corta -->
-            <section class="py-20 px-4">
-                <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
-                    <div class="w-full max-w-sm mx-auto shrink-0 shadow-2xl rounded-2xl overflow-hidden border border-[#444] cursor-pointer hover:opacity-90 transition-opacity" onclick="openModal('https://i.imgur.com/2Shoaen.jpeg')">
-                        <img src="https://i.imgur.com/2Shoaen.jpeg" alt="Darío Arrigazzi" class="w-full h-auto object-cover">
+            <!-- Biografía -->
+            <section>
+                <div class="bio-flex">
+                    <div class="bio-img-wrap" onclick="openModal('./assets/foto biografia.webp')">
+                        <img src="./assets/foto biografia.webp" 
+                             alt="Darío Arrigazzi" 
+                             width="400" height="400" 
+                             loading="lazy" decoding="async">
                     </div>
-                    <div>
-                        <h2 class="text-3xl font-bold mb-4 text-[#fbf5e2]">¿Quién te acompañará?</h2>
-                        <div class="text-[#fbf5e2]/80 space-y-4 leading-relaxed text-lg">
-                            <p>Soy <strong class="text-[#d4af37]">Darío Arrigazzi</strong>. Tuve una infancia marcada por el trauma. Crecí en un ambiente de violencia extrema, presenciando el maltrato constante de mi padre hacia mi madre y mis hermanos. Esto me dejó con una autoestima nula, viviendo en un estado permanente de miedo, terror y un profundo sentimiento de culpa.</p>
-                            <p>Aunque años después alcancé el éxito profesional impulsando el grupo empresarial <em class="text-[#d4af37]">Lovenature Superfoods</em> como Director de Operaciones, por dentro seguía roto. La verdadera transformación llegó cuando lo dejé todo para sanar. Me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins, logrando reprogramar mi mente y liberar el dolor reprimido de mi pasado.</p>
-                            <p class="font-bold text-[#d4af37]">Hoy utilizo toda esta experiencia vital para demostrarte que, sin importar lo oscuro que haya sido tu camino, tú también puedes liberarte y recuperar tu paz.</p>
+                    <div class="bio-content">
+                        <h2>¿Quién te acompañará?</h2>
+                        <div class="bio-text">
+                            <p>Soy <strong class="text-brand-gold">Darío Arrigazzi</strong>. Tuve una infancia marcada por el trauma. Crecí en un ambiente de violencia extrema, presenciando el maltrato constante de mi padre hacia mi madre y mis hermanos. Esto me dejó con una autoestima nula, viviendo en un estado permanente de miedo, terror y un profundo sentimiento de culpa.</p>
+                            <p>Aunque años después alcancé el éxito profesional impulsando el grupo empresarial <em class="text-brand-gold">Lovenature Superfoods</em> como Director de Operaciones, por dentro seguía roto. La verdadera transformación llegó cuando lo dejé todo para sanar. Me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins, logrando reprogramar mi mente y liberar el dolor reprimido de mi pasado.</p>
+                            <p><strong>Hoy utilizo toda esta experiencia vital para demostrarte que, sin importar lo oscuro que haya sido tu camino, tú también puedes liberarte y recuperar tu paz.</strong></p>
                         </div>
                     </div>
                 </div>
             </section>
             
             <!-- Pricing Section -->
-            <section id="precios" class="py-20 bg-[#2b2b2b] px-4">
-                <div class="max-w-xl mx-auto">
-                    <h2 class="text-3xl font-bold text-center mb-12 text-[#fbf5e2]">Reserva tu Sesión</h2>
-                    
-                    <div class="pricing-card recommended rounded-lg p-8 flex flex-col relative">
-                        <h3 class="text-2xl font-bold mb-6 text-center text-[#fbf5e2]">Sesión Intensiva de Desbloqueo</h3>
-                        <div class="flex flex-col gap-4 mb-8 mx-auto w-fit text-brand-gold font-bold">
-                            <div class="flex items-center gap-3 text-left">
-                                <i class="far fa-clock text-xl w-6 text-center"></i> 
-                                <div class="leading-tight">
-                                    <span class="block text-xs font-normal text-[#fbf5e2]/60">Aproximadamente</span>
-                                    <span class="block text-lg">1h 30m</span>
+            <section id="precios">
+                <h2 class="section-title">Reserva tu Sesión</h2>
+                <div class="pricing-wrap">
+                    <div class="pricing-card">
+                        <h3>Sesión Intensiva de Desbloqueo</h3>
+                        <div class="meta-list">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <div>
+                                    <span class="meta-sub">Aproximadamente</span>
+                                    <span class="meta-main">1h 30m</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 text-left">
-                                <i class="fas fa-tag text-xl w-6 text-center"></i> 
-                                <div class="leading-tight">
-                                    <span class="block text-lg">$210 USD</span>
-                                    <span class="block text-xs font-normal text-[#fbf5e2]/60">(aprox. 200€)</span>
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <span class="meta-main">$210 USD</span>
+                                    <span class="meta-sub">(aprox. 200€)</span>
                                 </div>
                             </div>
                         </div>
-                        <ul class="text-[#fbf5e2]/80 flex-grow mb-8 space-y-4">
-                            <li class="flex items-start">
-                                <i class="fas fa-lightbulb text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                <span><strong class="text-[#fbf5e2]">Claridad mental inmediata:</strong> Entiende por fin qué te frena y por qué repites los mismos patrones.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-dove text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                <span><strong class="text-[#fbf5e2]">Alivio emocional profundo:</strong> Libérate del peso de la culpa, los miedos y la apatía que llevas arrastrando.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-compass text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                <span><strong class="text-[#fbf5e2]">Dirección y enfoque:</strong> Llévate un plan de acción claro y una meditación a tu medida para sostener el cambio.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fab fa-whatsapp text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                <span><strong class="text-[#fbf5e2]">Acompañamiento continuo:</strong> Soporte vía WhatsApp durante 1 semana para resolver dudas y no sentirte solo.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-video text-brand-gold mt-1 w-6 text-center mr-3 shrink-0"></i>
-                                <span><strong class="text-[#fbf5e2]">Grabación confidencial:</strong> Llévate el vídeo de la sesión (opcional) para repasar en frío tus revelaciones y no perder detalle.</span>
-                            </li>
+                        <ul class="features-list">
+                            <li><i class="fas fa-lightbulb"></i><span><strong>Claridad mental inmediata:</strong> Entiende por fin qué te frena y por qué repites los mismos patrones.</span></li>
+                            <li><i class="fas fa-dove"></i><span><strong>Alivio emocional profundo:</strong> Libérate del peso de la culpa, los miedos y la apatía que llevas arrastrando.</span></li>
+                            <li><i class="fas fa-compass"></i><span><strong>Dirección y enfoque:</strong> Llévate un plan de acción claro y una meditación a tu medida.</span></li>
+                            <li><i class="fab fa-whatsapp"></i><span><strong>Acompañamiento continuo:</strong> Soporte vía WhatsApp durante 1 semana para resolver dudas.</span></li>
+                            <li><i class="fas fa-video"></i><span><strong>Grabación confidencial:</strong> Llévate el vídeo de la sesión (opcional) para repasar tus revelaciones.</span></li>
                         </ul>
 
-                        <!-- Garantía (Ajustada a tema oscuro) -->
-                        <div class="mb-6 p-4 bg-[#1a2e20] rounded-lg flex items-start gap-3 text-sm text-[#e2f1e7] border border-[#25422d] text-left">
-                            <i class="fas fa-shield-alt text-[#4ade80] text-lg mt-0.5"></i>
-                            <p><strong class="text-[#4ade80]">Garantía de Satisfacción 100%:</strong> Si al finalizar la sesión sientes que no te ha aportado valor, te devuelvo tu dinero sin hacer preguntas.</p>
+                        <div class="guarantee-box">
+                            <i class="fas fa-shield-alt"></i>
+                            <p><strong>Garantía de Satisfacción 100%:</strong> Si al finalizar la sesión sientes que no te ha aportado valor, te devuelvo tu dinero sin hacer preguntas.</p>
                         </div>
 
-                        <a href="https://buy.stripe.com/aFa3cufxqfVCfzH3tL3F605" target="_blank" rel="noopener noreferrer" class="btn btn-gold font-bold py-3 px-6 rounded-lg text-center w-full mt-auto text-lg shadow-md hover:shadow-lg">Reservar Sesión</a>
+                        <a href="https://buy.stripe.com/aFa3cufxqfVCfzH3tL3F605" target="_blank" rel="noopener" class="btn btn-gold">Reservar Sesión</a>
                         
-                        <!-- Insignias de Confianza -->
-                        <div class="mt-5 flex flex-col items-center justify-center text-[#fbf5e2]/50 text-sm">
-                            <div class="flex items-center gap-2 mb-2 font-medium">
-                                <i class="fas fa-lock text-[#fbf5e2]/40"></i>
-                                <span>Pago 100% seguro y cifrado</span>
+                        <div class="trust-badges">
+                            <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.5rem">
+                                <i class="fas fa-lock"></i><span>Pago 100% seguro y cifrado</span>
                             </div>
-                            <div class="flex gap-3 text-2xl text-[#fbf5e2]/30">
-                                <i class="fab fa-cc-visa hover:text-[#fbf5e2]/60 transition-colors"></i>
-                                <i class="fab fa-cc-mastercard hover:text-[#fbf5e2]/60 transition-colors"></i>
-                                <i class="fab fa-cc-amex hover:text-[#fbf5e2]/60 transition-colors"></i>
-                                <i class="fab fa-cc-stripe hover:text-[#fbf5e2]/60 transition-colors"></i>
+                            <div class="trust-icons">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-amex"></i>
+                                <i class="fab fa-cc-stripe"></i>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
         </main>
 
-        <!-- Footer -->
-        <footer class="mt-20 py-8 border-t border-gray-700 text-center bg-[#1a1a1a] rounded-lg shadow-inner">
-             <h4 class="font-bold text-lg mb-4 text-[#fbf5e2]">Contacta conmigo</h4>
-             <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
-                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link email-link flex items-center gap-2 text-[#fbf5e2]/80">
-                     <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
+        <footer class="site-footer">
+             <h4>Contacta conmigo</h4>
+             <div class="footer-grid">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" rel="noopener" class="contact-link">
+                     <i class="fas fa-envelope"></i>
                      <span>lamentedelfenix@gmail.com</span>
                  </a>
-                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-500">
-                     <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener" class="contact-link insta">
+                     <i class="fab fa-instagram"></i>
                      <span>@darioarrigazzi</span>
                  </a>
-                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-500">
-                     <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
+                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener" class="contact-link yt">
+                     <i class="fab fa-youtube"></i>
                      <span>Canal de YouTube</span>
                  </a>
              </div>
-             <div class="text-sm text-[#fbf5e2]/60 space-x-4 mt-8">
-                 <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a>
-                 <span>&middot;</span>
-                 <a href="./terminos.html" class="hover:underline">Términos del Servicio</a>
-                 <span>&middot;</span>
-                 <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a>
-                 <span>&middot;</span>
-                 <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             <div class="legal-links">
+                 <a href="./privacidad.html">Privacidad</a><span>&middot;</span>
+                 <a href="./terminos.html">Términos</a><span>&middot;</span>
+                 <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
+                 <a href="./cookies.html">Cookies</a>
              </div>
-             <p class="text-sm text-[#fbf5e2]/50 mt-4">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
+             <p class="copy">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
 
-    <!-- Botón Flotante Móvil (Sticky CTA) -->
-    <div id="sticky-cta" class="fixed bottom-0 left-0 w-full p-4 bg-[#1a1a1a] border-t border-gray-700 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.5)] z-40 md:hidden transition-transform duration-300">
-        <a href="#precios" class="btn btn-gold font-bold py-3 px-6 rounded-lg text-center block w-full text-lg shadow-md">
-            Reservar Mi Sesión
-        </a>
+    <!-- Sticky CTA Móvil -->
+    <div id="sticky-cta" class="sticky-cta">
+        <a href="#precios" class="btn btn-gold">Reservar Mi Sesión</a>
     </div>
 
-    <!-- Image Modal Structure -->
-    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
-        <div class="relative max-w-lg w-full">
-            <img id="modal-image" src="" alt="Reseña ampliada" class="w-full h-auto max-h-[90vh] object-contain rounded-lg">
-            <button id="modal-close" class="absolute -top-3 -right-3 text-white bg-gray-800 hover:bg-gray-600 rounded-full w-8 h-8 flex justify-center items-center text-2xl leading-none transition-colors">&times;</button>
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal-overlay">
+        <div class="modal-inner">
+            <img id="modal-image" src="" alt="Reseña ampliada" loading="lazy">
+            <button id="modal-close" class="modal-close">&times;</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Image Modal Logic ---
-            const imageModal = document.getElementById('image-modal');
-            const modalImage = document.getElementById('modal-image');
-            const modalClose = document.getElementById('modal-close');
-
-            // Hacemos openModal global para que funcione el onclick
-            window.openModal = function(src) {
-                modalImage.src = src;
-                imageModal.classList.remove('opacity-0', 'pointer-events-none');
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            
+            window.openModal = (src) => {
+                modalImg.src = src;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = () => {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
             };
 
-            function closeModal() {
-                imageModal.classList.add('opacity-0', 'pointer-events-none');
-            }
+            document.getElementById('modal-close').onclick = closeModal;
+            modal.onclick = (e) => { if(e.target === modal) closeModal(); };
 
-            modalClose.addEventListener('click', closeModal);
-            imageModal.addEventListener('click', (e) => {
-                if (e.target === imageModal) closeModal();
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !imageModal.classList.contains('opacity-0')) closeModal();
-            });
-
-            // --- Coverflow Carousel Logic ---
+            // Carousel Logic
             const carousel = document.getElementById('testimonial-carousel');
-            if (carousel) {
-                const prevBtn = document.getElementById('prev-btn');
-                const nextBtn = document.getElementById('next-btn');
-                const images = [
-                    'https://i.imgur.com/xXAb3d8.png', 'https://i.imgur.com/PS3d8wq.png', 'https://i.imgur.com/Sb8Y6Ge.png',
-                    'https://i.imgur.com/Dfy0vTn.png', 'https://i.imgur.com/3fCoISM.png', 'https://i.imgur.com/fyv6Jjn.png',
-                    'https://i.imgur.com/A8YMBoi.png'
-                ];
-                let currentIndex = Math.floor(images.length / 2); // Start in the middle
-                let slides = [];
+            const images = [
+                './assets/Captura 1.webp', './assets/Captura 2.webp', './assets/Captura 3.webp',
+                './assets/Captura 4.webp', './assets/Captura 5.webp', './assets/Captura 6.webp',
+                './assets/Captura 7.webp'
+            ];
+            let currentIndex = Math.floor(images.length / 2);
+            let slides = [];
+            let isDragging = false, startPos = 0, dragOffset = 0;
 
-                let isDragging = false, startPos = 0, dragOffset = 0;
+            images.forEach((src, i) => {
+                const slide = document.createElement('div');
+                slide.className = 'testimonial-slide';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Reseña ${i+1}`;
+                img.className = 'testimonial-image';
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                slide.appendChild(img);
+                carousel.appendChild(slide);
+                slides.push(slide);
+            });
 
-                images.forEach((src, i) => {
-                    const slide = document.createElement('div');
-                    slide.className = 'testimonial-slide';
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = `Reseña de cliente ${i + 1}`;
-                    img.className = 'testimonial-image';
-                    img.draggable = false;
-                    slide.appendChild(img);
-                    carousel.appendChild(slide);
-                    slides.push(slide);
-                });
-
-                function updateCarousel() {
-                    slides.forEach((slide, i) => {
-                        const offset = i - currentIndex;
-                        let transform = `scale(0)`;
-                        let opacity = '0';
-                        let zIndex = '0';
-
-                        if (Math.abs(offset) < 2) { 
-                            const sign = Math.sign(offset);
-                            opacity = '0.5';
-                            zIndex = `${10 - Math.abs(offset)}`;
-
-                            if (offset === 0) {
-                                // Center slide
-                                transform = `translateX(0) translateZ(0) rotateY(0) scale(1.1)`;
-                                opacity = '1';
-                            } else {
-                                // Side slides
-                                const scale = 0.8;
-                                const rotateY = -sign * 45; 
-                                const translateX = sign * 220; 
-                                const translateZ = -180;
-                                transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
-                            }
-                        }
-
-                        slide.style.transform = transform;
-                        slide.style.opacity = opacity;
-                        slide.style.zIndex = zIndex;
-                    });
-                }
-
-                function changeSlide(direction) {
-                    const newIndex = currentIndex + direction;
-                    if (newIndex >= 0 && newIndex < slides.length) {
-                        currentIndex = newIndex;
-                        updateCarousel();
+            function updateCarousel() {
+                slides.forEach((slide, i) => {
+                    const offset = i - currentIndex;
+                    let transform = 'scale(0)', opacity = '0', zIndex = '0';
+                    if (Math.abs(offset) < 2) {
+                        const sign = Math.sign(offset);
+                        opacity = '0.5'; zIndex = String(10 - Math.abs(offset));
+                        if (offset === 0) { transform = 'translateX(0) translateZ(0) scale(1.1)'; opacity = '1'; }
+                        else { transform = `translateX(${sign * 220}px) translateZ(-180px) rotateY(${-sign * 45}deg) scale(0.8)`; }
                     }
-                }
-
-                nextBtn.addEventListener('click', () => changeSlide(1));
-                prevBtn.addEventListener('click', () => changeSlide(-1));
-
-                function getPositionX(event) {
-                    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
-                }
-
-                function dragStart(event) {
-                    isDragging = true;
-                    startPos = getPositionX(event);
-                    dragOffset = 0;
-                    carousel.classList.add('grabbing');
-                }
-
-                function dragging(event) {
-                    if (!isDragging) return;
-                    const currentPos = getPositionX(event);
-                    dragOffset = currentPos - startPos;
-                }
-
-                function dragEnd() {
-                if (!isDragging) return;
-                isDragging = false;
-                carousel.classList.remove('grabbing');
-                const threshold = 80; // Min pixels to swipe to change slide
-                if (dragOffset > threshold) {
-                    changeSlide(-1); // Swiped right
-                } else if (dragOffset < -threshold) {
-                    changeSlide(1); // Swiped left
-                }
-                dragOffset = 0; // Reset for click detection
+                    slide.style.transform = transform;
+                    slide.style.opacity = opacity;
+                    slide.style.zIndex = zIndex;
+                });
             }
 
-            carousel.addEventListener('mousedown', dragStart);
-            carousel.addEventListener('touchstart', dragStart, { passive: true });
-            carousel.addEventListener('mousemove', dragging);
-            carousel.addEventListener('touchmove', dragging, { passive: true });
-            carousel.addEventListener('mouseup', dragEnd);
-            carousel.addEventListener('mouseleave', dragEnd);
-            carousel.addEventListener('touchend', dragEnd);
+            const changeSlide = (dir) => {
+                const n = currentIndex + dir;
+                if(n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); }
+            };
 
-            slides.forEach((slide, i) => {
-                slide.addEventListener('click', () => {
-                    if (Math.abs(dragOffset) < 10 && i === currentIndex) {
-                        openModal(slide.querySelector('img').src);
-                    } else if (i !== currentIndex) {
-                        currentIndex = i;
-                        updateCarousel();
-                    }
-                });
-            });
-            
-            updateCarousel(); // Initial setup
-            window.addEventListener('resize', updateCarousel); // Recalculate on resize
-        }
+            document.getElementById('next-btn').onclick = () => changeSlide(1);
+            document.getElementById('prev-btn').onclick = () => changeSlide(-1);
 
-        // --- Lógica para ocultar el botón flotante en la zona de precios ---
-        const pricingSection = document.getElementById('precios');
-        const stickyCta = document.getElementById('sticky-cta');
+            carousel.onmousedown = (e) => { isDragging = true; startPos = e.pageX; carousel.classList.add('grabbing'); };
+            window.onmousemove = (e) => { if(isDragging) dragOffset = e.pageX - startPos; };
+            window.onmouseup = () => {
+                if(!isDragging) return;
+                isDragging = false; carousel.classList.remove('grabbing');
+                if(dragOffset > 80) changeSlide(-1); else if(dragOffset < -80) changeSlide(1);
+                dragOffset = 0;
+            };
 
-        if (pricingSection && stickyCta) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Ocultar botón (deslizar hacia abajo)
-                        stickyCta.classList.add('translate-y-full');
-                    } else {
-                        // Mostrar botón
-                        stickyCta.classList.remove('translate-y-full');
-                    }
-                });
-            }, { threshold: 0.1 }); // Se activa cuando el 10% de la sección es visible
+            // Touch events
+            carousel.ontouchstart = (e) => { isDragging = true; startPos = e.touches[0].clientX; };
+            carousel.ontouchmove = (e) => { if(isDragging) dragOffset = e.touches[0].clientX - startPos; };
+            carousel.ontouchend = () => { if(isDragging) { isDragging = false; if(dragOffset > 50) changeSlide(-1); else if(dragOffset < -50) changeSlide(1); dragOffset = 0; } };
 
-            observer.observe(pricingSection);
-        }
-    });
-</script>
+            updateCarousel();
+
+            // Sticky CTA Logic
+            const prices = document.getElementById('precios');
+            const sticky = document.getElementById('sticky-cta');
+            const observer = new IntersectionObserver(([e]) => {
+                sticky.classList.toggle('hidden', e.isIntersecting);
+            }, { threshold: 0.1 });
+            observer.observe(prices);
+        });
+    </script>
 </body>
 </html>
