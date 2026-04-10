@@ -10,132 +10,189 @@
 
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
 
-    <!-- DNS / preconnect dominios críticos -->
+    <!-- DNS / preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Preload del LCP (banner) — máxima prioridad -->
-    <link rel="preload" as="image" href="https://i.imgur.com/DPUxfhf.png" type="image/png" fetchpriority="high">
+    <!-- Preload del LCP (banner local) -->
+    <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fuente y FontAwesome diferidos — no bloquean render -->
+    <!-- Fuentes y Iconos diferidos -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap"></noscript>
-
+    
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"></noscript>
 
     <style>
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #2b2b2b;
-            color: #fbf5e2;
-        }
+        /* RESET & BASE */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:'Montserrat',sans-serif;background-color:#2b2b2b;color:#fbf5e2;line-height:1.5;padding:1rem}
+        img{max-width:100%;height:auto;display:block}
+        a{text-decoration:none;transition:all .3s ease}
         
-        /* Prevenir CLS en el banner LCP */
-        .banner-wrap {
-            width: 100%;
-            aspect-ratio: 1200 / 400;
-            background-color: #1a1a1a;
-            overflow: hidden;
+        .container{max-width:64rem;margin:0 auto}
+
+        /* HEADER */
+        .banner-wrap{
+            width:100%;
+            aspect-ratio:1200/400;
+            background-color:#1a1a1a;
+            overflow:hidden;
+            margin-bottom:2rem;
+            border-radius:0.5rem;
+            box-shadow:0 10px 15px -3px rgba(0,0,0,0.1)
+        }
+        @media(max-width:768px){.banner-wrap{margin-left:-1rem;margin-right:-1rem;width:calc(100% + 2rem);border-radius:0}}
+        .banner-img{width:100%;height:100%;object-fit:cover}
+
+        /* NAV */
+        nav{margin-bottom:2rem}
+        .back-link{display:flex;align-items:center;gap:0.5rem;color:rgba(251,245,226,0.8);font-weight:600}
+        .back-link:hover{color:#e91e63}
+
+        /* HERO CARD */
+        .hero-section{
+            background-color:#1a1a1a;
+            border-radius:1rem;
+            overflow:hidden;
+            border:1px solid #444;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            margin-bottom:4rem;
+            box-shadow:0 25px 50px -12px rgba(0,0,0,0.5)
+        }
+        @media(max-width:768px){.hero-section{grid-template-columns:1fr}}
+        
+        .hero-img-wrap{height:100%;min-height:300px;background-color:#222;border-right:1px solid #444}
+        .hero-img{width:100%;height:100%;object-fit:cover;object-position:top;opacity:0.9}
+        
+        .hero-content{padding:3rem}
+        @media(max-width:640px){.hero-content{padding:2rem}}
+        
+        h1{font-size:2.25rem;font-weight:800;margin-bottom:1rem;line-height:1.2}
+        .hero-p{font-size:1.125rem;color:rgba(251,245,226,0.8);margin-bottom:1.5rem;font-weight:500}
+        
+        .price{color:#e91e63;font-size:1.5rem;font-weight:700;margin-bottom:0.25rem}
+        .price-sub{font-size:0.875rem;font-weight:400;color:rgba(251,245,226,0.6)}
+        .tax-info{font-size:0.75rem;color:rgba(251,245,226,0.6);font-style:italic;margin-bottom:0.5rem}
+        .check-line{font-size:0.875rem;font-weight:600;color:rgba(251,245,226,0.8);margin:1rem 0 2rem}
+        .check-line i{color:#d4af37;margin-right:0.25rem}
+
+        /* BUTTONS */
+        .btn{
+            display:block;width:100%;padding:1rem;text-align:center;border-radius:0.5rem;
+            font-weight:700;font-size:1.125rem;position:relative;z-index:1;overflow:hidden;
+            border:2px solid transparent;cursor:pointer
+        }
+        .btn-pink{background-color:#e91e63;color:#fff}
+        .btn-gold{background-color:#d4af37;color:#1a1a1a}
+        .btn::before{
+            content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+            background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;
+            transition:transform 0.4s cubic-bezier(0.45,0.05,0.55,0.95)
+        }
+        .btn:hover::before{transform:scaleX(1);transform-origin:left}
+        .btn-pink:hover{color:#e91e63;border-color:#e91e63}
+        .btn-gold:hover{color:#d4af37;border-color:#d4af37}
+        
+        .disclaimer{font-size:10px;color:rgba(251,245,226,0.4);margin-top:0.75rem;line-height:1.2;text-align:center}
+        .disclaimer a{text-decoration:underline;color:inherit}
+
+        /* VIDEO SECTION */
+        .section-title{text-align:center;margin-bottom:2.5rem}
+        .section-title h2{font-size:1.875rem;font-weight:700;margin-bottom:1rem}
+        .section-title p{max-width:42rem;margin:0 auto;color:rgba(251,245,226,0.8);font-weight:500}
+
+        .video-container{
+            max-width:48rem;margin:0 auto 4rem;background-color:#1a1a1a;padding:0.5rem;
+            border-radius:1rem;border:1px solid #444;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3)
+        }
+        .video-ratio{position:relative;padding-top:56.25%;overflow:hidden;border-radius:0.75rem}
+        .video-ratio iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+
+        /* FEATURES GRID */
+        .features-section{
+            background-color:#333;padding:3rem 2rem;border-radius:1rem;border:1px solid #444;
+            margin-bottom:4rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem
+        }
+        @media(max-width:1024px){.features-section{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:640px){.features-section{grid-template-columns:1fr}}
+        
+        .feature-item{text-align:center}
+        .feature-icon{
+            width:4rem;height:4rem;background-color:#1a1a1a;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;
+            border:1px solid #e91e63;color:#e91e63;font-size:1.5rem
+        }
+        .feature-item h3{font-size:1.125rem;font-weight:700;margin-bottom:0.75rem}
+        .feature-item p{font-size:0.875rem;color:rgba(251,245,226,0.8);line-height:1.6}
+
+        /* MODULES GRID */
+        .modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-bottom:4rem}
+        @media(max-width:1024px){.modules-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:640px){.modules-grid{grid-template-columns:1fr}}
+        
+        .module-card{
+            background:linear-gradient(145deg,#222 0%,#1a1a1a 100%);
+            border:1px solid #333;padding:2rem;border-radius:0.75rem;display:flex;flex-direction:column;
+            position:relative;overflow:hidden;transition:all 0.3s ease
+        }
+        .module-card:hover{transform:translateY(-5px);border-color:#d4af37}
+        .module-card.locked{opacity:0.85;border-color:#444}
+        .module-card.locked:hover{border-color:#e91e63}
+        
+        .module-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+        .module-header i{font-size:1.875rem;color:#d4af37}
+        .locked .module-header i{color:#e91e63}
+        .module-header h3{font-size:1.125rem;font-weight:700}
+        
+        .module-p{font-size:1rem;color:rgba(251,245,226,0.7);margin-top:auto}
+        .badge{
+            position:absolute;top:0;right:0;background-color:#e91e63;color:#fff;
+            font-size:0.75rem;font-weight:700;padding:0.375rem 1rem;border-bottom-left-radius:0.5rem;
+            text-transform:uppercase;letter-spacing:0.05em
         }
 
-        .text-brand-pink { color: #e91e63; }
-        .text-brand-gold { color: #d4af37; }
-        
-        .btn {
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            transition: color 0.4s ease-out;
-            border: 2px solid transparent;
+        /* FINAL CTA */
+        .final-cta{
+            text-align:center;padding:3rem;background-color:#1a1a1a;border-radius:1rem;
+            border:1px solid #444;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1)
         }
-        .btn-pink { background-color: #e91e63; color: white; }
-        .btn-gold { background-color: #d4af37; color: #1a1a1a; }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #1a1a1a;
-            z-index: -1;
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-        }
-        .btn.btn-pink:hover::before { border: 2px solid #e91e63; }
-        .btn.btn-gold:hover::before { border: 2px solid #d4af37; }
-        
-        .btn.btn-pink:hover { color: #e91e63; }
-        .btn.btn-gold:hover { color: #d4af37; }
-        
-        .btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
+        .final-cta h2{font-size:1.5rem;font-weight:700;margin-bottom:1rem}
+        .final-cta p{margin-bottom:2rem;color:rgba(251,245,226,0.7)}
+        .cta-box{max-width:28rem;margin:0 auto}
 
-        .contact-link {
-            position: relative;
-            text-decoration: none;
-            padding-bottom: 5px;
+        /* FOOTER */
+        footer{
+            margin-top:5rem;padding:2rem;border-top:1px solid #444;text-align:center;
+            background-color:#1a1a1a;border-radius:0.5rem
         }
-        .contact-link > * { transition: color 0.4s ease; }
-        .contact-link:hover > i, .contact-link:hover > span { color: #e91e63; }
-        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color: #d4af37; }
-        .contact-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #e91e63;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.4s ease-out;
-        }
-        .contact-link.email-link::after { background-color: #d4af37; }
-        .contact-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
+        footer h4{font-weight:700;font-size:1.125rem;margin-bottom:1.5rem}
+        .contact-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;margin-bottom:2rem}
+        .contact-item{display:flex;align-items:center;gap:0.5rem;color:rgba(251,245,226,0.8);font-size:1rem}
+        .contact-item:hover{color:#e91e63}
+        .contact-item i{font-size:1.5rem}
+        .insta{color:#ec4899}
+        .yt{color:#ef4444}
         
-        .module-card {
-            background: linear-gradient(145deg, #222 0%, #1a1a1a 100%);
-            border: 1px solid #333;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        .module-card:hover {
-            transform: translateY(-5px);
-            border-color: #d4af37;
-        }
-        .module-locked {
-            border-color: #444;
-            opacity: 0.85;
-        }
-        .module-locked:hover {
-            border-color: #e91e63;
-        }
+        .footer-links{margin-top:2rem;font-size:0.875rem;color:rgba(251,245,226,0.6)}
+        .footer-links a{color:inherit;margin:0 0.5rem}
+        .footer-links a:hover{text-decoration:underline}
+        .copy{font-size:0.875rem;color:rgba(251,245,226,0.5);margin-top:1rem}
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <div class="max-w-5xl mx-auto">
+    <div class="container">
 
-        <!-- HEADER — LCP element con aspect-ratio para prevenir CLS -->
-        <header class="text-center mb-8 -mx-4 md:mx-0">
-            <div class="banner-wrap md:rounded-lg shadow-lg">
-                <img src="https://i.imgur.com/DPUxfhf.png" 
+        <!-- HEADER BANNER - Imagen corregida a ./assets/banner.webp -->
+        <header>
+            <div class="banner-wrap">
+                <img src="./assets/banner.webp" 
                      alt="Banner La Mente del Fénix" 
-                     class="w-full h-full object-cover" 
+                     class="banner-img" 
                      width="1200" height="400" 
                      fetchpriority="high"
                      loading="eager"
@@ -144,223 +201,195 @@
         </header>
 
         <!-- Navegación -->
-        <nav class="mb-8">
-            <a href="./index.html" class="text-[#fbf5e2]/80 hover:text-[#e91e63] transition-colors flex items-center gap-2 w-fit font-semibold">
+        <nav>
+            <a href="./index.html" class="back-link">
                 <i class="fas fa-arrow-left"></i> Volver al inicio
             </a>
         </nav>
 
         <main>
             <!-- Hero de la Membresía -->
-            <section class="bg-[#1a1a1a] rounded-2xl overflow-hidden shadow-2xl mb-16 border border-[#444]">
-                <div class="grid grid-cols-1 md:grid-cols-2">
-                    <!-- Imagen local optimizada -->
-                    <div class="h-64 md:h-auto w-full border-b md:border-b-0 md:border-r border-[#444] overflow-hidden bg-[#222]">
-                        <img src="./assets/Portada Membresia.webp" 
-                             alt="Escuela Mente Fénix" 
-                             class="w-full h-full object-cover object-top opacity-90"
-                             loading="lazy" 
-                             decoding="async"
-                             width="600" height="510">
-                    </div>
-                    <!-- Contenido Original -->
-                    <div class="p-8 md:p-12 flex flex-col justify-center">
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-[#fbf5e2] mb-4">Escuela Mente Fénix</h1>
-                        <p class="text-lg text-[#fbf5e2]/80 mb-6 font-medium">
-                            La comunidad y el mapa exacto para reprogramar tu mente, dejar de autosabotearte y tomar el control de tu vida.
+            <section class="hero-section">
+                <div class="hero-img-wrap">
+                    <img src="./assets/Portada Membresia.webp" 
+                         alt="Escuela Mente Fénix" 
+                         class="hero-img"
+                         loading="lazy" 
+                         decoding="async"
+                         width="600" height="510">
+                </div>
+                <div class="hero-content">
+                    <h1>Escuela Mente Fénix</h1>
+                    <p class="hero-p">
+                        La comunidad y el mapa exacto para reprogramar tu mente, dejar de autosabotearte y tomar el control de tu vida.
+                    </p>
+                    <div class="price">$55 USD <span class="price-sub">/ mes</span></div>
+                    <div class="tax-info">* Aprox. 51€ + impuestos según tu país (se calculan automáticamente al pagar).</div>
+                    <div class="check-line"><i class="fas fa-check-circle"></i> Prueba un mes. Sin permanencia.</div>
+                    
+                    <div class="cta-box">
+                        <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" rel="noopener" class="btn btn-pink">
+                            Unirme ahora en Skool
+                        </a>
+                        <p class="disclaimer">
+                            Al ser un producto digital con acceso inmediato, aceptas perder el derecho de desistimiento tras la compra. <a href="./terminos.html">Ver Términos</a>.
                         </p>
-                        <div class="text-brand-pink font-bold text-2xl mb-1">$55 USD <span class="text-sm font-normal text-[#fbf5e2]/60">/ mes</span></div>
-                        <div class="text-xs text-[#fbf5e2]/60 mb-2 italic">* Aprox. 51€ + impuestos según tu país (se calculan automáticamente al pagar).</div>
-                        <div class="text-sm font-semibold text-[#fbf5e2]/80 mb-8 mt-2"><i class="fas fa-check-circle text-brand-gold mr-1"></i> Prueba un mes. Sin permanencia.</div>
-                        
-                        <div class="text-center">
-                            <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" rel="noopener" class="btn btn-pink font-bold py-4 px-8 rounded-lg text-center text-lg w-full shadow-lg block">
-                                Unirme ahora en Skool
-                            </a>
-                            <p class="text-[10px] text-[#fbf5e2]/40 mt-3 leading-tight text-center">
-                                Al ser un producto digital con acceso inmediato, aceptas perder el derecho de desistimiento tras la compra. <a href="./terminos.html" class="underline hover:text-brand-pink transition-colors">Ver Términos</a>.
-                            </p>
-                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Mi Historia (Vídeo) -->
-            <section class="mb-16">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl md:text-3xl font-bold text-[#fbf5e2] mb-4">Por qué creé este método</h2>
-                    <p class="text-[#fbf5e2]/80 font-medium max-w-2xl mx-auto">
-                        Te cuento brevemente mi historia y cómo las herramientas que aprenderás aquí me salvaron la vida.
-                    </p>
+            <section style="margin-bottom:4rem">
+                <div class="section-title">
+                    <h2>Por qué creé este método</h2>
+                    <p>Te cuento brevemente mi historia y cómo las herramientas que aprenderás aquí me salvaron la vida.</p>
                 </div>
-                <div class="max-w-3xl mx-auto bg-[#1a1a1a] p-2 rounded-2xl shadow-xl border border-[#444]">
-                    <div class="relative w-full overflow-hidden rounded-xl" style="padding-top: 56.25%; background-color: #000;">
-                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/PPWtjKb63iU" title="Mi historia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy" allowfullscreen></iframe>
+                <div class="video-container">
+                    <div class="video-ratio">
+                        <iframe src="https://www.youtube.com/embed/PPWtjKb63iU" title="Mi historia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" loading="lazy" allowfullscreen></iframe>
                     </div>
                 </div>
             </section>
 
-            <!-- Qué incluye - Texto Original -->
-            <section class="py-12 px-4 md:px-8 bg-[#333] rounded-2xl mb-16 shadow-lg border border-[#444]">
-                <h2 class="text-2xl md:text-3xl font-bold text-center mb-10 text-[#fbf5e2]">El Método Fénix a tu disposición</h2>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
-                            <i class="fas fa-video text-2xl text-brand-pink"></i>
-                        </div>
-                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Mentorías Semanales</h3>
-                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
-                            Resolución de dudas en directo y guía paso a paso para no estancarte en tu proceso.
-                        </p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
-                            <i class="fas fa-layer-group text-2xl text-brand-pink"></i>
-                        </div>
-                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Contenido Creciente</h3>
-                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
-                            Decenas de horas de contenido en video y módulos nuevos que se añaden mes a mes.
-                        </p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
-                            <i class="fas fa-dumbbell text-2xl text-brand-pink"></i>
-                        </div>
-                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">Retos y Ejercicios</h3>
-                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
-                            Dinámicas prácticas frecuentes para asegurar que pasas a la acción y ves un avance real.
-                        </p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e91e63]">
-                            <i class="fas fa-fire text-2xl text-brand-pink"></i>
-                        </div>
-                        <h3 class="text-lg font-bold mb-3 text-[#fbf5e2]">La Tribu Fénix</h3>
-                        <p class="text-[#fbf5e2]/80 text-sm leading-relaxed">
-                            Una comunidad privada libre de juicios para compartir victorias y apoyarte a diario.
-                        </p>
-                    </div>
+            <!-- Qué incluye -->
+            <section class="features-section">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-video"></i></div>
+                    <h3>Mentorías Semanales</h3>
+                    <p>Resolución de dudas en directo y guía paso a paso para no estancarte en tu proceso.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3>Contenido Creciente</h3>
+                    <p>Decenas de horas de contenido en video y módulos nuevos que se añaden mes a mes.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-dumbbell"></i></div>
+                    <h3>Retos y Ejercicios</h3>
+                    <p>Dinámicas prácticas frecuentes para asegurar que pasas a la acción y ves un avance real.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-fire"></i></div>
+                    <h3>La Tribu Fénix</h3>
+                    <p>Una comunidad privada libre de juicios para compartir victorias y apoyarte a diario.</p>
                 </div>
             </section>
 
-            <!-- Aula Virtual - Texto Original Completo -->
-            <section class="mb-16">
-                <div class="text-center mb-10">
-                    <h2 class="text-2xl md:text-4xl font-bold text-[#fbf5e2] mb-4">Tu Aula Virtual por dentro</h2>
-                    <p class="text-[#fbf5e2]/80 font-medium text-lg max-w-2xl mx-auto">
-                        Al entrar tendrás acceso inmediato a las bases de tu transformación. Para asegurar tu correcta asimilación, los módulos más avanzados se liberan a medida que avanzas en tu membresía.
-                    </p>
+            <!-- Aula Virtual -->
+            <section style="margin-bottom:4rem">
+                <div class="section-title">
+                    <h2>Tu Aula Virtual por dentro</h2>
+                    <p>Al entrar tendrás acceso inmediato a las bases de tu transformación. Para asegurar tu correcta asimilación, los módulos más avanzados se liberan a medida que avanzas en tu membresía.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Inicio -->
-                    <div class="module-card p-8 rounded-xl flex flex-col">
-                        <div class="flex items-center gap-4 mb-4">
-                            <i class="fas fa-play-circle text-brand-gold text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">INICIO</h3>
+                <div class="modules-grid">
+                    <div class="module-card">
+                        <div class="module-header">
+                            <i class="fas fa-play-circle"></i>
+                            <h3>INICIO</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Nociones básicas de la plataforma y preparación para sacarle el máximo partido a la comunidad.</p>
+                        <p class="module-p">Nociones básicas de la plataforma y preparación para sacarle el máximo partido a la comunidad.</p>
                     </div>
 
-                    <!-- Identidad -->
-                    <div class="module-card p-8 rounded-xl flex flex-col">
-                        <div class="flex items-center gap-4 mb-4">
-                            <i class="fas fa-brain text-brand-gold text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">IDENTIDAD ELEVADA</h3>
+                    <div class="module-card">
+                        <div class="module-header">
+                            <i class="fas fa-brain"></i>
+                            <h3>IDENTIDAD ELEVADA</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Entendimiento profundo de qué te lleva a tus resultados actuales y cómo reprogramarlo desde la raíz.</p>
+                        <p class="module-p">Entendimiento profundo de qué te lleva a tus resultados actuales y cómo reprogramarlo desde la raíz.</p>
                     </div>
 
-                    <!-- Retos -->
-                    <div class="module-card p-8 rounded-xl flex flex-col">
-                        <div class="flex items-center gap-4 mb-4">
-                            <i class="fas fa-flag-checkered text-brand-gold text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">RETOS</h3>
+                    <div class="module-card">
+                        <div class="module-header">
+                            <i class="fas fa-flag-checkered"></i>
+                            <h3>RETOS</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Aquí encontrarás retos frecuentes para mejorar y comprometerte en las distintas áreas de tu vida.</p>
+                        <p class="module-p">Aquí encontrarás retos frecuentes para mejorar y comprometerte en las distintas áreas de tu vida.</p>
                     </div>
 
-                    <!-- Grabaciones -->
-                    <div class="module-card p-8 rounded-xl flex flex-col">
-                        <div class="flex items-center gap-4 mb-4">
-                            <i class="fas fa-video text-brand-gold text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">GRABACIONES</h3>
+                    <div class="module-card">
+                        <div class="module-header">
+                            <i class="fas fa-video"></i>
+                            <h3>GRABACIONES</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Acceso a las grabaciones de las mentorías y dudas del grupo para repasar cuando quieras.</p>
+                        <p class="module-p">Acceso a las grabaciones de las mentorías y dudas del grupo para repasar cuando quieras.</p>
                     </div>
 
-                    <!-- Relaciones -->
-                    <div class="module-card module-locked p-8 rounded-xl relative overflow-hidden flex flex-col">
-                        <div class="absolute top-0 right-0 bg-[#e91e63] text-white text-xs uppercase font-bold px-4 py-1.5 rounded-bl-lg tracking-wider">Desbloqueo Mes 2</div>
-                        <div class="flex items-center gap-4 mb-4 mt-2">
-                            <i class="fas fa-lock text-[#e91e63] text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">RELACIONES DE PAREJA</h3>
+                    <div class="module-card locked">
+                        <div class="badge">Desbloqueo Mes 2</div>
+                        <div class="module-header">
+                            <i class="fas fa-lock"></i>
+                            <h3>RELACIONES DE PAREJA</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Entiende por qué has atraído a tu pareja y cómo resolver los conflictos que surgen.</p>
+                        <p class="module-p">Entiende por qué has atraído a tu pareja y cómo resolver los conflictos que surgen.</p>
                     </div>
 
-                    <!-- Dinero -->
-                    <div class="module-card module-locked p-8 rounded-xl relative overflow-hidden flex flex-col">
-                        <div class="absolute top-0 right-0 bg-[#e91e63] text-white text-xs uppercase font-bold px-4 py-1.5 rounded-bl-lg tracking-wider">Desbloqueo Mes 3</div>
-                        <div class="flex items-center gap-4 mb-4 mt-2">
-                            <i class="fas fa-lock text-[#e91e63] text-3xl"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">DINERO</h3>
+                    <div class="module-card locked">
+                        <div class="badge">Desbloqueo Mes 3</div>
+                        <div class="module-header">
+                            <i class="fas fa-lock"></i>
+                            <h3>DINERO</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Descubre tu relación con el dinero y las creencias inconscientes que te mantienen en escasez.</p>
+                        <p class="module-p">Descubre tu relación con el dinero y las creencias inconscientes que te mantienen en escasez.</p>
                     </div>
                     
-                    <!-- Premios -->
-                    <div class="module-card p-8 rounded-xl flex flex-col border-[#d4af37]/50 lg:col-start-2">
-                        <div class="flex items-center gap-4 mb-4">
-                            <i class="fas fa-gift text-brand-gold text-3xl animate-pulse"></i>
-                            <h3 class="text-lg font-bold text-[#fbf5e2]">PREMIOS Y ACTUALIZACIONES</h3>
+                    <div class="module-card" style="border-color:rgba(212,175,55,0.5)">
+                        <div class="module-header">
+                            <i class="fas fa-gift" style="animation:pulse 2s infinite"></i>
+                            <h3>PREMIOS Y ACTUALIZACIONES</h3>
                         </div>
-                        <p class="text-base text-[#fbf5e2]/70 mt-auto">Desbloquea regalos exclusivos al completar retos y disfruta de módulos sorpresa. ¡La membresía nunca deja de crecer!</p>
+                        <p class="module-p">Desbloquea regalos exclusivos al completar retos y disfruta de módulos sorpresa. ¡La membresía nunca deja de crecer!</p>
                     </div>
                 </div>
             </section>
 
             <!-- CTA Final -->
-            <section class="text-center py-12 px-4 bg-[#1a1a1a] rounded-2xl border border-[#444] shadow-xl">
-                <h2 class="text-2xl font-bold mb-4 text-[#fbf5e2]">El momento de reprogramar tu mente es hoy</h2>
-                <p class="mb-8 text-[#fbf5e2]/70">Únete a la Tribu y empieza a trabajar en tu mejor versión.</p>
-                
-                <div class="max-w-md mx-auto">
-                    <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" rel="noopener" class="btn btn-gold font-bold py-4 px-10 rounded-lg text-lg shadow-lg block w-full">
+            <section class="final-cta">
+                <h2>El momento de reprogramar tu mente es hoy</h2>
+                <p>Únete a la Tribu y empieza a trabajar en tu mejor versión.</p>
+                <div class="cta-box">
+                    <a href="https://www.skool.com/escuela-mente-fenix-3472/about" target="_blank" rel="noopener" class="btn btn-gold">
                         Sí, quiero unirme a la Escuela
                     </a>
-                    <p class="text-[10px] text-[#fbf5e2]/40 mt-3 leading-tight">
-                        Al ser un producto digital con acceso inmediato, aceptas perder el derecho de desistimiento tras la compra. <a href="./terminos.html" class="underline hover:text-brand-pink transition-colors">Ver Términos</a>.
+                    <p class="disclaimer">
+                        Al ser un producto digital con acceso inmediato, aceptas perder el derecho de desistimiento tras la compra. <a href="./terminos.html">Ver Términos</a>.
                     </p>
                 </div>
             </section>
         </main>
 
-        <footer class="mt-20 py-8 border-t border-gray-700 text-center bg-[#1a1a1a] rounded-lg shadow-inner">
-             <h4 class="font-bold text-lg mb-4 text-[#fbf5e2]">Contacta conmigo</h4>
-             <div class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-8">
-                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" rel="noopener" class="contact-link email-link flex items-center gap-2 text-[#fbf5e2]/80">
-                     <i class="fas fa-envelope text-2xl" aria-hidden="true"></i>
+        <footer>
+             <h4>Contacta conmigo</h4>
+             <div class="contact-grid">
+                 <a href="mailto:lamentedelfenix@gmail.com" target="_blank" rel="noopener" class="contact-item">
+                     <i class="fas fa-envelope"></i>
                      <span>lamentedelfenix@gmail.com</span>
                  </a>
-                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link flex items-center gap-2 text-pink-500">
-                     <i class="fab fa-instagram text-2xl" aria-hidden="true"></i>
+                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-item insta">
+                     <i class="fab fa-instagram"></i>
                      <span>@darioarrigazzi</span>
                  </a>
-                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link flex items-center gap-2 text-red-500">
-                     <i class="fab fa-youtube text-2xl" aria-hidden="true"></i>
-                     <span>Canal de YouTube</span>
+                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-item yt">
+                     <i class="fab fa-youtube"></i>
+                     <span>YouTube</span>
                  </a>
              </div>
-             <div class="text-sm text-[#fbf5e2]/60 space-x-4 mt-8">
-                 <a href="./privacidad.html" class="hover:underline">Política de Privacidad</a><span>&middot;</span>
-                 <a href="./terminos.html" class="hover:underline">Términos del Servicio</a><span>&middot;</span>
-                 <a href="./aviso-legal.html" class="hover:underline">Aviso Legal</a><span>&middot;</span>
-                 <a href="./cookies.html" class="hover:underline">Política de Cookies</a>
+             <div class="footer-links">
+                 <a href="./privacidad.html">Política de Privacidad</a><span>&middot;</span>
+                 <a href="./terminos.html">Términos del Servicio</a><span>&middot;</span>
+                 <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
+                 <a href="./cookies.html">Política de Cookies</a>
              </div>
-             <p class="text-sm text-[#fbf5e2]/50 mt-4">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
+             <p class="copy">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
     </div>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </body>
 </html>
