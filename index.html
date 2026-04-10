@@ -141,8 +141,6 @@
         .carousel-button.prev { left: 5%; }
         .carousel-button.next { right: 5%; }
         @media (max-width: 768px) { .testimonial-carousel { width: 220px; } .carousel-wrapper { height: 500px; } .carousel-button.prev { left: 2%; } .carousel-button.next { right: 2%; } }
-        @keyframes scroll-mentors { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .mentors-track { display: flex; width: max-content; animation: scroll-mentors 40s linear infinite; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .scroll-smooth-custom { scroll-behavior: smooth; }
@@ -201,41 +199,6 @@
                         <p class="mt-12 md:mt-8 text-center animated-quote text-xl md:text-2xl">
                             "Lo que das a los demás te lo das a ti mismo. Como es adentro, es afuera."
                         </p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="mb-16 bg-[#1a1a1a] py-6 rounded-2xl border border-[#444] overflow-hidden shadow-sm max-w-5xl mx-auto mt-16 md:mt-0">
-                <h2 class="text-lg md:text-xl font-bold text-center mb-10 px-4 leading-snug text-[#fbf5e2]/90">Algunos de mis mentores con los que me he formado y me han guiado</h2>
-                <div class="relative w-full overflow-hidden">
-                    <div class="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#1a1a1a] to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#1a1a1a] to-transparent z-10 pointer-events-none"></div>
-                    <div class="mentors-track">
-                        <!-- Añadido loading="lazy", width y height a todas las imágenes del carrusel para evitar bloqueos y saltos -->
-                        <div class="flex gap-4 pr-4 shrink-0">
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                        </div>
-                        <div class="flex gap-4 pr-4 shrink-0">
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/ianY9DI.jpeg" alt="Perfil Jorge Carrasco" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/TsvH3tr.jpeg" alt="Perfil Enrique Jurado" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/JHBE5uz.jpeg" alt="Perfil Nacho Sala" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/cQATfKJ.jpeg" alt="Perfil Mentor 4" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                            <div class="shrink-0 w-44 md:w-52 rounded-xl overflow-hidden border border-[#333] shadow-md opacity-70 hover:opacity-100 transition-opacity bg-white"><img src="https://i.imgur.com/Mozq3fB.jpeg" alt="Perfil Mentor 5" class="w-full h-auto" loading="lazy" decoding="async" width="208" height="208"></div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -429,13 +392,13 @@
                 var prevBtn = document.getElementById('prev-btn');
                 var nextBtn = document.getElementById('next-btn');
                 var images = [
-                    'https://i.imgur.com/xXAb3d8.png',
-                    'https://i.imgur.com/PS3d8wq.png',
-                    'https://i.imgur.com/Sb8Y6Ge.png',
-                    'https://i.imgur.com/Dfy0vTn.png',
-                    'https://i.imgur.com/3fCoISM.png',
-                    'https://i.imgur.com/fyv6Jjn.png',
-                    'https://i.imgur.com/A8YMBoi.png'
+                    './assets/Captura 1.webp',
+                    './assets/Captura 2.webp',
+                    './assets/Captura 3.webp',
+                    './assets/Captura 4.webp',
+                    './assets/Captura 5.webp',
+                    './assets/Captura 6.webp',
+                    './assets/Captura 7.webp'
                 ];
                 var currentIndex = Math.floor(images.length / 2);
                 var slides = [];
