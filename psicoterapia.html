@@ -1,1203 +1,487 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    
-
     <meta name="description" content="Descubre un enfoque único de psicoterapia que integra Un Curso De Milagros, PNL y Coaching para ayudarte a encontrar la paz interior y deshacer los bloqueos mentales.">
-
-
-
     <title>Mente Fénix - Sesiones de Psicoterapia</title>
-
-
-
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
-
-
-
-    <!-- DNS / preconnect -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-
-
-    <!-- Preload LCP (Banner local) -->
-
     <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
-
-
-
-    <!-- Fuentes e Iconos diferidos -->
-
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
-
-    
-
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
-
-
-
     <style>
-
-        /* RESET & BASE */
-
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
         html{scroll-behavior:smooth}
-
         body{font-family:'Montserrat',sans-serif;background-color:#2b2b2b;color:#fbf5e2;line-height:1.6;padding:1rem}
-
         img{max-width:100%;height:auto;display:block}
-
         a{text-decoration:none;transition:all .3s ease}
-
-        
-
         .container{max-width:72rem;margin:0 auto}
-
-
-
-        /* HEADER & BANNER */
-
         header{text-align:center;margin-bottom:4rem}
-
-        .banner-wrap{
-
-            width:100%;
-
-            aspect-ratio:1200/400;
-
-            background-color:#1a1a1a;
-
-            overflow:hidden;
-
-            border-radius:0.5rem;
-
-            box-shadow:0 10px 25px rgba(0,0,0,0.3);
-
-            margin-bottom:2rem
-
-        }
-
+        .banner-wrap{width:100%;aspect-ratio:1200/400;background-color:#1a1a1a;overflow:hidden;border-radius:0.5rem;box-shadow:0 10px 25px rgba(0,0,0,0.3);margin-bottom:2rem}
         @media(max-width:768px){.banner-wrap{margin-left:-1rem;margin-right:-1rem;width:calc(100% + 2rem);border-radius:0}}
-
         .banner-img{width:100%;height:100%;object-fit:cover}
-
-
-
         .back-link-wrap{text-align:center;margin-bottom:3rem}
-
         .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:#d4af37;font-weight:700;font-size:1.125rem}
-
         .back-link:hover{color:#e91e63}
-
-
-
-        /* HERO */
-
         .hero-text{text-align:center;max-width:56rem;margin:0 auto 5rem;padding:0 1rem}
-
         h1{font-size:2.25rem;font-weight:800;line-height:1.2;margin-bottom:1.5rem}
-
         @media(min-width:768px){h1{font-size:3rem}}
-
         .hero-p{font-size:1.25rem;color:rgba(251,245,226,0.8);font-weight:500}
-
-
-
-        /* SECTIONS GENERAL */
-
         section{padding:5rem 1rem;border-radius:0.75rem}
-
         .dark-bg{background-color:#1a1a1a;box-shadow:inset 0 2px 4px rgba(0,0,0,0.3)}
-
         .section-title{font-size:1.875rem;font-weight:700;text-align:center;margin-bottom:2rem}
-
         .section-desc{text-align:center;font-size:1.125rem;color:rgba(251,245,226,0.8);max-width:48rem;margin:0 auto 2.5rem}
-
         .text-brand-gold{color:#d4af37}
-
-
-
-        /* GRID CARDS */
-
         .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-
         @media(max-width:768px){.grid-3{grid-template-columns:1fr}}
-
-        
-
         .card{background-color:#333;padding:1.5rem;border-radius:0.75rem;border:1px solid #444;text-align:center;transition:transform 0.3s ease}
-
         .card:hover{transform:translateY(-5px)}
-
         .card i{font-size:2.5rem;color:#e91e63;margin-bottom:1rem}
-
         .card h3{font-size:1.25rem;font-weight:700;margin-bottom:0.5rem}
-
         .card p{font-size:0.875rem;color:rgba(251,245,226,0.7)}
-
-
-
-        /* STEPS */
-
         .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
-
         @media(max-width:1024px){.grid-4{grid-template-columns:repeat(2,1fr)}}
-
         @media(max-width:640px){.grid-4{grid-template-columns:1fr}}
-
-
-
-        .step-card{
-
-            background-color:#333;padding:1.5rem;border-radius:0.75rem;border-top:4px solid #d4af37;
-
-            position:relative;text-align:center;margin-top:1.5rem
-
-        }
-
-        .step-num{
-
-            position:absolute;top:-1.5rem;left:50%;transform:translateX(-50%);
-
-            width:3rem;height:3rem;background-color:#1a1a1a;color:#d4af37;
-
-            border-radius:50%;display:flex;align-items:center;justify-content:center;
-
-            font-weight:800;font-size:1.25rem;border:4px solid #2b2b2b
-
-        }
-
+        .step-card{background-color:#333;padding:1.5rem;border-radius:0.75rem;border-top:4px solid #d4af37;position:relative;text-align:center;margin-top:1.5rem}
+        .step-num{position:absolute;top:-1.5rem;left:50%;transform:translateX(-50%);width:3rem;height:3rem;background-color:#1a1a1a;color:#d4af37;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.25rem;border:4px solid #2b2b2b}
         .step-card h3{margin-top:1rem;font-weight:700;margin-bottom:0.5rem}
-
         .step-card p{font-size:0.875rem;color:rgba(251,245,226,0.7)}
-
-
-
-        /* BIO SECTION */
-
         .bio-flex{display:flex;align-items:center;gap:2.5rem;max-width:60rem;margin:0 auto}
-
         @media(max-width:768px){.bio-flex{flex-direction:column}}
-
-        .bio-img-wrap{
-
-            width:100%;max-width:24rem;flex-shrink:0;border-radius:1rem;
-
-            overflow:hidden;border:1px solid #444;box-shadow:0 20px 25px rgba(0,0,0,0.5);cursor:pointer
-
-        }
-
+        .bio-img-wrap{width:100%;max-width:24rem;flex-shrink:0;border-radius:1rem;overflow:hidden;border:1px solid #444;box-shadow:0 20px 25px rgba(0,0,0,0.5);cursor:pointer}
         .bio-img-wrap:hover{opacity:0.9}
-
         .bio-content h2{font-size:1.875rem;font-weight:700;margin-bottom:1rem}
-
         .bio-text{font-size:1.125rem;color:rgba(251,245,226,0.8);display:flex;flex-direction:column;gap:1rem}
-
-
-
-        /* PRICING */
-
-        .pricing-grid{
-
-            display:grid;
-
-            grid-template-columns:1fr 1fr;
-
-            gap:1.5rem;
-
-            max-width:68rem;
-
-            margin:0 auto;
-
-            align-items:start
-
-        }
-
+        .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:68rem;margin:0 auto;align-items:start}
         @media(max-width:900px){.pricing-grid{grid-template-columns:1fr;max-width:32rem}}
-
-
-
-        .pricing-card{
-
-            background-color:#333;border:2px solid #e91e63;border-radius:1rem;
-
-            padding:2rem;display:flex;flex-direction:column;position:relative;
-
-            box-shadow:0 15px 30px rgba(0,0,0,0.5);transition:transform 0.3s ease
-
-        }
-
+        .pricing-card{background-color:#333;border:2px solid #e91e63;border-radius:1rem;padding:2rem;display:flex;flex-direction:column;position:relative;box-shadow:0 15px 30px rgba(0,0,0,0.5);transition:transform 0.3s ease}
         .pricing-card:hover{transform:translateY(-8px)}
-
         .pricing-card h3{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:1.5rem}
-
-        
-
-        /* PREMIUM PRICING CARD */
-
-        .pricing-card.premium{
-
-            border-color:#d4af37;
-
-            background:linear-gradient(160deg,#1e1a0e 0%,#2a2416 40%,#333 100%);
-
-            box-shadow:0 20px 50px rgba(212,175,55,0.2),0 0 0 1px rgba(212,175,55,0.15)
-
-        }
-
-        .pricing-card.premium:hover{
-
-            transform:translateY(-10px);
-
-            box-shadow:0 30px 60px rgba(212,175,55,0.3),0 0 0 1px rgba(212,175,55,0.3)
-
-        }
-
-
-
-        .premium-badge{
-
-            position:absolute;
-
-            top:-1px;left:50%;transform:translateX(-50%);
-
-            background:linear-gradient(90deg,#b8942b,#d4af37,#e8c94a,#d4af37,#b8942b);
-
-            background-size:200% auto;
-
-            animation:shimmer 3s linear infinite;
-
-            color:#1a1a1a;
-
-            font-size:0.65rem;
-
-            font-weight:800;
-
-            letter-spacing:0.12em;
-
-            padding:0.35rem 1.2rem;
-
-            border-radius:0 0 0.5rem 0.5rem;
-
-            white-space:nowrap;
-
-            text-transform:uppercase
-
-        }
-
+        .pricing-card.premium{border-color:#d4af37;background:linear-gradient(160deg,#1e1a0e 0%,#2a2416 40%,#333 100%);box-shadow:0 20px 50px rgba(212,175,55,0.2),0 0 0 1px rgba(212,175,55,0.15)}
+        .pricing-card.premium:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(212,175,55,0.3),0 0 0 1px rgba(212,175,55,0.3)}
+        .premium-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#b8942b,#d4af37,#e8c94a,#d4af37,#b8942b);background-size:200% auto;animation:shimmer 3s linear infinite;color:#1a1a1a;font-size:0.65rem;font-weight:800;letter-spacing:0.12em;padding:0.35rem 1.2rem;border-radius:0 0 0.5rem 0.5rem;white-space:nowrap;text-transform:uppercase}
         @keyframes shimmer{to{background-position:200% center}}
-
-
-
-        .premium-title{
-
-            margin-top:1.5rem;
-
-            font-size:1.5rem;
-
-            font-weight:800;
-
-            text-align:center;
-
-            margin-bottom:0.25rem;
-
-            color:#d4af37
-
-        }
-
-        .premium-subtitle{
-
-            text-align:center;
-
-            font-size:0.8rem;
-
-            color:rgba(212,175,55,0.6);
-
-            letter-spacing:0.08em;
-
-            text-transform:uppercase;
-
-            margin-bottom:1.5rem
-
-        }
-
-
-
+        .premium-title{margin-top:1.5rem;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:0.25rem;color:#d4af37}
+        .premium-subtitle{text-align:center;font-size:0.8rem;color:rgba(212,175,55,0.6);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.5rem}
         .meta-list{margin:0 auto 2rem;display:flex;flex-direction:column;gap:1rem;width:fit-content}
-
         .meta-item{display:flex;align-items:center;gap:0.75rem;font-weight:700;color:#d4af37}
-
         .meta-item i{width:1.5rem;text-align:center;font-size:1.25rem}
-
         .meta-sub{display:block;font-size:0.75rem;font-weight:400;color:rgba(251,245,226,0.6)}
-
         .meta-main{display:block;font-size:1.125rem}
-
-
-
         .features-list{list-style:none;margin-bottom:2rem;display:flex;flex-direction:column;gap:1rem}
-
         .features-list li{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.95rem;color:rgba(251,245,226,0.8)}
-
         .features-list li i{color:#d4af37;margin-top:0.25rem;flex-shrink:0}
-
         .features-list strong{color:#fbf5e2}
-
-
-
-        /* premium feature list check style */
-
-        .features-list.premium-list li i{color:#d4af37}
-
-        .features-list.premium-list li{color:rgba(251,245,226,0.9)}
-
-
-
-        /* GUARANTEE */
-
-        .guarantee-box{
-
-            background-color:#1a2e20;border:1px solid #25422d;padding:1rem;
-
-            border-radius:0.5rem;display:flex;gap:0.75rem;margin-bottom:1.5rem;color:#e2f1e7;font-size:0.875rem
-
-        }
-
+        .guarantee-box{background-color:#1a2e20;border:1px solid #25422d;padding:1rem;border-radius:0.5rem;display:flex;gap:0.75rem;margin-bottom:1.5rem;color:#e2f1e7;font-size:0.875rem}
         .guarantee-box i{color:#4ade80;font-size:1.25rem}
-
         .guarantee-box strong{color:#4ade80}
-
-
-
-        /* Scarcity note */
-
-        .scarcity-note{
-
-            text-align:center;
-
-            font-size:0.8rem;
-
-            color:rgba(212,175,55,0.65);
-
-            margin-top:1.25rem;
-
-            font-style:italic
-
-        }
-
-
-
-        /* BUTTONS */
-
-        .btn{
-
-            display:block;width:100%;padding:1rem;text-align:center;border-radius:0.5rem;
-
-            font-weight:700;font-size:1.125rem;position:relative;z-index:1;overflow:hidden;
-
-            border:2px solid transparent;cursor:pointer
-
-        }
-
+        .scarcity-note{text-align:center;font-size:0.8rem;color:rgba(212,175,55,0.65);margin-top:1.25rem;font-style:italic}
+        .btn{display:block;width:100%;padding:1rem;text-align:center;border-radius:0.5rem;font-weight:700;font-size:1.125rem;position:relative;z-index:1;overflow:hidden;border:2px solid transparent;cursor:pointer}
         .btn-gold{background-color:#d4af37;color:#1a1a1a}
-
-        .btn::before{
-
-            content:'';position:absolute;top:0;left:0;width:100%;height:100%;
-
-            background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;
-
-            transition:transform 0.4s cubic-bezier(0.45,0.05,0.55,0.95)
-
-        }
-
+        .btn::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;transition:transform 0.4s cubic-bezier(0.45,0.05,0.55,0.95)}
         .btn:hover::before{transform:scaleX(1);transform-origin:left}
-
         .btn-gold:hover{color:#d4af37;border-color:#d4af37}
-
-
-
-        .btn-gold-premium{
-
-            background:linear-gradient(90deg,#b8942b,#d4af37,#e8c94a,#d4af37,#b8942b);
-
-            background-size:200% auto;
-
-            color:#1a1a1a;
-
-            border-color:transparent;
-
-            animation:shimmer 3s linear infinite;
-
-            font-size:1rem;
-
-            letter-spacing:0.03em
-
-        }
-
+        .btn-gold-premium{background:linear-gradient(90deg,#b8942b,#d4af37,#e8c94a,#d4af37,#b8942b);background-size:200% auto;color:#1a1a1a;border-color:transparent;animation:shimmer 3s linear infinite;font-size:1rem;letter-spacing:0.03em}
         .btn-gold-premium:hover::before{background:#1a1a1a}
-
         .btn-gold-premium:hover{color:#d4af37;border-color:#d4af37}
-
-
-
         .trust-badges{margin-top:1.5rem;text-align:center;color:rgba(251,245,226,0.4);font-size:0.875rem}
-
         .trust-icons{display:flex;justify-content:center;gap:0.75rem;font-size:1.5rem;margin-top:0.5rem}
-
-
-
-        /* TESTIMONIALS CAROUSEL (Coverflow) */
-
         .carousel-wrapper{position:relative;width:100%;height:620px;display:flex;justify-content:center;align-items:center;perspective:1200px;overflow:hidden}
-
         .testimonial-carousel{position:relative;width:300px;height:100%;transform-style:preserve-3d;cursor:grab}
-
         .testimonial-carousel.grabbing{cursor:grabbing}
-
-        .testimonial-slide{
-
-            position:absolute;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;
-
-            transition:transform 0.5s cubic-bezier(.77,0,.175,1),opacity .5s ease;user-select:none;
-
-            -webkit-box-reflect:below 5px -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(70%,transparent),to(rgba(250,250,250,.15)))
-
-        }
-
+        .testimonial-slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;transition:transform 0.5s cubic-bezier(.77,0,.175,1),opacity .5s ease;user-select:none;-webkit-box-reflect:below 5px -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(70%,transparent),to(rgba(250,250,250,.15)))}
         .testimonial-image{width:100%;height:auto;max-height:100%;object-fit:contain;pointer-events:none}
-
-        .carousel-button{
-
-            position:absolute;top:50%;transform:translateY(-50%);background-color:rgba(43,43,43,0.8);
-
-            border:1px solid #555;border-radius:50%;width:3rem;height:3rem;color:#fbf5e2;
-
-            font-size:1.5rem;display:flex;justify-content:center;align-items:center;cursor:pointer;z-index:20
-
-        }
-
+        .carousel-button{position:absolute;top:50%;transform:translateY(-50%);background-color:rgba(43,43,43,0.8);border:1px solid #555;border-radius:50%;width:3rem;height:3rem;color:#fbf5e2;font-size:1.5rem;display:flex;justify-content:center;align-items:center;cursor:pointer;z-index:20}
         .carousel-button:hover{background-color:#d4af37;color:#1a1a1a;transform:translateY(-50%) scale(1.1)}
-
         .carousel-button.prev{left:5%}
-
         .carousel-button.next{right:5%}
-
         @media(max-width:768px){.carousel-wrapper{height:500px}.testimonial-carousel{width:220px}}
-
-
-
-        /* FOOTER */
-
         .site-footer{margin-top:5rem;padding:2rem;border-top:1px solid #444;text-align:center;background-color:#1a1a1a;border-radius:0.5rem}
-
         .footer-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;margin-bottom:2rem}
-
         .contact-link{display:flex;align-items:center;gap:0.5rem;color:rgba(251,245,226,0.8)}
-
         .contact-link:hover i{color:#e91e63}
-
         .contact-link.insta:hover{color:#ec4899}
-
         .contact-link.yt:hover{color:#ef4444}
-
         .legal-links{margin-top:2rem;font-size:0.875rem;color:rgba(251,245,226,0.6)}
-
         .legal-links a{color:inherit;margin:0 0.5rem}
-
         .copy{font-size:0.875rem;color:rgba(251,245,226,0.5);margin-top:1rem}
-
-
-
-        /* MODAL */
-
         .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;justify-content:center;align-items:center;padding:1rem;z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s}
-
         .modal-overlay.active{opacity:1;pointer-events:all}
-
         .modal-inner{position:relative;max-width:32rem;width:100%}
-
         .modal-inner img{width:100%;height:auto;max-height:90vh;object-contain;border-radius:0.5rem}
-
         .modal-close{position:absolute;top:-1rem;right:-1rem;background:#333;color:#fff;border:none;width:2.5rem;height:2.5rem;border-radius:50%;cursor:pointer;font-size:1.5rem}
-
-
-
-        /* STICKY CTA */
-
         .sticky-cta{position:fixed;bottom:0;left:0;width:100%;padding:1rem;background:#1a1a1a;border-top:1px solid #444;z-index:50;transition:transform 0.3s}
-
         .sticky-cta.hidden{transform:translateY(100%)}
-
         @media(min-width:768px){.sticky-cta{display:none}}
-
     </style>
-
 </head>
-
 <body class="pb-24 md:pb-4">
-
-
 
     <div class="container">
 
-
-
         <header>
-
             <a href="./index.html" aria-label="Volver a la página de inicio">
-
                 <div class="banner-wrap">
-
-                    <img src="./assets/banner.webp" 
-
-                         alt="Banner La Mente del Fénix" 
-
-                         class="banner-img" 
-
-                         width="1200" height="400" 
-
-                         fetchpriority="high"
-
-                         loading="eager"
-
-                         decoding="sync">
-
+                    <img src="./assets/banner.webp" alt="Banner La Mente del Fénix" class="banner-img" width="1200" height="400" fetchpriority="high" loading="eager" decoding="sync">
                 </div>
-
             </a>
-
             <div class="back-link-wrap">
-
                 <a href="./index.html" class="back-link">
-
                     <i class="fas fa-arrow-left"></i> Volver a la página principal
-
                 </a>
-
             </div>
-
         </header>
-
-
 
         <main>
 
             <!-- Hero Section -->
-
             <div class="hero-text">
-
                 <h1>Desbloquea Tu Mente y Logra un Gran Avance en Solo 90 Minutos</h1>
-
                 <p class="hero-p">
-
                     Mis sesiones intensivas de reprogramación combinan la psicoterapia de Un Curso de Milagros, PNL y el cambio de identidad para deshacer tus creencias limitantes. Un espacio seguro para desenredar los nudos de la mente, restablecer tu conexión con Dios y recordar la verdad de quién eres.
-
                 </p>
-
             </div>
 
-            
-
             <!-- Para quién es -->
-
             <section class="dark-bg">
-
                 <h2 class="section-title">¿Para quién es esta sesión?</h2>
-
                 <p class="section-desc">
-
                     Esta sesión está diseñada para personas <strong class="text-brand-gold">realmente comprometidas</strong> con su cambio. Si estás atravesando alguno de estos conflictos, puedo ayudarte:
-
                 </p>
-
                 <div class="grid-3">
-
                     <div class="card">
-
                         <i class="fas fa-heart-broken"></i>
-
                         <h3>Relaciones</h3>
-
                         <p>Conflictos de pareja constantes, falta de entendimiento o patrones tóxicos repetitivos.</p>
-
                     </div>
-
                     <div class="card">
-
                         <i class="fas fa-wallet"></i>
-
                         <h3>Dinero</h3>
-
                         <p>Bloqueos económicos, inestabilidad laboral y sensación constante de escasez.</p>
-
                     </div>
-
                     <div class="card">
-
                         <i class="fas fa-battery-empty"></i>
-
                         <h3>Autoestima y Apatía</h3>
-
                         <p>Inseguridad profunda, estados de vacío, estancamiento o falta de sentido vital.</p>
-
                     </div>
-
                 </div>
-
             </section>
-
-
 
             <!-- El Proceso -->
-
             <section>
-
                 <h2 class="section-title">¿Cómo lo haremos?</h2>
-
                 <p class="section-desc">
-
                     Te guiaré paso a paso utilizando exactamente los mismos métodos que me funcionaron a mí, Darío Arrigazzi, para transformar mi vida.
-
                 </p>
-
                 <div class="grid-4">
-
                     <div class="step-card">
-
                         <div class="step-num">1</div>
-
                         <h3>Origen</h3>
-
                         <p>Exponemos tu problema actual e identificamos juntos el origen real del conflicto.</p>
-
                     </div>
-
                     <div class="step-card">
-
                         <div class="step-num">2</div>
-
                         <h3>Liberación</h3>
-
                         <p>Fase de entrega. Soltamos los bloqueos y cargas para reconectar con tu verdadero ser.</p>
-
                     </div>
-
                     <div class="step-card">
-
                         <div class="step-num">3</div>
-
                         <h3>Plan de Acción</h3>
-
                         <p>Definimos pasos claros para las próximas semanas, asegurando que los cambios se mantengan.</p>
-
                     </div>
-
                     <div class="step-card">
-
                         <div class="step-num">4</div>
-
                         <h3>Meditación</h3>
-
                         <p>Tras la sesión, recibirás una meditación totalmente adaptada a tu caso para seguir trabajando.</p>
-
                     </div>
-
                 </div>
-
             </section>
-
-
 
             <!-- Testimonials Section -->
-
             <section class="dark-bg">
-
                 <h2 class="section-title">La experiencia de otros</h2>
-
                 <p class="section-desc">Testimonios directos de personas que han transformado sus vidas con estas sesiones.</p>
-
                 <div class="carousel-wrapper">
-
                     <div id="testimonial-carousel" class="testimonial-carousel"></div>
-
                     <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
-
                     <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
-
                 </div>
-
             </section>
-
-
 
             <!-- Biografía -->
-
             <section>
-
                 <div class="bio-flex">
-
                     <div class="bio-img-wrap" onclick="openModal('./assets/foto biografia.webp')">
-
-                        <img src="./assets/foto biografia.webp" 
-
-                             alt="Darío Arrigazzi" 
-
-                             width="400" height="400" 
-
-                             loading="lazy" decoding="async">
-
+                        <img src="./assets/foto biografia.webp" alt="Darío Arrigazzi" width="400" height="400" loading="lazy" decoding="async">
                     </div>
-
                     <div class="bio-content">
-
                         <h2>¿Quién te acompañará?</h2>
-
                         <div class="bio-text">
-
                             <p>Soy <strong class="text-brand-gold">Darío Arrigazzi</strong>. Tuve una infancia marcada por el trauma. Crecí en un ambiente de violencia extrema, presenciando el maltrato constante de mi padre hacia mi madre y mis hermanos. Esto me dejó con una autoestima nula, viviendo en un estado permanente de miedo, terror y un profundo sentimiento de culpa.</p>
-
                             <p>Aunque años después alcancé el éxito profesional impulsando el grupo empresarial <em class="text-brand-gold">Lovenature Superfoods</em> como Director de Operaciones, por dentro seguía roto. La verdadera transformación llegó cuando lo dejé todo para sanar. Me formé profundamente en Coaching, PNL, Un Curso de Milagros y el trabajo de David Hawkins, logrando reprogramar mi mente y liberar el dolor reprimido de mi pasado.</p>
-
                             <p><strong>Hoy utilizo toda esta experiencia vital para demostrarte que, sin importar lo oscuro que haya sido tu camino, tú también puedes liberarte y recuperar tu paz.</strong></p>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
 
-            
-
             <!-- Pricing Section -->
-
             <section id="precios">
-
                 <h2 class="section-title">Reserva tu Sesión</h2>
-
                 <div class="pricing-grid">
 
-                    <!-- TARJETA IZQUIERDA: Sesión 1:1 (sin cambios) -->
-
+                    <!-- TARJETA IZQUIERDA: Sesión 1:1 -->
                     <div class="pricing-card">
-
-                        <h3>Sesión Intensiva de Desbloqueo</h3>
-
+                        <h3>Sesión 1:1 Intensiva de Desbloqueo</h3>
                         <div class="meta-list">
-
                             <div class="meta-item">
-
                                 <i class="far fa-clock"></i>
-
                                 <div>
-
                                     <span class="meta-sub">Aproximadamente</span>
-
                                     <span class="meta-main">1h 30m</span>
-
                                 </div>
-
                             </div>
-
                             <div class="meta-item">
-
                                 <i class="fas fa-tag"></i>
-
                                 <div>
-
                                     <span class="meta-main">$210 USD</span>
-
                                     <span class="meta-sub">(aprox. 200€)</span>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                         <ul class="features-list">
-
                             <li><i class="fas fa-lightbulb"></i><span><strong>Claridad mental inmediata:</strong> Entiende por fin qué te frena y por qué repites los mismos patrones.</span></li>
-
                             <li><i class="fas fa-dove"></i><span><strong>Alivio emocional profundo:</strong> Libérate del peso de la culpa, los miedos y la apatía que llevas arrastrando.</span></li>
-
                             <li><i class="fas fa-compass"></i><span><strong>Dirección y enfoque:</strong> Llévate un plan de acción claro y una meditación a tu medida.</span></li>
-
                             <li><i class="fab fa-whatsapp"></i><span><strong>Acompañamiento continuo:</strong> Soporte vía WhatsApp durante 1 semana para resolver dudas.</span></li>
-
                             <li><i class="fas fa-video"></i><span><strong>Grabación confidencial:</strong> Llévate el vídeo de la sesión (opcional) para repasar tus revelaciones.</span></li>
-
                         </ul>
-
-
-
                         <div class="guarantee-box">
-
                             <i class="fas fa-shield-alt"></i>
-
                             <p><strong>Garantía de Satisfacción 100%:</strong> Si al finalizar la sesión sientes que no te ha aportado valor, te devuelvo tu dinero sin hacer preguntas.</p>
-
                         </div>
-
-
-
                         <a href="https://buy.stripe.com/aFa3cufxqfVCfzH3tL3F605" target="_blank" rel="noopener" class="btn btn-gold">Reservar Sesión</a>
-
-                        
-
                         <div class="trust-badges">
-
                             <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.5rem">
-
                                 <i class="fas fa-lock"></i><span>Pago 100% seguro y cifrado</span>
-
                             </div>
-
                             <div class="trust-icons">
-
                                 <i class="fab fa-cc-visa"></i>
-
                                 <i class="fab fa-cc-mastercard"></i>
-
                                 <i class="fab fa-cc-amex"></i>
-
                                 <i class="fab fa-cc-stripe"></i>
-
                             </div>
-
                         </div>
-
                     </div>
 
-
-
-                    <!-- TARJETA DERECHA: Mentoría Renacimiento Fénix (NUEVA) -->
-
+                    <!-- TARJETA DERECHA: Mentoría Renacimiento Fénix -->
                     <div class="pricing-card premium">
-
                         <span class="premium-badge">Recomendado para cambios profundos</span>
-
                         <p class="premium-title">Mentoría: Renacimiento Fénix</p>
-
                         <p class="premium-subtitle">Transformación de identidad completa</p>
-
                         <div class="meta-list">
-
                             <div class="meta-item">
-
                                 <i class="far fa-clock"></i>
-
                                 <div>
-
                                     <span class="meta-sub">Duración del programa</span>
-
                                     <span class="meta-main">6 meses de acompañamiento</span>
-
                                 </div>
-
                             </div>
-
                             <div class="meta-item">
-
                                 <i class="fas fa-tag"></i>
-
                                 <div>
-
                                     <span class="meta-main">$1,950 USD</span>
-
                                     <span class="meta-sub">(aprox. 1.850€) · Pago único · Impuestos incluidos</span>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <ul class="features-list premium-list">
-
+                        <ul class="features-list">
                             <li><i class="fas fa-fire-alt"></i><span><strong>Transformación de Identidad:</strong> Proceso de 180 días de reprogramación profunda a nivel de ser.</span></li>
-
                             <li><i class="fas fa-calendar-check"></i><span><strong>12 Sesiones Privadas:</strong> 2 al mes: una de desbloqueo + una de estrategia y seguimiento.</span></li>
-
                             <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Diario vía WhatsApp:</strong> Acompañamiento continuo para evitar el autosabotaje y sentirte sostenido/a en cada paso del camino.</span></li>
-
                             <li><i class="fas fa-brain"></i><span><strong>Ingeniería de Hábitos:</strong> Diseño personalizado de tu rutina para anclar la nueva identidad.</span></li>
-
                             <li><i class="fas fa-infinity"></i><span><strong>Escuela Mente Fénix incluida:</strong> Acceso gratuito completo durante todo el programa.</span></li>
-
                         </ul>
-
-
-
-                        <a href="/cdn-cgi/l/email-protection#8be7eae6eee5ffeeefeee7edeee5e2f3cbece6eae2e7a5e8e4e6b4f8fee9e1eee8ffb6d8e4e7e2e8e2fffeefaeb9bbefeeaeb9bbcee5fff9eefde2f8ffeaaeb9bbdbf9eefde2eaaeb9bbaeceb9aeb3bbaeb2b8aeb9bbc6eee5ffe4f9aec8b8aecacfeaaeb9bbd9eee5eae8e2e6e2eee5ffe4aeb9bbcdaec8b8aecab2e5e2f3ade9e4eff2b6c3e4e7eaaeb9bbcfeaf9aec8b8aecacfe4aeb9c8aebbcaaebbcac6eeaeb9bbe2e5ffeef9eef8eaaeb9bbe7eaaeb9bbc6eee5ffe4f9aec8b8aecacfeaaeb9bbd9eee5eae8e2e6e2eee5ffe4aeb9bbcdaec8b8aecab2e5e2f3aeb9bbf2aeb9bbe6eeaeb9bbecfef8ffeaf9aec8b8aecacfeaaeb9bbf8e4e7e2e8e2ffeaf9aeb9bbfee5eaaeb9bbeee5fff9eefde2f8ffeaaeb9bbfbf9eefde2eaa5aebbcaaebbcac6e2aeb9bbe5e4e6e9f9eeaeb8caaeb9bbaebbcac6e2aeb9bbdce3eafff8cafbfbaeb8caaeb9bbaebbcaaec8b9aec9cddbe4f9aeb9bbfafeaec8b8aecab2aeb9bbfafee2eef9e4aeb9bbfee5e2f9e6eeaeb8cdaeb9bbaebbcaaebbcaccf9eae8e2eaf8aeb9c8" class="btn btn-gold-premium">
-
+                        <a id="btn-mentoria" href="#" class="btn btn-gold-premium">
                             <i class="fas fa-envelope" style="margin-right:0.5rem"></i>Solicitar Entrevista Previa
-
                         </a>
-
-
-
                         <p class="scarcity-note">*Solo acepto 10 nuevas personas por trimestre para asegurar la calidad del soporte.</p>
-
                     </div>
 
                 </div>
-
             </section>
 
         </main>
 
-
-
         <footer class="site-footer">
-
-             <h4>Contacta conmigo</h4>
-
-             <div class="footer-grid">
-
-                 <a href="/cdn-cgi/l/email-protection#1e727f737b706a7b7a7b72787b7077665e79737f7772307d7173" target="_blank" rel="noopener" class="contact-link">
-
-                     <i class="fas fa-envelope"></i>
-
-                     <span><span class="__cf_email__" data-cfemail="bad6dbd7dfd4cedfdedfd6dcdfd4d3c2faddd7dbd3d694d9d5d7">[email&#160;protected]</span></span>
-
-                 </a>
-
-                 <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener" class="contact-link insta">
-
-                     <i class="fab fa-instagram"></i>
-
-                     <span>@darioarrigazzi</span>
-
-                 </a>
-
-                 <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener" class="contact-link yt">
-
-                     <i class="fab fa-youtube"></i>
-
-                     <span>Canal de YouTube</span>
-
-                 </a>
-
-             </div>
-
-             <div class="legal-links">
-
-                 <a href="./privacidad.html">Privacidad</a><span>&middot;</span>
-
-                 <a href="./terminos.html">Términos</a><span>&middot;</span>
-
-                 <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
-
-                 <a href="./cookies.html">Cookies</a>
-
-             </div>
-
-             <p class="copy">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
-
+            <h4>Contacta conmigo</h4>
+            <div class="footer-grid">
+                <a id="footer-email-link" href="#" class="contact-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>lamentedelfenix@gmail.com</span>
+                </a>
+                <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener" class="contact-link insta">
+                    <i class="fab fa-instagram"></i>
+                    <span>@darioarrigazzi</span>
+                </a>
+                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener" class="contact-link yt">
+                    <i class="fab fa-youtube"></i>
+                    <span>Canal de YouTube</span>
+                </a>
+            </div>
+            <div class="legal-links">
+                <a href="./privacidad.html">Privacidad</a><span>&middot;</span>
+                <a href="./terminos.html">Términos</a><span>&middot;</span>
+                <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
+                <a href="./cookies.html">Cookies</a>
+            </div>
+            <p class="copy">&copy; 2026 La Mente del Fénix. Todos los derechos reservados.</p>
         </footer>
 
     </div>
 
-
-
     <!-- Sticky CTA Móvil -->
-
     <div id="sticky-cta" class="sticky-cta">
-
         <a href="#precios" class="btn btn-gold">Reservar Mi Sesión</a>
-
     </div>
-
-
 
     <!-- Image Modal -->
-
     <div id="image-modal" class="modal-overlay">
-
         <div class="modal-inner">
-
             <img id="modal-image" src="" alt="Reseña ampliada" loading="lazy">
-
             <button id="modal-close" class="modal-close">&times;</button>
-
         </div>
-
     </div>
 
-
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            const modal = document.getElementById('image-modal');
+            // ── Email construido por JS para evitar ofuscación de Cloudflare ──
+            (function() {
+                var u = 'lamentedelfenix';
+                var d = ['gmail', 'com'].join('.');
+                var addr = u + '\x40' + d;
 
+                // Botón mentoría con email prediseñado
+                var btn = document.getElementById('btn-mentoria');
+                if (btn) {
+                    var subj = 'Solicitud de Entrevista Previa \u2013 Mentor\u00eda Renacimiento F\u00e9nix';
+                    var body = 'Hola Dar\u00edo,\n\nMe interesa la Mentor\u00eda Renacimiento F\u00e9nix y me gustar\u00eda solicitar una entrevista previa.\n\nMi nombre: \nMi WhatsApp: \n\u00bfPor qu\u00e9 quiero unirme? \n\nGracias,';
+                    btn.href = 'mai' + 'lto:' + addr + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
+                }
+
+                // Enlace email del footer
+                var footerLink = document.getElementById('footer-email-link');
+                if (footerLink) {
+                    footerLink.href = 'mai' + 'lto:' + addr;
+                }
+            })();
+
+            // ── Modal ──
+            const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-image');
 
-            
-
             window.openModal = (src) => {
-
                 modalImg.src = src;
-
                 modal.classList.add('active');
-
                 document.body.style.overflow = 'hidden';
-
             };
-
-            
 
             const closeModal = () => {
-
                 modal.classList.remove('active');
-
                 document.body.style.overflow = '';
-
             };
-
-
 
             document.getElementById('modal-close').onclick = closeModal;
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
 
-            modal.onclick = (e) => { if(e.target === modal) closeModal(); };
-
-
-
-            // Carousel Logic
-
+            // ── Carousel ──
             const carousel = document.getElementById('testimonial-carousel');
-
             const images = [
-
                 './assets/Captura 1.webp', './assets/Captura 2.webp', './assets/Captura 3.webp',
-
                 './assets/Captura 4.webp', './assets/Captura 5.webp', './assets/Captura 6.webp',
-
                 './assets/Captura 7.webp'
-
             ];
-
             let currentIndex = Math.floor(images.length / 2);
-
             let slides = [];
-
             let isDragging = false, startPos = 0, dragOffset = 0;
 
-
-
             images.forEach((src, i) => {
-
                 const slide = document.createElement('div');
-
                 slide.className = 'testimonial-slide';
-
                 const img = document.createElement('img');
-
                 img.src = src;
-
-                img.alt = `Reseña ${i+1}`;
-
+                img.alt = 'Rese\u00f1a ' + (i + 1);
                 img.className = 'testimonial-image';
-
                 img.loading = 'lazy';
-
                 img.decoding = 'async';
-
                 slide.appendChild(img);
-
                 carousel.appendChild(slide);
-
                 slides.push(slide);
-
             });
 
-
-
             function updateCarousel() {
-
                 slides.forEach((slide, i) => {
-
                     const offset = i - currentIndex;
-
                     let transform = 'scale(0)', opacity = '0', zIndex = '0';
-
                     if (Math.abs(offset) < 2) {
-
                         const sign = Math.sign(offset);
-
                         opacity = '0.5'; zIndex = String(10 - Math.abs(offset));
-
-                        if (offset === 0) { transform = 'translateX(0) translateZ(0) scale(1.1)'; opacity = '1'; }
-
-                        else { transform = `translateX(${sign * 220}px) translateZ(-180px) rotateY(${-sign * 45}deg) scale(0.8)`; }
-
+                        if (offset === 0) {
+                            transform = 'translateX(0) translateZ(0) scale(1.1)'; opacity = '1';
+                        } else {
+                            transform = 'translateX(' + (sign * 220) + 'px) translateZ(-180px) rotateY(' + (-sign * 45) + 'deg) scale(0.8)';
+                        }
                     }
-
                     slide.style.transform = transform;
-
                     slide.style.opacity = opacity;
-
                     slide.style.zIndex = zIndex;
-
                 });
-
             }
 
-
-
             const changeSlide = (dir) => {
-
                 const n = currentIndex + dir;
-
-                if(n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); }
-
+                if (n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); }
             };
-
-
 
             document.getElementById('next-btn').onclick = () => changeSlide(1);
-
             document.getElementById('prev-btn').onclick = () => changeSlide(-1);
 
-
-
             carousel.onmousedown = (e) => { isDragging = true; startPos = e.pageX; carousel.classList.add('grabbing'); };
-
-            window.onmousemove = (e) => { if(isDragging) dragOffset = e.pageX - startPos; };
-
+            window.onmousemove = (e) => { if (isDragging) dragOffset = e.pageX - startPos; };
             window.onmouseup = () => {
-
-                if(!isDragging) return;
-
+                if (!isDragging) return;
                 isDragging = false; carousel.classList.remove('grabbing');
-
-                if(dragOffset > 80) changeSlide(-1); else if(dragOffset < -80) changeSlide(1);
-
+                if (dragOffset > 80) changeSlide(-1); else if (dragOffset < -80) changeSlide(1);
                 dragOffset = 0;
-
             };
 
+            carousel.ontouchstart = (e) => { isDragging = true; startPos = e.touches[0].clientX; };
+            carousel.ontouchmove = (e) => { if (isDragging) dragOffset = e.touches[0].clientX - startPos; };
+            carousel.ontouchend = () => {
+                if (isDragging) {
+                    isDragging = false;
+                    if (dragOffset > 50) changeSlide(-1); else if (dragOffset < -50) changeSlide(1);
+                    dragOffset = 0;
+                }
+            };
 
+            updateCarousel();
 
-            // Touch events
+            // ── Sticky CTA ──
+            const prices = document.getElementById('precios');
+            const sticky = document.getElementById('sticky-cta');
+            const observer = new IntersectionObserver(([e]) => {
+                sticky.classList.toggle('hidden', e.isIntersecting);
+            }, { threshold: 0.1 });
+            observer.observe(prices);
 
-            carousel.ontouchstart = (e) => { isDragging = true; st
+        });
+    </script>
+
+</body>
+</html>
