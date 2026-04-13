@@ -79,6 +79,8 @@
         .guarantee-box{background-color:#1a2e20;border:1px solid #25422d;padding:1rem;border-radius:0.5rem;display:flex;gap:0.75rem;margin-bottom:1.5rem;color:#e2f1e7;font-size:0.875rem}
         .guarantee-box i{color:#4ade80;font-size:1.25rem}
         .guarantee-box strong{color:#4ade80}
+        .discount-box{background-color:rgba(212,175,55,0.1);border:1px dashed #d4af37;padding:0.75rem;border-radius:0.5rem;display:flex;gap:0.75rem;align-items:center;margin-bottom:1.5rem;font-size:0.875rem;color:#fbf5e2}
+        .discount-box i{color:#d4af37;font-size:1.25rem}
         .scarcity-note{text-align:center;font-size:0.8rem;color:rgba(212,175,55,0.65);margin-top:1.25rem;font-style:italic}
         .btn{display:block;width:100%;padding:1rem;text-align:center;border-radius:0.5rem;font-weight:700;font-size:1.125rem;position:relative;z-index:1;overflow:hidden;border:2px solid transparent;cursor:pointer}
         .btn-gold{background-color:#d4af37;color:#1a1a1a}
@@ -299,6 +301,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="discount-box">
+                            <i class="fas fa-gift"></i>
+                            <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se te descontará su valor ($210 USD) del total de la mentoría.</p>
+                        </div>
                         <ul class="features-list">
                             <li><i class="fas fa-fire-alt"></i><span><strong>Transformación de Identidad:</strong> Proceso de 180 días de reprogramación profunda a nivel de ser.</span></li>
                             <li><i class="fas fa-calendar-check"></i><span><strong>12 Sesiones Privadas:</strong> 2 al mes: una de desbloqueo + una de estrategia y seguimiento.</span></li>
@@ -306,8 +312,9 @@
                             <li><i class="fas fa-brain"></i><span><strong>Ingeniería de Hábitos:</strong> Diseño personalizado de tu rutina para anclar la nueva identidad.</span></li>
                             <li><i class="fas fa-infinity"></i><span><strong>Escuela Mente Fénix incluida:</strong> Acceso gratuito completo durante todo el programa.</span></li>
                         </ul>
-                        <a id="btn-mentoria" href="#" class="btn btn-gold-premium">
-                            <i class="fas fa-envelope" style="margin-right:0.5rem"></i>Solicitar Entrevista Previa
+                        <!-- AQUÍ SE ACTUALIZÓ EL ENLACE AL FORMULARIO Y EL ICONO -->
+                        <a id="btn-mentoria" href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank" rel="noopener" class="btn btn-gold-premium">
+                            <i class="fas fa-file-alt" style="margin-right:0.5rem"></i>Solicitar Entrevista Previa
                         </a>
                         <p class="scarcity-note">*Solo acepto 10 nuevas personas por trimestre para asegurar la calidad del soporte.</p>
                     </div>
@@ -365,14 +372,6 @@
                 var u = 'lamentedelfenix';
                 var d = ['gmail', 'com'].join('.');
                 var addr = u + '\x40' + d;
-
-                // Botón mentoría con email prediseñado
-                var btn = document.getElementById('btn-mentoria');
-                if (btn) {
-                    var subj = 'Solicitud de Entrevista Previa \u2013 Mentor\u00eda Renacimiento F\u00e9nix';
-                    var body = 'Hola Dar\u00edo,\n\nMe interesa la Mentor\u00eda Renacimiento F\u00e9nix y me gustar\u00eda solicitar una entrevista previa.\n\nMi nombre: \nMi WhatsApp: \n\u00bfPor qu\u00e9 quiero unirme? \n\nGracias,';
-                    btn.href = 'mai' + 'lto:' + addr + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
-                }
 
                 // Enlace email del footer
                 var footerLink = document.getElementById('footer-email-link');
