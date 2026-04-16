@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad de Emprendimiento Espiritual | La Mente del Fénix</title>
+    <meta name="description" content="Únete a la comunidad gratuita de emprendimiento espiritual en Asturias. Escala tu servicio consciente con Darío Arrigazzi.">
+    
+    <!-- Fuentes e Iconos (ADN Original) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* RESET & BASE LAYOUT (Extraído de La Mente del Fénix) */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+        body{font-family:'Montserrat',Helvetica,Arial,sans-serif;background-color:#2b2b2b;color:#fbf5e2;padding:1rem; line-height: 1.6;}
+        img{max-width:100%;height:auto;display:block}
+        a{text-decoration:none}
+        ul{list-style:none}
+        .wrapper{max-width:72rem;margin:0 auto}
+
+        /* BRAND COLORS */
+        .text-brand-pink{color:#e91e63}
+        .text-brand-gold{color:#d4af37}
+        .bg-darker {background-color:#1a1a1a}
+
+        /* HEADER BANNER */
+        .site-header{text-align:center;margin-bottom:2rem;margin-left:-1rem;margin-right:-1rem}
+        @media(min-width:768px){.site-header{margin-bottom:3rem;margin-left:0;margin-right:0}}
+        .banner-wrap{
+            width:100%;
+            aspect-ratio:1200/400;
+            overflow:hidden;
+            background-color:#1a1a1a
+        }
+        @media(min-width:768px){.banner-wrap{border-radius:.5rem;box-shadow:0 10px 25px rgba(0,0,0,.4)}}
+        .banner-img{width:100%;height:100%;object-fit:cover;display:block}
+
+        /* BUTTONS */
+        .btn{
+            display:inline-flex; align-items:center; justify-content:center; gap: 0.5rem;
+            position:relative;z-index:1;overflow:hidden;
+            transition:color .4s ease-out;border:2px solid transparent;border-radius:.5rem;
+            font-weight:700;padding:.75rem 2rem;font-size:1.125rem;cursor:pointer;
+            text-align:center;font-family:inherit
+        }
+        .btn-pink{background-color:#e91e63;color:#fff}
+        .btn-gold{background-color:#d4af37;color:#1a1a1a}
+        .btn-block{width:100%;display:flex}
+        .btn::before{
+            content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+            background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;
+            transition:transform .4s cubic-bezier(.45,.05,.55,.95)
+        }
+        .btn.btn-pink:hover::before{border:2px solid #e91e63}
+        .btn.btn-gold:hover::before{border:2px solid #d4af37}
+        .btn.btn-pink:hover{color:#e91e63}
+        .btn.btn-gold:hover{color:#d4af37}
+        .btn:hover::before{transform:scaleX(1);transform-origin:left}
+
+        /* HERO */
+        .hero{text-align:center;padding:4rem 1rem; margin-top: 2rem;}
+        .hero-inner{max-width:56rem;margin:0 auto}
+        .hero-badge { display: inline-block; padding: 0.5rem 1rem; border: 1px solid #d4af37; color: #d4af37; border-radius: 2rem; font-size: 0.875rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 1px; text-transform: uppercase;}
+        .hero h1{font-size:2.5rem;font-weight:800;color:#fbf5e2;line-height:1.2}
+        @media(min-width:768px){.hero h1{font-size:3.5rem}}
+        .hero p{font-size:1.25rem;margin-top:1.5rem;max-width:48rem;margin-left:auto;margin-right:auto;font-weight:500;color:rgba(251,245,226,.8);}
+        .hero-cta{margin-top:2.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+
+        /* PURPOSE SECTION */
+        .purpose-section{padding:5rem 1rem;background-color:#1a1a1a; border-radius: .5rem; text-align: center; margin: 2rem 0;}
+        .purpose-inner{max-width:48rem;margin:0 auto}
+        .purpose-inner i { font-size: 3rem; color: #d4af37; margin-bottom: 1.5rem;}
+        .purpose-inner h2{font-size:2rem;font-weight:700;margin-bottom:1rem;color:#fbf5e2}
+        .purpose-inner p{color:rgba(251,245,226,.8);font-size:1.125rem;line-height:1.75}
+
+        /* SERVICES / SKOOL CARDS */
+        .services-section{padding:5rem 1rem;background-color:#2b2b2b}
+        .services-inner{max-width:72rem;margin:0 auto}
+        .services-inner h2{font-size:2rem;font-weight:700;text-align:center;margin-bottom:1rem;color:#fbf5e2}
+        .services-subtitle {text-align: center; color:rgba(251,245,226,.8); font-size: 1.125rem; margin-bottom: 3rem; max-width: 40rem; margin-left: auto; margin-right: auto;}
+        
+        .services-grid{display:grid;grid-template-columns:1fr;gap:2rem}
+        @media(min-width:768px){.services-grid{grid-template-columns:repeat(3,1fr)}}
+
+        .service-card{
+            background-color:#333;border:1px solid #444;border-radius:.5rem;
+            display:flex;flex-direction:column;overflow:hidden;
+            transition:transform .3s ease,box-shadow .3s ease;
+            padding: 2.5rem 2rem; text-align: center;
+        }
+        .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
+        .card-icon-wrap { width: 4rem; height: 4rem; border-radius: 50%; background-color: #222; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; border: 1px solid #444;}
+        .card-title-wrap h3{font-size:1.5rem;font-weight:700;line-height:1.3;color:#fbf5e2; margin-bottom: 1rem;}
+        .card-features{color:rgba(251,245,226,.8);flex-grow:1;}
+
+        /* FOOTER */
+        .site-footer{
+            margin-top:5rem;padding:3rem 1rem;border-top:1px solid #374151;
+            text-align:center;background-color:#1a1a1a;border-radius:.5rem
+        }
+        .site-footer h4{font-weight:700;font-size:1.5rem;margin-bottom:1.5rem;color:#fbf5e2}
+        .footer-contacts{display:flex;flex-direction:column;flex-wrap:wrap;justify-content:center;align-items:center;gap:2rem}
+        @media(min-width:640px){.footer-contacts{flex-direction:row}}
+        .contact-link{position:relative;text-decoration:none;padding-bottom:5px;display:flex;align-items:center;gap:.5rem; color: rgba(251,245,226,.8);}
+        .contact-link:hover {color: #d4af37;}
+        .footer-legal{font-size:.875rem;color:rgba(251,245,226,.6);margin-top:3rem}
+        .footer-legal a{color:rgba(251,245,226,.6)}
+        .footer-legal a:hover{text-decoration:underline}
+        .footer-legal span{margin:0 .5rem}
+        .footer-copy{font-size:.875rem;color:rgba(251,245,226,.5);margin-top:1rem}
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- HEADER BANNER -->
+    <header class="site-header">
+        <div class="banner-wrap">
+            <img src="./assets/banner.webp"
+                 alt="Banner La Mente del Fénix — Coach Darío Arrigazzi"
+                 class="banner-img"
+                 width="1200" height="400"
+                 fetchpriority="high"
+                 loading="eager"
+                 decoding="sync">
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="hero-badge"><i class="fas fa-hand-holding-heart"></i> Comunidad 100% Gratuita</div>
+                <h1>Te ayudo a sanar.<br><span class="text-brand-gold">Crezcamos en tribu.</span></h1>
+                <p>La clave de cualquier proyecto no es la estrategia, es tu <strong>estado de conciencia</strong>. Si operas desde el miedo o la escasez, ninguna acción funcionará. Te acompaño a sanar para que puedas emprender y servir desde la paz absoluta.</p>
+                <div class="hero-cta">
+                    <!-- CTA apuntando a tu WhatsApp -->
+                    <a href="https://chat.whatsapp.com/ETvm1tc9FNIARe03if533u" target="_blank" class="btn btn-pink">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i> 
+                        Únete al Grupo Gratis
+                    </a>
+                    <span style="font-size: 0.875rem; color: rgba(251,245,226,.6); margin-top: 0.5rem;">Cero Spam. Solo valor, apoyo y comunidad.</span>
+                    <a href="https://www.lamentedelfenix.com/" style="margin-top: 1.5rem; color: #d4af37; text-decoration: underline; font-size: 0.9rem; font-weight: 500; transition: color 0.3s;" onmouseover="this.style.color='#e91e63'" onmouseout="this.style.color='#d4af37'">&larr; Volver a la web principal</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PURPOSE -->
+        <section class="purpose-section">
+            <div class="purpose-inner">
+                <i class="fas fa-seedling" aria-hidden="true"></i>
+                <h2>Tu negocio es un reflejo de tu mente</h2>
+                <p>Pasé de una infancia marcada por el trauma al éxito corporativo, pero por dentro seguía roto. Solo cuando integré la sabiduría de <strong>Un Curso de Milagros, la PNL y el Coaching</strong> logré reprogramar mi mente de raíz.</p>
+                <p style="margin-top: 1rem; color:rgba(251,245,226,.8); font-size:1.125rem; line-height:1.75;">Por eso esta comunidad es 100% gratuita. <strong>Creo firmemente que lo que das a los demás te lo das a ti mismo.</strong> Es el refugio que a mí me habría gustado tener. Te comparto las herramientas que me salvaron porque sé que cuando elevas tu vibración y sanas por dentro, tu vida y tu emprendimiento florecen por sí solos.</p>
+            </div>
+        </section>
+
+        <!-- RESOURCES (SKOOL MODULES) -->
+        <section class="services-section">
+            <div class="services-inner">
+                <h2>Lo que te llevas al entrar</h2>
+                <p class="services-subtitle">Acceso directo a nuestra plataforma en Skool, diseñada como tu nuevo hogar de crecimiento personal.</p>
+                
+                <div class="services-grid">
+                    <!-- Module 1 -->
+                    <div class="service-card" style="border-top: 3px solid #e91e63;">
+                        <div class="card-icon-wrap" style="color: #e91e63;">
+                            <i class="fas fa-unlock"></i>
+                        </div>
+                        <div class="card-title-wrap"><h3>Herramientas de Desbloqueo</h3></div>
+                        <p class="card-features">
+                            Recursos, meditaciones y ejercicios prácticos gratuitos para empezar a soltar tus resistencias hoy mismo.
+                        </p>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="service-card" style="border-top: 3px solid #d4af37;">
+                        <div class="card-icon-wrap" style="color: #d4af37;">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="card-title-wrap"><h3>Respuestas y Mentoría</h3></div>
+                        <p class="card-features">
+                            Un foro donde respondo personalmente a tus dudas. No estás solo/a en este camino; mi experiencia está a tu servicio.
+                        </p>
+                    </div>
+
+                    <!-- Module 3 -->
+                    <div class="service-card" style="border-top: 3px solid #fbf5e2;">
+                        <div class="card-icon-wrap" style="color: #fbf5e2;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-title-wrap"><h3>Tribu Fénix</h3></div>
+                        <p class="card-features">
+                            Conecta con otras personas que están en tu misma sintonía. Apoyo mutuo, celebración de avances y una red que te sostiene.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <h4>Darío Arrigazzi</h4>
+        <div class="footer-contacts">
+            <a href="mailto:lamentedelfenix@gmail.com" target="_blank" class="contact-link">
+                <i class="fas fa-envelope footer-contact-icon" aria-hidden="true"></i>
+                <span>lamentedelfenix@gmail.com</span>
+            </a>
+            <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <i class="fab fa-instagram footer-contact-icon" aria-hidden="true"></i>
+                <span>@darioarrigazzi</span>
+            </a>
+            <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <i class="fab fa-youtube footer-contact-icon" aria-hidden="true"></i>
+                <span>YouTube</span>
+            </a>
+        </div>
+        <div class="footer-legal">
+            <a href="./privacidad.html">Política de Privacidad</a><span>&middot;</span>
+            <a href="./terminos.html">Términos del Servicio</a><span>&middot;</span>
+            <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
+            <a href="./cookies.html">Política de Cookies</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 La Mente del Fénix - Darío Arrigazzi. Todos los derechos reservados.</p>
+    </footer>
+</div>
+
+</body>
+</html>
