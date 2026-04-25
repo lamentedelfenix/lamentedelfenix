@@ -247,6 +247,28 @@
         @media(min-width:768px){.sales-bio{font-size:1.125rem}}
         .sales-bio p{margin-bottom:2rem}
         @media(max-width:480px){.sales-bio p{margin-bottom:2.25rem;font-size:1.05rem;line-height:2}}
+
+        /* EFECTO ILUMINACIÓN MÓVIL (SOBRE MÍ) */
+        @media(max-width: 767px) {
+            .sales-bio p {
+                transition: color 0.4s ease, text-shadow 0.4s ease;
+            }
+            .sales-bio p:not(.lit-up) {
+                color: rgba(251, 245, 226, 0.25);
+            }
+            .sales-bio p.lit-up {
+                color: #e2c77a; /* Dorado sutil */
+                text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            }
+            .sales-bio p.sales-highlight:not(.lit-up) {
+                color: rgba(233, 30, 99, 0.25);
+            }
+            .sales-bio p.sales-highlight.lit-up {
+                color: #e91e63;
+                text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+            }
+        }
+
         .sales-bio h2{
             font-size:1.75rem;font-weight:800;margin-bottom:3rem;
             color:#fbf5e2;text-align:center
@@ -845,6 +867,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('modal-close').addEventListener('click',closeModal);
         document.getElementById('image-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
         document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+
+        /* ── Efecto Lectura Móvil (Sobre Mí) ── */
+        var bioParagraphs = document.querySelectorAll('.sales-bio p');
+        var bioObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('lit-up');
+                } else {
+                    entry.target.classList.remove('lit-up');
+                }
+            });
+        }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
+        bioParagraphs.forEach(function(p) { bioObserver.observe(p); });
 
         /* ── Carousel ── */
         var carousel=document.getElementById('testimonial-carousel');
