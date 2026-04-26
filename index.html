@@ -264,7 +264,9 @@
                 color: rgba(251, 245, 226, 0.25);
             }
             .sales-bio p:not(.lit-up) .keyword {
-                color: rgba(212, 175, 55, 0.3); /* Keyword tenue antes de iluminar */
+                color: inherit; /* Camuflado con el resto del texto apagado */
+                font-weight: inherit;
+                text-shadow: none;
             }
             .sales-bio p.lit-up {
                 color: #e2c77a; /* Dorado sutil para texto normal */
@@ -272,6 +274,7 @@
             }
             .sales-bio p.lit-up .keyword {
                 color: #d4af37; /* Oro brillante para keyword */
+                font-weight: 800;
                 text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
             }
             
@@ -603,13 +606,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
 
-                <p>Mi padre la maltrataba brutalmente.</p>
+                <p>Mi padre la <span class="keyword">maltrataba</span> brutalmente.</p>
 
                 <p>Yo lo veía todo.</p>
 
                 <p>Y no podía hacer nada.</p>
 
-                <p>Sentía mucha impotencia, y de ahí nació un fuerte deseo de aliviar el sufrimiento en personas como tú.</p>
+                <p>Sentía mucha <span class="keyword">impotencia</span>, y de ahí nació un fuerte deseo de aliviar el sufrimiento en personas como tú.</p>
 
                 <p>Pero aqui viene lo gordo... y que seguramente no te esperas...</p>
 
