@@ -236,7 +236,7 @@
             padding:.25rem .75rem;border-radius:9999px;margin-bottom:.875rem
         }
 
-        /* BIO */
+        /* BIO & KEYWORDS */
         .bio-section{padding:3.5rem .25rem;background-color:#2b2b2b}
         @media(min-width:768px){.bio-section{padding:5rem 1rem}}
         .sales-bio{
@@ -248,6 +248,13 @@
         .sales-bio p{margin-bottom:2rem}
         @media(max-width:480px){.sales-bio p{margin-bottom:2.25rem;font-size:1.05rem;line-height:2}}
 
+        /* Keywords base (Desktop / Default) */
+        .keyword {
+            font-weight: 800;
+            color: rgba(212, 175, 55, 0.9);
+            transition: all 0.4s ease;
+        }
+
         /* EFECTO ILUMINACIÓN MÓVIL (SOBRE MÍ) */
         @media(max-width: 767px) {
             .sales-bio p {
@@ -256,10 +263,18 @@
             .sales-bio p:not(.lit-up) {
                 color: rgba(251, 245, 226, 0.25);
             }
+            .sales-bio p:not(.lit-up) .keyword {
+                color: rgba(212, 175, 55, 0.3); /* Keyword tenue antes de iluminar */
+            }
             .sales-bio p.lit-up {
-                color: #e2c77a; /* Dorado sutil */
+                color: #e2c77a; /* Dorado sutil para texto normal */
                 text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
             }
+            .sales-bio p.lit-up .keyword {
+                color: #d4af37; /* Oro brillante para keyword */
+                text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            }
+            
             .sales-bio p.sales-highlight:not(.lit-up) {
                 color: rgba(233, 30, 99, 0.25);
             }
@@ -586,7 +601,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          loading="lazy" decoding="async">
                 </div>
 
-                <p>Me dedico a esto porque, cuando era pequeño, no pude salvar a mi madre.</p>
+                <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
 
                 <p>Mi padre la maltrataba brutalmente.</p>
 
@@ -594,45 +609,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p>Y no podía hacer nada.</p>
 
-                <p><strong>De aquí</strong> nació mi deseos de aliviar el sufrimiento de los demás.</p>
+                <p>Sentía mucha impotencia, y de ahí nació un fuerte deseo de aliviar el sufrimiento en personas como tú.</p>
 
-                <p>Pero aquí viene lo que no te esperas...</p>
+                <p>Pero aqui viene lo gordo... y que seguramente no te esperas...</p>
 
-                <p>Mi padre era terapeuta. Un terapeuta brillante.</p>
+                <p>Mi padre era terapeuta. Y de los mejores que he conocido nunca.</p>
 
-                <p>Venían a verle de todas partes. Ricos, famosos, médicos, jueces.</p>
+                <p>No, no es <span class="keyword">broma</span>... te lo aseguro.</p>
 
-                <p>Fuera de casa era un santo.</p>
+                <p>Venían a verle de todas partes: ricos, famosos, médicos, jueces.</p>
 
-                <p>Dentro, un monstruo.</p>
+                <p>Fuera de casa la gente lo adoraba.</p>
 
-                <p>Eso me obsesionó con una sola pregunta:</p>
+                <p>Como padre y como marido, un <span class="keyword">monstruo</span>.</p>
+
+                <p>Como te puedes imaginar... esa contradicción me <span class="keyword">obsesionó</span>:</p>
 
                 <p><strong>¿Por qué su mente funcionaba así?</strong></p>
 
-                <p><strong>Y de aquí</strong> nació mi interés por la psicología humanista.</p>
+                <p>Y de aquí, nació mi interés por la psicología humanista.</p>
 
                 <p>Devoré cada libro que cayó en mis manos. Carl G. Jung, Dr. David R. Hawkins, Eckhart Tolle... y muchos otros.</p>
 
-                <p>Mientras tanto, mi vida profesional avanzaba.</p>
+                <p>Años más tarde, mi vida profesional parecía que avanzaba.</p>
 
                 <p>Llegué a ser Director de Operaciones y Logística ayudando a impulsar el Grupo Lovenature Superfoods.</p>
 
-                <p>Pero un buen cargo no cura el trauma. Por dentro seguía roto.</p>
+                <p>Pero como ya sabes, un buen cargo no cura tus traumas. Por dentro seguía <span class="keyword">hecho una mierda</span>.</p>
 
-                <p>Así que en 2022 decidí dejarlo todo para sanar de verdad y dedicarme a esto.</p>
+                <p>Así que sobre 2022 decidí dejarlo todo. Necesitaba sanar de verdad para poder sentarme hoy a ayudarte a ti.</p>
 
-                <p>Seguí buscando una respuesta que no llegaba.</p>
+                <p>Seguí buscando esa respuesta que parecía no llegar.</p>
 
                 <p>Me formé en Coaching, PNL y otras disciplinas.</p>
 
-                <p>Hasta que la encontré.</p>
+                <p>Hasta que di con la clave.</p>
 
                 <p class="sales-highlight">Un Curso de Milagros.</p>
 
-                <p>Ese libro no solo cambió mi vida.</p>
+                <p>Ese libro no solo me cambió la vida a mí.</p>
 
-                <p>Se convirtió en el núcleo de todo lo que hago.</p>
+                <p>Se convirtió en el núcleo de todo lo que voy a hacer contigo.</p>
 
                 <p>Y de ahí nació el <strong>Método Fénix</strong>.</p>
 
@@ -663,15 +680,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
 
-                <p>Gracias a este método he ayudado a personas a avanzar más en <em>una sola sesión</em> que en meses de otras terapias.</p>
+                <p>En una sesión vas a avanzar más de lo que has avanzado en meses.</p>
 
-                <p>Pero esto no es para todo el mundo.</p>
+                <p>Y en algunos casos, años.</p>
 
-                <p>Es para gente que quiere cambiar de verdad.</p>
+                <p>Pero te soy sincero, esto no es para todo el mundo.</p>
 
-                <p>Por eso cobro lo que cobro.</p>
+                <p>Es solo para ti si quieres cambiar de verdad.</p>
 
-                <p>Y devuelvo el dinero si no hay resultados.</p>
+                <p>Porque soy como <span class="keyword">Rambo</span>...</p>
+
+                <p>Voy a por tu <span class="keyword">Ego</span> con una metralleta en cada mano y un <span class="keyword">machete</span> en la boca.</p>
+
+                <p>Por eso soy tan bueno, y por eso cobro lo que cobro.</p>
+
+                <p>Y te devuelvo el dinero si no hay resultados.</p>
 
                 <div class="price-ladder">
                     <div class="price-step price-past-1">En 2023, las hacía gratis.</div>
@@ -693,7 +716,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p><strong>¿Por qué no pagarías ese precio?</strong></p>
 
-                <p>Lo ves. Es un filtro.</p>
+                <p>¿Lo ves? Es un filtro.</p>
 
                 <div class="bio-cta-wrap">
                     <a href="#servicios" class="btn btn-gold btn-sm bio-cta-link">
@@ -772,7 +795,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <p class="premium-subtitle">Transformación de identidad completa</p>
                         
                         <p class="premium-promise">
-                            Para quienes intuyen que su vida está destinada a ser extraordinaria, pero se sienten atrapados sin saber cómo avanzar.
+                            Si has flipado en una sola sesión... imagínate 6 meses conmigo.
                             <strong>Da el salto definitivo y conviértete en la identidad que necesitas para lograrlo.</strong>
                         </p>
 
