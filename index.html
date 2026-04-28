@@ -241,7 +241,6 @@
             }
             .sales-bio p:not(.lit-up) .keyword {
                 color: inherit;
-                font-weight: inherit;
                 text-shadow: none;
             }
             .sales-bio p.lit-up {
@@ -250,7 +249,6 @@
             }
             .sales-bio p.lit-up .keyword {
                 color: #d4af37;
-                font-weight: 800;
                 text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
             }
             .sales-bio p.sales-highlight:not(.lit-up) {
@@ -728,7 +726,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="sales-bio">
                 <p>Esto no es para todo el mundo.</p>
 
-                <p>Es solo para ti si llevas tiempo sintiéndote parado. Como si supieras lo que quieres pero algo dentro siempre te frenara. Esa sensación de que los días pasan y tú sigues en el mismo sitio.</p>
+                <p>Es solo para ti si llevas tiempo sintiéndote parado. Como si supieras lo que quieres pero algo dentro siempre te frenara.</p>
+                
+                <p>Esa sensación de que los días pasan y tú sigues en el mismo sitio.</p>
 
                 <p>Eso tiene raíz. Y en una sesión la encontramos.</p>
 
@@ -912,7 +912,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     entry.target.classList.remove('lit-up');
                 }
             });
-        }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
+        }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
         bioParagraphs.forEach(function(p) { bioObserver.observe(p); });
 
         var carousel=document.getElementById('testimonial-carousel');
@@ -924,7 +924,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp',
             './assets/Captura 7.webp'
         ];
-        var currentIndex=Math.floor(images.length/2);
+        var currentIndex=images.length - 1;
         var slides=[];
         var isDragging=false,startPos=0,dragOffset=0;
 
