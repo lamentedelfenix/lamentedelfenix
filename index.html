@@ -183,28 +183,6 @@
         @media(min-width:768px){.hero p{font-size:1.375rem;margin-top:0}}
         .hero-cta{margin-top:2rem;display:flex;flex-direction:column;align-items:center;gap:.875rem}
 
-        /* GANCHO UCDM */
-        .ucdm-hook{
-            background-color:#1a1a1a;
-            border-left:4px solid #d4af37;
-            border-radius:.5rem;
-            padding:1.25rem 1.25rem;
-            margin:0 0 2.5rem;
-            max-width:56rem;
-            margin-left:auto;
-            margin-right:auto;
-            text-align:left
-        }
-        @media(min-width:768px){.ucdm-hook{padding:1.5rem 2rem;margin-bottom:3rem;text-align:center}}
-        .ucdm-hook p{
-            font-size:.95rem;
-            color:rgba(251,245,226,.85);
-            line-height:1.8;
-            margin:0
-        }
-        @media(min-width:768px){.ucdm-hook p{font-size:1.05rem}}
-        .ucdm-hook strong{color:#d4af37}
-
         /* GARANTÍA BANNER */
         .garantia-banner{
             background:linear-gradient(135deg,#1a1a1a 0%,#222 100%);
@@ -248,14 +226,12 @@
         .sales-bio p{margin-bottom:2rem}
         @media(max-width:480px){.sales-bio p{margin-bottom:2.25rem;font-size:1.05rem;line-height:2}}
 
-        /* Keywords base (Desktop / Default) */
         .keyword {
             font-weight: 800;
             color: rgba(212, 175, 55, 0.9);
             transition: all 0.4s ease;
         }
 
-        /* EFECTO ILUMINACIÓN MÓVIL (SOBRE MÍ) */
         @media(max-width: 767px) {
             .sales-bio p {
                 transition: color 0.4s ease, text-shadow 0.4s ease;
@@ -277,7 +253,6 @@
                 font-weight: 800;
                 text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
             }
-            
             .sales-bio p.sales-highlight:not(.lit-up) {
                 color: rgba(233, 30, 99, 0.25);
             }
@@ -296,6 +271,44 @@
         @media(min-width:768px){.bio-photo-wrap{margin-bottom:3rem}}
         .sales-highlight{color:#e91e63;font-weight:700;font-size:1.15rem;display:block;margin-bottom:2rem}
         @media(min-width:768px){.sales-highlight{font-size:1.25rem}}
+
+        /* TESTIMONIO INLINE */
+        .testimonio-inline{
+            background-color:#1a1a1a;
+            border-left:4px solid #d4af37;
+            border-radius:0 .5rem .5rem 0;
+            padding:1.5rem 1.5rem;
+            margin:0 0 2.5rem;
+        }
+        .testimonio-inline blockquote{
+            font-size:1rem;
+            line-height:1.8;
+            color:rgba(251,245,226,.9);
+            font-style:italic;
+            margin:0 0 1rem;
+        }
+        @media(min-width:768px){.testimonio-inline blockquote{font-size:1.05rem}}
+        .testimonio-inline .testimonio-autor{
+            font-size:.85rem;
+            font-weight:700;
+            color:#d4af37;
+            font-style:normal;
+            display:block;
+        }
+
+        /* PLACEHOLDER TESTIMONIO (para eliminar cuando tengas uno real) */
+        .testimonio-placeholder{
+            background-color:#1a1a1a;
+            border:1px dashed rgba(212,175,55,.35);
+            border-radius:.5rem;
+            padding:1.25rem 1.5rem;
+            margin:0 0 2.5rem;
+            font-size:.9rem;
+            color:rgba(251,245,226,.35);
+            font-style:italic;
+            text-align:center;
+            line-height:1.6;
+        }
 
         /* MÉTODO FÉNIX */
         .metodo-block{
@@ -423,7 +436,7 @@
         .services-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
         @media(min-width:640px){.services-grid{gap:2rem}}
         @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
-        @media(min-width:1024px){.services-grid{grid-template-columns:repeat(2,1fr)}} 
+        @media(min-width:1024px){.services-grid{grid-template-columns:repeat(2,1fr)}}
 
         .service-card{
             background-color:#333;border:1px solid #444;border-radius:.5rem;
@@ -463,7 +476,6 @@
         .card-features li i{margin-top:.2rem;width:1.5rem;text-align:center;margin-right:.75rem;flex-shrink:0}
         .card-features li strong{color:#fbf5e2}
 
-        /* GARANTÍA EN CARD */
         .card-garantia{
             display:flex;align-items:center;gap:.5rem;
             background-color:#1a1a1a;border-radius:.375rem;
@@ -494,7 +506,6 @@
         .discount-box i{color:#d4af37;font-size:1.25rem}
         .scarcity-note{text-align:center;font-size:.8rem;color:rgba(212,175,55,.65);margin-top:1.25rem;font-style:italic}
 
-        /* NUEVOS ESTILOS: LISTA DE ESPERA Y DESCARGO */
         .waitlist-text {
             text-align: center;
             font-size: 0.9rem;
@@ -700,17 +711,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p>Y en algunos casos, años.</p>
 
-                <p>Pero te soy sincero, esto no es para todo el mundo.</p>
+                <p>No te lo digo yo.</p>
+            </div>
 
-                <p>Es solo para ti si quieres cambiar de verdad.</p>
+            <!-- TESTIMONIALS CAROUSEL (MOVED) -->
+            <div class="testimonials-section" style="margin: 3rem 0;">
+                <div class="testimonials-inner">
+                    <div class="carousel-wrapper">
+                        <div id="testimonial-carousel" class="testimonial-carousel"></div>
+                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
+                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
+                    </div>
+                </div>
+            </div>
 
-                <p>Porque soy como <span class="keyword">Rambo</span>...</p>
+            <div class="sales-bio">
+                <p>Esto no es para todo el mundo.</p>
 
-                <p>Voy a por tu <span class="keyword">Ego</span> con una metralleta en cada mano y un <span class="keyword">machete</span> en la boca.</p>
+                <p>Es solo para ti si llevas tiempo sintiéndote parado. Como si supieras lo que quieres pero algo dentro siempre te frenara. Esa sensación de que los días pasan y tú sigues en el mismo sitio.</p>
 
-                <p>Por eso soy tan bueno, y por eso el método tiene este valor.</p>
-
-                <p>Y te devuelvo el dinero si no hay resultados.</p>
+                <p>Eso tiene raíz. Y en una sesión la encontramos.</p>
 
                 <div class="price-ladder">
                     <div class="price-step price-past-1">Al principio, mi ayuda era gratuita.</div>
@@ -722,36 +742,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <p>Y no, no es caro.</p>
 
-                <p>Es un filtro.</p>
-
-                <p>Me asegura que tienes un problema real y que <em>de verdad</em> quieres cambiar.</p>
-
-                <p>Piénsalo así:</p>
-
                 <p>Tienes garantizado que te ayudo en una sola sesión.<br>O te devuelvo el dinero.</p>
 
                 <p><strong>¿Por qué no pagarías ese precio?</strong></p>
-
-                <p>¿Lo ves? Es un filtro.</p>
-
-                <div class="bio-cta-wrap">
-                    <a href="#servicios" class="btn btn-gold btn-sm bio-cta-link">
-                        <span>¿Te resuena? Así te puedo ayudar</span>
-                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- TESTIMONIALS -->
-        <section class="testimonials-section">
-            <div class="testimonials-inner">
-                <h2>El resultado de este trabajo</h2>
-                <div class="carousel-wrapper">
-                    <div id="testimonial-carousel" class="testimonial-carousel"></div>
-                    <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
-                    <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
-                </div>
             </div>
         </section>
 
@@ -759,10 +752,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <section id="servicios" class="services-section">
             <div class="services-inner">
                 <h2>El Método Fénix</h2>
-                
+
                 <div class="services-grid" style="max-width:960px;margin:0 auto;align-items:stretch;">
 
-                    <!-- Card única: Método Fénix -->
+                    <!-- Card: Sesión 1:1 -->
                     <div class="service-card" style="border-color:#d4af37;">
                         <div class="card-thumb">
                             <img src="./assets/Portada Sesion 1 a 1.webp"
@@ -800,13 +793,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                 <i class="fas fa-shield-alt" aria-hidden="true"></i>
                                 <span>Resultados en 90 min o te devuelvo el dinero.</span>
                             </div>
-                            
-                            <!-- Botón bloqueado + Enlace a Lista de Espera -->
                             <a href="#" target="_blank" rel="noopener" class="btn-disabled btn-block" style="pointer-events: none;" aria-disabled="true">
                                 <i class="fas fa-lock" aria-hidden="true" style="margin-right:0.5rem"></i>Próxima Apertura
                             </a>
                             <p class="waitlist-text">¿Quieres que te avise? <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank">Apúntate a la lista de espera.</a></p>
-                            
                         </div>
                     </div>
 
@@ -815,7 +805,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span class="premium-badge">Recomendado para cambios profundos</span>
                         <p class="premium-title">Mentoría: Renacimiento Fénix</p>
                         <p class="premium-subtitle">Transformación de identidad completa</p>
-                        
+
                         <p class="premium-promise">
                             Si has flipado en una sola sesión... imagínate 6 meses conmigo.
                             <strong>Da el salto definitivo y conviértete en la identidad que necesitas para lograrlo.</strong>
@@ -848,13 +838,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <li><i class="fas fa-brain"></i><span><strong>Ingeniería de Hábitos:</strong> Diseño personalizado de tu rutina para anclar la nueva identidad.</span></li>
                             <li><i class="fas fa-headphones"></i><span><strong>Recursos y Meditaciones:</strong> Acceso a herramientas prácticas diseñadas a medida para acelerar tu proceso.</span></li>
                         </ul>
-                        
-                        <!-- Botón bloqueado + Enlace a Lista de Espera -->
                         <a id="btn-mentoria" href="#" target="_blank" rel="noopener" class="btn-disabled btn-block" style="margin-top:auto; pointer-events: none;" aria-disabled="true">
                             <i class="fas fa-lock" aria-hidden="true" style="margin-right:0.5rem"></i>Próxima Apertura
                         </a>
                         <p class="waitlist-text">Plazas muy limitadas. <a href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank">Entra en la lista de espera.</a></p>
-                        
                         <p class="scarcity-note">*Solo acepto 10 nuevas personas por trimestre para asegurar la calidad del soporte.</p>
                     </div>
 
@@ -900,7 +887,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
-    /* ── Modal ── */
     function openModal(src){
         var m=document.getElementById('image-modal');
         document.getElementById('modal-image').src=src;
@@ -917,7 +903,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('image-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
         document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-        /* ── Efecto Lectura Móvil (Sobre Mí) ── */
         var bioParagraphs = document.querySelectorAll('.sales-bio p');
         var bioObserver = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
@@ -930,7 +915,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
         bioParagraphs.forEach(function(p) { bioObserver.observe(p); });
 
-        /* ── Carousel ── */
         var carousel=document.getElementById('testimonial-carousel');
         if(!carousel)return;
         var prevBtn=document.getElementById('prev-btn');
