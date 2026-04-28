@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Mente Fénix | Darío Arrigazzi</title>
+    <meta name="description" content="Artículos sobre Un Curso de Milagros, PNL, Coaching y liberación de bloqueos emocionales por Darío Arrigazzi.">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Mismos estilos base que tu web principal */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Montserrat',sans-serif;background-color:#2b2b2b;color:#fbf5e2;padding:1rem}
+        a{text-decoration:none; color:inherit;}
+        .wrapper{max-width:72rem;margin:0 auto}
+        .text-brand-gold{color:#d4af37}
+        
+        /* HEADER DEL BLOG */
+        .blog-header{text-align:center; padding: 2rem 0; border-bottom: 1px solid #444; margin-bottom: 3rem;}
+        .blog-header h1{font-size: 2.5rem; font-weight: 800; color: #d4af37; margin-bottom: 0.5rem;}
+        .blog-header p{color: rgba(251,245,226,.8); font-size: 1.1rem;}
+        
+        /* GRID DE ARTÍCULOS */
+        .post-grid{display:grid; grid-template-columns: 1fr; gap: 2rem;}
+        @media(min-width:768px){.post-grid{grid-template-columns: repeat(2, 1fr);}}
+        @media(min-width:1024px){.post-grid{grid-template-columns: repeat(3, 1fr);}}
+        
+        .post-card{background-color:#1a1a1a; border:1px solid #333; border-radius:.5rem; padding: 1.5rem; transition: transform 0.3s;}
+        .post-card:hover{transform: translateY(-5px); border-color:#d4af37;}
+        .post-date{font-size: 0.8rem; color: #e91e63; font-weight: 700; display: block; margin-bottom: 0.5rem;}
+        .post-title{font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.3;}
+        .post-excerpt{font-size: 0.95rem; color: rgba(251,245,226,.7); line-height: 1.6; margin-bottom: 1.5rem;}
+        .read-more{color: #d4af37; font-weight: 700; font-size: 0.9rem;}
+        .read-more:hover{text-decoration: underline;}
+
+        .btn-back{display: inline-block; background-color: #333; padding: 0.5rem 1rem; border-radius: 0.25rem; font-weight: 700; font-size: 0.85rem; margin-bottom: 2rem; border: 1px solid #555;}
+        .btn-back:hover{background-color: #444;}
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <a href="./index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Volver a la web</a>
+
+    <header class="blog-header">
+        <h1>Blog Mente Fénix</h1>
+        <p>Reflexiones sobre el Curso de Milagros, reprogramación mental y sanación por <strong>Darío Arrigazzi</strong>.</p>
+    </header>
+
+    <main>
+        <div class="post-grid">
+            
+            <!-- TARJETA DE EJEMPLO (Se reemplazará con tus artículos reales) -->
+            <article class="post-card">
+                <span class="post-date">28 de Abril, 2026</span>
+                <h2 class="post-title"><a href="./ejemplo.html">Por qué atraes siempre los mismos problemas</a></h2>
+                <p class="post-excerpt">Si sientes que estás estancado en un bucle, la raíz no está en el exterior, sino en un contrato inconsciente que firmaste en el pasado...</p>
+                <a href="./ejemplo.html" class="read-more">Leer artículo &rarr;</a>
+            </article>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>
