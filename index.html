@@ -40,7 +40,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Usando imágenes de placeholder para evitar enlaces rotos en la demo -->
+    <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
+
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap"></noscript>
@@ -349,8 +350,13 @@
 <div class="wrapper">
     <header class="site-header">
         <div class="banner-wrap">
-            <!-- Imagen de prueba para que no se vea roto -->
-            <img src="https://via.placeholder.com/1200x400/1a1a1a/d4af37?text=LA+MENTE+DEL+F%C3%89NIX" alt="Banner" class="banner-img">
+            <img src="./assets/banner.webp"
+                 alt="Banner La Mente del Fénix — Método Fénix de Darío Arrigazzi"
+                 class="banner-img"
+                 width="1200" height="400"
+                 fetchpriority="high"
+                 loading="eager"
+                 decoding="sync">
         </div>
     </header>
 
@@ -378,7 +384,11 @@
             <div class="sales-bio">
                 <h2>Sobre Mí</h2>
                 <div class="bio-photo-wrap">
-                    <img src="https://via.placeholder.com/400/1a1a1a/d4af37?text=Foto+Dar%C3%ADo" alt="Darío" class="bio-photo" width="400" height="400">
+                    <img src="./assets/foto biografia.webp"
+                         alt="Darío Arrigazzi — Coach Método Fénix"
+                         class="bio-photo"
+                         width="400" height="400"
+                         loading="lazy" decoding="async">
                 </div>
 
                 <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
@@ -450,7 +460,11 @@
                     <!-- Card: Sesión 1:1 -->
                     <div class="service-card" style="border-color:#d4af37;">
                         <div class="card-thumb">
-                            <img src="https://via.placeholder.com/600x510/222/d4af37?text=Sesi%C3%B3n+1:1" alt="Sesión 1 a 1">
+                            <img src="./assets/Portada Sesion 1 a 1.webp"
+                                 alt="El Método Fénix — Sesión de Transformación con Darío Arrigazzi"
+                                 width="600" height="510"
+                                 loading="lazy" decoding="async"
+                                 style="opacity:.9;">
                         </div>
                         <div class="card-body">
                             <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
