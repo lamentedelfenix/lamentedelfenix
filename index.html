@@ -171,6 +171,34 @@
             transition: all 0.4s ease;
         }
 
+        @media(max-width: 767px) {
+            .sales-bio p {
+                transition: color 0.4s ease, text-shadow 0.4s ease;
+            }
+            .sales-bio p:not(.lit-up) {
+                color: rgba(251, 245, 226, 0.25);
+            }
+            .sales-bio p:not(.lit-up) .keyword {
+                color: inherit;
+                text-shadow: none;
+            }
+            .sales-bio p.lit-up {
+                color: #e2c77a;
+                text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            }
+            .sales-bio p.lit-up .keyword {
+                color: #d4af37;
+                text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            }
+            .sales-bio p.sales-highlight:not(.lit-up) {
+                color: rgba(233, 30, 99, 0.25);
+            }
+            .sales-bio p.sales-highlight.lit-up {
+                color: #e91e63;
+                text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+            }
+        }
+
         .sales-bio h2{
             font-size:1.75rem;font-weight:800;margin-bottom:3rem;
             color:#fbf5e2;text-align:center
@@ -552,6 +580,22 @@
 
     </main>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var bioParagraphs = document.querySelectorAll('.sales-bio p');
+        var bioObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('lit-up');
+                } else {
+                    entry.target.classList.remove('lit-up');
+                }
+            });
+        }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+        bioParagraphs.forEach(function(p) { bioObserver.observe(p); });
+    });
+</script>
 
 </body>
 </html>
