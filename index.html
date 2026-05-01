@@ -215,8 +215,28 @@
             color:#fbf5e2;text-align:center
         }
         @media(min-width:768px){.sales-bio h2{font-size:2rem}}
-        .bio-photo-wrap{margin-bottom:2.5rem;display:flex;justify-content:center}
-        @media(min-width:768px){.bio-photo-wrap{margin-bottom:3rem}}
+        
+        /* ESTILOS VIDEO SOBRE MI */
+        .bio-video-wrap {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Ratio 16:9 */
+            margin-bottom: 2.5rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,.3);
+            background-color: #1a1a1a;
+        }
+        @media(min-width:768px){.bio-video-wrap{margin-bottom:3rem}}
+        .bio-video-wrap iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
         .sales-highlight{color:#e91e63;font-weight:700;font-size:1.15rem;display:block;margin-bottom:2rem}
         @media(min-width:768px){.sales-highlight{font-size:1.25rem}}
 
@@ -495,13 +515,19 @@
         <!-- BIO -->
         <section class="bio-section">
             <div class="sales-bio">
-                <h2>Sobre Mí</h2>
-                <div class="bio-photo-wrap">
-                    <img src="./assets/foto biografia.webp"
-                         alt="Darío Arrigazzi — Coach Método Fénix"
-                         class="bio-photo"
-                         width="400" height="400"
-                         loading="lazy" decoding="async">
+                <h2>Dónde está la llave para tu desbloqueo</h2>
+                
+                <p style="text-align: center; font-size: 0.95rem; color: #d4af37; margin-bottom: 0.75rem; font-weight: 700;">
+                    <i class="far fa-clock" style="margin-right: 5px;"></i> Te lo explico en menos de 2 minutos
+                </p>
+
+                <!-- VÍDEO INCRUSTADO QUE REEMPLAZA LA IMAGEN ANTERIOR -->
+                <div class="bio-video-wrap">
+                    <iframe src="https://www.youtube.com/embed/0Qhm_R9csPI" 
+                            title="Cómo funciona el Método Fénix y cómo te ayudo" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
                 </div>
 
                 <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
