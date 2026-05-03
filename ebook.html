@@ -81,10 +81,16 @@
         /* ---- EBOOK IMAGE ---- */
         .ebook-image-container {
             width: 100%;
-            max-width: 280px;
+            max-width: 330px;
             margin: 0 auto 2rem;
             display: flex;
             justify-content: center;
+        }
+
+        @media (min-width: 640px) {
+            .ebook-image-container {
+                max-width: 480px;
+            }
         }
         
         .ebook-image {
