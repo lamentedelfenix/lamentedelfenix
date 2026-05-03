@@ -3,255 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suscripción | Darío Arrigazzi</title>
-    
-    <!-- Fuentes y Estilos Base -->
+    <title>eBook Gratis | Darío Arrigazzi</title>
+    <meta name="description" content="Descarga gratis El Libro Secreto de la Autoestima. Ejercicios prácticos que funcionan desde la primera semana.">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        /* ==========================================
-           ESTILOS BASE (Importados de tu index)
-           ========================================== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'Montserrat', Helvetica, Arial, sans-serif; 
-            background-color: #2b2b2b; 
-            color: #fbf5e2; 
-            padding: 1rem;
+
+        body {
+            font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+            background-color: #2b2b2b;
+            color: #fbf5e2;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            padding: 1rem;
         }
+
         main {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem 16rem 1rem;
+            padding: 2.5rem 1rem 3rem;
         }
-        .landing-intro {
-            max-width: 500px;
-            margin: 0 auto 2rem auto;
+
+        /* ---- HERO ---- */
+        .hero {
+            max-width: 580px;
+            width: 100%;
             text-align: center;
+            margin-bottom: 2rem;
         }
-        .landing-intro h1 {
-            font-size: 1.8rem;
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.72rem;
             font-weight: 800;
-            color: #fbf5e2;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #e91e63;
+            background: rgba(233,30,99,0.08);
+            border: 1px solid rgba(233,30,99,0.2);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.5rem;
         }
-        .landing-intro .hero-h1-gold {
+
+        .hero h1 {
+            font-size: clamp(1.9rem, 5.5vw, 3rem);
+            font-weight: 900;
+            line-height: 1.1;
+            color: #fbf5e2;
+            margin-bottom: 1.25rem;
+        }
+        .hero h1 span {
             color: #d4af37;
             font-style: italic;
-            display: block;
         }
-        .warning-box {
-            background-color: rgba(212,175,55,.1);
-            border: 1px dashed #d4af37;
-            padding: 1.25rem;
-            border-radius: .5rem;
-            font-size: 0.95rem;
-            color: rgba(251,245,226,.9);
+
+        .hero-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(251,245,226,0.75);
+            line-height: 1.75;
+            max-width: 500px;
+            margin: 0 auto 1.75rem;
+        }
+        .hero-sub strong { color: #fbf5e2; font-weight: 700; }
+
+        .social-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: rgba(251,245,226,0.5);
+        }
+        .social-proof i { color: #d4af37; }
+
+        .divider {
+            width: 100%;
+            max-width: 580px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent);
+            margin: 2rem 0;
+        }
+
+        /* ---- BULLETS ---- */
+        .bullets {
+            max-width: 540px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        .bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
             text-align: left;
-            margin-top: 1.5rem;
-            line-height: 1.6;
+            transition: border-color 0.3s;
         }
-        .warning-box strong { color: #d4af37; font-weight: 800;}
-        
-        /* FOOTER */
-        .site-footer{
-            margin-top:auto;padding:2rem 1rem;border-top:1px solid #374151;
-            text-align:center;background-color:#1a1a1a;border-radius:.5rem;
-            width: 100%; max-width: 72rem; margin-left: auto; margin-right: auto;
+        .bullet-item:hover { border-color: rgba(212,175,55,0.25); }
+        .bullet-icon {
+            flex-shrink: 0;
+            color: #d4af37;
+            font-size: 1rem;
+            margin-top: 2px;
         }
-        .site-footer h4{font-weight:700;font-size:1.125rem;margin-bottom:1rem;color:#fbf5e2}
-        .footer-contacts{display:flex;flex-direction:column;flex-wrap:wrap;justify-content:center;align-items:center;gap:1.5rem}
-        @media(min-width:640px){.footer-contacts{flex-direction:row;gap:2rem}}
-        .contact-link{position:relative;text-decoration:none;padding-bottom:5px;display:flex;align-items:center;gap:.5rem}
-        .contact-link>*{transition:color .4s ease}
-        .contact-link::after{
-            content:'';position:absolute;width:100%;height:2px;bottom:0;left:0;
-            background-color:#e91e63;transform:scaleX(0);transform-origin:bottom right;
-            transition:transform .4s ease-out
+        .bullet-text {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: rgba(251,245,226,0.75);
+            line-height: 1.5;
         }
-        .contact-link:hover::after{transform:scaleX(1);transform-origin:bottom left}
-        .contact-link:hover>i,.contact-link:hover>span{color:#e91e63}
-        .contact-link.email-link:hover>i,.contact-link.email-link:hover>span{color:#d4af37}
-        .contact-link.email-link::after{background-color:#d4af37}
-        .contact-link.youtube-link:hover>i,.contact-link.youtube-link:hover>span{color:#FF0000}
-        .contact-link.youtube-link::after{background-color:#FF0000}
-        .contact-link-insta{color:#ec4899}
-        .contact-link-yt{color:#ef4444}
-        .contact-link-email{color:rgba(251,245,226,.8)}
-        .footer-contact-icon{font-size:1.5rem}
-        .footer-legal{font-size:.8rem;color:rgba(251,245,226,.6);margin-top:2rem;line-height:2}
-        .footer-legal a{color:rgba(251,245,226,.6); text-decoration:none;}
-        .footer-legal a:hover{text-decoration:underline; color:#fbf5e2;}
-        .footer-legal span{margin:0 .25rem}
-        @media(min-width:480px){.footer-legal span{margin:0 .5rem}}
-        .footer-copy{font-size:.8rem;color:rgba(251,245,226,.5);margin-top:1rem}
+        .bullet-text strong { color: #fbf5e2; font-weight: 800; }
 
-        /* ==========================================
-           ESTILOS DEL FORMULARIO MAILERLITE
-           (Adaptados a Montserrat)
-           ========================================== */
-        @import url("https://assets.mlcdn.com/fonts.css?version=1777551");
-
-        .ml-form-embedSubmitLoad { display: inline-block; width: 20px; height: 20px; }
-        .g-recaptcha { transform: scale(1); -webkit-transform: scale(1); transform-origin: 0 0; -webkit-transform-origin: 0 0; }
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-        .ml-form-embedSubmitLoad:after { content: " "; display: block; width: 11px; height: 11px; margin: 1px; border-radius: 50%; border: 4px solid #fff; border-color: #000000 #000000 #000000 transparent; animation: ml-form-embedSubmitLoad 1.2s linear infinite; }
-        @keyframes ml-form-embedSubmitLoad { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        #mlb2-40574050.ml-form-embedContainer { box-sizing: border-box; display: table; margin: 0 auto; position: static; width: 100% !important; }
-        #mlb2-40574050.ml-form-embedContainer h4, #mlb2-40574050.ml-form-embedContainer p, #mlb2-40574050.ml-form-embedContainer span, #mlb2-40574050.ml-form-embedContainer button { text-transform: none !important; letter-spacing: normal !important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper { background-color: #fbf5e2; border-width: 4px; border-color: #d4af37; border-radius: 10px; border-style: solid; box-sizing: border-box; display: inline-block !important; margin: 0; padding: 0; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedPopup, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedDefault { width: 450px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedForm { max-width: 450px; width: 100%; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-align-left { text-align: left; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-align-center { text-align: center; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-align-default { display: table-cell !important; vertical-align: middle !important; text-align: center !important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-align-right { text-align: right; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img { border-top-left-radius: 6px; border-top-right-radius: 6px; height: auto; margin: 0 auto !important; max-width: 100%; width: 2560px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding: 30px 30px 10px 30px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody.ml-form-embedBodyHorizontal { padding-bottom: 0; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent { text-align: left; margin: 0 0 20px 0; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent h4 { color: #000000; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 800; margin: 0 0 15px 0; text-align: left; word-break: break-word; line-height: 1.2; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p { color: #333333; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 500; line-height: 1.5; margin: 0 0 15px 0; text-align: left; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent ul, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent ol, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent ul, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent ol { color: #000000; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-size: 14px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p a, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p a { color: #e91e63; text-decoration: underline; font-weight: 600;}
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group { text-align: left!important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group label { margin-bottom: 5px; color: #333; font-size: 14px; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-weight: bold; display: inline-block; line-height: 20px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody form { margin: 0; width: 100%; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-formContent, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow { margin: 0 0 20px 0; width: 100%; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow { float: left; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow { margin: 0 0 15px 0; width: 100%; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input { background-color: #ffffff !important; color: #333333 !important; border-color: #cccccc; border-radius: 4px !important; border-style: solid !important; border-width: 1px !important; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-size: 14px !important; line-height: 21px !important; padding: 12px 15px !important; width: 100% !important; box-sizing: border-box !important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input:focus { border-color: #d4af37 !important; outline: none; box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow .custom-checkbox .custom-control-label::before, #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description::before { border-color: #cccccc!important; background-color: #ffffff!important; border-radius: 4px!important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type=checkbox]:checked~.label-description::after { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e"); }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type=checkbox]:checked~.label-description::before { border-color: #e91e63!important; background-color: #e91e63!important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type="checkbox"] { box-sizing: border-box; padding: 0; position: absolute; z-index: -1; opacity: 0; margin-top: 5px; margin-left: -1.5rem; overflow: visible; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description { color: #333333; display: block; font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-size: 12px; text-align: left; margin-bottom: 0; position: relative; vertical-align: top; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label { font-weight: normal; margin: 0; padding: 0; position: relative; display: block; min-height: 24px; padding-left: 28px; cursor: pointer;}
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label a { color: #e91e63; text-decoration: underline; font-weight: 600;}
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label p { color: #333333 !important; font-family: 'Montserrat', Arial, Helvetica, sans-serif !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.4 !important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit { margin: 0 0 20px 0; float: left; width: 100%; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button { background-color: #d4af37 !important; border: 2px solid transparent !important; border-radius: 8px !important; color: #1a1a1a !important; cursor: pointer; font-family: 'Montserrat', Arial, Helvetica, sans-serif !important; font-size: 16px !important; font-weight: 800 !important; line-height: 1.3 !important; padding: 15px !important; width: 100% !important; transition: all 0.3s ease; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button.loading { display: none; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover { background-color: #1a1a1a !important; border-color: #d4af37 !important; color: #d4af37 !important; }
-        .ml-error input { border-color: #e91e63 !important; }
-        .ml-error .label-description, .ml-error .label-description p { color: #e91e63 !important; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description::before { position: absolute; top: 2px; left: -1.75rem; display: block; width: 18px; height: 18px; content: ""; background-color: #ffffff; border: #adb5bd solid 1px; border-radius: 4px; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description::after { position: absolute; top: 2px !important; left: -1.75rem; display: block; width: 18px; height: 18px; content: ""; background: no-repeat 50%/50% 50%; }
-
-        @media only screen and (max-width: 450px){
-            .ml-form-embedWrapper.embedDefault, .ml-form-embedWrapper.embedPopup { width: 100%!important; }
-            #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img { display: none !important; }
+        /* ---- AVISO INTERCAMBIO ---- */
+        .exchange-note {
+            max-width: 450px;
+            width: 100%;
+            margin-bottom: 1.75rem;
+            padding: 1rem 1.25rem;
+            background: rgba(212,175,55,0.06);
+            border: 1px dashed rgba(212,175,55,0.35);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: rgba(251,245,226,0.8);
+            line-height: 1.65;
+            text-align: left;
         }
+        .exchange-note strong { color: #d4af37; font-weight: 800; }
+
+        /* ---- FORMULARIO MAILERLITE (estilos originales conservados) ---- */
+        .form-wrap { max-width: 450px; width: 100%; }
+
+        .ml-form-embedSubmitLoad { display:inline-block; width:20px; height:20px; }
+        .g-recaptcha { transform:scale(1); -webkit-transform:scale(1); transform-origin:0 0; -webkit-transform-origin:0 0; }
+        .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+        .ml-form-embedSubmitLoad:after {
+            content:" "; display:block; width:11px; height:11px; margin:1px; border-radius:50%;
+            border:4px solid #fff; border-color:#000 #000 #000 transparent;
+            animation:ml-form-embedSubmitLoad 1.2s linear infinite;
+        }
+        @keyframes ml-form-embedSubmitLoad { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+        #mlb2-40574050.ml-form-embedContainer { box-sizing:border-box; display:table; margin:0 auto; position:static; width:100% !important; }
+        #mlb2-40574050.ml-form-embedContainer h4,
+        #mlb2-40574050.ml-form-embedContainer p,
+        #mlb2-40574050.ml-form-embedContainer span,
+        #mlb2-40574050.ml-form-embedContainer button { text-transform:none !important; letter-spacing:normal !important; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper {
+            background-color:#fbf5e2; border-width:4px; border-color:#d4af37; border-radius:10px;
+            border-style:solid; box-sizing:border-box; display:inline-block !important; margin:0; padding:0;
+            position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.5); width:100%;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedPopup,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedDefault { width:450px; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedForm { max-width:450px; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-align-left { text-align:left; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-align-center { text-align:center; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-align-default { display:table-cell !important; vertical-align:middle !important; text-align:center !important; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-align-right { text-align:right; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img {
+            border-top-left-radius:6px; border-top-right-radius:6px; height:auto;
+            margin:0 auto !important; max-width:100%; width:2560px; display:block;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding:30px 30px 10px 30px; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent { text-align:left; margin:0 0 20px 0; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent h4 {
+            color:#000; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:26px; font-weight:800;
+            margin:0 0 15px 0; text-align:left; word-break:break-word; line-height:1.2;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p {
+            color:#333; font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:15px;
+            font-weight:500; line-height:1.5; margin:0 0 15px 0; text-align:left;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p a,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent p a {
+            color:#e91e63; text-decoration:underline; font-weight:600;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group { text-align:left !important; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group label {
+            margin-bottom:5px; color:#333; font-size:14px; font-family:'Montserrat',Arial,Helvetica,sans-serif;
+            font-weight:bold; display:inline-block; line-height:20px;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody form { margin:0; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-formContent,
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow { margin:0 0 20px 0; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow { float:left; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow { margin:0 0 15px 0; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input {
+            background-color:#fff !important; color:#333 !important; border-color:#ccc;
+            border-radius:4px !important; border-style:solid !important; border-width:1px !important;
+            font-family:'Montserrat',Arial,Helvetica,sans-serif; font-size:14px !important;
+            line-height:21px !important; padding:12px 15px !important; width:100% !important; box-sizing:border-box !important;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input:focus {
+            border-color:#d4af37 !important; outline:none; box-shadow:0 0 5px rgba(212,175,55,0.5);
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type=checkbox] {
+            box-sizing:border-box; padding:0; position:absolute; z-index:-1; opacity:0; margin-top:5px; margin-left:-1.5rem; overflow:visible;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description {
+            color:#333; display:block; font-family:'Montserrat',Arial,Helvetica,sans-serif;
+            font-size:12px; text-align:left; margin-bottom:0; position:relative; vertical-align:top;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label {
+            font-weight:normal; margin:0; padding:0; position:relative; display:block;
+            min-height:24px; padding-left:28px; cursor:pointer;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label a {
+            color:#e91e63; text-decoration:underline; font-weight:600;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label p {
+            color:#333 !important; font-family:'Montserrat',Arial,Helvetica,sans-serif !important;
+            font-size:13px !important; font-weight:500 !important; line-height:1.4 !important;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit { margin:0 0 20px 0; float:left; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button {
+            background-color:#d4af37 !important; border:2px solid transparent !important;
+            border-radius:8px !important; color:#1a1a1a !important; cursor:pointer;
+            font-family:'Montserrat',Arial,Helvetica,sans-serif !important; font-size:16px !important;
+            font-weight:800 !important; line-height:1.3 !important; padding:15px !important;
+            width:100% !important; transition:all 0.3s ease;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button.loading { display:none; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover {
+            background-color:#1a1a1a !important; border-color:#d4af37 !important; color:#d4af37 !important;
+        }
+        .ml-error input { border-color:#e91e63 !important; }
+        .ml-error .label-description, .ml-error .label-description p { color:#e91e63 !important; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description::before {
+            position:absolute; top:2px; left:-1.75rem; display:block; width:18px; height:18px;
+            content:""; background-color:#fff; border:#adb5bd solid 1px; border-radius:4px;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow .label-description::after {
+            position:absolute; top:2px !important; left:-1.75rem; display:block; width:18px; height:18px;
+            content:""; background:no-repeat 50%/50% 50%;
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type=checkbox]:checked~.label-description::after {
+            background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+        }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow input[type=checkbox]:checked~.label-description::before {
+            border-color:#e91e63 !important; background-color:#e91e63 !important;
+        }
+        @media only screen and (max-width:450px) {
+            .ml-form-embedWrapper.embedDefault, .ml-form-embedWrapper.embedPopup { width:100% !important; }
+            #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img { display:none !important; }
+        }
+
+        /* ---- AVISO HONESTO ---- */
+        .honest-note {
+            max-width: 450px;
+            width: 100%;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            background: rgba(212,175,55,0.06);
+            border: 1px dashed rgba(212,175,55,0.3);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: rgba(251,245,226,0.6);
+            line-height: 1.65;
+            text-align: left;
+        }
+        .honest-note strong { color: rgba(251,245,226,0.85); font-weight: 700; }
+
+        /* ---- FOOTER ORIGINAL ---- */
+        .site-footer {
+            margin-top: auto;
+            padding: 2rem 1rem;
+            border-top: 1px solid #374151;
+            text-align: center;
+            background-color: #1a1a1a;
+            border-radius: .5rem;
+            width: 100%;
+            max-width: 72rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .site-footer h4 { font-weight:700; font-size:1.125rem; margin-bottom:1rem; color:#fbf5e2; }
+        .footer-contacts { display:flex; flex-direction:column; flex-wrap:wrap; justify-content:center; align-items:center; gap:1.5rem; }
+        @media(min-width:640px){ .footer-contacts { flex-direction:row; gap:2rem; } }
+        .contact-link { position:relative; text-decoration:none; padding-bottom:5px; display:flex; align-items:center; gap:.5rem; }
+        .contact-link > * { transition:color .4s ease; }
+        .contact-link::after {
+            content:''; position:absolute; width:100%; height:2px; bottom:0; left:0;
+            background-color:#e91e63; transform:scaleX(0); transform-origin:bottom right;
+            transition:transform .4s ease-out;
+        }
+        .contact-link:hover::after { transform:scaleX(1); transform-origin:bottom left; }
+        .contact-link:hover > i, .contact-link:hover > span { color:#e91e63; }
+        .contact-link.email-link:hover > i, .contact-link.email-link:hover > span { color:#d4af37; }
+        .contact-link.email-link::after { background-color:#d4af37; }
+        .contact-link.youtube-link:hover > i, .contact-link.youtube-link:hover > span { color:#FF0000; }
+        .contact-link.youtube-link::after { background-color:#FF0000; }
+        .contact-link-insta { color:#ec4899; }
+        .contact-link-yt { color:#ef4444; }
+        .contact-link-email { color:rgba(251,245,226,.8); }
+        .footer-contact-icon { font-size:1.5rem; }
+        .footer-legal { font-size:.8rem; color:rgba(251,245,226,.6); margin-top:2rem; line-height:2; }
+        .footer-legal a { color:rgba(251,245,226,.6); text-decoration:none; }
+        .footer-legal a:hover { text-decoration:underline; color:#fbf5e2; }
+        .footer-legal span { margin:0 .25rem; }
+        @media(min-width:480px){ .footer-legal span { margin:0 .5rem; } }
+        .footer-copy { font-size:.8rem; color:rgba(251,245,226,.5); margin-top:1rem; }
     </style>
 </head>
 <body>
 
     <main>
-        <div class="landing-intro">
-            <h1>Tu eBook está a un paso.</h1>
-            <span class="hero-h1-gold" style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;">Pero antes, un aviso:</span>
-            
-            <div class="warning-box">
-                <i class="fas fa-exclamation-triangle" style="color: #d4af37; margin-right: 8px; font-size: 1.2rem;"></i> <strong>CERO RODEOS:</strong> Hablaré sin filtros sobre autoestima, consciencia y temas incómodos. Te lo advierto: <strong>es posible que te toque el ego</strong>.<br><br>
-                Y sí, <strong>también voy a venderte</strong>. Si crees que vender no es espiritual, igual tienes un conflicto con el dinero y necesitas mis servicios <span style="font-size: 1.2em; margin-left: 4px;">😜</span>.<br><br>
-                Desuscribirse es gratis.
+
+        <!-- HERO -->
+        <div class="hero">
+            <span class="eyebrow">eBook gratis — descarga inmediata</span>
+
+            <h1>La autoestima no se sube<br><span>leyendo frases bonitas.</span></h1>
+
+            <p class="hero-sub">
+                Se sube haciendo cosas concretas. <strong>Diciéndote la verdad.</strong> Dejando de evitar lo que llevas meses evitando.<br><br>
+                He escrito una guía con 5 ejercicios que puedes empezar <strong>esta semana</strong>. Sin teoría de relleno. Sin promesas vacías. Te la regalo a cambio de tu email.
+            </p>
+
+            <div class="social-proof">
+                <i class="fas fa-users"></i>
+                <span>+200 personas ya tienen su copia</span>
             </div>
         </div>
 
-        <!-- Integración Formulario MailerLite -->
-        <div id="mlb2-40574050" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-40574050">
-            <div class="ml-form-align-center">
-                <div class="ml-form-embedWrapper embedForm">
-                    <div class="ml-form-embedHeader">
-                        <img src="https://storage.mlcdn.com/account_image/2299267/CxDSl0T60kMmule0Bl7Fz4l0UDzP9hBTcHMkLlkT.png" alt="Darío Arrigazzi" border="0" style="display: block;">
-                    </div>
-                    <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-                        <div class="ml-form-embedContent">
-                            <h4>¿Mi madre me miente?</h4>
-                            <p>Dicen que escribo bien, pero igual es como cuando mi madre decía que era guapo. Para salir de dudas, te regalo mi eBook y te escribo (casi) cada día.</p>
+        <div class="divider"></div>
+
+        <!-- BULLETS -->
+        <div class="bullets">
+            <div class="bullet-item">
+                <div class="bullet-icon"><i class="fas fa-brain"></i></div>
+                <div class="bullet-text"><strong>Por qué tu subconsciente sabotea tu autoestima</strong> — y cómo parar el ciclo desde hoy.</div>
+            </div>
+            <div class="bullet-item">
+                <div class="bullet-icon"><i class="fas fa-ban"></i></div>
+                <div class="bullet-text"><strong>Cómo la procrastinación destruye tu autoconfianza</strong> — y el plan concreto para romperlo.</div>
+            </div>
+            <div class="bullet-item">
+                <div class="bullet-icon"><i class="fas fa-comment-slash"></i></div>
+                <div class="bullet-text"><strong>Por qué no puedes decir que no</strong> — y el ejercicio que te enseña a expresarte sin bloquearte.</div>
+            </div>
+            <div class="bullet-item">
+                <div class="bullet-icon"><i class="fas fa-star"></i></div>
+                <div class="bullet-text"><strong>El ejercicio del espejo</strong> que cambia tu autopercepción en menos de un mes.</div>
+            </div>
+        </div>
+
+        <!-- AVISO INTERCAMBIO -->
+        <div class="exchange-note">
+            <strong><i class="fas fa-envelope" style="margin-right:6px;"></i>¿A cambio de qué?</strong> A cambio de tu email. Te mando el eBook de inmediato y a partir de ahí te escribo (casi) cada día con contenido sobre autoestima, consciencia y crecimiento personal. Sin spam, sin rollos. Solo lo que considero útil de verdad. <strong>Desuscribirte es gratis y con un solo clic.</strong>
+        </div>
+
+        <!-- FORMULARIO MAILERLITE -->
+        <div class="form-wrap">
+            <div id="mlb2-40574050" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-40574050">
+                <div class="ml-form-align-center">
+                    <div class="ml-form-embedWrapper embedForm">
+                        <div class="ml-form-embedHeader">
+                            <img src="https://storage.mlcdn.com/account_image/2299267/CxDSl0T60kMmule0Bl7Fz4l0UDzP9hBTcHMkLlkT.png" alt="Darío Arrigazzi" border="0" style="display:block;">
                         </div>
-                        <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/subscribe" data-code="" method="post" target="_blank">
-                            <div class="ml-form-formContent">
-                                <div class="ml-form-fieldRow ml-last-item">
-                                    <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                                        <input aria-label="email" aria-required="true" type="email" class="form-control" data-inputmask="" name="fields[email]" placeholder="Tu mejor email..." autocomplete="email">
+                        <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
+                            <div class="ml-form-embedContent">
+                                <h4>¿Mi madre me miente?</h4>
+                                <p>Dicen que escribo bien, pero igual es como cuando mi madre decía que era guapo. Para salir de dudas, te regalo mi eBook y te escribo (casi) cada día.</p>
+                            </div>
+                            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/subscribe" data-code="" method="post" target="_blank">
+                                <div class="ml-form-formContent">
+                                    <div class="ml-form-fieldRow ml-last-item">
+                                        <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                                            <input aria-label="email" aria-required="true" type="email" class="form-control" data-inputmask="" name="fields[email]" placeholder="Tu mejor email..." autocomplete="email">
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="ml-form-checkboxRow ml-validate-required">
+                                    <label class="checkbox">
+                                        <input type="checkbox">
+                                        <div class="label-description">
+                                            <p>Acepto la <a href="/politica-de-privacidad" target="_blank">política de privacidad</a> y recibir correos.</p>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="ml-form-recaptcha ml-validate-required" style="float:left;width:100%;">
+                                    <style type="text/css">
+                                        .ml-form-recaptcha { margin-bottom:20px; display:flex; justify-content:center; }
+                                        .ml-form-recaptcha.ml-error iframe { border:solid 1px #e91e63; }
+                                        @media screen and (max-width:480px) {
+                                            .g-recaptcha { transform:scale(0.85); -webkit-transform:scale(0.85); transform-origin:0 0; -webkit-transform-origin:0 0; }
+                                        }
+                                    </style>
+                                    <script src="https://www.google.com/recaptcha/api.js"></script>
+                                    <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
+                                </div>
+
+                                <input type="hidden" name="ml-submit" value="1">
+
+                                <div class="ml-form-embedSubmit">
+                                    <button type="submit" class="primary">¡DENTRO! (Y MÁNDAME EL EBOOK)</button>
+                                    <button disabled="disabled" style="display:none;" type="button" class="loading">
+                                        <div class="ml-form-embedSubmitLoad"></div>
+                                        <span class="sr-only">Cargando...</span>
+                                    </button>
+                                    <p style="text-align:center;font-size:14px;margin-top:15px;color:#333;font-weight:700;">Puedes desuscribirte cuando quieras con un solo clic.</p>
+                                </div>
+
+                                <input type="hidden" name="anticsrf" value="true">
+                            </form>
+                        </div>
+
+                        <div class="ml-form-successBody row-success" style="display:none;">
+                            <div class="ml-form-successContent">
+                                <h4>¡Ya estás dentro!</h4>
+                                <p>Revisa tu email ahora mismo (y la carpeta de spam o promociones por si acaso). Ahí es donde vas a recibir tu eBook. ¡Que lo disfrutes!</p>
                             </div>
-
-                            <div class="ml-form-checkboxRow ml-validate-required">
-                                <label class="checkbox">
-                                    <input type="checkbox">
-                                    <div class="label-description">
-                                        <p>Acepto la <a href="/politica-de-privacidad" target="_blank">política de privacidad</a> y recibir correos.</p>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div class="ml-form-recaptcha ml-validate-required" style="float: left; width: 100%;">
-                                <style type="text/css">
-                                    .ml-form-recaptcha { margin-bottom: 20px; display:flex; justify-content:center;}
-                                    .ml-form-recaptcha.ml-error iframe { border: solid 1px #e91e63; }
-                                    @media screen and (max-width: 480px) {
-                                        .g-recaptcha { transform: scale(0.85); -webkit-transform: scale(0.85); transform-origin: 0 0; -webkit-transform-origin: 0 0; }
-                                    }
-                                </style>
-                                <script src="https://www.google.com/recaptcha/api.js"></script>
-                                <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
-                            </div>
-
-                            <input type="hidden" name="ml-submit" value="1">
-
-                            <div class="ml-form-embedSubmit">
-                                <button type="submit" class="primary">¡DENTRO! (Y MÁNDAME EL EBOOK)</button>
-                                <button disabled="disabled" style="display: none;" type="button" class="loading">
-                                    <div class="ml-form-embedSubmitLoad"></div>
-                                    <span class="sr-only">Cargando...</span>
-                                </button>
-                                <p style="text-align: center; font-size: 14px; margin-top: 15px; color: #333; font-weight: 700;">Puedes desuscribirte cuando quieras con un solo clic.</p>
-                            </div>
-
-                            <input type="hidden" name="anticsrf" value="true">
-                        </form>
-                    </div>
-
-                    <div class="ml-form-successBody row-success" style="display: none">
-                        <div class="ml-form-successContent">
-                            <h4>¡Ya estás dentro!</h4>
-                            <p>Revisa tu email ahora mismo (y la carpeta de spam o promociones por si acaso). Ahí es donde vas a recibir tu eBook. ¡Que lo disfrutes!</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <script>
+                function ml_webform_success_40574050() {
+                    var $ = ml_jQuery || jQuery;
+                    $('.ml-subscribe-form-40574050 .row-success').show();
+                    $('.ml-subscribe-form-40574050 .row-form').hide();
+                }
+            </script>
+            <script src="https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b" type="text/javascript"></script>
+            <script>fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/takel")</script>
         </div>
 
-        <script>
-            function ml_webform_success_40574050() {
-                var $ = ml_jQuery || jQuery;
-                $('.ml-subscribe-form-40574050 .row-success').show();
-                $('.ml-subscribe-form-40574050 .row-form').hide();
-            }
-        </script>
-        <script src="https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b" type="text/javascript"></script>
-        <script>
-            fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/takel")
-        </script>
-        <!-- Fin Integración -->
+        <!-- AVISO HONESTO -->
+        <div class="honest-note">
+            <strong>Un aviso antes de entrar:</strong> escribo sin filtros sobre autoestima, ego y cosas que incomodan. También vendo mis servicios. Si crees que vender no es espiritual, igual tienes un conflicto con el dinero que necesita trabajo 😜 Desuscribirte es gratis y sin drama.
+        </div>
+
     </main>
 
+    <!-- FOOTER ORIGINAL -->
     <footer class="site-footer">
         <h4>Contacta conmigo</h4>
         <div class="footer-contacts">
