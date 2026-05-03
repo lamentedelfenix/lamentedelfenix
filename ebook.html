@@ -78,6 +78,27 @@
         }
         .hero-sub strong { color: #fbf5e2; font-weight: 700; }
 
+        /* ---- EBOOK IMAGE ---- */
+        .ebook-image-container {
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .ebook-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+            transition: transform 0.3s ease;
+        }
+        
+        .ebook-image:hover {
+            transform: translateY(-8px);
+        }
+
         .social-proof {
             display: inline-flex;
             align-items: center;
@@ -158,7 +179,7 @@
         #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedDefault { width:450px; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper.embedForm { max-width:450px; width:100%; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-align-left { text-align:left; }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-align-center { text-align:center; }
+        #mlb2-40574050.ml-form-align-center { text-align:center; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-align-default { display:table-cell !important; vertical-align:middle !important; text-align:center !important; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-align-right { text-align:right; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img {
@@ -325,6 +346,11 @@
                 Se sube haciendo cosas concretas. <strong>Diciéndote la verdad.</strong> Dejando de evitar lo que llevas meses evitando.<br><br>
                 He escrito una guía con 5 ejercicios que puedes empezar <strong>esta semana</strong>. Sin teoría de relleno. Sin promesas vacías.
             </p>
+
+            <!-- CONTENEDOR DE LA IMAGEN DEL EBOOK 3D AÑADIDO AQUI -->
+            <div class="ebook-image-container">
+                <img src="assets/portadaebook.webp" alt="El Libro Secreto de la Autoestima en 3D" class="ebook-image">
+            </div>
 
             <div class="social-proof">
                 <i class="fas fa-users"></i>
