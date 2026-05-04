@@ -171,7 +171,7 @@
         }
         @keyframes ml-form-embedSubmitLoad { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
-        #mlb2-40574050.ml-form-embedContainer { box-sizing:border-box; display:table; margin:0 auto; position:static; width:100% !important; }
+        #mlb2-40574050.ml-form-embedContainer { box-sizing:border-box; display:block; margin:0 auto; position:static; width:100% !important; }
         #mlb2-40574050.ml-form-embedContainer h4,
         #mlb2-40574050.ml-form-embedContainer p,
         #mlb2-40574050.ml-form-embedContainer span,
@@ -279,6 +279,13 @@
             .ml-form-embedWrapper.embedDefault, .ml-form-embedWrapper.embedPopup { width:100% !important; }
             #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedHeader img { display:none !important; }
         }
+        
+        /* FIX: Asegurar que el reCaptcha y márgenes no rompan el grid en móviles */
+        @media screen and (max-width:480px) {
+            .g-recaptcha { transform:scale(0.85); -webkit-transform:scale(0.85); transform-origin:center center; -webkit-transform-origin:center center; }
+            #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody,
+            #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding: 25px 15px 15px 15px; }
+        }
 
         /* ---- AVISO HONESTO ---- */
         .honest-note {
@@ -374,7 +381,7 @@
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-ban"></i></div>
-                <div class="bullet-text"><strong>Cómo la procrastinación destruye tu autoconfianza</strong> — y el plan concreto para romperlo.</div>
+                <div class="bullet-text"><strong>Cómo la procrastinación destruye tu autoconfianza</strong> — y el plan concreto para romperla.</div>
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-comment-slash"></i></div>
@@ -397,7 +404,7 @@
                         <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
                             <div class="ml-form-embedContent">
                                 <h4>¿Mi madre me miente?</h4>
-                                <p>Dicen que escribo bien, pero igual es como cuando nuestra madre nos decía que éramos los mas guapos. Para salir de dudas, te regalo mi eBook a cambio de tu email y te escribo (casi) cada día con contenido de valor.</p>
+                                <p>Dicen que escribo bien, pero igual es como cuando nuestra madre nos decía que éramos los más guapos. Para salir de dudas, te regalo mi eBook a cambio de tu email y te escribo (casi) cada día con contenido de valor.</p>
                             </div>
                             <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/subscribe" data-code="" method="post" target="_blank">
                                 <div class="ml-form-formContent">
@@ -422,7 +429,7 @@
                                         .ml-form-recaptcha { margin-bottom:20px; display:flex; justify-content:center; }
                                         .ml-form-recaptcha.ml-error iframe { border:solid 1px #e91e63; }
                                         @media screen and (max-width:480px) {
-                                            .g-recaptcha { transform:scale(0.85); -webkit-transform:scale(0.85); transform-origin:0 0; -webkit-transform-origin:0 0; }
+                                            .g-recaptcha { transform:scale(0.85); -webkit-transform:scale(0.85); transform-origin:center center; -webkit-transform-origin:center center; }
                                         }
                                     </style>
                                     <script src="https://www.google.com/recaptcha/api.js"></script>
