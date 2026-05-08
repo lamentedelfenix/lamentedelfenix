@@ -79,6 +79,45 @@
         }
         .hero-sub strong { color: #fbf5e2; font-weight: 700; }
 
+        /* CTA MÓVIL (NUEVO) */
+        .mobile-cta {
+            display: none;
+            background-color: #d4af37;
+            color: #1a1a1a;
+            font-weight: 800;
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-decoration: none;
+            text-align: center;
+            margin: 0 auto 2.5rem;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            font-size: 1.05rem;
+        }
+        @media (max-width: 768px) {
+            .mobile-cta {
+                display: block;
+            }
+        }
+
+        /* STORY BLOCK (NUEVO) */
+        .story-block {
+            border-left: 4px solid #d4af37;
+            background-color: rgba(0, 0, 0, 0.25);
+            padding: 1.5rem;
+            font-style: italic;
+            margin: 0 auto 2.5rem;
+            color: rgba(251,245,226,0.85);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 580px;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+        .story-block p { margin-bottom: 0.5rem; }
+        .story-block p:last-child { margin-bottom: 0; }
+
         /* ---- EBOOK IMAGE ---- */
         .ebook-image-container {
             width: 100%;
@@ -107,14 +146,16 @@
         }
 
         .social-proof {
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.6rem;
-            font-size: 0.78rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: rgba(251,245,226,0.5);
+            margin-top: 1rem;
         }
-        .social-proof i { color: #d4af37; }
+        .social-proof i { color: #d4af37; font-size: 1.1rem; }
 
         .divider {
             width: 100%;
@@ -160,7 +201,9 @@
         .bullet-text strong { color: #fbf5e2; font-weight: 800; }
 
         /* ---- FORMULARIO MAILERLITE ---- */
-        .form-wrap { max-width: 450px; width: 100%; }
+        .form-wrap { max-width: 450px; width: 100%; margin-bottom: 2rem; }
+
+        #mlb2-40574050 { scroll-margin-top: 1.5rem; }
 
         .ml-form-embedSubmitLoad { display:inline-block; width:20px; height:20px; }
         .g-recaptcha { transform:scale(1); -webkit-transform:scale(1); transform-origin:0 0; -webkit-transform-origin:0 0; }
@@ -248,7 +291,7 @@
             color:#333 !important; font-family:'Montserrat',Arial,Helvetica,sans-serif !important;
             font-size:13px !important; font-weight:500 !important; line-height:1.4 !important;
         }
-        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit { margin:0 0 20px 0; float:left; width:100%; }
+        #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit { margin:0 0 10px 0; float:left; width:100%; }
         #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button {
             background-color:#d4af37 !important; border:2px solid transparent !important;
             border-radius:8px !important; color:#1a1a1a !important; cursor:pointer;
@@ -287,23 +330,6 @@
             #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody,
             #mlb2-40574050.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding: 25px 15px 15px 15px; }
         }
-
-        /* ---- AVISO HONESTO ---- */
-        .honest-note {
-            max-width: 450px;
-            width: 100%;
-            margin-top: 1.25rem;
-            padding: 1rem 1.25rem;
-            background: rgba(212,175,55,0.06);
-            border: 1px dashed rgba(212,175,55,0.3);
-            border-radius: 8px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: rgba(251,245,226,0.6);
-            line-height: 1.65;
-            text-align: left;
-        }
-        .honest-note strong { color: rgba(251,245,226,0.85); font-weight: 700; }
 
         /* ---- FOOTER ORIGINAL ---- */
         .site-footer {
@@ -360,20 +386,27 @@
             </a>
         </div>
 
-        <!-- HERO -->
+        <!-- HERO REORDENADO -->
         <div class="hero">
             <span class="eyebrow">Guía práctica gratuita — 5 ejercicios con papel y boli</span>
-
             <h1>Deja de leerte.<br><span>Empieza a hacerte.</span></h1>
-
-            <!-- CONTENEDOR DE LA IMAGEN DEL EBOOK 3D AÑADIDO AQUI (CAMBIO 4) -->
-            <div class="ebook-image-container">
-                <img src="./assets/Portadaebook.webp" alt="Deja de leerte. Empieza a hacerte. — Guía de Darío Arrigazzi" class="ebook-image">
-            </div>
-
             <p class="hero-sub">
-                He escrito una guía con 5 ejercicios concretos —con papel y boli— para atacar las 5 razones reales por las que tu autoestima no sube. Puedes empezar esta semana. <strong>Sin leer más.</strong>
+                5 ejercicios directos al grano —con papel y boli— para atacar las razones reales por las que tu autoestima no sube. <strong>Sin leer más.</strong>
             </p>
+            <a href="#mlb2-40574050" class="mobile-cta">Quiero el eBook gratis &rarr;</a>
+        </div>
+
+        <!-- STORY BLOCK -->
+        <div class="story-block">
+            <p>Mi padre golpeaba a mi madre delante de mí. Y cuando tenía 8 años, decidió llevarme con él. Estuve un año sin ver a mi madre.</p>
+            <p>La paradoja: ese mismo hombre era el mejor terapeuta que he conocido nunca. Le venían a ver ricos, famosos, jueces.</p>
+            <p>Esa contradicción me obsesionó 20 años. Y mi autoestima era casi nula. Así que empecé a leer todo lo que existía sobre psicología, espiritualidad y crecimiento personal, no por curiosidad, sino porque lo necesitaba para sobrevivir.</p>
+            <p>Este ebook es lo que funcionó.</p>
+        </div>
+
+        <!-- EBOOK IMAGE -->
+        <div class="ebook-image-container">
+            <img src="./assets/Portadaebook.webp" alt="Deja de leerte. Empieza a hacerte. — Guía de Darío Arrigazzi" class="ebook-image">
         </div>
 
         <div class="divider"></div>
@@ -382,23 +415,23 @@
         <div class="bullets">
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-trophy"></i></div>
-                <div class="bullet-text"><strong>El ejercicio de los logros ignorados</strong> — descubre en 3 minutos por qué tu subconsciente no confía en ti, y cómo cambiarlo.</div>
+                <div class="bullet-text"><strong>El ejercicio de los logros ignorados</strong> — hay algo que tu mente hace automáticamente cada vez que consigues algo. Y es exactamente lo que impide que te fíes de ti mismo.</div>
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-ban"></i></div>
-                <div class="bullet-text"><strong>El ciclo de la procrastinación</strong> — por qué cada tarea que evitas le dice a tu cerebro que no eres capaz, y cómo romperlo hoy.</div>
+                <div class="bullet-text"><strong>El ciclo de la procrastinación</strong> — no es pereza ni falta de fuerza de voluntad. Hay un mecanismo muy específico que se activa cada vez que evitas una tarea, y se retroalimenta solo.</div>
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-comment-slash"></i></div>
-                <div class="bullet-text"><strong>Aprender a decir lo que piensas</strong> — un método concreto para dejar de bloquearte en conversaciones difíciles.</div>
+                <div class="bullet-text"><strong>Decir lo que piensas</strong> — existe un momento concreto en cualquier conversación difícil en el que decides callarte. Este ejercicio te enseña a reconocerlo antes de que ocurra.</div>
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-brain"></i></div>
-                <div class="bullet-text"><strong>Cambiar la creencia, no el síntoma</strong> — el ejercicio que va a la raíz de cómo te ves a ti mismo.</div>
+                <div class="bullet-text"><strong>Cambiar la creencia, no el síntoma</strong> — la mayoría trabaja lo de fuera. Este ejercicio va a donde realmente se formó la imagen que tienes de ti mismo.</div>
             </div>
             <div class="bullet-item">
                 <div class="bullet-icon"><i class="fas fa-eye"></i></div>
-                <div class="bullet-text"><strong>El espejo</strong> — el ejercicio más incómodo del libro. Y probablemente el más efectivo.</div>
+                <div class="bullet-text"><strong>El espejo</strong> — es el más incómodo del libro. No voy a explicar más. Tendrás que descargarlo para entender por qué.</div>
             </div>
         </div>
 
@@ -428,7 +461,7 @@
                                     <label class="checkbox">
                                         <input type="checkbox">
                                         <div class="label-description">
-                                            <p>Acepto la <a href="/politica-de-privacidad" target="_blank">política de privacidad</a> y recibir correos.</p>
+                                            <p>Acepto recibir correos de Darío. Me puedo dar de baja cuando quiera. (<a href="/politica-de-privacidad" target="_blank">Política de privacidad</a>)</p>
                                         </div>
                                     </label>
                                 </div>
@@ -441,7 +474,11 @@
                                         <div class="ml-form-embedSubmitLoad"></div>
                                         <span class="sr-only">Cargando...</span>
                                     </button>
-                                    <p style="text-align:center;font-size:14px;margin-top:15px;color:#333;font-weight:700;">Puedes desuscribirte cuando quieras con un solo clic.</p>
+                                    
+                                    <!-- SOCIAL PROOF AQUÍ -->
+                                    <div class="social-proof">
+                                        <i class="fas fa-download"></i> Más de 250 personas ya lo tienen
+                                    </div>
                                 </div>
 
                                 <input type="hidden" name="anticsrf" value="true">
@@ -467,11 +504,6 @@
             </script>
             <script src="https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b" type="text/javascript"></script>
             <script>fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186073706573857998/takel")</script>
-        </div>
-
-        <!-- AVISO HONESTO -->
-        <div class="honest-note">
-            <strong>Un aviso antes de entrar:</strong> escribo sin filtros sobre autoestima, ego y cosas que incomodan. También vendo mis servicios. Si crees que vender no es espiritual, igual tienes un conflicto con el dinero que necesita trabajo 😜
         </div>
 
     </main>
