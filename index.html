@@ -39,16 +39,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.ytimg.com"><link rel="dns-prefetch" href="https://www.youtube.com">
 
     <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
 
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap"></noscript>
-
-    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>
 
     <style>
         /* RESET */
@@ -542,13 +539,15 @@
                 <div class="hero-line"></div>
                 <div class="seo-kicker">Transformación personal y emocional · Método Fénix</div>
                 <h1>
-                    Mi padre me dio la infancia más difícil imaginable.<br>
-                    Y era el mejor terapeuta que he conocido.<br>
-                    <span class="hero-h1-gold">Eso me obsesionó 20 años.</span>
-                    Hoy es tu ventaja.
+                    <span style="display:block; margin-bottom: 0.6em;">Tuve una infancia muy traumática. Secuestro, Insultos, Maltratos...etc.</span>
+                    <span class="hero-h1-gold" style="display:block;">Hoy todo eso es mi fortaleza y lo que te ayudará a ti.</span>
                 </h1>
-                <p>Vas a saber exactamente de dónde viene esa apatía que llevas arrastrando. Por qué repites los mismos patrones en tus relaciones. Dónde se bloqueó tu relación con el dinero.<br><br>En 1 sesión. Sin rodeos.</p>
-                
+                <p>Vas a saber exactamente de dónde viene esa apatía que llevas arrastrando. Por qué repites los mismos patrones en tus relaciones. Dónde se bloqueó tu relación con el dinero.</p>
+                <br>
+                <p style="font-size:0.95rem; color:#d4af37; max-width:38rem; margin:0 auto; line-height:1.7;">Da igual cómo se llame lo tuyo. En una sesión vamos a la raíz, que casi siempre es la misma.</p>
+                <br>
+                <p style="margin-bottom: 2rem;">En 1 sesión. Sin rodeos.</p>
+
                 <!-- TESTIMONIO EN EL HERO -->
                 <div style="background-color: #1a1a1a; border-left: 3px solid #d4af37; padding: 1.5rem; margin: 2rem auto; max-width: 42rem; text-align: left; border-radius: 0 0.5rem 0.5rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
                     <p style="font-style: italic; font-size: 1.05rem; color: rgba(251,245,226,0.9); margin-bottom: 0.5rem; line-height: 1.6;">"Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre."</p>
@@ -573,19 +572,13 @@
                 </p>
 
                 <!-- VÍDEO INCRUSTADO -->
-                <div class="bio-video-wrap">
-                    <iframe src="https://www.youtube.com/embed/0Qhm_R9csPI" 
-                            title="Cómo funciona el Método Fénix y cómo te ayudo" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
+                <div class="bio-video-wrap" id="yt-wrap" style="cursor:pointer;" onclick="loadYT()">    <img         src="https://i.ytimg.com/vi/0Qhm_R9csPI/hqdefault.jpg"        alt="Cómo funciona el Método Fénix — vídeo de Darío Arrigazzi"        width="600" height="338"        loading="lazy" decoding="async"        style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:48px;background:#FF0000;border-radius:12px;display:flex;align-items:center;justify-content:center;">        <svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#FF0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg>    </div></div><script>function loadYT(){    var w=document.getElementById('yt-wrap');    w.innerHTML='<iframe src="https://www.youtube.com/embed/0Qhm_R9csPI?autoplay=1" title="Cómo funciona el Método Fénix y cómo te ayudo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"></iframe>';}</script>
 
                 <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
                 <p>Mi padre la <span class="keyword">maltrataba</span> brutalmente.</p>
                 <p>Yo lo veía todo y no podía hacer nada.</p>
                 <p>Sentía mucha <span class="keyword">impotencia</span>, y de ahí nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
-                <p>Pero aqui viene lo gordo... y que seguramente no te esperas...</p>
+                <p>Pero aquí viene lo gordo... y seguramente no te lo esperas...</p>
                 <p>Mi padre era terapeuta. Y de los mejores que he conocido nunca.</p>
                 <p>No, no es <span class="keyword">broma</span>... te lo aseguro.</p>
                 <p>Venían a verle de todas partes: ricos, famosos, médicos, jueces.</p>
@@ -593,12 +586,12 @@
                 <p>Como padre y como marido, un <span class="keyword">monstruo</span>.</p>
                 <p>Como te puedes imaginar... esa contradicción me <span class="keyword">obsesionó</span>:</p>
                 <p><strong>¿Por qué su mente funcionaba así?</strong></p>
-                <p>Y de aquí, nació mi interés por la psicología humanista.</p>
-                <p>Y siendo brutalmente honesto: gran parte de mi habilidad para ayudarte hoy, se la aprendí a él.</p>
+                <p>Y de ahí nació mi interés por la psicología humanista.</p>
+                <p>Y siendo brutalmente honesto: gran parte de mi habilidad para ayudarte hoy la aprendí de él.</p>
                 <p>Pero el verdadero giro no fue solo entenderlo, sino <span class="keyword">perdonarlo</span>. Hoy, aquel "monstruo" es para mí un maestro que me enseñó el camino de vuelta a la paz.</p>
                 <p>Ese perdón real, sin juicios, es la pieza final de mi propia sanación y la prueba de que <span class="keyword">tú también puedes liberarte</span>, sin importar lo que hayas vivido.</p>
-                <p>Y ya con 30 años dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro aun seguía <span class="keyword">hecho una mierda</span>.</p>
-                <p>Lo dejé todo para sanar de verdad y poder dedicarme a lo que realmente siempre me había apasionado, ayudar a la gente.</p>
+                <p>Y con 30 años dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro aún seguía <span class="keyword">hecho una mierda</span>.</p>
+                <p>Lo dejé todo para sanar de verdad y poder dedicarme a lo que siempre me había apasionado: ayudar a la gente.</p>
                 <p>Me formé en Coaching, PNL, David R. Hawkins y otras disciplinas. Hasta que di con la clave:</p>
                 <p class="sales-highlight">Un Curso de Milagros.</p>
                 <p>Ese libro no solo me cambió la vida a mí. Se convirtió en el núcleo de todo lo que voy a hacer contigo.</p>
@@ -650,10 +643,10 @@
 
             <!-- BANNER NEWSLETTER / EBOOK (Reposicionado) -->
             <div class="newsletter-banner">
-                <h3>¿Aún no estás listo para trabajar conmigo 1 a 1?</h3>
-                <p>No pasa nada. Apúntate a mi newsletter gratuita y llévate de regalo mi eBook. Te enviaré historias reales, te ayudaré a desbloquearte, a elevar tu autoestima y lo que surja.</p>
+                <h3>Antes de una sesión, empieza aquí.</h3>
+                <p>Tengo un eBook gratuito con 5 ejercicios con papel y boli para subir tu autoestima esta semana. Sin teoría. Sin relleno. Lo que a mí me funcionó cuando más lo necesitaba.</p>
                 <a href="https://www.lamentedelfenix.com/ebook" class="btn btn-gold">
-                    <i class="fas fa-book" style="margin-right:0.5rem"></i>Descargar eBook gratis
+                    <i class="fas fa-book" style="margin-right:0.5rem"></i>Quiero el eBook gratis
                 </a>
             </div>
 
@@ -807,6 +800,8 @@
         <button id="modal-close" class="modal-close" aria-label="Cerrar imagen">&times;</button>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>
 
 <script>
     function openModal(src){
