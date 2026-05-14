@@ -63,9 +63,33 @@
         /* HEADER */
         .site-header{text-align:center;margin-bottom:2.5rem;margin-left:-.75rem;margin-right:-.75rem}
         @media(min-width:768px){.site-header{margin-bottom:5rem;margin-left:0;margin-right:0}}
-        .banner-wrap{width:100%;aspect-ratio:1200/460;overflow:hidden;background-color:#1a1a1a; display:flex; justify-content:center; align-items:center;}
+        .banner-wrap{width:100%;aspect-ratio:1200/460;overflow:hidden;background-color:#1a1a1a; display:flex; justify-content:center; align-items:center; position: relative;}
         @media(min-width:768px){.banner-wrap{aspect-ratio:1200/400;border-radius:.5rem;box-shadow:0 10px 25px rgba(0,0,0,.4)}}
         .banner-img{width:100%;height:100%;object-fit:cover;display:block}
+
+        /* NAV MENU */
+        .main-nav {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+        .main-nav a {
+            color: #fbf5e2;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.5); /* Para asegurar legibilidad sobre la imagen */
+        }
+        .main-nav a:hover {
+            color: #d4af37;
+            border-color: #d4af37;
+            background: rgba(0,0,0,0.8);
+        }
 
         /* BRAND COLORS */
         .text-brand-pink{color:#e91e63}
@@ -529,6 +553,11 @@
                  fetchpriority="high"
                  loading="eager"
                  decoding="sync">
+            
+            <!-- ENLACE AL BLOG AÑADIDO AQUÍ -->
+            <nav class="main-nav">
+                <a href="./blog.html">Blog</a>
+            </nav>
         </div>
     </header>
 
