@@ -9,22 +9,20 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- Comunidad (Nueva Landing Local) -->
+  <!-- Blog y Artículos (¡NUEVO!) -->
   <url>
-    <loc>https://www.lamentedelfenix.com/comunidad.html</loc>
-    <lastmod>2026-04-16</lastmod>
+    <loc>https://www.lamentedelfenix.com/blog.html</loc>
+    <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- Servicios -->
   <url>
-    <loc>https://www.lamentedelfenix.com/membresia.html</loc>
-    <lastmod>2026-04-16</lastmod>
+    <loc>https://www.lamentedelfenix.com/un-curso-de-milagros-satanico.html</loc>
+    <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
+  
   <!-- Páginas Legales -->
   <url>
     <loc>https://www.lamentedelfenix.com/privacidad.html</loc>
