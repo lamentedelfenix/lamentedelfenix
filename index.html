@@ -656,8 +656,8 @@
                 <div class="testimonials-inner">
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel"></div>
-                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio">&#10094;</button>
-                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio">&#10095;</button>
+                        <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio" style="display:none;">&#10094;</button>
+                        <button id="next-btn" class="carousel-button next" aria-label="Siguiente testimonio" style="display:none;">&#10095;</button>
                     </div>
                 </div>
             </div>
@@ -763,11 +763,11 @@
                         </div>
                         
                         <ul class="features-list premium-features">
-                            <li><i class="fas fa-fire-alt"></i><span><strong>Transformación de Identidad:</strong> Proceso de 180 días de reprogramación profunda a nivel de ser.</span></li>
-                            <li><i class="fas fa-calendar-check"></i><span><strong>12 Sesiones Privadas:</strong> 2 al mes: una de desbloqueo + una de estrategia y seguimiento.</span></li>
-                            <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Diario:</strong> Acompañamiento continuo vía WhatsApp para evitar el autosabotaje.</span></li>
-                            <li><i class="fas fa-brain"></i><span><strong>Ingeniería de Hábitos:</strong> Diseño personalizado de tu rutina para anclar la nueva identidad.</span></li>
-                            <li><i class="fas fa-headphones"></i><span><strong>Recursos y Meditaciones:</strong> Acceso a herramientas prácticas diseñadas a medida para acelerar tu proceso.</span></li>
+                            <li><i class="fas fa-fire-alt"></i><span><strong>Reprogramación de Identidad:</strong> Deja de "intentar cambiar" y conviértete en tu versión más magnética y segura de forma natural.</span></li>
+                            <li><i class="fas fa-link"></i><span><strong>Liberación de patrones tóxicos:</strong> Rompe definitivamente los bucles repetitivos en tus relaciones y economía.</span></li>
+                            <li><i class="fas fa-calendar-check"></i><span><strong>12 Sesiones de Alto Impacto:</strong> 2 al mes para limpiar tu inconsciente de raíz y trazar un plan de acción exacto.</span></li>
+                            <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
+                            <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Integración de herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
                         </ul>
                         
                         <a href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
@@ -831,13 +831,14 @@
         document.body.style.overflow='';
     }
 
-    document.addEventListener('DOMContentLoaded',function(){
+    // OPTIMIZACIÓN MÓVIL: Evento 'load' en lugar de 'DOMContentLoaded'
+    window.addEventListener('load',function(){
         // Lógica del Modal
         document.getElementById('modal-close').addEventListener('click',closeModal);
         document.getElementById('image-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
         document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-        // Observador para la biografía (efecto iluminado)
+        // Observador para la biografía
         var bioParagraphs = document.querySelectorAll('.sales-bio p');
         var bioObserver = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
@@ -850,91 +851,110 @@
         }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
         bioParagraphs.forEach(function(p) { bioObserver.observe(p); });
 
-        // Lógica del Carrusel
-        var carousel=document.getElementById('testimonial-carousel');
-        if(!carousel)return;
-        var prevBtn=document.getElementById('prev-btn');
-        var nextBtn=document.getElementById('next-btn');
-        var images=[
-            './assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp',
-            './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp',
-            './assets/Captura 7.webp'
-        ];
-        var currentIndex=images.length - 1;
-        var slides=[];
-        var isDragging=false,startPos=0,dragOffset=0;
+        // OPTIMIZACIÓN MÓVIL: Carga diferida pura (Lazy Loading) del carrusel con IntersectionObserver
+        var reseñasSection = document.getElementById('reseñas');
+        if(!reseñasSection) return;
 
-        // Optimización: Usar DocumentFragment para evitar repaints múltiples
-        var fragment = document.createDocumentFragment();
+        var carouselCargado = false;
+        var carruselObserver = new IntersectionObserver(function(entries) {
+            if(entries[0].isIntersecting && !carouselCargado) {
+                carouselCargado = true;
+                iniciarCarrusel();
+                carruselObserver.disconnect(); // Dejar de observar una vez que inicia
+            }
+        }, { rootMargin: '300px 0px' }); // Inicia la carga cuando esté a 300px de entrar en pantalla
 
-        images.forEach(function(src,i){
-            var slide=document.createElement('div');
-            slide.className='testimonial-slide';
-            var img=document.createElement('img');
-            img.src=src;
-            img.alt='Reseña de cliente '+(i+1);
-            img.className='testimonial-image';
-            img.draggable=false;
-            img.loading='lazy';
-            img.decoding='async';
-            img.width=300;
-            img.height=540;
-            slide.appendChild(img);
-            fragment.appendChild(slide); // Añadir al fragmento temporal
-            slides.push(slide);
-        });
+        carruselObserver.observe(reseñasSection);
 
-        // Inyectar todo al DOM de una sola vez
-        carousel.appendChild(fragment);
+        function iniciarCarrusel() {
+            var carousel=document.getElementById('testimonial-carousel');
+            if(!carousel)return;
+            var prevBtn=document.getElementById('prev-btn');
+            var nextBtn=document.getElementById('next-btn');
+            
+            // Mostramos los botones ahora que se inicializa
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+            
+            var images=[
+                './assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp',
+                './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp',
+                './assets/Captura 7.webp'
+            ];
+            var currentIndex=images.length - 1;
+            var slides=[];
+            var isDragging=false,startPos=0,dragOffset=0;
 
-        function updateCarousel(){
+            var fragment = document.createDocumentFragment();
+
+            images.forEach(function(src,i){
+                var slide=document.createElement('div');
+                slide.className='testimonial-slide';
+                var img=document.createElement('img');
+                img.src=src;
+                img.alt='Reseña de cliente '+(i+1);
+                img.className='testimonial-image';
+                img.draggable=false;
+                img.loading='lazy';
+                img.decoding='async';
+                img.width=300;
+                img.height=540;
+                slide.appendChild(img);
+                fragment.appendChild(slide);
+                slides.push(slide);
+            });
+
+            carousel.appendChild(fragment);
+
+            function updateCarousel(){
+                slides.forEach(function(slide,i){
+                    var offset=i-currentIndex;
+                    var transform='scale(0)',opacity='0',zIndex='0';
+                    if(Math.abs(offset)<2){
+                        var sign=offset>0?1:offset<0?-1:0;
+                        opacity='0.5';zIndex=String(10-Math.abs(offset));
+                        if(offset===0){transform='translateX(0) translateZ(0) rotateY(0) scale(1.1)';opacity='1';}
+                        else{transform='translateX('+(sign*220)+'px) translateZ(-180px) rotateY('+(-sign*45)+'deg) scale(0.8)';}
+                    }
+                    slide.style.transform=transform;
+                    slide.style.opacity=opacity;
+                    slide.style.zIndex=zIndex;
+                });
+            }
+
+            function changeSlide(dir){var n=currentIndex+dir;if(n>=0&&n<slides.length){currentIndex=n;updateCarousel();}}
+
+            nextBtn.addEventListener('click',function(){changeSlide(1);});
+            prevBtn.addEventListener('click',function(){changeSlide(-1);});
+
+            function posX(e){return e.type.indexOf('mouse')!==-1?e.pageX:e.touches[0].clientX;}
+
+            carousel.addEventListener('mousedown',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');});
+            carousel.addEventListener('touchstart',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');},{passive:true});
+            carousel.addEventListener('mousemove',function(e){if(isDragging)dragOffset=posX(e)-startPos;});
+            carousel.addEventListener('touchmove',function(e){if(isDragging)dragOffset=posX(e)-startPos;},{passive:true});
+
+            function dragEnd(){
+                if(!isDragging)return;
+                isDragging=false;carousel.classList.remove('grabbing');
+                if(dragOffset>80)changeSlide(-1);
+                else if(dragOffset<-80)changeSlide(1);
+                dragOffset=0;
+            }
+            carousel.addEventListener('mouseup',dragEnd);
+            carousel.addEventListener('mouseleave',dragEnd);
+            carousel.addEventListener('touchend',dragEnd,{passive:true});
+
             slides.forEach(function(slide,i){
-                var offset=i-currentIndex;
-                var transform='scale(0)',opacity='0',zIndex='0';
-                if(Math.abs(offset)<2){
-                    var sign=offset>0?1:offset<0?-1:0;
-                    opacity='0.5';zIndex=String(10-Math.abs(offset));
-                    if(offset===0){transform='translateX(0) translateZ(0) rotateY(0) scale(1.1)';opacity='1';}
-                    else{transform='translateX('+(sign*220)+'px) translateZ(-180px) rotateY('+(-sign*45)+'deg) scale(0.8)';}
-                }
-                slide.style.transform=transform;
-                slide.style.opacity=opacity;
-                slide.style.zIndex=zIndex;
+                slide.addEventListener('click',function(){
+                    if(Math.abs(dragOffset)<10&&i===currentIndex){openModal(slide.querySelector('img').src);}
+                    else if(i!==currentIndex){currentIndex=i;updateCarousel();}
+                });
             });
+
+            updateCarousel();
+            window.addEventListener('resize',updateCarousel,{passive:true});
         }
-
-        function changeSlide(dir){var n=currentIndex+dir;if(n>=0&&n<slides.length){currentIndex=n;updateCarousel();}}
-
-        nextBtn.addEventListener('click',function(){changeSlide(1);});
-        prevBtn.addEventListener('click',function(){changeSlide(-1);});
-
-        function posX(e){return e.type.indexOf('mouse')!==-1?e.pageX:e.touches[0].clientX;}
-
-        carousel.addEventListener('mousedown',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');});
-        carousel.addEventListener('touchstart',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');},{passive:true});
-        carousel.addEventListener('mousemove',function(e){if(isDragging)dragOffset=posX(e)-startPos;});
-        carousel.addEventListener('touchmove',function(e){if(isDragging)dragOffset=posX(e)-startPos;},{passive:true});
-
-        function dragEnd(){
-            if(!isDragging)return;
-            isDragging=false;carousel.classList.remove('grabbing');
-            if(dragOffset>80)changeSlide(-1);
-            else if(dragOffset<-80)changeSlide(1);
-            dragOffset=0;
-        }
-        carousel.addEventListener('mouseup',dragEnd);
-        carousel.addEventListener('mouseleave',dragEnd);
-        carousel.addEventListener('touchend',dragEnd,{passive:true});
-
-        slides.forEach(function(slide,i){
-            slide.addEventListener('click',function(){
-                if(Math.abs(dragOffset)<10&&i===currentIndex){openModal(slide.querySelector('img').src);}
-                else if(i!==currentIndex){currentIndex=i;updateCarousel();}
-            });
-        });
-
-        updateCarousel();
-        window.addEventListener('resize',updateCarousel,{passive:true});
     });
 </script>
 
