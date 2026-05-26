@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="es-ES">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TBXH5FP6');</script>
+    <!-- Google Tag Manager (Optimizado) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var gtmLoaded = false;
+            function loadGTM() {
+                if (gtmLoaded) return;
+                gtmLoaded = true;
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-TBXH5FP6');
+            }
+            ['scroll','mousemove','touchstart'].forEach(function(e){ window.addEventListener(e, loadGTM, {passive:true, once:true}); });
+            setTimeout(loadGTM, 3500);
+        });
+    </script>
     <!-- End Google Tag Manager -->
 
     <meta charset="UTF-8">
@@ -44,8 +55,7 @@
     <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
 
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap">
 
     <style>
         /* RESET */
