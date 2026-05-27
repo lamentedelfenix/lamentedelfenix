@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Sesión - Método Fénix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#2b2b2b',
+                            darker: '#1a1a1a',
+                            light: '#fbf5e2',
+                            gold: '#d4af37',
+                            pink: '#e91e63'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #2b2b2b; color: #fbf5e2; }
+        .btn-gold {
+            background-color: #d4af37; 
+            color: #1a1a1a; 
+            font-weight: 700;
+            transition: all 0.3s ease; 
+            border: 2px solid transparent;
+        }
+        .btn-gold:hover {
+            background-color: #1a1a1a; 
+            color: #d4af37; 
+            border-color: #d4af37;
+        }
+        /* Custom scrollbar to match theme */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-brand-darker rounded-xl shadow-2xl overflow-hidden border border-brand-gold/20">
+        <!-- Banner Superior -->
+        <div class="relative w-full h-32 bg-[#111] border-b border-brand-gold/30">
+            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Método Fénix Banner" class="w-full h-full object-cover object-center opacity-90">
+        </div>
+
+        <div class="p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <h1 class="text-xl font-extrabold text-brand-light mb-1">Confirma tu plaza</h1>
+                <p class="text-brand-gold text-xs font-bold tracking-widest uppercase">Sesión 1:1 · Método Fénix</p>
+            </div>
+
+            <!-- Importe destacado -->
+            <div class="text-center bg-[#222] rounded-lg p-4 mb-6 border-l-4 border-brand-pink shadow-inner flex flex-col justify-center items-center">
+                <span class="text-[11px] font-bold uppercase tracking-widest text-brand-light/50 mb-1">Importe a ingresar</span>
+                <span class="text-3xl font-extrabold text-brand-pink tracking-tight">200€</span>
+            </div>
+
+            <!-- Datos Bancarios -->
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Titular de la cuenta</label>
+                    <p class="text-brand-light font-medium bg-[#222] p-3 rounded border border-white/5 text-sm">Darío Alejandro Arrigazzi Amieva</p>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">IBAN (Euros)</label>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-white/5 group">
+                        <span id="ibanText" class="font-mono text-brand-light tracking-wider text-sm">BE67 9672 8415 4287</span>
+                        <button onclick="copyToClipboard('ibanText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar IBAN">
+                            <i class="far fa-copy text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Código BIC / SWIFT</label>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-white/5 group">
+                        <span id="bicText" class="font-mono text-brand-light tracking-wider text-sm">TRWIBEB1XXX</span>
+                        <button onclick="copyToClipboard('bicText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar BIC">
+                            <i class="far fa-copy text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Concepto del ingreso</label>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-white/5">
+                        <span id="conceptText" class="text-brand-light font-medium text-sm">Gracias - Tu Nombre</span>
+                        <button onclick="copyToClipboard('conceptText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar Concepto">
+                            <i class="far fa-copy text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dirección del Banco (Secundaria) -->
+            <div class="mt-5 text-center">
+                <p class="text-[10px] text-brand-light/40 leading-relaxed font-medium">
+                    Banco Wise: Avenue Louise 54, Room S52<br>Brussels 1050, Belgium.
+                </p>
+            </div>
+
+            <!-- Acción CTA -->
+            <div class="mt-8 text-center border-t border-brand-light/10 pt-6">
+                <p class="text-xs text-brand-light/80 mb-4 font-medium">Una vez hecho el ingreso, envíame el comprobante para asegurar la reserva.</p>
+                <a href="https://wa.me/34667752916" class="w-full block text-center btn-gold py-3.5 px-6 rounded-lg text-sm tracking-wide uppercase">
+                    <i class="fab fa-whatsapp mr-2 text-lg align-middle"></i> Enviar comprobante
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificación Flotante (Toast) -->
+    <div id="toast" class="fixed bottom-8 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-pink text-white px-6 py-3 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(233,30,99,0.4)] flex items-center gap-2">
+        <i class="fas fa-check-circle"></i> ¡Copiado!
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                // Efecto táctico en móvil (si es compatible)
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
