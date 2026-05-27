@@ -72,7 +72,12 @@
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Titular de la cuenta</label>
-                    <p class="text-brand-light font-medium bg-[#222] p-3 rounded border border-white/5 text-sm">Darío Alejandro Arrigazzi Amieva</p>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-white/5 group">
+                        <span id="titularText" class="text-brand-light font-medium text-sm">Darío Alejandro Arrigazzi Amieva</span>
+                        <button onclick="copyToClipboard('titularText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar Titular">
+                            <i class="far fa-copy text-lg"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div>
