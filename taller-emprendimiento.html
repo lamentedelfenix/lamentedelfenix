@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taller: Entrenamiento Mental para Emprendedores | Darío Arrigazzi</title>
-    <meta name="description" content="Destruye tu techo de cristal financiero y emocional en 2 horas. Taller intensivo de plazas limitadas.">
+    <title>Entrenamiento Mental para Emprendedores | Método Fénix</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <script>
         tailwind.config = {
             theme: {
@@ -30,206 +29,199 @@
             }
         }
     </script>
-
     <style>
-        /* RESET & BASE */
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        html{scroll-behavior:smooth}
-        body{font-family:'Montserrat',sans-serif;background-color:#2b2b2b;color:#fbf5e2;padding:.75rem}
-        @media(min-width:768px){body{padding:1rem}}
-        img{max-width:100%;height:auto;display:block}
-        a{text-decoration:none}
-        ul{list-style:none}
-
-        /* LAYOUT */
-        .wrapper{max-width:72rem;margin:0 auto}
-
-        /* HEADER */
-        .site-header{text-align:center;margin-bottom:2.5rem;margin-left:-.75rem;margin-right:-.75rem}
-        @media(min-width:768px){.site-header{margin-bottom:4rem;margin-left:0;margin-right:0}}
-        .banner-wrap{width:100%;aspect-ratio:1200/450;overflow:hidden;background-color:#1a1a1a; display:flex; justify-content:center; align-items:center; position: relative;}
-        @media(min-width:768px){.banner-wrap{aspect-ratio:1200/400;border-radius:.5rem;box-shadow:0 10px 25px rgba(0,0,0,.4)}}
-        .banner-img{width:100%;height:100%;object-fit:cover;display:block; opacity: 0.9;}
-        
-        /* BUTTONS */
-        .btn{
-            display:inline-block;position:relative;z-index:1;overflow:hidden;
-            transition:color .4s ease-out;border:2px solid transparent;border-radius:.5rem;
-            font-weight:700;padding:.875rem 1.75rem;font-size:1rem;cursor:pointer;
-            text-align:center;font-family:inherit;line-height:1.3;
+        body { background-color: #2b2b2b; color: #fbf5e2; }
+        .btn-gold {
+            background-color: #d4af37; color: #1a1a1a; transition: all 0.3s ease;
         }
-        @media(min-width:768px){.btn{font-size:1.125rem;padding:.75rem 2rem}}
-        .btn-pink{background-color:#e91e63;color:#fff}
-        .btn-gold{background-color:#d4af37;color:#1a1a1a}
-        .btn-block{width:100%;display:block}
-        .btn::before{
-            content:'';position:absolute;top:0;left:0;width:100%;height:100%;
-            background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;
-            transition:transform .4s cubic-bezier(.45,.05,.55,.95)
+        .btn-gold:hover {
+            background-color: #fbf5e2; color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212,175,55,0.2);
         }
-        .btn.btn-pink:hover::before{border:2px solid #e91e63}
-        .btn.btn-gold:hover::before{border:2px solid #d4af37}
-        .btn.btn-pink:hover{color:#e91e63}
-        .btn.btn-gold:hover{color:#d4af37}
-        .btn:hover::before{transform:scaleX(1);transform-origin:left}
-
-        /* HERO SECTION */
-        .hero{text-align:center;padding:0 .25rem 3rem}
-        @media(min-width:768px){.hero{padding:0 1rem 4rem}}
-        .hero-inner{max-width:56rem;margin:0 auto}
-        .hero-line {
-            width: 2px;
-            height: 40px;
-            background: linear-gradient(to bottom, rgba(212,175,55,0), rgba(212,175,55,1));
-            margin: 0 auto 1.5rem;
+        /* Ajuste de aspecto para el video de YouTube */
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem;
         }
-        .seo-kicker{
-            font-size:.75rem;color:#d4af37;font-weight:800;
-            text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.5rem;
-            background: rgba(212,175,55,0.1); padding: 0.5rem 1rem; border-radius: 9999px; display: inline-block; border: 1px solid rgba(212,175,55,0.3);
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
         }
-        .hero h1{ font-size:1.8rem;font-weight:800;color:#fbf5e2;line-height:1.25;margin-bottom:1.5rem; }
-        @media(min-width:768px){.hero h1{font-size:3.5rem;margin-bottom:2rem}}
-        .hero-h1-gold { color: #d4af37; font-style: italic; display: block; }
-        
-        .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-        .badge { background: #1a1a1a; border: 1px solid #d4af37; color: #fbf5e2; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
-        .badge-pink { border-color: #e91e63; color: #e91e63; }
-
-        /* STORYTELLING BIO */
-        .sales-bio{ max-width:650px;margin:0 auto; font-size:1.05rem;line-height:1.9; color:rgba(251,245,226,.9) }
-        @media(min-width:768px){.sales-bio{font-size:1.15rem}}
-        .sales-bio p{margin-bottom:1.75rem}
-        .keyword { font-weight: 800; color: #d4af37; }
-        .sales-highlight{color:#e91e63;font-weight:700;font-size:1.25rem;display:block;margin-bottom:2rem}
-
-        /* PREMIUM PRICING CARD */
-        .pricing-card.premium{border:2px solid #d4af37;background:linear-gradient(160deg,#1e1a0e 0%,#2a2416 40%,#111 100%);box-shadow:0 20px 50px rgba(212,175,55,.15);border-radius:1rem;padding:2.5rem;display:flex;flex-direction:column;position:relative; max-width: 500px; margin: 4rem auto 2rem;}
-        .premium-badge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:#e91e63;color:#fff;font-size:.75rem;font-weight:800;letter-spacing:.1em;padding:.4rem 1.5rem;border-radius:9999px;text-align:center;width:max-content;text-transform:uppercase; box-shadow: 0 4px 15px rgba(233,30,99,0.4);}
-        
-        .price-container { text-align: center; margin: 1.5rem 0 2rem; padding-bottom: 2rem; border-bottom: 1px dashed rgba(212,175,55,0.3); }
-        .price-old { font-size: 1.25rem; color: rgba(251,245,226,.5); text-decoration: line-through; display: block; margin-bottom: 0.25rem; }
-        .price-new { font-size: 4rem; font-weight: 800; color: #d4af37; line-height: 1; text-shadow: 0 2px 10px rgba(212,175,55,0.2); }
-        .price-note { display: block; font-size: 0.85rem; color: #e91e63; font-weight: 700; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        .features-list{list-style:none;margin-bottom:2.5rem;display:flex;flex-direction:column;gap:1.25rem;}
-        .features-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:1rem;color:rgba(251,245,226,.9); line-height: 1.5;}
-        .features-list li i{color:#d4af37;margin-top:.25rem;flex-shrink:0;}
-
-        /* FOOTER */
-        .site-footer{ margin-top:4rem;padding:3rem 1rem;border-top:1px solid #374151; text-align:center;background-color:#1a1a1a;border-radius:.5rem;}
-        .footer-copy{font-size:.8rem;color:rgba(251,245,226,.5);margin-top:1rem}
     </style>
 </head>
-<body>
+<body class="font-sans antialiased selection:bg-brand-pink selection:text-white pb-20">
 
-<div class="wrapper">
-    <header class="site-header">
-        <div class="banner-wrap">
-            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Banner La Mente del Fénix" class="banner-img">
+    <header class="w-full max-w-5xl mx-auto mt-4 md:mt-8 px-4">
+        <div class="w-full aspect-[1200/400] relative overflow-hidden rounded-xl shadow-2xl border border-white/5">
+            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Método Fénix Banner" class="w-full h-full object-cover object-center opacity-90">
         </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-inner">
-                <div class="hero-line"></div>
-                <div class="seo-kicker">Taller Online Intensivo para Emprendedores</div>
-                
-                <h1>
-                    <span style="display:block; margin-bottom: 0.2em;">Tu negocio nunca crecerá</span>
-                    <span class="hero-h1-gold">más de lo que crezcas tú por dentro.</span>
-                </h1>
-                
-                <p style="font-size:1.1rem; max-width:42rem; margin:0 auto 2rem; color:rgba(251,245,226,.8); line-height:1.7;">
-                    El 80% del éxito en tu proyecto no es estrategia de marketing, es psicología. Descubre cómo destruir tu techo de cristal financiero y emocional yendo al "código fuente" de tu mente.
-                </p>
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 mt-16 md:mt-24">
+        
+        <section class="mb-20">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-brand-light text-center mb-10 leading-tight">
+                El 80% del éxito en tu negocio no es estrategia,<br> 
+                <span class="text-brand-pink">es psicología.</span>
+            </h1>
 
-                <div class="hero-badges">
-                    <div class="badge"><i class="far fa-clock text-brand-gold"></i> 2 Horas de Alto Impacto</div>
-                    <div class="badge"><i class="fas fa-users text-brand-gold"></i> Grupo Exclusivo: 10 Plazas</div>
-                    <div class="badge badge-pink"><i class="fas fa-tag"></i> Edición Piloto: 45€</div>
-                </div>
-
-                <a href="#reserva" class="btn btn-gold mt-4">
-                    <i class="fas fa-lock mr-2"></i> Asegurar mi plaza ahora
-                </a>
-            </div>
-        </section>
-
-        <section class="py-12 bg-brand-dark">
-            <div class="sales-bio">
-                <h2 class="text-2xl md:text-3xl font-extrabold mb-8 text-center text-brand-light">El problema no es tu embudo de ventas.</h2>
-                
-                <!-- Placeholder para tu foto -->
-                <img src="https://placehold.co/600x600/1a1a1a/d4af37?text=Tu+Foto+Aqui" alt="Darío Arrigazzi" class="w-full max-w-[350px] mx-auto rounded-lg shadow-2xl mb-10 border border-brand-gold/20">
-
+            <div class="space-y-6 text-lg md:text-xl text-brand-light/90 leading-relaxed font-medium">
                 <p>Si llevas meses (o años) atascado en el mismo nivel de facturación...</p>
-                <p>Si cada vez que ganas dinero, ocurre algo y lo pierdes o te lo gastas impulsivamente...</p>
-                <p>Si te paraliza la idea de exponerte más, subir tus precios o liderar a un equipo por miedo al rechazo o a perder el control...</p>
-                
-                <p class="sales-highlight text-center my-8 text-xl">Deja de comprar más cursos de marketing.</p>
-                
-                <p>Tu mente está programada para mantenerte "a salvo", no para hacerte exitoso. Cualquier herida de rechazo, de abandono o falta de valor que viviste en tu pasado, <span class="keyword">hoy está dirigiendo tu empresa</span>.</p>
-                
-                <p>Estás proyectando tu historia personal en tus clientes y en tu cuenta bancaria. Te estás autosaboteando justo cuando estás a punto de dar el gran salto, porque tu Inconsciente siente que el éxito es "peligroso".</p>
-                
-                <p>Sé de lo que hablo. Llevo varios años trabajando como terapeuta ayudando a reprogramar la mente de las personas, pero además, conozco la presión del mundo de los negocios desde dentro.</p>
-                
-                <p>Fui Director de Operaciones y <a href="https://lovenaturesuperfoods.com/ourstory/" target="_blank" class="keyword underline hover:text-brand-pink transition-colors">uno de los fundadores de Lovenature Superfoods</a>. Conozco perfectamente el estrés, el peso de la responsabilidad y cómo tu propia mente puede jugarte una mala pasada y convertirse en tu mayor límite cuando la empresa depende de ti.</p>
+                <p>Si cada vez que ganas dinero, ocurre algo y lo pierdes o te lo gastas...</p>
+                <p>Deja de comprar más cursos de marketing. El problema no es tu embudo de ventas. <strong class="text-brand-gold">El problema es tu Inconsciente.</strong></p>
+            </div>
 
-                <div class="bg-brand-darker p-6 md:p-8 rounded-lg border-l-4 border-brand-pink my-10 shadow-lg">
-                    <h3 class="text-brand-pink font-bold text-xl mb-4"><i class="fas fa-rocket mr-2"></i> El beneficio real: Qué te llevas de este taller</h3>
-                    <p class="text-brand-light/90 mb-5 font-medium">No vamos a hablar de embudos ni de likes. Vamos a ir a la raíz de tu mente para que salgas de aquí con la capacidad de:</p>
-                    <ul class="flex flex-col gap-4 text-sm md:text-base text-brand-light/90">
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-gold mt-1"></i><span><strong>Subir tus precios con seguridad absoluta:</strong> Cobrarás lo que tu servicio realmente vale sin sentir el síndrome del impostor o miedo a que te digan que no.</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-gold mt-1"></i><span><strong>Multiplicar sin quemarte:</strong> Aprenderás a sostener un mayor nivel de éxito y dinero sin que eso signifique destruir tu paz mental, tu familia o tu salud.</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-gold mt-1"></i><span><strong>Desbloquear la acción:</strong> Darás ese paso que llevas meses posponiendo (venderte mejor, exponerte, lanzar un servicio) porque neutralizaremos el miedo al rechazo.</span></li>
-                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-gold mt-1"></i><span><strong>Dejar de ser el "freno" de tu empresa:</strong> Tomarás decisiones rápidas y desde la claridad, soltando el pánico a perder el control.</span></li>
-                    </ul>
+            <!-- Síntomas del emprendedor (espaciados para respirar) -->
+            <div class="mt-12 bg-brand-darker p-8 md:p-10 rounded-xl border border-white/5 shadow-lg">
+                <h2 class="text-xl font-bold text-brand-gold mb-8">Tu negocio se bloquea porque TÚ estás bloqueado:</h2>
+                <ul class="space-y-6 text-base md:text-lg text-brand-light/80">
+                    <li class="flex items-start gap-4">
+                        <i class="fas fa-times text-brand-pink mt-1"></i>
+                        <span>Dudas eternamente qué rumbo tomar.</span>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <i class="fas fa-times text-brand-pink mt-1"></i>
+                        <span>Te tiembla el pulso al poner tus precios.</span>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <i class="fas fa-times text-brand-pink mt-1"></i>
+                        <span>No sabes cómo comunicar tu producto por miedo a exponerte y al "qué dirán".</span>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <i class="fas fa-times text-brand-pink mt-1"></i>
+                        <span>El estrés y el miedo te paralizan a la hora de tomar decisiones importantes.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-24">
+            <div class="border-l-4 border-brand-gold pl-6 md:pl-10 py-2 my-16">
+                <p class="text-2xl md:text-3xl font-extrabold text-brand-light leading-snug">
+                    "Seguir la mejor estrategia de marketing del mundo no sirve de nada si, <span class="text-brand-pink underline">por ejemplo</span>, no te sientes merecedor de lo que vas a recibir."
+                </p>
+            </div>
+
+            <div class="space-y-8 text-lg text-brand-light/80 leading-relaxed">
+                <p>Digo <em class="text-brand-light">"por ejemplo"</em> porque el no merecimiento es solo uno de los muchos programas que corren en tu mente.</p>
+                <p>Tu mente está programada para mantenerte "a salvo", no para hacerte exitoso. Cualquier herida de rechazo, de abandono o de falta de valor que viviste en tu pasado, <strong class="text-brand-gold">hoy está dirigiendo tu empresa.</strong></p>
+                <p>Estás proyectando tu historia personal en tus clientes y en tu cuenta bancaria. Es como intentar conducir un Ferrari mientras tu Inconsciente pisa el freno a fondo sin que te des cuenta.</p>
+            </div>
+        </section>
+
+        <section class="mb-24 bg-brand-darker rounded-2xl p-6 md:p-12 shadow-2xl border border-brand-gold/10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-brand-light mb-4">Soy Darío Arrigazzi</h2>
+                <p class="text-brand-gold font-medium">Creador del Método Fénix</p>
+            </div>
+
+            <div class="space-y-6 text-base md:text-lg text-brand-light/80 leading-relaxed mb-10">
+                <p>Llevo años ejerciendo como terapeuta, reprogramando la mente de personas para que suelten los bloqueos que les impiden avanzar.</p>
+                <p>Pero no te hablo solo desde la terapia. Fui Director de Operaciones y <a href="https://lovenaturesuperfoods.com/ourstory/" target="_blank" class="text-brand-pink font-bold hover:underline">co-fundador de Lovenature Superfoods Group</a>. Conozco perfectamente el peso de la responsabilidad, el estrés de la nómina y cómo tu propia mente se convierte en tu mayor límite cuando todo depende de ti.</p>
+            </div>
+
+            <!-- Contenedor de Vídeo YouTube -->
+            <div class="video-container shadow-2xl border-2 border-brand-gold/20">
+                <!-- RECUERDA: Cambia "ID_DE_TU_VIDEO" por las letras del enlace de tu video de YouTube -->
+                <iframe src="https://www.youtube.com/embed/ID_DE_TU_VIDEO?rel=0" title="Presentación Taller" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p class="text-center text-sm text-brand-light/50 mt-4 italic"><i class="fas fa-volume-up mr-2"></i> Activa el sonido. Te lo explico en 4 minutos.</p>
+        </section>
+
+        <section class="mb-24">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-brand-light mb-8 text-center leading-tight">Qué vas a conseguir en estas 2 horas</h2>
+            <p class="text-center text-brand-light/80 mb-16 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+                No te voy a hacer promesas mágicas. En dos horas te voy a dar <strong class="text-brand-gold">claridad absoluta</strong> y herramientas prácticas para destrabar tu negocio.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+                <!-- Caja 1 -->
+                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
+                    <i class="fas fa-handshake text-4xl text-brand-gold mb-6"></i>
+                    <h3 class="font-bold text-xl text-brand-light mb-4">Confianza para Negociar</h3>
+                    <p class="text-brand-light/70 text-base leading-relaxed">Entenderás por qué te cuesta valorarte. Te llevarás las bases para ganar confianza inquebrantable frente a tus socios, tus clientes y frente al espejo.</p>
+                </div>
+                
+                <!-- Caja 2 -->
+                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
+                    <i class="fas fa-compass text-4xl text-brand-gold mb-6"></i>
+                    <h3 class="font-bold text-xl text-brand-light mb-4">Visión bajo Presión</h3>
+                    <p class="text-brand-light/70 text-base leading-relaxed">Aprenderás a mantener tu centro y no perder la visión de tu negocio cuando el estrés, la incertidumbre o las crisis llamen a la puerta.</p>
+                </div>
+
+                <!-- Caja 3 -->
+                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
+                    <i class="fas fa-bullseye text-4xl text-brand-gold mb-6"></i>
+                    <h3 class="font-bold text-xl text-brand-light mb-4">Foco Inquebrantable</h3>
+                    <p class="text-brand-light/70 text-base leading-relaxed">Descubrirás cómo blindar tu mente frente al ruido tóxico y la negatividad del entorno, dirigiendo tu energía solo a lo que hace crecer tu empresa.</p>
+                </div>
+
+                <!-- Caja 4 -->
+                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
+                    <i class="fas fa-unlock-alt text-4xl text-brand-gold mb-6"></i>
+                    <h3 class="font-bold text-xl text-brand-light mb-4">Liberar el Freno</h3>
+                    <p class="text-brand-light/70 text-base leading-relaxed">Trabajaremos en soltar la carga de estrés y el miedo al rechazo. Pasarás de tomar decisiones desde la supervivencia a decidir desde la claridad total.</p>
                 </div>
             </div>
         </section>
 
-        <section id="reserva" class="py-12 px-4">
-            <div class="pricing-card premium">
-                <span class="premium-badge">Primera Edición Especial</span>
-                
-                <h3 class="text-2xl font-extrabold text-center text-brand-light mb-2">Entrenamiento Mental</h3>
-                <p class="text-brand-gold/80 text-center text-sm font-bold tracking-widest uppercase">Para Emprendedores</p>
+        <section class="bg-brand-darker rounded-2xl p-6 md:p-12 shadow-2xl border-t-4 border-brand-pink relative overflow-hidden">
+            <!-- Efecto de fondo -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-pink/5 rounded-full blur-3xl -z-0"></div>
 
-                <div class="price-container">
-                    <span class="price-new">45€</span>
-                    <span class="price-note" style="text-transform: none; font-size: 0.95rem; margin-top: 1rem; color: rgba(251,245,226,.8);">Edición piloto inaugural</span>
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-light text-center mb-12">Detalles del Taller</h2>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <!-- Datos -->
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <i class="fas fa-users text-2xl text-brand-gold mt-1 w-8 text-center"></i>
+                            <div>
+                                <h4 class="font-bold text-brand-light text-lg">Exclusivo y Privado</h4>
+                                <p class="text-brand-pink font-extrabold text-xl mt-1">Solo 9 plazas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i class="fas fa-map-marker-alt text-2xl text-brand-gold mt-1 w-8 text-center"></i>
+                            <div>
+                                <h4 class="font-bold text-brand-light text-lg">Presencial en Oviedo</h4>
+                                <p class="text-brand-light/90 mt-1">Zona de La Corredoria</p>
+                                <a href="https://share.google/5bwOjAaB0cyqSUTvT" target="_blank" class="text-brand-light/70 hover:text-brand-gold underline mt-1 block leading-relaxed">Ver ubicación exacta en Google Maps</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i class="far fa-calendar-alt text-2xl text-brand-gold mt-1 w-8 text-center"></i>
+                            <div>
+                                <h4 class="font-bold text-brand-light text-lg">Fecha y Hora</h4>
+                                <p class="text-brand-light/70 mt-1">[Pon aquí tu fecha, Ej: Sábado 15 de Junio, 10:00h]</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inversión -->
+                    <div class="bg-[#222] p-8 rounded-xl border border-brand-gold/30 text-center flex flex-col justify-center">
+                        <p class="text-brand-light/80 text-sm font-bold uppercase tracking-widest mb-4">Edición Piloto</p>
+                        <p class="text-5xl font-extrabold text-brand-light mb-4">45€</p>
+                        <p class="text-sm text-brand-gold font-medium leading-relaxed">Al ser la primera edición presencial, el precio es reducido. Las siguientes ediciones tendrán un valor superior. Es así de simple.</p>
+                    </div>
                 </div>
 
-                <ul class="features-list">
-                    <li><i class="fas fa-check-circle"></i> <span><strong>Sesión en vivo (2 Horas):</strong> Trabajo intensivo y directo al grano, sin paja.</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span><strong>Grupo íntimo (Max. 10 pax):</strong> Para poder resolver dudas y hacer que la experiencia sea personalizada.</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span><strong>Identificación del Bloqueo:</strong> Localizaremos la herida exacta que frena tus ingresos.</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span><strong>Reprogramación Activa:</strong> Ejercicios prácticos de PNL in situ para cambiar tu respuesta al estrés y al dinero.</span></li>
-                </ul>
-                
-                <div class="mt-auto">
-                    <p class="text-center text-xs text-brand-light/60 mb-4">*Al ser la primera edición de este formato, el precio es de 45€. Para los siguientes talleres el precio será mayor. Es así de simple.</p>
-                    
-                    <!-- Enlace directo al checkout o WhatsApp para pagar los 45€ -->
-                    <a href="https://wa.me/34667752916?text=Hola%20Darío,%20quiero%20una%20de%20las%2010%20plazas%20por%2045%E2%82%AC%20para%20el%20taller%20de%20emprendedores." target="_blank" class="btn btn-pink btn-block">
-                        <i class="fab fa-whatsapp mr-2 text-xl align-middle"></i> Quiero mi plaza por 45€
+                <div class="text-center max-w-xl mx-auto">
+                    <!-- RECUERDA: Cambia "34XXXXXXXXXX" por tu número de teléfono real -->
+                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20una%20de%20las%209%20plazas%20para%20el%20taller%20presencial%20por%2045%E2%82%AC." 
+                       target="_blank" 
+                       class="inline-block w-full md:w-auto btn-gold text-lg md:text-xl px-10 py-5 rounded-lg font-extrabold tracking-wide shadow-xl">
+                        <i class="fab fa-whatsapp text-2xl mr-3 align-middle"></i> Quiero una de las 9 plazas
                     </a>
+                    <p class="text-xs text-brand-light/40 mt-6 uppercase tracking-wider">La reserva se realiza por orden estricto de llegada al WhatsApp.</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="site-footer">
-        <div class="flex justify-center items-center gap-6 mb-6">
-            <a href="mailto:darioarrigazzi@lamentedelfenix.com" class="text-brand-light/70 hover:text-brand-gold transition-colors text-2xl"><i class="fas fa-envelope"></i></a>
-        </div>
-        <p class="footer-copy">&copy; 2026 La Mente del Fénix — Darío Arrigazzi · Método Fénix.<br>Todos los derechos reservados.</p>
+    <footer class="mt-20 text-center text-brand-light/50 text-sm px-4">
+        <p>&copy; 2026 La Mente del Fénix — Método Fénix. Todos los derechos reservados.</p>
+        <p class="mt-2"><a href="mailto:darioarrigazzi@lamentedelfenix.com" class="hover:text-brand-gold transition-colors">darioarrigazzi@lamentedelfenix.com</a></p>
     </footer>
-</div>
 
 </body>
 </html>
