@@ -3,225 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entrenamiento mental para emprendedores. Desbloquea tu Inconsciente y escala tu negocio con el Método Fénix de Darío Arrigazzi.">
+    <meta name="theme-color" content="#2b2b2b">
+
+    <!-- Open Graph / WhatsApp preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Método Fénix – Entrenamiento Mental para Emprendedores">
+    <meta property="og:description" content="El 80% del éxito en tu negocio no es estrategia, es psicología. Solo 9 plazas.">
+    <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
+    <meta property="og:url" content="https://www.lamentedelfenix.com">
+
     <title>Entrenamiento Mental para Emprendedores | Método Fénix</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#2b2b2b',
-                            darker: '#1a1a1a',
-                            light: '#fbf5e2',
-                            gold: '#d4af37',
-                            pink: '#e91e63'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+
+    <!-- Preconnect para recursos externos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Fuente: solo los pesos necesarios -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome diferida (no bloquea el render) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
     <style>
-        body { background-color: #2b2b2b; color: #fbf5e2; }
+        /* ── Reset & Variables ───────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --dark:   #2b2b2b;
+            --darker: #1a1a1a;
+            --card:   #222222;
+            --light:  #fbf5e2;
+            --gold:   #d4af37;
+            --pink:   #e91e63;
+            --font:   'Montserrat', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            font-family: var(--font);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 5rem;
+        }
+
+        ::selection { background: var(--pink); color: #fff; }
+
+        img { display: block; max-width: 100%; height: auto; }
+        a   { color: inherit; }
+
+        /* ── Utilidades ──────────────────────────────────────────────── */
+        .container { max-width: 48rem; margin-inline: auto; padding-inline: 1rem; }
+        .container--wide { max-width: 64rem; }
+
+        /* ── Botón CTA ───────────────────────────────────────────────── */
         .btn-gold {
-            background-color: #d4af37; color: #1a1a1a; transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            background: var(--gold);
+            color: var(--darker);
+            font-family: var(--font);
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: .03em;
+            padding: 1.1rem 2.5rem;
+            border-radius: .5rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background .25s, transform .2s, box-shadow .25s;
+            /* Área táctil mínima recomendada */
+            min-height: 3.25rem;
         }
-        .btn-gold:hover {
-            background-color: #fbf5e2; color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212,175,55,0.2);
+        .btn-gold:hover,
+        .btn-gold:focus-visible {
+            background: var(--light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212,175,55,.25);
+            outline: none;
         }
-        /* Ajuste de aspecto para el video de YouTube */
-        .video-container {
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem;
+        .btn-gold .fa-whatsapp { font-size: 1.4rem; }
+
+        @media (min-width: 640px) {
+            .btn-gold { width: auto; }
         }
-        .video-container iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+
+        /* ── Header / Banner ─────────────────────────────────────────── */
+        .site-header {
+            max-width: 64rem;
+            margin-inline: auto;
+            padding: 1rem 1rem 0;
         }
+        .banner-wrap {
+            aspect-ratio: 1200 / 400;
+            border-radius: .75rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+        .banner-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: .9;
+        }
+
+        /* ── Secciones ───────────────────────────────────────────────── */
+        .main { margin-top: 4rem; }
+        @media (min-width: 768px) { .main { margin-top: 6rem; } }
+
+        section { margin-bottom: 5rem; }
+
+        /* Hero */
+        .hero-title {
+            font-size: clamp(1.6rem, 5vw, 2.75rem);
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.25;
+            margin-bottom: 2.5rem;
+        }
+        .hero-title .accent { color: var(--pink); }
+
+        .hero-body { display: flex; flex-direction: column; gap: 1.25rem; font-size: clamp(1rem, 2.5vw, 1.15rem); font-weight: 500; line-height: 1.7; color: rgba(251,245,226,.9); }
+        .hero-body strong { color: var(--gold); }
+
+        /* Síntomas */
+        .symptoms-box {
+            margin-top: 3rem;
+            background: var(--darker);
+            padding: 2rem;
+            border-radius: .75rem;
+            border: 1px solid rgba(255,255,255,.05);
+        }
+        @media (min-width: 768px) { .symptoms-box { padding: 2.5rem; } }
+
+        .symptoms-box h2 { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 2rem; }
+
+        .symptoms-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+        .symptoms-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: clamp(.9rem, 2vw, 1.05rem); color: rgba(251,245,226,.8); line-height: 1.5; }
+        .symptoms-list .fa-times { color: var(--pink); margin-top: .2rem; flex-shrink: 0; }
+
+        /* Cita blockquote */
+        .blockquote {
+            border-left: 4px solid var(--gold);
+            padding: .5rem 0 .5rem 1.5rem;
+            margin-block: 4rem;
+        }
+        @media (min-width: 768px) { .blockquote { padding-left: 2.5rem; } }
+        .blockquote p { font-size: clamp(1.2rem, 3.5vw, 1.75rem); font-weight: 800; line-height: 1.35; }
+        .blockquote .accent { color: var(--pink); text-decoration: underline; }
+
+        .body-text { display: flex; flex-direction: column; gap: 1.5rem; font-size: clamp(.95rem, 2vw, 1.05rem); color: rgba(251,245,226,.8); line-height: 1.75; }
+        .body-text strong { color: var(--gold); }
+        .body-text em { color: var(--light); font-style: italic; }
+
+        /* Bio / Vídeo */
+        .bio-box {
+            background: var(--darker);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(212,175,55,.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+        }
+        @media (min-width: 768px) { .bio-box { padding: 3rem; } }
+
+        .bio-box .bio-header { text-align: center; margin-bottom: 2.5rem; }
+        .bio-box .bio-header h2 { font-size: clamp(1.3rem, 4vw, 1.75rem); font-weight: 700; }
+        .bio-box .bio-header p  { color: var(--gold); font-weight: 500; margin-top: .35rem; }
+
+        .bio-box .bio-body { display: flex; flex-direction: column; gap: 1.25rem; font-size: clamp(.9rem, 2vw, 1rem); color: rgba(251,245,226,.8); line-height: 1.75; margin-bottom: 2.5rem; }
+        .bio-box .bio-body a { color: var(--pink); font-weight: 700; }
+        .bio-box .bio-body a:hover { text-decoration: underline; }
+
+        /* Vídeo responsive */
+        .video-wrap {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: .5rem;
+            border: 2px solid rgba(212,175,55,.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+        .video-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .video-caption { text-align: center; font-size: .8rem; color: rgba(251,245,226,.4); font-style: italic; margin-top: 1rem; }
+
+        /* Beneficios grid */
+        .benefits-title {
+            font-size: clamp(1.4rem, 4.5vw, 2.25rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            line-height: 1.25;
+        }
+        .benefits-intro { text-align: center; color: rgba(251,245,226,.8); font-size: clamp(.95rem, 2vw, 1.15rem); line-height: 1.7; max-width: 38rem; margin-inline: auto; margin-bottom: 3.5rem; }
+        .benefits-intro strong { color: var(--gold); }
+
+        .benefits-grid { display: grid; gap: 1.5rem; }
+        @media (min-width: 640px) { .benefits-grid { grid-template-columns: 1fr 1fr; } }
+
+        .benefit-card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: .75rem;
+            border: 1px solid rgba(255,255,255,.05);
+            transition: border-color .25s;
+        }
+        .benefit-card:hover { border-color: rgba(212,175,55,.3); }
+        .benefit-card .icon { font-size: 2.25rem; color: var(--gold); margin-bottom: 1.25rem; }
+        .benefit-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem; }
+        .benefit-card p  { font-size: .9rem; color: rgba(251,245,226,.7); line-height: 1.6; }
+
+        /* Detalles / CTA final */
+        .details-box {
+            background: var(--darker);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border-top: 4px solid var(--pink);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+        }
+        @media (min-width: 768px) { .details-box { padding: 3rem; } }
+        .details-box::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 16rem; height: 16rem;
+            background: rgba(233,30,99,.05);
+            border-radius: 50%;
+            filter: blur(3rem);
+            pointer-events: none;
+        }
+
+        .details-box h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; text-align: center; margin-bottom: 2.5rem; }
+
+        .details-grid { display: grid; gap: 2rem; margin-bottom: 2.5rem; }
+        @media (min-width: 640px) { .details-grid { grid-template-columns: 1fr 1fr; } }
+
+        .info-list { display: flex; flex-direction: column; gap: 1.5rem; }
+        .info-item { display: flex; align-items: flex-start; gap: 1rem; }
+        .info-item .icon { font-size: 1.3rem; color: var(--gold); width: 2rem; text-align: center; flex-shrink: 0; margin-top: .15rem; }
+        .info-item h4 { font-size: 1rem; font-weight: 700; }
+        .info-item p  { font-size: .9rem; color: rgba(251,245,226,.75); margin-top: .2rem; line-height: 1.5; }
+        .info-item a  { color: rgba(251,245,226,.6); text-decoration: underline; display: block; margin-top: .2rem; }
+        .info-item a:hover { color: var(--gold); }
+        .info-item .highlight { color: var(--pink); font-weight: 800; font-size: 1.15rem; margin-top: .25rem; }
+
+        .price-card {
+            background: var(--card);
+            border: 1px solid rgba(212,175,55,.3);
+            border-radius: .75rem;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: .75rem;
+        }
+        .price-card .label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: rgba(251,245,226,.7); }
+        .price-card .price { font-size: 3.5rem; font-weight: 800; line-height: 1; }
+        .price-card .note  { font-size: .8rem; color: var(--gold); font-weight: 500; line-height: 1.5; }
+
+        .cta-wrap { text-align: center; max-width: 30rem; margin-inline: auto; }
+        .cta-note { font-size: .7rem; color: rgba(251,245,226,.35); text-transform: uppercase; letter-spacing: .08em; margin-top: 1.25rem; }
+
+        /* Footer */
+        .site-footer { margin-top: 5rem; text-align: center; font-size: .8rem; color: rgba(251,245,226,.4); padding-inline: 1rem; }
+        .site-footer a { text-decoration: none; transition: color .2s; }
+        .site-footer a:hover { color: var(--gold); }
+        .site-footer p + p { margin-top: .5rem; }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-brand-pink selection:text-white pb-20">
+<body>
 
-    <header class="w-full max-w-5xl mx-auto mt-4 md:mt-8 px-4">
-        <div class="w-full aspect-[1200/400] relative overflow-hidden rounded-xl shadow-2xl border border-white/5">
-            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Método Fénix Banner" class="w-full h-full object-cover object-center opacity-90">
+    <header class="site-header">
+        <div class="banner-wrap">
+            <img src="https://www.lamentedelfenix.com/assets/banner.webp"
+                 alt="Método Fénix – Entrenamiento mental para emprendedores"
+                 width="1200" height="400"
+                 fetchpriority="high"
+                 loading="eager">
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 mt-16 md:mt-24">
-        
-        <section class="mb-20">
-            <h1 class="text-3xl md:text-5xl font-extrabold text-brand-light text-center mb-10 leading-tight">
-                El 80% del éxito en tu negocio no es estrategia,<br> 
-                <span class="text-brand-pink">es psicología.</span>
+    <main class="main">
+
+        <!-- ── Hero ─────────────────────────────────────────────────── -->
+        <section class="container">
+            <h1 class="hero-title">
+                El 80% del éxito en tu negocio no es estrategia,<br>
+                <span class="accent">es psicología.</span>
             </h1>
 
-            <div class="space-y-6 text-lg md:text-xl text-brand-light/90 leading-relaxed font-medium">
+            <div class="hero-body">
                 <p>Si llevas meses (o años) atascado en el mismo nivel de facturación...</p>
                 <p>Si cada vez que ganas dinero, ocurre algo y lo pierdes o te lo gastas...</p>
-                <p>Deja de comprar más cursos de marketing. El problema no es tu embudo de ventas. <strong class="text-brand-gold">El problema es tu Inconsciente.</strong></p>
+                <p>Deja de comprar más cursos de marketing. El problema no es tu embudo de ventas. <strong>El problema es tu Inconsciente.</strong></p>
             </div>
 
-            <!-- Síntomas del emprendedor (espaciados para respirar) -->
-            <div class="mt-12 bg-brand-darker p-8 md:p-10 rounded-xl border border-white/5 shadow-lg">
-                <h2 class="text-xl font-bold text-brand-gold mb-8">Tu negocio se bloquea porque TÚ estás bloqueado:</h2>
-                <ul class="space-y-6 text-base md:text-lg text-brand-light/80">
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-times text-brand-pink mt-1"></i>
-                        <span>Dudas eternamente qué rumbo tomar.</span>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-times text-brand-pink mt-1"></i>
-                        <span>Te tiembla el pulso al poner tus precios.</span>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-times text-brand-pink mt-1"></i>
-                        <span>No sabes cómo comunicar tu producto por miedo a exponerte y al "qué dirán".</span>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-times text-brand-pink mt-1"></i>
-                        <span>El estrés y el miedo te paralizan a la hora de tomar decisiones importantes.</span>
-                    </li>
+            <div class="symptoms-box">
+                <h2>Tu negocio se bloquea porque TÚ estás bloqueado:</h2>
+                <ul class="symptoms-list">
+                    <li><i class="fas fa-times" aria-hidden="true"></i><span>Dudas eternamente qué rumbo tomar.</span></li>
+                    <li><i class="fas fa-times" aria-hidden="true"></i><span>Te tiembla el pulso al poner tus precios.</span></li>
+                    <li><i class="fas fa-times" aria-hidden="true"></i><span>No sabes cómo comunicar tu producto por miedo a exponerte y al "qué dirán".</span></li>
+                    <li><i class="fas fa-times" aria-hidden="true"></i><span>El estrés y el miedo te paralizan a la hora de tomar decisiones importantes.</span></li>
                 </ul>
             </div>
         </section>
 
-        <section class="mb-24">
-            <div class="border-l-4 border-brand-gold pl-6 md:pl-10 py-2 my-16">
-                <p class="text-2xl md:text-3xl font-extrabold text-brand-light leading-snug">
-                    "Seguir la mejor estrategia de marketing del mundo no sirve de nada si, <span class="text-brand-pink underline">por ejemplo</span>, no te sientes merecedor de lo que vas a recibir."
-                </p>
-            </div>
+        <!-- ── Cita + texto ──────────────────────────────────────────── -->
+        <section class="container">
+            <blockquote class="blockquote">
+                <p>"Seguir la mejor estrategia de marketing del mundo no sirve de nada si, <span class="accent">por ejemplo</span>, no te sientes merecedor de lo que vas a recibir."</p>
+            </blockquote>
 
-            <div class="space-y-8 text-lg text-brand-light/80 leading-relaxed">
-                <p>Digo <em class="text-brand-light">"por ejemplo"</em> porque el no merecimiento es solo uno de los muchos programas que corren en tu mente.</p>
-                <p>Tu mente está programada para mantenerte "a salvo", no para hacerte exitoso. Cualquier herida de rechazo, de abandono o de falta de valor que viviste en tu pasado, <strong class="text-brand-gold">hoy está dirigiendo tu empresa.</strong></p>
+            <div class="body-text">
+                <p>Digo <em>"por ejemplo"</em> porque el no merecimiento es solo uno de los muchos programas que corren en tu mente.</p>
+                <p>Tu mente está programada para mantenerte "a salvo", no para hacerte exitoso. Cualquier herida de rechazo, de abandono o de falta de valor que viviste en tu pasado, <strong>hoy está dirigiendo tu empresa.</strong></p>
                 <p>Estás proyectando tu historia personal en tus clientes y en tu cuenta bancaria. Es como intentar conducir un Ferrari mientras tu Inconsciente pisa el freno a fondo sin que te des cuenta.</p>
             </div>
         </section>
 
-        <section class="mb-24 bg-brand-darker rounded-2xl p-6 md:p-12 shadow-2xl border border-brand-gold/10">
-            <div class="text-center mb-10">
-                <h2 class="text-2xl md:text-3xl font-bold text-brand-light mb-4">Soy Darío Arrigazzi</h2>
-                <p class="text-brand-gold font-medium">Creador del Método Fénix</p>
-            </div>
-
-            <div class="space-y-6 text-base md:text-lg text-brand-light/80 leading-relaxed mb-10">
-                <p>No te hablo desde la teoría. Vengo de vivir el maltrato en mi casa desde que tengo uso de razón. Crecí viendo cosas que ningún niño debería ver y arrastré una inseguridad paralizante durante años.</p>
-                <p>A pesar de estar roto por dentro, logré convertirme en Director de Operaciones y <a href="https://lovenaturesuperfoods.com/ourstory/" target="_blank" class="text-brand-pink font-bold hover:underline">co-fundador de Lovenature Superfoods Group</a>. Pero el estrés de dirigir una empresa solo amplificó mis propios fantasmas. Mi mente era mi mayor límite.</p>
-                <p>Tuve que ir a lo más profundo de mi Inconsciente para sanar y reprogramarme. Hoy, llevo años ejerciendo como terapeuta, combinando la trinchera del mundo empresarial con el desbloqueo emocional para que tú no tengas que pasar años peleando contra ti mismo.</p>
-            </div>
-
-            <!-- Contenedor de Vídeo YouTube -->
-            <div class="video-container shadow-2xl border-2 border-brand-gold/20">
-                <!-- RECUERDA: Cambia "ID_DE_TU_VIDEO" por las letras del enlace de tu video de YouTube -->
-                <iframe src="https://www.youtube.com/embed/ID_DE_TU_VIDEO?rel=0" title="Presentación Taller" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <p class="text-center text-sm text-brand-light/50 mt-4 italic"><i class="fas fa-volume-up mr-2"></i> Activa el sonido. Te lo explico en 4 minutos.</p>
-        </section>
-
-        <section class="mb-24">
-            <h2 class="text-2xl md:text-4xl font-extrabold text-brand-light mb-8 text-center leading-tight">Qué vas a conseguir en estas 2 horas</h2>
-            <p class="text-center text-brand-light/80 mb-16 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-                No te voy a hacer promesas mágicas. En dos horas te voy a dar <strong class="text-brand-gold">claridad absoluta</strong> y herramientas prácticas para destrabar tu negocio.
-            </p>
-
-            <div class="grid md:grid-cols-2 gap-8 md:gap-10">
-                <!-- Caja 1 -->
-                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
-                    <i class="fas fa-handshake text-4xl text-brand-gold mb-6"></i>
-                    <h3 class="font-bold text-xl text-brand-light mb-4">Confianza para Negociar</h3>
-                    <p class="text-brand-light/70 text-base leading-relaxed">Entenderás por qué te cuesta valorarte. Te llevarás las bases para ganar confianza inquebrantable frente a tus socios, tus clientes y frente al espejo.</p>
-                </div>
-                
-                <!-- Caja 2 -->
-                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
-                    <i class="fas fa-compass text-4xl text-brand-gold mb-6"></i>
-                    <h3 class="font-bold text-xl text-brand-light mb-4">Visión bajo Presión</h3>
-                    <p class="text-brand-light/70 text-base leading-relaxed">Aprenderás a mantener tu centro y no perder la visión de tu negocio cuando el estrés, la incertidumbre o las crisis llamen a la puerta.</p>
+        <!-- ── Bio + Vídeo ───────────────────────────────────────────── -->
+        <section class="container">
+            <div class="bio-box">
+                <div class="bio-header">
+                    <h2>Soy Darío Arrigazzi</h2>
+                    <p>Creador del Método Fénix</p>
                 </div>
 
-                <!-- Caja 3 -->
-                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
-                    <i class="fas fa-bullseye text-4xl text-brand-gold mb-6"></i>
-                    <h3 class="font-bold text-xl text-brand-light mb-4">Foco Inquebrantable</h3>
-                    <p class="text-brand-light/70 text-base leading-relaxed">Descubrirás cómo blindar tu mente frente al ruido tóxico y la negatividad del entorno, dirigiendo tu energía solo a lo que hace crecer tu empresa.</p>
+                <div class="bio-body">
+                    <p>No te hablo desde la teoría. Vengo de vivir el maltrato en mi casa desde que tengo uso de razón. Crecí viendo cosas que ningún niño debería ver y arrastré una inseguridad paralizante durante años.</p>
+                    <p>A pesar de estar roto por dentro, logré convertirme en Director de Operaciones y <a href="https://lovenaturesuperfoods.com/ourstory/" target="_blank" rel="noopener noreferrer">co-fundador de Lovenature Superfoods Group</a>. Pero el estrés de dirigir una empresa solo amplificó mis propios fantasmas. Mi mente era mi mayor límite.</p>
+                    <p>Tuve que ir a lo más profundo de mi Inconsciente para sanar y reprogramarme. Hoy, llevo años ejerciendo como terapeuta, combinando la trinchera del mundo empresarial con el desbloqueo emocional para que tú no tengas que pasar años peleando contra ti mismo.</p>
                 </div>
 
-                <!-- Caja 4 -->
-                <div class="bg-[#222] p-8 rounded-xl shadow-lg border border-white/5 hover:border-brand-gold/30 transition-colors">
-                    <i class="fas fa-unlock-alt text-4xl text-brand-gold mb-6"></i>
-                    <h3 class="font-bold text-xl text-brand-light mb-4">Liberar el Freno</h3>
-                    <p class="text-brand-light/70 text-base leading-relaxed">Trabajaremos en soltar la carga de estrés y el miedo al rechazo. Pasarás de tomar decisiones desde la supervivencia a decidir desde la claridad total.</p>
+                <!-- Vídeo cargado de forma lazy para no bloquear el render -->
+                <div class="video-wrap">
+                    <iframe
+                        src="https://www.youtube.com/embed/ID_DE_TU_VIDEO?rel=0"
+                        title="Presentación Taller – Método Fénix"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
                 </div>
+                <p class="video-caption"><i class="fas fa-volume-up" aria-hidden="true"></i> Activa el sonido. Te lo explico en 4 minutos.</p>
             </div>
         </section>
 
-        <section class="bg-brand-darker rounded-2xl p-6 md:p-12 shadow-2xl border-t-4 border-brand-pink relative overflow-hidden">
-            <!-- Efecto de fondo -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-pink/5 rounded-full blur-3xl -z-0"></div>
+        <!-- ── Beneficios ────────────────────────────────────────────── -->
+        <section class="container">
+            <h2 class="benefits-title">Qué vas a conseguir en estas 2 horas</h2>
+            <p class="benefits-intro">No te voy a hacer promesas mágicas. En dos horas te voy a dar <strong>claridad absoluta</strong> y herramientas prácticas para destrabar tu negocio.</p>
 
-            <div class="relative z-10">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-light text-center mb-12">Detalles del Taller</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-handshake" aria-hidden="true"></i></div>
+                    <h3>Confianza para Negociar</h3>
+                    <p>Entenderás por qué te cuesta valorarte. Te llevarás las bases para ganar confianza inquebrantable frente a tus socios, tus clientes y frente al espejo.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-compass" aria-hidden="true"></i></div>
+                    <h3>Visión bajo Presión</h3>
+                    <p>Aprenderás a mantener tu centro y no perder la visión de tu negocio cuando el estrés, la incertidumbre o las crisis llamen a la puerta.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-bullseye" aria-hidden="true"></i></div>
+                    <h3>Foco Inquebrantable</h3>
+                    <p>Descubrirás cómo blindar tu mente frente al ruido tóxico y la negatividad del entorno, dirigiendo tu energía solo a lo que hace crecer tu empresa.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-unlock-alt" aria-hidden="true"></i></div>
+                    <h3>Liberar el Freno</h3>
+                    <p>Trabajaremos en soltar la carga de estrés y el miedo al rechazo. Pasarás de tomar decisiones desde la supervivencia a decidir desde la claridad total.</p>
+                </div>
+            </div>
+        </section>
 
-                <div class="grid md:grid-cols-2 gap-8 mb-12">
-                    <!-- Datos -->
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-4">
-                            <i class="fas fa-users text-2xl text-brand-gold mt-1 w-8 text-center"></i>
-                            <div>
-                                <h4 class="font-bold text-brand-light text-lg">Exclusivo y Privado</h4>
-                                <p class="text-brand-pink font-extrabold text-xl mt-1">Solo 9 plazas</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <i class="fas fa-map-marker-alt text-2xl text-brand-gold mt-1 w-8 text-center"></i>
-                            <div>
-                                <h4 class="font-bold text-brand-light text-lg">Presencial en Oviedo</h4>
-                                <p class="text-brand-light/90 mt-1">Zona de La Corredoria</p>
-                                <a href="https://share.google/5bwOjAaB0cyqSUTvT" target="_blank" class="text-brand-light/70 hover:text-brand-gold underline mt-1 block leading-relaxed">Ver ubicación exacta en Google Maps</a>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <i class="far fa-calendar-alt text-2xl text-brand-gold mt-1 w-8 text-center"></i>
-                            <div>
-                                <h4 class="font-bold text-brand-light text-lg">Fecha y Hora</h4>
-                                <p class="text-brand-light/70 mt-1">[Pon aquí tu fecha, Ej: Sábado 15 de Junio, 10:00h]</p>
-                            </div>
-                        </div>
-                    </div>
+        <!-- ── Detalles / CTA ────────────────────────────────────────── -->
+        <section class="container">
+            <div class="details-box">
+                <h2>Detalles del Taller</h2>
 
-                    <!-- Inversión -->
-                    <div class="bg-[#222] p-8 rounded-xl border border-brand-gold/30 text-center flex flex-col justify-center">
-                        <p class="text-brand-light/80 text-sm font-bold uppercase tracking-widest mb-4">Edición Piloto</p>
-                        <p class="text-5xl font-extrabold text-brand-light mb-4">45€</p>
-                        <p class="text-sm text-brand-gold font-medium leading-relaxed">Al ser la primera edición presencial, el precio es reducido. Las siguientes ediciones tendrán un valor superior. Es así de simple.</p>
+                <div class="details-grid">
+                    <ul class="info-list" role="list">
+                        <li class="info-item">
+                            <span class="icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+                            <div>
+                                <h4>Exclusivo y Privado</h4>
+                                <p class="highlight">Solo 9 plazas</p>
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <span class="icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span>
+                            <div>
+                                <h4>Presencial en Oviedo</h4>
+                                <p>Zona de La Corredoria</p>
+                                <a href="https://share.google/5bwOjAaB0cyqSUTvT" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <span class="icon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+                            <div>
+                                <h4>Fecha y Hora</h4>
+                                <p>[Pon aquí tu fecha, Ej: Sábado 15 de Junio, 10:00h]</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="price-card">
+                        <p class="label">Edición Piloto</p>
+                        <p class="price">45€</p>
+                        <p class="note">Al ser la primera edición presencial, el precio es reducido. Las siguientes ediciones tendrán un valor superior. Es así de simple.</p>
                     </div>
                 </div>
 
-                <div class="text-center max-w-xl mx-auto">
-                    <!-- RECUERDA: Cambia "34XXXXXXXXXX" por tu número de teléfono real -->
-                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20una%20de%20las%209%20plazas%20para%20el%20taller%20presencial%20por%2045%E2%82%AC." 
-                       target="_blank" 
-                       class="inline-block w-full md:w-auto btn-gold text-lg md:text-xl px-10 py-5 rounded-lg font-extrabold tracking-wide shadow-xl">
-                        <i class="fab fa-whatsapp text-2xl mr-3 align-middle"></i> Quiero una de las 9 plazas
+                <div class="cta-wrap">
+                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20una%20de%20las%209%20plazas%20para%20el%20taller%20presencial%20por%2045%E2%82%AC."
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn-gold"
+                       aria-label="Reservar plaza por WhatsApp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        Quiero una de las 9 plazas
                     </a>
-                    <p class="text-xs text-brand-light/40 mt-6 uppercase tracking-wider">La reserva se realiza por orden estricto de llegada al WhatsApp.</p>
+                    <p class="cta-note">La reserva se realiza por orden estricto de llegada al WhatsApp.</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="mt-20 text-center text-brand-light/50 text-sm px-4">
+    <footer class="site-footer">
         <p>&copy; 2026 La Mente del Fénix — Método Fénix. Todos los derechos reservados.</p>
-        <p class="mt-2"><a href="mailto:darioarrigazzi@lamentedelfenix.com" class="hover:text-brand-gold transition-colors">darioarrigazzi@lamentedelfenix.com</a></p>
+        <p><a href="mailto:darioarrigazzi@lamentedelfenix.com">darioarrigazzi@lamentedelfenix.com</a></p>
     </footer>
 
 </body>
