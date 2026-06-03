@@ -15,15 +15,12 @@
 
     <title>Entrenamiento Mental para Emprendedores | Método Fénix</title>
 
-    <!-- Preconnect para recursos externos críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-    <!-- Fuente: solo los pesos necesarios -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome diferida (no bloquea el render) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
@@ -79,7 +76,6 @@
             cursor: pointer;
             width: 100%;
             transition: background .25s, transform .2s, box-shadow .25s;
-            /* Área táctil mínima recomendada */
             min-height: 3.25rem;
         }
         .btn-gold:hover,
@@ -140,7 +136,7 @@
             background: var(--darker);
             padding: 2rem;
             border-radius: .75rem;
-            border: 1px solid rgba(255,255,255,.05);
+            border: 1px solid rgba(212,175,55,.3);
         }
         @media (min-width: 768px) { .symptoms-box { padding: 2.5rem; } }
 
@@ -148,7 +144,7 @@
 
         .symptoms-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
         .symptoms-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: clamp(.9rem, 2vw, 1.05rem); color: rgba(251,245,226,.8); line-height: 1.5; }
-        .symptoms-list .fa-times { color: var(--pink); margin-top: .2rem; flex-shrink: 0; }
+        .symptoms-list .fa-check { color: var(--gold); margin-top: .2rem; flex-shrink: 0; }
 
         /* Cita blockquote */
         .blockquote {
@@ -302,7 +298,6 @@
 
     <main class="main">
 
-        <!-- ── Hero ─────────────────────────────────────────────────── -->
         <section class="container">
             <h1 class="hero-title">
                 El 80% del éxito en tu negocio no es estrategia,<br>
@@ -310,26 +305,20 @@
             </h1>
 
             <div class="hero-body">
-                <p>Si llevas meses (o años) atascado en el mismo nivel de facturación...</p>
-                <p>Si cada vez que ganas dinero, ocurre algo y lo pierdes o te lo gastas...</p>
-                <p>Deja de comprar más cursos de marketing. El problema no es tu embudo de ventas. <strong>El problema es tu Inconsciente.</strong></p>
-            </div>
-
-            <div class="symptoms-box">
-                <h2>Tu negocio se bloquea porque TÚ estás bloqueado:</h2>
-                <ul class="symptoms-list">
-                    <li><i class="fas fa-times" aria-hidden="true"></i><span>Estás cansado de luchar contra tu propia mente y tus emociones cada vez que debes tomar acción en tu negocio.</span></li>
-                    <li><i class="fas fa-times" aria-hidden="true"></i><span>Dudas eternamente qué rumbo tomar.</span></li>
-                    <li><i class="fas fa-times" aria-hidden="true"></i><span>Te tiembla el pulso al poner tus precios.</span></li>
-                    <li><i class="fas fa-times" aria-hidden="true"></i><span>No sabes cómo comunicar tu producto por miedo a exponerte y al "qué dirán".</span></li>
-                    <li><i class="fas fa-times" aria-hidden="true"></i><span>El estrés y el miedo te paralizan a la hora de tomar decisiones importantes.</span></li>
-                </ul>
+                <p>Tienes mucho talento como emprendedor y te esfuerzas a diario, pero probablemente sientes que <strong>no estás obteniendo los resultados que realmente mereces.</strong></p>
+                <p>Incluso puede que sientas como si hubiera una parte de ti que parece que no quiere que prosperes.</p>
+                <p>Te entiendo, lo he vivido, e incluso a día de hoy a veces me pasa. El mundo del emprendimiento es solitario, está lleno de dudas y de angustia.</p>
+                <p>Y las redes sociales están llenas de gente que te dice todo lo que haces mal, prometiéndote miles de estrategias y la "clave" del éxito...</p>
+                
+                <p style="font-size: 1.4rem; font-weight: 800; color: var(--pink); text-align: center; margin-block: .5rem;">...¡COÑO!</p>
+                
+                <p>¿Por qué quieren venderte su estrategia y no la usan para hacerse ricos? ¿Por qué no somos todos ricos, si en internet ya se conocen casi todas las estrategias?</p>
+                <p>Porque por desgracia no es tan fácil, ojalá pudiera prometerte que lo es. La realidad es que hay <strong>algo más profundo</strong>, y es lo que te quiero enseñar en este taller gratuito.</p>
+                <p>Para que te hagas una idea, <strong>mira el primer minuto del siguiente vídeo</strong> donde te enseño un conocimiento sobre ti más útil que todas las estrategias que ves por internet.</p>
             </div>
         </section>
 
-        <!-- ── Vídeo + Cita + texto ──────────────────────────────────── -->
         <section class="container">
-            <!-- Vídeo reubicado al principio con el texto actualizado -->
             <div class="video-wrap">
                 <iframe
                     src="https://www.youtube.com/embed/Dy-rhpsko2s?rel=0"
@@ -339,20 +328,18 @@
                     loading="lazy">
                 </iframe>
             </div>
-            <p class="video-caption"><i class="fas fa-volume-up" aria-hidden="true"></i> Activa el sonido. Te lo explico en menos de 3 minutos.</p>
+            <p class="video-caption"><i class="fas fa-volume-up" aria-hidden="true"></i> Activa el sonido y haz el ejercicio del vídeo antes de seguir leyendo.</p>
 
             <blockquote class="blockquote">
-                <p>"Seguir la mejor estrategia de marketing del mundo no sirve de nada si, <span class="accent">por ejemplo</span>, no te sientes merecedor de lo que vas a recibir."</p>
+                <p>"Tu negocio crecerá exactamente hasta donde <span class="accent">tu mentalidad</span> se lo permita. Si expandimos tus filtros mentales, expandimos tus resultados."</p>
             </blockquote>
 
             <div class="body-text">
-                <p>Digo <em>"por ejemplo"</em> porque el no merecimiento es solo uno de los muchos programas que corren en tu mente.</p>
-                <p>Tu mente está programada para mantenerte "a salvo", no para hacerte exitoso. Cualquier herida de rechazo, de abandono o de falta de valor que viviste en tu pasado, <strong>hoy está dirigiendo tu empresa.</strong></p>
-                <p>Estás proyectando tu historia personal en tus clientes y en tu cuenta bancaria. Es como intentar conducir un Ferrari mientras tu Inconsciente pisa el freno a fondo sin que te des cuenta.</p>
+                <p>Tus creencias limitantes, tus miedos y tus emociones reprimidas actúan exactamente igual que el filtro del vídeo. <strong>Hacen que te pasen por delante las oportunidades, las soluciones y el dinero sin que seas capaz de verlos.</strong></p>
+                <p>Tu mente Inconsciente está programada para mantenerte en lo conocido, no para hacerte exitoso. Mientras sigas operando con esos bloqueos invisibles, es como intentar conducir un Ferrari mientras pisas el freno a fondo sin darte cuenta.</p>
             </div>
         </section>
 
-        <!-- ── Bio ───────────────────────────────────────────────────── -->
         <section class="container">
             <div class="bio-box">
                 <div class="bio-header">
@@ -368,10 +355,9 @@
             </div>
         </section>
 
-        <!-- ── Beneficios ────────────────────────────────────────────── -->
         <section class="container">
             <h2 class="benefits-title">Qué vas a conseguir en estas 2 horas</h2>
-            <p class="benefits-intro">No te voy a hacer promesas mágicas. En dos horas te voy a dar <strong>claridad</strong> y <strong style="color: var(--pink);">herramientas</strong> prácticas para destrabar tu negocio.</p>
+            <p class="benefits-intro">Mi compromiso contigo: En estas dos horas te llevarás una <strong>hoja de ruta mental</strong> y <strong style="color: var(--pink);">estrategias prácticas</strong> que podrás aplicar esa misma tarde.</p>
 
             <div class="benefits-grid">
                 <div class="benefit-card">
@@ -397,7 +383,6 @@
             </div>
         </section>
 
-        <!-- ── Detalles / CTA ────────────────────────────────────────── -->
         <section class="container">
             <div class="details-box">
                 <h2>Detalles del Taller</h2>
@@ -408,43 +393,42 @@
                             <span class="icon"><i class="fas fa-users" aria-hidden="true"></i></span>
                             <div>
                                 <h4>Exclusivo y Privado</h4>
-                                <p class="highlight">Solo 9 plazas por convocatoria</p>
+                                <p class="highlight">Grupo reducido (Plazas limitadas)</p>
                             </div>
                         </li>
                         <li class="info-item">
-                            <span class="icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span>
+                            <span class="icon"><i class="fas fa-laptop" aria-hidden="true"></i></span>
                             <div>
-                                <h4>Presencial en Oviedo</h4>
-                                <p>Zona de La Corredoria</p>
-                                <p>SEPRAS Centro de Negocios</p>
-                                <a href="https://share.google/5bwOjAaB0cyqSUTvT" target="_blank" rel="noopener noreferrer">Ver ubicación en Google Maps</a>
+                                <h4>Formato Online (En Directo)</h4>
+                                <p>Acceso desde cualquier lugar</p>
+                                <p>El enlace de acceso se entregará por privado</p>
                             </div>
                         </li>
                         <li class="info-item">
                             <span class="icon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             <div>
                                 <h4>Fecha y Hora</h4>
-                                <p>Viernes 12 de Junio a las 17:00h</p>
+                                <p>Viernes 12 de Junio a las 17:00h (Hora España)</p>
                                 <p>Duración: 2 horas aproximadamente</p>
                             </div>
                         </li>
                     </ul>
 
                     <div class="price-card">
-                        <p class="label">Edición Piloto</p>
-                        <p class="price">45€</p>
-                        <p class="note">Al ser la primera edición presencial, el precio es reducido. Las siguientes ediciones tendrán un valor superior. Es así de simple.</p>
+                        <p class="label">Edición Inaugural</p>
+                        <p class="price" style="color: var(--pink);">100% Gratuito</p>
+                        <p class="note">He decidido becar por completo esta primera edición online a cambio de tu testimonio honesto al finalizar. Las próximas serán de pago.</p>
                     </div>
                 </div>
 
                 <div class="cta-wrap">
-                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20mi%20plaza%20para%20la%20pr%C3%B3xima%20convocatoria%20del%20taller%20presencial%20por%2045%E2%82%AC."
+                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20mi%20plaza%20gratuita%20para%20el%20taller%20ONLINE."
                        target="_blank"
                        rel="noopener noreferrer"
                        class="btn-gold"
                        aria-label="Reservar plaza por WhatsApp">
                         <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                        Quiero mi plaza (Grupo de 9)
+                        Reservar mi plaza gratuita
                     </a>
                     <p class="cta-note">Reserva por estricto orden de llegada. Si se llena el grupo, pasarás a la siguiente convocatoria.</p>
                 </div>
