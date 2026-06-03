@@ -115,7 +115,7 @@
         .main { margin-top: 4rem; }
         @media (min-width: 768px) { .main { margin-top: 6rem; } }
 
-        section { margin-bottom: 5rem; }
+        section { margin-bottom: 7rem; } /* Aumentado de 5rem a 7rem para separar más los bloques */
 
         /* Hero */
         .hero-title {
@@ -127,7 +127,8 @@
         }
         .hero-title .accent { color: var(--pink); }
 
-        .hero-body { display: flex; flex-direction: column; gap: 1.5rem; font-size: clamp(1.1rem, 3vw, 1.15rem); font-weight: 500; line-height: 1.8; color: rgba(251,245,226,.9); }
+        /* Espacio entre párrafos duplicado (gap: 3rem en vez de 1.5rem) */
+        .hero-body { display: flex; flex-direction: column; gap: 3rem; font-size: clamp(1.1rem, 3vw, 1.15rem); font-weight: 500; line-height: 1.8; color: rgba(251,245,226,.9); }
         .hero-body strong { color: var(--gold); }
 
         /* Síntomas */
@@ -156,7 +157,8 @@
         .blockquote p { font-size: clamp(1.2rem, 3.5vw, 1.75rem); font-weight: 800; line-height: 1.35; }
         .blockquote .accent { color: var(--pink); text-decoration: underline; }
 
-        .body-text { display: flex; flex-direction: column; gap: 1.75rem; font-size: clamp(1.1rem, 3vw, 1.15rem); color: rgba(251,245,226,.8); line-height: 1.8; }
+        /* Espacio entre párrafos duplicado (gap: 3rem) */
+        .body-text { display: flex; flex-direction: column; gap: 3rem; font-size: clamp(1.1rem, 3vw, 1.15rem); color: rgba(251,245,226,.8); line-height: 1.8; }
         .body-text strong { color: var(--gold); }
         .body-text em { color: var(--light); font-style: italic; }
 
@@ -299,11 +301,6 @@
     <main class="main">
 
         <section class="container">
-            <h1 class="hero-title">
-                El 80% del éxito en tu negocio no es estrategia,<br>
-                <span class="accent">es psicología.</span>
-            </h1>
-
             <div class="hero-body">
                 <p>Tienes <strong>mucho talento</strong> como emprendedor y te esfuerzas a diario y aún así sientes que <strong>no estás obteniendo los resultados</strong> que realmente mereces.</p>
                 
@@ -337,7 +334,8 @@
             </div>
             <p class="video-caption"><i class="fas fa-volume-up" aria-hidden="true"></i> Activa el sonido y haz el ejercicio del vídeo antes de seguir leyendo.</p>
 
-            <div class="body-text" style="margin-top: 2.5rem;">
+            <!-- Aumentado el margen superior para separar el vídeo del texto -->
+            <div class="body-text" style="margin-top: 5rem;">
                 <p>Tus creencias limitantes, tus miedos y tus emociones reprimidas actúan exactamente igual que el filtro del vídeo. <strong>Hacen que te pasen por delante las oportunidades, las soluciones y el dinero sin que seas capaz de verlos.</strong></p>
             </div>
         </section>
@@ -393,18 +391,11 @@
                 <div class="details-grid">
                     <ul class="info-list" role="list">
                         <li class="info-item">
-                            <span class="icon"><i class="fas fa-users" aria-hidden="true"></i></span>
-                            <div>
-                                <h4>Exclusivo y Privado</h4>
-                                <p class="highlight">Grupo reducido (Plazas limitadas)</p>
-                            </div>
-                        </li>
-                        <li class="info-item">
                             <span class="icon"><i class="fas fa-laptop" aria-hidden="true"></i></span>
                             <div>
                                 <h4>Formato Online (En Directo)</h4>
                                 <p>Acceso desde cualquier lugar</p>
-                                <p>El enlace de acceso se entregará por privado</p>
+                                <p>El enlace de acceso se entregará por correo al registrarte</p>
                             </div>
                         </li>
                         <li class="info-item">
@@ -420,20 +411,19 @@
                     <div class="price-card">
                         <p class="label">Edición Inaugural</p>
                         <p class="price" style="color: var(--pink);">100% Gratuito</p>
-                        <p class="note">He decidido becar por completo esta primera edición online a cambio de tu testimonio honesto al finalizar. Las próximas serán de pago.</p>
+                        <p class="note">He decidido becar por completo esta primera edición online a cambio de tu testimonio honesto al finalizar.</p>
                     </div>
                 </div>
 
                 <div class="cta-wrap">
-                    <a href="https://wa.me/34667752916?text=Hola%20Dar%C3%ADo%2C%20quiero%20reservar%20mi%20plaza%20gratuita%20para%20el%20taller%20ONLINE."
+                    <a href="https://preview.mailerlite.io/forms/2299267/186991508731200673/share"
                        target="_blank"
                        rel="noopener noreferrer"
                        class="btn-gold"
-                       aria-label="Reservar plaza por WhatsApp">
-                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                       aria-label="Registrarse por correo">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
                         Reservar mi plaza gratuita
                     </a>
-                    <p class="cta-note">Reserva por estricto orden de llegada. Si se llena el grupo, pasarás a la siguiente convocatoria.</p>
                 </div>
             </div>
         </section>
