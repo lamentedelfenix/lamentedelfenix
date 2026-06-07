@@ -235,6 +235,57 @@
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button { background-color: var(--gold) !important; color: var(--darker) !important; font-family: var(--font) !important; font-weight: 800 !important; font-size: 1.1rem !important; border-radius: .5rem !important; padding: 1.1rem !important; transition: background .25s, transform .2s, box-shadow .25s !important; }
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover { background-color: var(--light) !important; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212,175,55,.25); }
 
+        /* ── Carrusel testimonios ── */
+        .testimonials-outer { padding: 0; }
+
+        .carousel-wrapper {
+            position: relative; width: 100%; height: 460px;
+            display: flex; justify-content: center; align-items: center;
+            perspective: 1200px; overflow: hidden;
+        }
+        @media (min-width: 480px) { .carousel-wrapper { height: 530px; } }
+        @media (min-width: 768px) { .carousel-wrapper { height: 600px; } }
+
+        .testimonial-carousel {
+            position: relative; width: 200px; height: 100%;
+            transform-style: preserve-3d; cursor: grab;
+        }
+        @media (min-width: 480px) { .testimonial-carousel { width: 240px; } }
+        @media (min-width: 768px) { .testimonial-carousel { width: 290px; } }
+        .testimonial-carousel.grabbing { cursor: grabbing; }
+
+        .testimonial-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform .5s cubic-bezier(.77,0,.175,1), opacity .5s ease;
+            user-select: none;
+        }
+        .testimonial-image {
+            width: 100%; height: 100%; object-fit: contain; pointer-events: none;
+            border-radius: .5rem;
+        }
+
+        .carousel-button {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(34,34,34,.9); border: 1px solid rgba(212,175,55,.3);
+            border-radius: 9999px; width: 2.5rem; height: 2.5rem;
+            color: var(--light); font-size: 1.1rem;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 20;
+            transition: background .2s, transform .2s, border-color .2s;
+        }
+        .carousel-button:hover {
+            background: var(--gold); color: var(--darker);
+            transform: translateY(-50%) scale(1.1); border-color: var(--gold);
+        }
+        .carousel-button.prev { left: 2%; }
+        .carousel-button.next { right: 2%; }
+        @media (min-width: 768px) {
+            .carousel-button { width: 3rem; height: 3rem; font-size: 1.3rem; }
+            .carousel-button.prev { left: 5%; }
+            .carousel-button.next { right: 5%; }
+        }
+
         /* ── Final signup rediseñado ── */
         .final-signup-wrap { margin-top: 3rem; }
 
@@ -490,6 +541,18 @@
         </section>
 
         <section class="container">
+            <div class="testimonials-outer">
+                <h2 class="benefits-title" style="margin-bottom:.75rem;">Lo que dicen quienes ya han trabajado conmigo</h2>
+                <p class="benefits-intro" style="margin-bottom:2.5rem;">Resultados reales de personas reales. Pulsa las flechas o arrastra para ver más.</p>
+                <div class="carousel-wrapper">
+                    <div id="testimonial-carousel" class="testimonial-carousel"></div>
+                    <button id="prev-btn" class="carousel-button prev" aria-label="Anterior">&#10094;</button>
+                    <button id="next-btn" class="carousel-button next" aria-label="Siguiente">&#10095;</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
             <div class="details-box">
                 <h2>Detalles del Taller</h2>
                 <div class="details-grid">
@@ -589,5 +652,92 @@
         fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/takel")
     </script>
 
+    <script>
+        // Carrusel de testimonios
+        window.addEventListener('load', function() {
+            var carousel = document.getElementById('testimonial-carousel');
+            if (!carousel) return;
+            var prevBtn = document.getElementById('prev-btn');
+            var nextBtn = document.getElementById('next-btn');
+
+            var images = [
+                './assets/Captura 1.webp',
+                './assets/Captura 2.webp',
+                './assets/Captura 3.webp',
+                './assets/Captura 4.webp',
+                './assets/Captura 5.webp',
+                './assets/Captura 6.webp',
+                './assets/Captura 7.webp'
+            ];
+
+            var currentIndex = 5;
+            var slides = [];
+            var isDragging = false, startPos = 0, dragOffset = 0;
+
+            images.forEach(function(src, i) {
+                var slide = document.createElement('div');
+                slide.className = 'testimonial-slide';
+                var img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Testimonio de cliente ' + (i + 1);
+                img.className = 'testimonial-image';
+                img.draggable = false;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                slide.appendChild(img);
+                carousel.appendChild(slide);
+                slides.push(slide);
+            });
+
+            function updateCarousel() {
+                slides.forEach(function(slide, i) {
+                    var offset = i - currentIndex;
+                    var transform = 'scale(0)', opacity = '0', zIndex = '0';
+                    if (Math.abs(offset) < 2) {
+                        var sign = offset > 0 ? 1 : offset < 0 ? -1 : 0;
+                        opacity = '0.5'; zIndex = String(10 - Math.abs(offset));
+                        if (offset === 0) {
+                            transform = 'translateX(0) translateZ(0) rotateY(0) scale(1.08)';
+                            opacity = '1';
+                        } else {
+                            transform = 'translateX(' + (sign * 210) + 'px) translateZ(-160px) rotateY(' + (-sign * 42) + 'deg) scale(0.82)';
+                        }
+                    }
+                    slide.style.transform = transform;
+                    slide.style.opacity = opacity;
+                    slide.style.zIndex = zIndex;
+                });
+            }
+
+            function changeSlide(dir) {
+                var n = currentIndex + dir;
+                if (n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); }
+            }
+
+            nextBtn.addEventListener('click', function() { changeSlide(1); });
+            prevBtn.addEventListener('click', function() { changeSlide(-1); });
+
+            function posX(e) { return e.type.indexOf('mouse') !== -1 ? e.pageX : e.touches[0].clientX; }
+
+            carousel.addEventListener('mousedown', function(e) { isDragging = true; startPos = posX(e); dragOffset = 0; carousel.classList.add('grabbing'); });
+            carousel.addEventListener('touchstart', function(e) { isDragging = true; startPos = posX(e); dragOffset = 0; }, { passive: true });
+            carousel.addEventListener('mousemove', function(e) { if (isDragging) dragOffset = posX(e) - startPos; });
+            carousel.addEventListener('touchmove', function(e) { if (isDragging) dragOffset = posX(e) - startPos; }, { passive: true });
+
+            function dragEnd() {
+                if (!isDragging) return;
+                isDragging = false; carousel.classList.remove('grabbing');
+                if (dragOffset > 80) changeSlide(-1);
+                else if (dragOffset < -80) changeSlide(1);
+                dragOffset = 0;
+            }
+            carousel.addEventListener('mouseup', dragEnd);
+            carousel.addEventListener('mouseleave', dragEnd);
+            carousel.addEventListener('touchend', dragEnd, { passive: true });
+
+            updateCarousel();
+            window.addEventListener('resize', updateCarousel, { passive: true });
+        });
+    </script>
 </body>
 </html>
