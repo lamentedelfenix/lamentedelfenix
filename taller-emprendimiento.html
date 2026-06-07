@@ -182,13 +182,13 @@
         /* Hero body */
         .hero-body {
             display: flex; flex-direction: column;
-            gap: 2.25rem; /* Aumentado para dar bastante más separación */
+            gap: 3.5rem; /* Aumentado drásticamente la separación en móvil */
             font-size: clamp(1.1rem, 4vw, 1.25rem);
             font-weight: 500; line-height: 1.75;
             color: rgba(251,245,226,.9);
         }
-        @media (min-width: 640px) { .hero-body { gap: 3.25rem; } }
-        @media (min-width: 768px) { .hero-body { gap: 4rem; } }
+        @media (min-width: 640px) { .hero-body { gap: 4.5rem; } }
+        @media (min-width: 768px) { .hero-body { gap: 5.5rem; } } /* Aún más separación en PC */
         .hero-body strong { color: var(--gold); }
 
         /* Bio */
@@ -203,23 +203,23 @@
         @media (min-width: 640px) { .bio-box .bio-body { gap: 1.5rem; } }
 
         /* Benefits */
-        .benefits-title { font-size: clamp(1.25rem, 5vw, 2.25rem); font-weight: 800; text-align: center; margin-bottom: 1.25rem; line-height: 1.25; }
-        @media (min-width: 640px) { .benefits-title { margin-bottom: 1.5rem; } }
-        .benefits-intro { text-align: center; color: rgba(251,245,226,.8); font-size: clamp(.9rem, 3vw, 1.1rem); line-height: 1.7; max-width: 38rem; margin-inline: auto; margin-bottom: 2.5rem; }
-        @media (min-width: 640px) { .benefits-intro { margin-bottom: 3.5rem; } }
+        .benefits-title { font-size: clamp(1.75rem, 6vw, 2.75rem); font-weight: 800; text-align: center; margin-bottom: 1.5rem; line-height: 1.25; }
+        @media (min-width: 640px) { .benefits-title { margin-bottom: 2rem; } }
+        .benefits-intro { text-align: center; color: rgba(251,245,226,.8); font-size: clamp(1.1rem, 3.5vw, 1.3rem); line-height: 1.7; max-width: 42rem; margin-inline: auto; margin-bottom: 3rem; }
+        @media (min-width: 640px) { .benefits-intro { margin-bottom: 4rem; } }
         .benefits-intro strong { color: var(--gold); }
 
-        .benefits-grid { display: grid; gap: 1rem; }
-        @media (min-width: 480px) { .benefits-grid { gap: 1.25rem; } }
-        @media (min-width: 640px) { .benefits-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+        .benefits-grid { display: grid; gap: 1.25rem; }
+        @media (min-width: 480px) { .benefits-grid { gap: 1.5rem; } }
+        @media (min-width: 640px) { .benefits-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
 
-        .benefit-card { background: var(--card); padding: 1.5rem; border-radius: .75rem; border: 1px solid rgba(255,255,255,.05); transition: border-color .25s; }
-        @media (min-width: 640px) { .benefit-card { padding: 2rem; } }
+        .benefit-card { background: var(--card); padding: 1.75rem; border-radius: .75rem; border: 1px solid rgba(255,255,255,.05); transition: border-color .25s; }
+        @media (min-width: 640px) { .benefit-card { padding: 2.25rem; } }
         .benefit-card:hover { border-color: rgba(212,175,55,.3); }
-        .benefit-card .icon { font-size: 2rem; color: var(--gold); margin-bottom: 1rem; }
-        .benefit-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .6rem; }
-        @media (min-width: 640px) { .benefit-card h3 { font-size: 1.1rem; } }
-        .benefit-card p { font-size: .875rem; color: rgba(251,245,226,.7); line-height: 1.6; }
+        .benefit-card .icon { font-size: 2.25rem; color: var(--gold); margin-bottom: 1.25rem; }
+        .benefit-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: .75rem; }
+        @media (min-width: 640px) { .benefit-card h3 { font-size: 1.4rem; } }
+        .benefit-card p { font-size: 1.05rem; color: rgba(251,245,226,.7); line-height: 1.65; }
 
         /* Details box */
         .details-box { background: var(--darker); border-radius: .75rem; padding: 1.25rem; border-top: 4px solid var(--pink); position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
