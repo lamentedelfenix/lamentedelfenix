@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Entrenamiento mental para emprendedores. Desbloquea tu Inconsciente y escala tu negocio con el Método Fénix de Darío Arrigazzi.">
     <meta name="theme-color" content="#2b2b2b">
-
     <meta property="og:type" content="website">
     <meta property="og:title" content="Método Fénix – Entrenamiento Mental para Emprendedores">
     <meta property="og:description" content="El 80% del éxito en tu negocio no es estrategia, es psicología. Taller online gratuito con Darío Arrigazzi.">
     <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
     <meta property="og:url" content="https://www.lamentedelfenix.com">
-
     <title>Entrenamiento Mental para Emprendedores | Método Fénix</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-
     <style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1780387");</style>
     <style type="text/css">
     .ml-form-embedSubmitLoad { display: inline-block; width: 20px; height: 20px; }
@@ -69,28 +65,109 @@
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         :root {
-            --dark: #2b2b2b;
-            --darker: #1a1a1a;
-            --card: #222222;
-            --light: #fbf5e2;
-            --gold: #d4af37;
-            --pink: #e91e63;
-            --font: 'Montserrat', sans-serif;
+            --dark: #2b2b2b; --darker: #1a1a1a; --card: #222222;
+            --light: #fbf5e2; --gold: #d4af37; --pink: #e91e63; --font: 'Montserrat', sans-serif;
         }
-
         html { scroll-behavior: smooth; }
         body { background: var(--dark); color: var(--light); font-family: var(--font); -webkit-font-smoothing: antialiased; padding-bottom: 5rem; overflow-x: hidden; }
         ::selection { background: var(--pink); color: #fff; }
         img { display: block; max-width: 100%; height: auto; }
         a { color: inherit; }
-
-        /* Contenedor base con padding lateral seguro en móvil */
         .container { max-width: 48rem; margin-inline: auto; padding-inline: 1.1rem; }
         @media (min-width: 400px) { .container { padding-inline: 1.25rem; } }
         @media (min-width: 640px) { .container { padding-inline: 1.5rem; } }
         .container--wide { max-width: 64rem; }
+
+        /* ── COUNTDOWN BANNER ── */
+        .countdown-banner {
+            background: linear-gradient(90deg, #1a1a1a 0%, #2a1a0a 50%, #1a1a1a 100%);
+            border-bottom: 2px solid var(--gold);
+            padding: .6rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .countdown-banner-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .countdown-label { color: rgba(251,245,226,.7); white-space: nowrap; }
+        .countdown-units {
+            display: flex;
+            gap: .4rem;
+            align-items: center;
+        }
+        .countdown-unit {
+            background: var(--darker);
+            border: 1px solid rgba(212,175,55,.4);
+            border-radius: .35rem;
+            padding: .3rem .55rem;
+            min-width: 2.8rem;
+            text-align: center;
+        }
+        .countdown-unit .num {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1.1;
+        }
+        .countdown-unit .lbl {
+            display: block;
+            font-size: .55rem;
+            color: rgba(251,245,226,.5);
+            letter-spacing: .08em;
+            margin-top: .1rem;
+        }
+        .countdown-sep { color: var(--gold); font-size: 1rem; font-weight: 800; }
+        .countdown-cta-link {
+            color: var(--pink);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: .75rem;
+            border: 1px solid var(--pink);
+            border-radius: 2rem;
+            padding: .25rem .75rem;
+            transition: background .2s, color .2s;
+            white-space: nowrap;
+        }
+        .countdown-cta-link:hover { background: var(--pink); color: #fff; }
+
+        /* ── URGENCY BADGE ── */
+        .urgency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            background: rgba(233,30,99,.15);
+            border: 1px solid rgba(233,30,99,.4);
+            border-radius: 2rem;
+            color: #ff6b9d;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: .3rem .85rem;
+            margin-bottom: .75rem;
+        }
+        .urgency-badge .dot {
+            width: 6px; height: 6px;
+            background: #ff6b9d;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .4; transform: scale(.7); }
+        }
 
         .btn-gold {
             display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
@@ -103,7 +180,6 @@
             background: var(--light); transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(212,175,55,.25); outline: none;
         }
-        .btn-gold .fa-whatsapp, .btn-gold .fa-envelope { font-size: 1.3rem; }
         @media (min-width: 640px) { .btn-gold { width: auto; font-size: 1.1rem; } }
 
         /* Header */
@@ -113,82 +189,120 @@
         @media (min-width: 640px) { .banner-wrap { border-radius: .75rem; } }
         .banner-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
 
+        /* ── HERO HOOK (nuevo bloque antes del formulario) ── */
+        .hero-hook {
+            background: linear-gradient(135deg, #1c1408 0%, #1a1a1a 60%, #1c0a12 100%);
+            border: 1px solid rgba(212,175,55,.2);
+            border-radius: .75rem;
+            padding: 1.5rem 1.25rem 1.25rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        @media (min-width: 640px) { .hero-hook { padding: 2rem 2.5rem 1.75rem; border-radius: 1rem; } }
+
+        .hero-hook .hook-headline {
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        .hero-hook .hook-headline em {
+            font-style: normal;
+            color: var(--gold);
+        }
+        .hero-hook .hook-subline {
+            font-size: clamp(.9rem, 3vw, 1.05rem);
+            color: rgba(251,245,226,.75);
+            line-height: 1.65;
+            max-width: 38rem;
+            margin-inline: auto;
+            margin-bottom: 1.25rem;
+        }
+        .hook-bullets {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            text-align: left;
+            max-width: 34rem;
+            margin-inline: auto;
+            margin-bottom: 1.5rem;
+        }
+        .hook-bullet {
+            display: flex;
+            align-items: flex-start;
+            gap: .6rem;
+            font-size: .92rem;
+            color: rgba(251,245,226,.85);
+            line-height: 1.5;
+        }
+        .hook-bullet .bicon {
+            color: var(--gold);
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: .1rem;
+        }
+
         /* Hero CTA box */
         .hero-cta-box {
             background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
             border: 1px solid rgba(212,175,55,.35);
             border-radius: .75rem;
             padding: 1.5rem 1.1rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,.4);
             position: relative;
             overflow: hidden;
         }
         @media (min-width: 400px) { .hero-cta-box { padding: 1.75rem 1.25rem; } }
-        @media (min-width: 640px) { .hero-cta-box { padding: 2rem 2rem; margin-top: 2rem; border-radius: 1rem; } }
+        @media (min-width: 640px) { .hero-cta-box { padding: 2rem 2rem; border-radius: 1rem; } }
         @media (min-width: 768px) { .hero-cta-box { padding: 2.5rem 3rem; } }
         .hero-cta-box::before {
-            content: '';
-            position: absolute; top: -4rem; right: -4rem;
-            width: 14rem; height: 14rem;
-            background: rgba(212,175,55,.06);
-            border-radius: 50%; filter: blur(3rem);
-            pointer-events: none;
+            content: ''; position: absolute; top: -4rem; right: -4rem;
+            width: 14rem; height: 14rem; background: rgba(212,175,55,.06);
+            border-radius: 50%; filter: blur(3rem); pointer-events: none;
         }
-
         .hero-cta-box .pill {
-            display: inline-block;
-            background: var(--pink); color: #fff;
-            font-size: .65rem; font-weight: 800;
-            letter-spacing: .1em; text-transform: uppercase;
-            padding: .3rem .85rem; border-radius: 2rem;
-            margin-bottom: 1rem;
+            display: inline-block; background: var(--pink); color: #fff;
+            font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+            padding: .3rem .85rem; border-radius: 2rem; margin-bottom: 1rem;
         }
         @media (min-width: 400px) { .hero-cta-box .pill { font-size: .7rem; } }
-
-        .hero-cta-box h2 {
-            font-size: clamp(1.15rem, 5vw, 1.75rem);
-            font-weight: 800; line-height: 1.3; margin-bottom: .75rem;
-        }
+        .hero-cta-box h2 { font-size: clamp(1.15rem, 5vw, 1.75rem); font-weight: 800; line-height: 1.3; margin-bottom: .75rem; }
         .hero-cta-box h2 span { color: var(--gold); }
-
         .hero-cta-box .meta {
-            font-size: .82rem;
-            color: rgba(251,245,226,.65);
-            margin-bottom: 1.5rem;
-            display: flex; flex-wrap: wrap;
-            justify-content: center; gap: .6rem;
+            font-size: .82rem; color: rgba(251,245,226,.65); margin-bottom: 1.5rem;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem;
         }
         @media (min-width: 400px) { .hero-cta-box .meta { font-size: .88rem; gap: .75rem; } }
         @media (min-width: 640px) { .hero-cta-box .meta { font-size: .95rem; gap: 1rem; margin-bottom: 1.75rem; } }
         .hero-cta-box .meta span { display: flex; align-items: center; gap: .35rem; }
         .hero-cta-box .meta i { color: var(--gold); }
 
-        /* Form override dentro del hero-cta-box */
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper {
-            background-color: transparent !important; border: none !important; box-shadow: none !important;
-        }
+        /* Form overrides */
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper { background-color: transparent !important; border: none !important; box-shadow: none !important; }
         .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody { padding: 0 !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent { display: none; }
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent { margin-bottom: 1rem !important; }
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4 { font-size: 1rem !important; color: rgba(251,245,226,.7) !important; font-weight: 500 !important; text-align: center; }
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p { display: none !important; }
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input { background-color: rgba(255,255,255,.08) !important; border-color: rgba(255,255,255,.2) !important; font-size: 1rem !important; padding: 14px !important; }
+        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group label { display: none !important; }
 
-        /* Secciones — espaciado reducido en móvil */
+        /* Secciones */
         .main { margin-top: 2rem; }
         @media (min-width: 768px) { .main { margin-top: 3.5rem; } }
         section { margin-bottom: 4rem; }
         @media (min-width: 640px) { section { margin-bottom: 5.5rem; } }
         @media (min-width: 768px) { section { margin-bottom: 7rem; } }
 
-        /* Hero body */
         .hero-body {
-            display: flex; flex-direction: column;
-            gap: 3.5rem; /* Aumentado drásticamente la separación en móvil */
-            font-size: clamp(1.1rem, 4vw, 1.25rem);
-            font-weight: 500; line-height: 1.75;
+            display: flex; flex-direction: column; gap: 3.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.25rem); font-weight: 500; line-height: 1.75;
             color: rgba(251,245,226,.9);
         }
         @media (min-width: 640px) { .hero-body { gap: 4.5rem; } }
-        @media (min-width: 768px) { .hero-body { gap: 5.5rem; } } /* Aún más separación en PC */
+        @media (min-width: 768px) { .hero-body { gap: 5.5rem; } }
         .hero-body strong { color: var(--gold); }
 
         /* Bio */
@@ -208,11 +322,9 @@
         .benefits-intro { text-align: center; color: rgba(251,245,226,.8); font-size: clamp(1.1rem, 3.5vw, 1.3rem); line-height: 1.7; max-width: 42rem; margin-inline: auto; margin-bottom: 3rem; }
         @media (min-width: 640px) { .benefits-intro { margin-bottom: 4rem; } }
         .benefits-intro strong { color: var(--gold); }
-
         .benefits-grid { display: grid; gap: 1.25rem; }
         @media (min-width: 480px) { .benefits-grid { gap: 1.5rem; } }
         @media (min-width: 640px) { .benefits-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
-
         .benefit-card { background: var(--card); padding: 1.75rem; border-radius: .75rem; border: 1px solid rgba(255,255,255,.05); transition: border-color .25s; }
         @media (min-width: 640px) { .benefit-card { padding: 2.25rem; } }
         .benefit-card:hover { border-color: rgba(212,175,55,.3); }
@@ -228,10 +340,8 @@
         .details-box::before { content: ''; position: absolute; top: 0; right: 0; width: 16rem; height: 16rem; background: rgba(233,30,99,.05); border-radius: 50%; filter: blur(3rem); pointer-events: none; }
         .details-box h2 { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 800; text-align: center; margin-bottom: 2rem; }
         @media (min-width: 640px) { .details-box h2 { margin-bottom: 2.5rem; } }
-
         .details-grid { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
         @media (min-width: 640px) { .details-grid { grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; } }
-
         .info-list { display: flex; flex-direction: column; gap: 1.25rem; }
         @media (min-width: 640px) { .info-list { gap: 1.5rem; } }
         .info-item { display: flex; align-items: flex-start; gap: .875rem; }
@@ -239,18 +349,35 @@
         .info-item h4 { font-size: .95rem; font-weight: 700; }
         @media (min-width: 640px) { .info-item h4 { font-size: 1rem; } }
         .info-item p { font-size: .85rem; color: rgba(251,245,226,.75); margin-top: .2rem; line-height: 1.5; }
-
         .price-card { background: var(--card); border: 1px solid rgba(212,175,55,.3); border-radius: .75rem; padding: 1.5rem; text-align: center; display: flex; flex-direction: column; justify-content: center; gap: .75rem; }
         @media (min-width: 640px) { .price-card { padding: 2rem; } }
         .price-card .label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: rgba(251,245,226,.7); }
         .price-card .price { font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; line-height: 1; }
 
-        .cta-wrap { text-align: center; max-width: 30rem; margin-inline: auto; margin-top: 2.5rem; }
+        /* ── Final signup ── */
+        .final-signup-wrap { margin-top: 3rem; }
+        .final-signup-box { background: linear-gradient(145deg, #1a1a1a, #252525); border: 1px solid rgba(212,175,55,.25); border-radius: 1.25rem; padding: 2.5rem 2rem; text-align: center; position: relative; overflow: hidden; }
+        .final-signup-box::after { content: ''; position: absolute; bottom: -5rem; left: -5rem; width: 18rem; height: 18rem; background: radial-gradient(circle, rgba(233,30,99,.08) 0%, transparent 70%); pointer-events: none; }
+        @media (min-width: 640px) { .final-signup-box { padding: 3rem 3.5rem; } }
+        .final-signup-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .final-signup-title { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; margin-bottom: .6rem; color: var(--light); }
+        .final-signup-sub { font-size: .95rem; color: rgba(251,245,226,.6); line-height: 1.65; max-width: 32rem; margin-inline: auto; margin-bottom: 2rem; }
+        .final-input-row { display: flex; flex-direction: column; gap: .75rem; max-width: 30rem; margin-inline: auto; }
+        @media (min-width: 540px) { .final-input-row { flex-direction: row; gap: 0; } }
+        .final-email-input { flex: 1; background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.18); border-radius: .6rem; color: var(--light); font-family: var(--font); font-size: 1rem; padding: .9rem 1.1rem; outline: none; transition: border-color .25s, background .25s; }
+        .final-email-input::placeholder { color: rgba(251,245,226,.35); }
+        .final-email-input:focus { border-color: var(--gold); background: rgba(255,255,255,.1); }
+        @media (min-width: 540px) { .final-email-input { border-radius: .6rem 0 0 .6rem; border-right: none; } }
+        .final-submit-btn { display: flex; align-items: center; justify-content: center; gap: .5rem; background: var(--gold); color: var(--darker); font-family: var(--font); font-weight: 800; font-size: .95rem; letter-spacing: .04em; border: none; border-radius: .6rem; padding: .9rem 1.5rem; cursor: pointer; white-space: nowrap; transition: background .25s, transform .2s, box-shadow .25s; }
+        .final-submit-btn:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212,175,55,.3); }
+        @media (min-width: 540px) { .final-submit-btn { border-radius: 0 .6rem .6rem 0; } }
+        .final-signup-disclaimer { margin-top: 1.1rem; font-size: .75rem; color: rgba(251,245,226,.35); display: flex; align-items: center; justify-content: center; gap: .4rem; }
+        .final-signup-success { background: linear-gradient(145deg, #1a2e1a, #1f2b1f); border: 1px solid rgba(100,200,100,.25); border-radius: 1.25rem; padding: 2.5rem 2rem; text-align: center; }
+        .success-checkmark { font-size: 3rem; margin-bottom: 1rem; }
+        .final-signup-success h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: .5rem; color: #7ecf7e; }
+        .final-signup-success p { color: rgba(251,245,226,.65); font-size: .95rem; }
 
-        .site-footer { margin-top: 4rem; text-align: center; font-size: .8rem; color: rgba(251,245,226,.4); padding-inline: 1.1rem; }
-        @media (min-width: 640px) { .site-footer { margin-top: 5rem; } }
-
-        /* ── Overrides MailerLite ── */
+        /* ── MailerLite overrides ── */
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper { background-color: var(--card) !important; border: 1px solid rgba(212,175,55,.3) !important; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4,
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody .ml-form-successContent h4 { color: var(--light) !important; font-family: var(--font) !important; font-weight: 800 !important; text-align: center; }
@@ -262,190 +389,55 @@
         #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button:hover { background-color: var(--light) !important; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(212,175,55,.25); }
 
         /* ── Carrusel testimonios ── */
-        .testimonials-outer { padding: 0; }
-
-        .carousel-wrapper {
-            position: relative; width: 100%; height: 460px;
-            display: flex; justify-content: center; align-items: center;
-            perspective: 1200px; overflow: hidden;
-        }
+        .carousel-wrapper { position: relative; width: 100%; height: 460px; display: flex; justify-content: center; align-items: center; perspective: 1200px; overflow: hidden; }
         @media (min-width: 480px) { .carousel-wrapper { height: 530px; } }
         @media (min-width: 768px) { .carousel-wrapper { height: 600px; } }
-
-        .testimonial-carousel {
-            position: relative; width: 200px; height: 100%;
-            transform-style: preserve-3d; cursor: grab;
-        }
+        .testimonial-carousel { position: relative; width: 200px; height: 100%; transform-style: preserve-3d; cursor: grab; }
         @media (min-width: 480px) { .testimonial-carousel { width: 240px; } }
         @media (min-width: 768px) { .testimonial-carousel { width: 290px; } }
         .testimonial-carousel.grabbing { cursor: grabbing; }
-
-        .testimonial-slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform .5s cubic-bezier(.77,0,.175,1), opacity .5s ease;
-            user-select: none;
-        }
-        .testimonial-image {
-            width: 100%; height: 100%; object-fit: contain; pointer-events: none;
-            border-radius: .5rem;
-        }
-
-        .carousel-button {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(34,34,34,.9); border: 1px solid rgba(212,175,55,.3);
-            border-radius: 9999px; width: 2.5rem; height: 2.5rem;
-            color: var(--light); font-size: 1.1rem;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 20;
-            transition: background .2s, transform .2s, border-color .2s;
-        }
-        .carousel-button:hover {
-            background: var(--gold); color: var(--darker);
-            transform: translateY(-50%) scale(1.1); border-color: var(--gold);
-        }
+        .testimonial-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transition: transform .5s cubic-bezier(.77,0,.175,1), opacity .5s ease; user-select: none; }
+        .testimonial-image { width: 100%; height: 100%; object-fit: contain; pointer-events: none; border-radius: .5rem; }
+        .carousel-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(34,34,34,.9); border: 1px solid rgba(212,175,55,.3); border-radius: 9999px; width: 2.5rem; height: 2.5rem; color: var(--light); font-size: 1.1rem; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 20; transition: background .2s, transform .2s, border-color .2s; }
+        .carousel-button:hover { background: var(--gold); color: var(--darker); transform: translateY(-50%) scale(1.1); border-color: var(--gold); }
         .carousel-button.prev { left: 2%; }
         .carousel-button.next { right: 2%; }
-        @media (min-width: 768px) {
-            .carousel-button { width: 3rem; height: 3rem; font-size: 1.3rem; }
-            .carousel-button.prev { left: 5%; }
-            .carousel-button.next { right: 5%; }
-        }
+        @media (min-width: 768px) { .carousel-button { width: 3rem; height: 3rem; font-size: 1.3rem; } .carousel-button.prev { left: 5%; } .carousel-button.next { right: 5%; } }
 
-        /* ── Final signup rediseñado ── */
-        .final-signup-wrap { margin-top: 3rem; }
-
-        .final-signup-box {
-            background: linear-gradient(145deg, #1a1a1a, #252525);
-            border: 1px solid rgba(212,175,55,.25);
-            border-radius: 1.25rem;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .final-signup-box::after {
-            content: '';
-            position: absolute;
-            bottom: -5rem; left: -5rem;
-            width: 18rem; height: 18rem;
-            background: radial-gradient(circle, rgba(233,30,99,.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        @media (min-width: 640px) { .final-signup-box { padding: 3rem 3.5rem; } }
-
-        .final-signup-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-
-        .final-signup-title {
-            font-size: clamp(1.4rem, 4vw, 1.9rem);
-            font-weight: 800;
-            margin-bottom: .6rem;
-            color: var(--light);
-        }
-        .final-signup-sub {
-            font-size: .95rem;
-            color: rgba(251,245,226,.6);
-            line-height: 1.65;
-            max-width: 32rem;
-            margin-inline: auto;
-            margin-bottom: 2rem;
-        }
-
-        .final-input-row {
-            display: flex;
-            flex-direction: column;
-            gap: .75rem;
-            max-width: 30rem;
-            margin-inline: auto;
-        }
-        @media (min-width: 540px) {
-            .final-input-row { flex-direction: row; gap: 0; }
-        }
-
-        .final-email-input {
-            flex: 1;
-            background: rgba(255,255,255,.07);
-            border: 1.5px solid rgba(255,255,255,.18);
-            border-radius: .6rem;
-            color: var(--light);
-            font-family: var(--font);
-            font-size: 1rem;
-            padding: .9rem 1.1rem;
-            outline: none;
-            transition: border-color .25s, background .25s;
-        }
-        .final-email-input::placeholder { color: rgba(251,245,226,.35); }
-        .final-email-input:focus {
-            border-color: var(--gold);
-            background: rgba(255,255,255,.1);
-        }
-        @media (min-width: 540px) {
-            .final-email-input {
-                border-radius: .6rem 0 0 .6rem;
-                border-right: none;
-            }
-        }
-
-        .final-submit-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .5rem;
-            background: var(--gold);
-            color: var(--darker);
-            font-family: var(--font);
-            font-weight: 800;
-            font-size: .95rem;
-            letter-spacing: .04em;
-            border: none;
-            border-radius: .6rem;
-            padding: .9rem 1.5rem;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background .25s, transform .2s, box-shadow .25s;
-        }
-        .final-submit-btn:hover {
-            background: var(--light);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212,175,55,.3);
-        }
-        @media (min-width: 540px) {
-            .final-submit-btn { border-radius: 0 .6rem .6rem 0; }
-        }
-
-        .final-signup-disclaimer {
-            margin-top: 1.1rem;
-            font-size: .75rem;
-            color: rgba(251,245,226,.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .4rem;
-        }
-
-        /* Estado éxito */
-        .final-signup-success {
-            background: linear-gradient(145deg, #1a2e1a, #1f2b1f);
-            border: 1px solid rgba(100,200,100,.25);
-            border-radius: 1.25rem;
-            padding: 2.5rem 2rem;
-            text-align: center;
-        }
-        .success-checkmark { font-size: 3rem; margin-bottom: 1rem; }
-        .final-signup-success h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: .5rem; color: #7ecf7e; }
-        .final-signup-success p { color: rgba(251,245,226,.65); font-size: .95rem; }
-
-        /* Overrides específicos para el hero-cta-box (fondo transparente) */
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper { background-color: transparent !important; border: none !important; box-shadow: none !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody { padding: 0 !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent { margin-bottom: 1rem !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4 { font-size: 1rem !important; color: rgba(251,245,226,.7) !important; font-weight: 500 !important; text-align: center; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent p { display: none !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input { background-color: rgba(255,255,255,.08) !important; border-color: rgba(255,255,255,.2) !important; font-size: 1rem !important; padding: 14px !important; }
-        .hero-cta-box #mlb2-41067241.ml-form-embedContainer .ml-form-embedWrapper .ml-block-form .ml-field-group label { display: none !important; }
+        .site-footer { margin-top: 4rem; text-align: center; font-size: .8rem; color: rgba(251,245,226,.4); padding-inline: 1.1rem; }
+        @media (min-width: 640px) { .site-footer { margin-top: 5rem; } }
     </style>
 </head>
 <body>
+
+    <!-- ── COUNTDOWN BANNER ── -->
+    <div class="countdown-banner" id="countdown-banner">
+        <div class="countdown-banner-inner">
+            <span class="countdown-label">🔥 El taller empieza en</span>
+            <div class="countdown-units">
+                <div class="countdown-unit">
+                    <span class="num" id="cd-days">--</span>
+                    <span class="lbl">días</span>
+                </div>
+                <span class="countdown-sep">:</span>
+                <div class="countdown-unit">
+                    <span class="num" id="cd-hours">--</span>
+                    <span class="lbl">horas</span>
+                </div>
+                <span class="countdown-sep">:</span>
+                <div class="countdown-unit">
+                    <span class="num" id="cd-mins">--</span>
+                    <span class="lbl">min</span>
+                </div>
+                <span class="countdown-sep">:</span>
+                <div class="countdown-unit">
+                    <span class="num" id="cd-secs">--</span>
+                    <span class="lbl">seg</span>
+                </div>
+            </div>
+            <a href="#formulario-registro" class="countdown-cta-link">APUNTARME</a>
+        </div>
+    </div>
 
     <header class="site-header">
         <div class="banner-wrap">
@@ -457,9 +449,40 @@
         </div>
 
         <div class="container" style="margin-top: 0;">
+
+            <!-- ── NUEVO BLOQUE HOOK ── -->
+            <div class="hero-hook">
+                <div class="urgency-badge">
+                    <span class="dot"></span>
+                    <span id="urgency-text">Viernes 12 de Junio · 18:00h España</span>
+                </div>
+                <h1 class="hook-headline">
+                    Lo que falla no está en tu estrategia.<br>
+                    Está en <em>tu mente</em>. Y lo vamos a cambiar.
+                </h1>
+                <p class="hook-subline">
+                    En este taller online gratuito de 2 horas te enseño a identificar y eliminar los bloqueos mentales que están frenando tu negocio — aunque lo hayas intentado todo.
+                </p>
+                <div class="hook-bullets">
+                    <div class="hook-bullet">
+                        <span class="bicon"><i class="fas fa-check-circle"></i></span>
+                        <span>Descubrirás por qué te cuesta conseguir clientes (y no es falta de estrategia)</span>
+                    </div>
+                    <div class="hook-bullet">
+                        <span class="bicon"><i class="fas fa-check-circle"></i></span>
+                        <span>Aprenderás a tomar decisiones desde la claridad, no desde el miedo</span>
+                    </div>
+                    <div class="hook-bullet">
+                        <span class="bicon"><i class="fas fa-check-circle"></i></span>
+                        <span>Te llevarás herramientas prácticas que puedes aplicar ese mismo día</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── FORMULARIO ── -->
             <div class="hero-cta-box" id="formulario-registro">
                 <span class="pill">🔥 Taller Online Gratuito</span>
-                <h2>Reserva tu plaza ahora</h2>
+                <h2>Reserva tu plaza ahora — <span id="hero-days-left">es esta semana</span></h2>
                 <div class="meta">
                     <span><i class="far fa-calendar-alt"></i> Viernes 12 de Junio</span>
                     <span><i class="far fa-clock"></i> 18:00h (España)</span>
@@ -512,21 +535,13 @@
         <section class="container">
             <div class="hero-body">
                 <p style="font-size: clamp(1.1rem, 3vw, 1.2rem); font-weight: 700; color: var(--light); border-left: 3px solid var(--gold); padding-left: 1.25rem;">¿Te han dicho alguna vez que la dificultad de conseguir clientes puede tener más que ver con <strong>ese dibujo que le hacías a tu padre de niño</strong> — y que nunca te celebró — que con cualquier estrategia de marketing?</p>
-
                 <p>Para tu mente, aquel dibujo fue la primera vez que ofreciste algo al mundo con todo tu esfuerzo.</p>
-
                 <p>La aprobación que anhelabas de tus padres entonces es <strong>exactamente la misma que buscas hoy</strong> cuando esperas que alguien pague por lo que haces.</p>
-
                 <p><strong>El patrón no ha cambiado.</strong> Solo ha cambiado el escenario.</p>
-
                 <p>Esto es solo un ejemplo de lo que te puede estar pasando: quizás sientes que tienes mucho talento y te esfuerzas a diario, y aun así <strong>no estás obteniendo los resultados</strong> que realmente mereces.</p>
-
                 <p>Incluso puede que sientas como si hubiera <strong>una parte de ti que no quiere que prosperes.</strong></p>
-
                 <p>Te entiendo. El mundo del emprendimiento es solitario, lleno de dudas y angustia. Y las RRSS están llenas de gente vendiéndote estrategias de "copia y pega" que tampoco a ellos les funcionan.</p>
-
                 <p>La realidad es que tus creencias limitantes, tus miedos y tus emociones reprimidas actúan como <strong>un filtro invisible.</strong></p>
-
                 <p>Hacen que las oportunidades, las soluciones y el dinero pasen por delante de ti sin que seas capaz de verlos. Eso es lo que te voy a enseñar a cambiar en estas dos horas.</p>
             </div>
         </section>
@@ -623,16 +638,7 @@
                         <p class="final-signup-sub">Recibirás el enlace de acceso y la invitación al grupo de WhatsApp directamente en tu email.</p>
                         <form class="final-signup-form ml-block-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" data-code="" method="post" target="_blank" onsubmit="handleFinalFormSubmit(event)">
                             <div class="final-input-row">
-                                <input
-                                    aria-label="email"
-                                    aria-required="true"
-                                    type="email"
-                                    name="fields[email]"
-                                    placeholder="tu@email.com"
-                                    autocomplete="email"
-                                    class="final-email-input"
-                                    required
-                                >
+                                <input aria-label="email" aria-required="true" type="email" name="fields[email]" placeholder="tu@email.com" autocomplete="email" class="final-email-input" required>
                                 <button type="submit" class="final-submit-btn">
                                     <span class="btn-text">APUNTARME GRATIS</span>
                                     <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
@@ -666,8 +672,6 @@
         }
 
         function handleFinalFormSubmit(e) {
-            // dejamos que el form haga submit normalmente a MailerLite
-            // pero mostramos el estado éxito tras un breve delay
             setTimeout(function() {
                 var wrap = document.getElementById('final-form-wrap');
                 var success = document.getElementById('final-success-wrap');
@@ -675,11 +679,74 @@
                 if (success) success.style.display = 'block';
             }, 1200);
         }
+
+        // ── COUNTDOWN ──
+        (function() {
+            // Fecha del taller: 12 de Junio de 2026, 18:00h hora de Madrid (Europe/Madrid = UTC+2 en verano)
+            var TARGET = new Date('2026-06-12T18:00:00+02:00').getTime();
+
+            function pad(n) { return String(n).padStart(2, '0'); }
+
+            function updateCountdown() {
+                var now = Date.now();
+                var diff = TARGET - now;
+
+                var banner = document.getElementById('countdown-banner');
+                var heroText = document.getElementById('hero-days-left');
+                var urgencyText = document.getElementById('urgency-text');
+
+                if (diff <= 0) {
+                    // El taller ha comenzado
+                    if (banner) banner.innerHTML = '<div class="countdown-banner-inner"><span style="color:var(--gold);font-weight:800;">🔴 EL TALLER ESTÁ EN DIRECTO AHORA</span> &nbsp;<a href="#formulario-registro" class="countdown-cta-link">ACCEDER</a></div>';
+                    if (heroText) heroText.textContent = 'EN DIRECTO AHORA';
+                    clearInterval(interval);
+                    return;
+                }
+
+                var days  = Math.floor(diff / 86400000);
+                var hours = Math.floor((diff % 86400000) / 3600000);
+                var mins  = Math.floor((diff % 3600000) / 60000);
+                var secs  = Math.floor((diff % 60000) / 1000);
+
+                document.getElementById('cd-days').textContent  = pad(days);
+                document.getElementById('cd-hours').textContent = pad(hours);
+                document.getElementById('cd-mins').textContent  = pad(mins);
+                document.getElementById('cd-secs').textContent  = pad(secs);
+
+                // Texto dinámico en el hero
+                if (heroText) {
+                    if (days === 0 && hours < 3) {
+                        heroText.textContent = '¡empieza en menos de 3 horas!';
+                        heroText.style.color = '#e91e63';
+                    } else if (days === 0) {
+                        heroText.textContent = '¡es HOY!';
+                        heroText.style.color = '#e91e63';
+                    } else if (days === 1) {
+                        heroText.textContent = 'es MAÑANA';
+                        heroText.style.color = '#d4af37';
+                    } else {
+                        heroText.textContent = 'en ' + days + ' días';
+                    }
+                }
+
+                // Badge de urgencia
+                if (urgencyText) {
+                    if (days === 0) {
+                        urgencyText.textContent = '🔴 HOY · Viernes 12 de Junio · 18:00h';
+                    } else if (days === 1) {
+                        urgencyText.textContent = '⚡ MAÑANA · Viernes 12 de Junio · 18:00h';
+                    } else {
+                        urgencyText.textContent = 'Viernes 12 de Junio · 18:00h España';
+                    }
+                }
+            }
+
+            updateCountdown();
+            var interval = setInterval(updateCountdown, 1000);
+        })();
     </script>
     <script src="https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b" type="text/javascript"></script>
-    <script>
-        fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/takel")
-    </script>
+    <script>fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/takel")</script>
 
     <script>
         // Carrusel de testimonios
@@ -688,36 +755,22 @@
             if (!carousel) return;
             var prevBtn = document.getElementById('prev-btn');
             var nextBtn = document.getElementById('next-btn');
-
             var images = [
-                './assets/Captura 1.webp',
-                './assets/Captura 2.webp',
-                './assets/Captura 3.webp',
-                './assets/Captura 4.webp',
-                './assets/Captura 5.webp',
-                './assets/Captura 6.webp',
-                './assets/Captura 7.webp'
+                './assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp',
+                './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp','./assets/Captura 7.webp'
             ];
-
             var currentIndex = images.length - 1;
             var slides = [];
             var isDragging = false, startPos = 0, dragOffset = 0;
-
             images.forEach(function(src, i) {
                 var slide = document.createElement('div');
                 slide.className = 'testimonial-slide';
                 var img = document.createElement('img');
-                img.src = src;
-                img.alt = 'Testimonio de cliente ' + (i + 1);
-                img.className = 'testimonial-image';
-                img.draggable = false;
-                img.loading = 'lazy';
-                img.decoding = 'async';
-                slide.appendChild(img);
-                carousel.appendChild(slide);
-                slides.push(slide);
+                img.src = src; img.alt = 'Testimonio de cliente ' + (i + 1);
+                img.className = 'testimonial-image'; img.draggable = false;
+                img.loading = 'lazy'; img.decoding = 'async';
+                slide.appendChild(img); carousel.appendChild(slide); slides.push(slide);
             });
-
             function updateCarousel() {
                 slides.forEach(function(slide, i) {
                     var offset = i - currentIndex;
@@ -725,45 +778,26 @@
                     if (Math.abs(offset) < 2) {
                         var sign = offset > 0 ? 1 : offset < 0 ? -1 : 0;
                         opacity = '0.5'; zIndex = String(10 - Math.abs(offset));
-                        if (offset === 0) {
-                            transform = 'translateX(0) translateZ(0) rotateY(0) scale(1.08)';
-                            opacity = '1';
-                        } else {
-                            transform = 'translateX(' + (sign * 210) + 'px) translateZ(-160px) rotateY(' + (-sign * 42) + 'deg) scale(0.82)';
-                        }
+                        if (offset === 0) { transform = 'translateX(0) translateZ(0) rotateY(0) scale(1.08)'; opacity = '1'; }
+                        else { transform = 'translateX(' + (sign * 210) + 'px) translateZ(-160px) rotateY(' + (-sign * 42) + 'deg) scale(0.82)'; }
                     }
-                    slide.style.transform = transform;
-                    slide.style.opacity = opacity;
-                    slide.style.zIndex = zIndex;
+                    slide.style.transform = transform; slide.style.opacity = opacity; slide.style.zIndex = zIndex;
                 });
             }
-
-            function changeSlide(dir) {
-                var n = currentIndex + dir;
-                if (n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); }
-            }
-
+            function changeSlide(dir) { var n = currentIndex + dir; if (n >= 0 && n < slides.length) { currentIndex = n; updateCarousel(); } }
             nextBtn.addEventListener('click', function() { changeSlide(1); });
             prevBtn.addEventListener('click', function() { changeSlide(-1); });
-
             function posX(e) { return e.type.indexOf('mouse') !== -1 ? e.pageX : e.touches[0].clientX; }
-
             carousel.addEventListener('mousedown', function(e) { isDragging = true; startPos = posX(e); dragOffset = 0; carousel.classList.add('grabbing'); });
             carousel.addEventListener('touchstart', function(e) { isDragging = true; startPos = posX(e); dragOffset = 0; }, { passive: true });
             carousel.addEventListener('mousemove', function(e) { if (isDragging) dragOffset = posX(e) - startPos; });
             carousel.addEventListener('touchmove', function(e) { if (isDragging) dragOffset = posX(e) - startPos; }, { passive: true });
-
             function dragEnd() {
-                if (!isDragging) return;
-                isDragging = false; carousel.classList.remove('grabbing');
-                if (dragOffset > 80) changeSlide(-1);
-                else if (dragOffset < -80) changeSlide(1);
-                dragOffset = 0;
+                if (!isDragging) return; isDragging = false; carousel.classList.remove('grabbing');
+                if (dragOffset > 80) changeSlide(-1); else if (dragOffset < -80) changeSlide(1); dragOffset = 0;
             }
-            carousel.addEventListener('mouseup', dragEnd);
-            carousel.addEventListener('mouseleave', dragEnd);
+            carousel.addEventListener('mouseup', dragEnd); carousel.addEventListener('mouseleave', dragEnd);
             carousel.addEventListener('touchend', dragEnd, { passive: true });
-
             updateCarousel();
             window.addEventListener('resize', updateCarousel, { passive: true });
         });
