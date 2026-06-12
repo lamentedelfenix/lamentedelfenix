@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Taller gratuito con Darío Arrigazzi: entiende de dónde vienen tus bloqueos en relaciones, dinero y salud. Método Fénix.">
+    <meta name="theme-color" content="#0f0d0a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="«La raíz de todo» — Taller gratuito con Darío Arrigazzi">
+    <meta property="og:description" content="Entiende de dónde vienen tus bloqueos en relaciones, dinero y salud. Taller online gratuito con el Método Fénix.">
+    <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
+    <title>«La raíz de todo» — Taller gratuito | Método Fénix con Darío Arrigazzi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --dark:   #2b2b2b;
+            --darker: #1a1a1a;
+            --card:   #222222;
+            --light:  #fbf5e2;
+            --gold:   #d4af37;
+            --pink:   #e91e63;
+            --font:   'Montserrat', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            font-family: var(--font);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            padding-bottom: 4rem;
+        }
+
+        ::selection { background: var(--pink); color: #fff; }
+
+        img { display: block; max-width: 100%; height: auto; }
+        a { color: inherit; text-decoration: none; }
+
+        .wrap      { max-width: 44rem; margin-inline: auto; padding-inline: 1.1rem; }
+        .wrap--wide { max-width: 58rem; }
+        @media(min-width:640px){ .wrap { padding-inline: 1.5rem; } }
+
+        /* ── TOP STRIP ── */
+        .strip {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(90deg, #1a1a1a 0%, #2a1a0a 50%, #1a1a1a 100%);
+            border-bottom: 2px solid var(--gold);
+            padding: .6rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+        .strip-label { color: rgba(251,245,226,.7); }
+        .strip-cta {
+            color: var(--pink);
+            border: 1px solid var(--pink);
+            border-radius: 2rem;
+            padding: .25rem .75rem;
+            font-size: .72rem;
+            font-weight: 800;
+            transition: background .2s, color .2s;
+        }
+        .strip-cta:hover { background: var(--pink); color: #fff; }
+
+        /* ── HEADER ── */
+        .site-header {
+            max-width: 64rem;
+            margin-inline: auto;
+            padding: .75rem .75rem 0;
+        }
+        @media(min-width:640px){ .site-header { padding: 1rem 1rem 0; } }
+        .banner-wrap {
+            aspect-ratio: 1200/400;
+            border-radius: .5rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+        @media(min-width:640px){ .banner-wrap { border-radius: .75rem; } }
+        .banner-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+
+        /* ── OPENING ── */
+        .opening { padding: 3.5rem 0 2.5rem; text-align: center; }
+        @media(max-width:480px){ .opening { padding: 2.5rem 0 2rem; } }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            background: rgba(233,30,99,.15);
+            border: 1px solid rgba(233,30,99,.4);
+            border-radius: 2rem;
+            color: #ff6b9d;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: .3rem .85rem;
+            margin-bottom: 1.25rem;
+        }
+        .eyebrow .dot {
+            width: 6px; height: 6px;
+            background: #ff6b9d;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+        .headline {
+            font-size: clamp(1.8rem, 6vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            color: var(--light);
+        }
+        .headline em { font-style: normal; color: var(--gold); }
+        .headline .break { display: block; }
+
+        .deck {
+            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            font-weight: 500;
+            color: rgba(251,245,226,.75);
+            line-height: 1.75;
+            max-width: 36rem;
+            margin-inline: auto;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ── DIVIDER ── */
+        .rule { width: 100%; height: 1px; background: rgba(212,175,55,.18); margin: 2.5rem 0; }
+
+        /* ── FORM BOX ── */
+        .form-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+            border: 1px solid rgba(212,175,55,.35);
+            border-radius: .75rem;
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+            max-width: 32rem;
+            margin-inline: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+        }
+        @media(min-width:640px){ .form-box { padding: 2rem 2rem; border-radius: 1rem; } }
+
+        .form-box .f-label {
+            font-size: .65rem;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--pink);
+            background: rgba(233,30,99,.12);
+            border: 1px solid rgba(233,30,99,.3);
+            border-radius: 2rem;
+            display: inline-block;
+            padding: .3rem .85rem;
+            margin-bottom: 1rem;
+        }
+        .form-box h2 {
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: .75rem;
+            color: var(--light);
+        }
+        .form-box h2 span { color: var(--gold); }
+        .form-box .f-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .5rem .9rem;
+            font-size: .82rem;
+            color: rgba(251,245,226,.55);
+            margin-bottom: 1.5rem;
+        }
+        .form-box .f-meta span { display: flex; align-items: center; gap: .35rem; }
+        .form-box .f-meta i { color: var(--gold); }
+
+        .input-row {
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+            margin-bottom: .75rem;
+        }
+        @media(min-width:480px){ .input-row { flex-direction: row; gap: 0; } }
+
+        .f-input {
+            flex: 1;
+            background: rgba(255,255,255,.06);
+            border: 1.5px solid rgba(255,255,255,.18);
+            border-radius: .5rem;
+            color: var(--light);
+            font-family: var(--font);
+            font-size: 1rem;
+            padding: .9rem 1.1rem;
+            outline: none;
+            transition: border-color .2s;
+            width: 100%;
+        }
+        .f-input::placeholder { color: rgba(251,245,226,.3); }
+        .f-input:focus { border-color: var(--gold); }
+        @media(min-width:480px){ .f-input { border-radius: .5rem 0 0 .5rem; border-right: none; } }
+
+        .f-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            background: var(--gold);
+            color: var(--darker);
+            font-family: var(--font);
+            font-size: .9rem;
+            font-weight: 800;
+            letter-spacing: .03em;
+            border: none;
+            border-radius: .5rem;
+            padding: .9rem 1.5rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .2s, transform .15s, box-shadow .2s;
+        }
+        .f-btn:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212,175,55,.3); }
+        @media(min-width:480px){ .f-btn { border-radius: 0 .5rem .5rem 0; } }
+
+        .f-disclaimer {
+            font-size: .72rem;
+            color: rgba(251,245,226,.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+        }
+
+        /* ── SUCCESS ── */
+        .success-box {
+            background: rgba(212,175,55,.07);
+            border: 1px solid rgba(212,175,55,.3);
+            border-radius: .75rem;
+            padding: 2rem;
+            text-align: center;
+            display: none;
+            max-width: 32rem;
+            margin-inline: auto;
+        }
+        .success-box .s-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+        .success-box h3 { font-size: 1.4rem; font-weight: 800; color: var(--gold); margin-bottom: .5rem; }
+        .success-box p { font-size: .92rem; color: rgba(251,245,226,.65); }
+
+        /* ── NARRATIVE ── */
+        .narrative { padding: 3rem 0 2rem; }
+        .narrative p {
+            font-size: clamp(1.05rem, 2.5vw, 1.15rem);
+            font-weight: 500;
+            line-height: 1.85;
+            color: rgba(251,245,226,.88);
+            margin-bottom: 1.75rem;
+        }
+        .narrative p:last-child { margin-bottom: 0; }
+        .narrative strong { color: var(--gold); font-weight: 700; }
+        .narrative .callout {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.25rem;
+            color: var(--light);
+            font-size: clamp(1.05rem, 2.5vw, 1.15rem);
+            font-weight: 700;
+            margin: 2rem 0;
+            line-height: 1.7;
+        }
+
+        /* ── CASOS ── */
+        .cases-title {
+            font-size: clamp(1.5rem, 5vw, 2.25rem);
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.25;
+            margin-bottom: .75rem;
+        }
+        .cases-sub {
+            text-align: center;
+            color: rgba(251,245,226,.55);
+            font-size: .9rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media(min-width:540px){ .cases-grid { grid-template-columns: 1fr 1fr; } }
+        @media(min-width:860px){ .cases-grid { grid-template-columns: repeat(4,1fr); } }
+
+        .case-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,.05);
+            border-radius: .75rem;
+            padding: 1.75rem 1.25rem;
+            transition: border-color .25s;
+        }
+        .case-card:hover { border-color: rgba(212,175,55,.3); }
+        .case-icon { font-size: 2rem; color: var(--gold); margin-bottom: 1rem; }
+        .case-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+        .case-card p { font-size: .88rem; color: rgba(251,245,226,.6); line-height: 1.65; }
+
+        /* ── BIO ── */
+        .bio-section {
+            background: var(--darker);
+            border-radius: .75rem;
+            border: 1px solid rgba(212,175,55,.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+            padding: 1.5rem 1.25rem;
+            margin: 3rem 0;
+        }
+        @media(min-width:640px){ .bio-section { padding: 2.5rem; border-radius: 1rem; } }
+        @media(min-width:768px){ .bio-section { padding: 3rem; } }
+
+        .bio-section h2 {
+            font-size: clamp(1.3rem, 4vw, 1.75rem);
+            font-weight: 700;
+            margin-bottom: .3rem;
+        }
+        .bio-section .bio-role {
+            color: var(--gold);
+            font-weight: 500;
+            font-size: .95rem;
+            margin-bottom: 1.75rem;
+        }
+        .bio-section .bio-body p {
+            font-size: clamp(1rem, 2.5vw, 1.08rem);
+            line-height: 1.85;
+            color: rgba(251,245,226,.8);
+            margin-bottom: 1.25rem;
+        }
+        .bio-section .bio-body p:last-child { margin-bottom: 0; }
+        .bio-section .bio-body strong { color: var(--gold); font-weight: 700; }
+        .bio-section .bio-body .pink { color: var(--pink); font-weight: 700; }
+
+        /* ── TESTIMONIOS CAROUSEL ── */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 460px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+        @media(min-width:480px){ .carousel-wrapper { height: 530px; } }
+        @media(min-width:768px){ .carousel-wrapper { height: 600px; } }
+
+        .testimonial-carousel {
+            position: relative;
+            width: 200px;
+            height: 100%;
+            transform-style: preserve-3d;
+            cursor: grab;
+        }
+        @media(min-width:480px){ .testimonial-carousel { width: 240px; } }
+        @media(min-width:768px){ .testimonial-carousel { width: 290px; } }
+        .testimonial-carousel.grabbing { cursor: grabbing; }
+
+        .testimonial-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform .5s cubic-bezier(.77,0,.175,1), opacity .5s ease;
+            user-select: none;
+        }
+        .testimonial-image { width: 100%; height: 100%; object-fit: contain; pointer-events: none; border-radius: .5rem; }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(34,34,34,.9);
+            border: 1px solid rgba(212,175,55,.3);
+            border-radius: 9999px;
+            width: 2.5rem; height: 2.5rem;
+            color: var(--light);
+            font-size: 1.1rem;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: background .2s, transform .2s, border-color .2s;
+        }
+        .carousel-button:hover { background: var(--gold); color: var(--darker); transform: translateY(-50%) scale(1.1); border-color: var(--gold); }
+        .carousel-button.prev { left: 2%; }
+        .carousel-button.next { right: 2%; }
+        @media(min-width:768px){
+            .carousel-button { width: 3rem; height: 3rem; font-size: 1.3rem; }
+            .carousel-button.prev { left: 5%; }
+            .carousel-button.next { right: 5%; }
+        }
+
+        /* ── QUÉ VAS A CONSEGUIR ── */
+        .outcomes-section { padding: 3rem 0; }
+        .outcomes-section h2 {
+            font-size: clamp(1.5rem, 5vw, 2.25rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: .6rem;
+        }
+        .outcomes-sub {
+            text-align: center;
+            color: rgba(251,245,226,.6);
+            font-size: .92rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .outcomes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            border: 1px solid rgba(255,255,255,.05);
+            border-radius: .75rem;
+            overflow: hidden;
+        }
+        .outcome-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            padding: 1.25rem 1.5rem;
+            background: var(--card);
+            transition: border-color .25s;
+        }
+        .outcome-item:hover { background: rgba(212,175,55,.06); }
+        .outcome-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: rgba(212,175,55,.3);
+            flex-shrink: 0;
+            line-height: 1.3;
+            min-width: 1.75rem;
+        }
+        .outcome-item h3 { font-size: .95rem; font-weight: 700; color: var(--light); margin-bottom: .3rem; }
+        .outcome-item p { font-size: .87rem; color: rgba(251,245,226,.55); line-height: 1.6; }
+
+        /* ── DETALLES ── */
+        .details-section { padding: 2rem 0 3rem; }
+        .details-box {
+            background: var(--darker);
+            border-radius: .75rem;
+            border-top: 4px solid var(--pink);
+            border-left: 1px solid rgba(255,255,255,.05);
+            border-right: 1px solid rgba(255,255,255,.05);
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,.3);
+            padding: 1.75rem 1.25rem;
+        }
+        @media(min-width:640px){ .details-box { padding: 2.5rem; border-radius: 1rem; } }
+        @media(min-width:768px){ .details-box { padding: 3rem; } }
+
+        .details-box h2 {
+            font-size: clamp(1.3rem, 4vw, 2rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .details-grid { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
+        @media(min-width:600px){ .details-grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+
+        .detail-item { display: flex; gap: .875rem; align-items: flex-start; }
+        .detail-item .d-icon { font-size: 1.2rem; color: var(--gold); width: 1.75rem; text-align: center; flex-shrink: 0; margin-top: .15rem; }
+        .detail-item h4 { font-size: .95rem; font-weight: 700; }
+        .detail-item p { font-size: .85rem; color: rgba(251,245,226,.6); margin-top: .2rem; line-height: 1.5; }
+
+        .free-pill {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(212,175,55,.2);
+        }
+        .free-pill .f-tag {
+            display: inline-block;
+            background: rgba(233,30,99,.15);
+            border: 1px solid rgba(233,30,99,.3);
+            border-radius: 2rem;
+            color: #ff6b9d;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .35rem 1rem;
+            margin-bottom: .75rem;
+        }
+        .free-pill .f-price {
+            font-size: clamp(2.25rem, 7vw, 3rem);
+            font-weight: 800;
+            color: var(--pink);
+            line-height: 1;
+        }
+
+        /* ── FINAL CTA ── */
+        .final-cta { padding: 3.5rem 0 1rem; text-align: center; }
+        .final-cta h2 {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: .75rem;
+        }
+        .final-cta h2 em { font-style: normal; color: var(--gold); }
+        .final-cta .fc-sub {
+            color: rgba(251,245,226,.55);
+            font-size: .95rem;
+            max-width: 30rem;
+            margin-inline: auto;
+            margin-bottom: 2rem;
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,.05);
+            font-size: .8rem;
+            color: rgba(251,245,226,.35);
+        }
+        .site-footer a { color: rgba(251,245,226,.5); }
+        .site-footer a:hover { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <!-- TOP STRIP -->
+    <div class="strip" id="top-strip">
+        <span class="strip-label">🔥 Pronto habrá un nuevo taller — apúntate para recibir el aviso</span>
+        <a href="#lista" class="strip-cta">APUNTARME</a>
+    </div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="banner-wrap">
+            <img src="https://www.lamentedelfenix.com/assets/banner.webp"
+                 alt="La raíz de todo — Taller gratuito con Darío Arrigazzi"
+                 width="1200" height="400"
+                 fetchpriority="high" loading="eager">
+        </div>
+    </header>
+
+    <main>
+
+        <!-- OPENING -->
+        <section class="opening">
+            <div class="wrap">
+                <div class="eyebrow">
+                    <span class="dot"></span>
+                    Taller Online Gratuito · Método Fénix
+                </div>
+
+                <h1 class="headline">
+                    <em>La raíz de todo.</em>
+                    <span class="break" style="font-style:normal; color: rgba(245,240,232,.9); font-size: 87%;">Por qué te bloqueas en el amor,<br>el dinero y tu cuerpo.</span>
+                </h1>
+
+                <p class="deck">
+                    En 2 horas entenderás de dónde vienen los patrones que repites sin querer — en tus relaciones, en tu economía, en tu salud. Y lo que es más importante: verás cómo soltarlos.
+                </p>
+
+                <!-- FORM -->
+                <div class="form-box" id="registro">
+                    <p class="f-label">Pronto habrá un nuevo taller</p>
+                    <h2>Apúntate y te aviso cuando abra el próximo</h2>
+                    <div class="f-meta">
+                        <span><i class="fas fa-laptop"></i> Online en directo</span>
+                        <span><i class="fas fa-clock"></i> 2 horas</span>
+                        <span><i class="fas fa-euro-sign"></i> 100% gratuito</span>
+                    </div>
+                    <form id="main-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="_blank" onsubmit="handleSubmit('main-form','main-success')">
+                        <div class="input-row">
+                            <input class="f-input" type="email" name="fields[email]" placeholder="tu@email.com" autocomplete="email" required aria-label="Tu email">
+                            <input type="hidden" name="ml-submit" value="1">
+                            <input type="hidden" name="anticsrf" value="true">
+                            <button class="f-btn" type="submit">
+                                AVÍSAME <i class="fas fa-arrow-right" style="font-size:.8rem;"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="f-disclaimer">
+                        <i class="fas fa-lock" style="font-size:.7rem;"></i>
+                        Sin spam. Solo el aviso cuando abra el próximo taller.
+                    </div>
+                </div>
+                <div class="success-box" id="main-success">
+                    <div class="s-icon">✅</div>
+                    <h3>¡Estás en la lista!</h3>
+                    <p>En cuanto abra el próximo taller serás el primero en saberlo. Revisa también tu carpeta de spam.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="wrap"><div class="rule rule--wide"></div></div>
+
+        <!-- NARRATIVE -->
+        <section class="narrative">
+            <div class="wrap">
+                <div class="callout">
+                    ¿Te han dicho que lo que te pasa en el trabajo, en tu relación o en tu cuerpo no tiene explicación lógica? Que con todo lo que haces, no entienden por qué sigues igual.
+                </div>
+
+                <p>La clave no está donde la estás buscando. No está en la otra persona, ni en la falta de dinero, ni en la mala suerte. Está en algo que tu mente aprendió mucho antes de que tú pudieras decidir si lo quería aprender.</p>
+
+                <p>Tu inconsciente grabó una serie de reglas en los primeros años de vida. Reglas sobre si eres merecedor de amor, de dinero, de salud. Y desde entonces, tu cerebro hace todo lo posible por cumplirlas — aunque eso signifique sabotear exactamente lo que más deseas.</p>
+
+                <p><strong>Esto no es metáfora. Es neurología y psicología del desarrollo.</strong> Y cuando lo ves desde fuera, por primera vez en tu vida, algo cambia.</p>
+
+                <p>No porque alguien te dé un consejo. Sino porque entiendes <strong>la raíz</strong>. Y cuando ves la raíz, el árbol ya no te da tanto miedo.</p>
+
+                <p>En este taller no te voy a dar técnicas de motivación ni te voy a decir que "todo pasa por algo". Te voy a enseñar a leer tu propio inconsciente — y a empezar a reescribir lo que ya no te sirve.</p>
+            </div>
+        </section>
+
+        <div class="wrap"><div class="rule rule--wide"></div></div>
+
+        <!-- CASOS REALES -->
+        <section style="padding: 2rem 0 3rem;">
+            <div class="wrap wrap--wide">
+                <h2 class="cases-title">Lo que la gente cree que es su problema<br><em style="font-style:italic; color:var(--gold-lt);">y lo que realmente es.</em></h2>
+                <p class="cases-sub">Cada caso parece distinto. La raíz casi siempre es la misma.</p>
+                <div class="cases-grid">
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-heart-broken"></i></div>
+                        <h3>Relaciones de pareja</h3>
+                        <p>«Siempre elijo mal» «No entiendo por qué me pasa lo mismo una y otra vez» «No soy capaz de pedir lo que necesito.»</p>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-euro-sign"></i></div>
+                        <h3>Dinero y economía</h3>
+                        <p>«Trabajo mucho pero nunca me sobra» «Me cuesta pedir lo que valgo» «Siempre que consigo algo, lo pierdo.»</p>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-head-side-mask"></i></div>
+                        <h3>Ansiedad y bloqueos</h3>
+                        <p>«Sé lo que tengo que hacer pero no lo hago» «Vivo con una angustia de fondo que no sé de dónde viene.»</p>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3>Salud y cuerpo</h3>
+                        <p>«Los médicos no encuentran nada pero yo sé que algo va mal» «Mi cuerpo lleva meses diciéndome algo.»</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="wrap"><div class="rule rule--wide"></div></div>
+
+        <!-- QUIÉN SOY -->
+        <section class="bio-section">
+            <div class="wrap">
+                <h2>Soy Darío Arrigazzi</h2>
+                <p class="bio-role">Creador del Método Fénix</p>
+                <div class="bio-body">
+                    <p>No te hablo desde un libro. Crecí en una casa donde el <span class="pink">maltrato era el día a día</span>. Desde niño aprendí a sobrevivir emocionalmente en un entorno que no era seguro — y eso me dejó marcas que tardé años en ver.</p>
+                    <p>A pesar de eso, construí una carrera: fui <strong>Director de Operaciones</strong> y cofundador de un grupo empresarial. Pero por dentro seguía hecho polvo. El éxito no había tocado lo que tenía que tocar.</p>
+                    <p>Lo dejé todo para sanar de verdad y formarme en lo que siempre me había apasionado. Hoy combino <strong>Psicología humanista, PNL, Coaching y Un Curso de Milagros</strong> con años de experiencia acompañando a personas a encontrar la raíz de sus bloqueos.</p>
+                    <p>Lo que más me ha sorprendido trabajando con personas: <strong>casi todos los problemas distintos tienen la misma raíz.</strong> Y cuando la ves, algo se mueve.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIOS -->
+        <section class="test-section">
+            <div class="wrap">
+                <h2 class="cases-title">Lo que dicen quienes han trabajado conmigo</h2>
+                <p class="cases-sub">Resultados reales. Pulsa las flechas o arrastra para ver más.</p>
+            </div>
+            <div class="wrap wrap--wide" style="position:relative;">
+                <div class="carousel-wrapper">
+                    <div id="testimonial-carousel" class="testimonial-carousel"></div>
+                    <button id="prev-btn" class="carousel-button prev" aria-label="Anterior">&#10094;</button>
+                    <button id="next-btn" class="carousel-button next" aria-label="Siguiente">&#10095;</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="wrap"><div class="rule rule--wide"></div></div>
+
+        <!-- QUÉ VAS A CONSEGUIR -->
+        <section class="outcomes-section">
+            <div class="wrap">
+                <h2>Qué te llevarás del taller</h2>
+                <p class="outcomes-sub">Un taller sin relleno. Solo lo que puedes aplicar ese mismo día.</p>
+                <div class="outcomes-list">
+                    <div class="outcome-item">
+                        <span class="outcome-num">01</span>
+                        <div>
+                            <h3>Verás la raíz de tu patrón principal</h3>
+                            <p>No seguirás preguntándote «¿por qué me pasa esto a mí?». Tendrás una respuesta real, no una teoría.</p>
+                        </div>
+                    </div>
+                    <div class="outcome-item">
+                        <span class="outcome-num">02</span>
+                        <div>
+                            <h3>Entenderás cómo funciona tu inconsciente</h3>
+                            <p>Sin jerga. Sin rodeos. Solo lo que necesitas saber para dejar de luchar contra ti mismo.</p>
+                        </div>
+                    </div>
+                    <div class="outcome-item">
+                        <span class="outcome-num">03</span>
+                        <div>
+                            <h3>Tomarás decisiones desde la claridad, no desde el miedo</h3>
+                            <p>Aprenderás a reconocer cuándo decides desde una emoción vieja — y cómo parar ese piloto automático.</p>
+                        </div>
+                    </div>
+                    <div class="outcome-item">
+                        <span class="outcome-num">04</span>
+                        <div>
+                            <h3>Te llevarás herramientas para aplicar ese mismo día</h3>
+                            <p>No ejercicios genéricos. Algo concreto adaptado a lo que trabajemos en el taller.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DETALLES -->
+        <section class="details-section">
+            <div class="wrap">
+                <div class="details-box">
+                    <h2>Detalles del taller</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="d-icon"><i class="fas fa-laptop"></i></span>
+                            <div>
+                                <h4>Online en directo</h4>
+                                <p>Desde cualquier dispositivo. El enlace llega por email al apuntarte.</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="d-icon"><i class="fas fa-clock"></i></span>
+                            <div>
+                                <h4>2 horas</h4>
+                                <p>Sin relleno. Enseñanza práctica desde el primer minuto.</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="d-icon"><i class="fas fa-calendar-alt"></i></span>
+                            <div>
+                                <h4>Próxima fecha por anunciar</h4>
+                                <p>Apúntate a la lista y te aviso en cuanto lo confirme.</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="d-icon"><i class="fas fa-comments"></i></span>
+                            <div>
+                                <h4>Turno de preguntas en directo</h4>
+                                <p>Puedes preguntar tu caso concreto al final del taller.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="free-pill">
+                        <div class="f-tag">Precio</div>
+                        <div class="f-price">100% Gratuito</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="final-cta" id="lista">
+            <div class="wrap">
+                <h2>Pronto habrá un nuevo taller.<br><em>Apúntate para recibir el aviso.</em></h2>
+                <p class="fc-sub">Solo te escribiré cuando confirme la fecha del próximo. Sin spam, sin rollos.</p>
+
+                <div class="form-box" style="max-width:32rem; margin-inline:auto;">
+                    <form id="final-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="_blank" onsubmit="handleSubmit('final-form','final-success')">
+                        <div class="input-row">
+                            <input class="f-input" type="email" name="fields[email]" placeholder="tu@email.com" autocomplete="email" required aria-label="Tu email">
+                            <input type="hidden" name="ml-submit" value="1">
+                            <input type="hidden" name="anticsrf" value="true">
+                            <button class="f-btn" type="submit">
+                                AVÍSAME <i class="fas fa-arrow-right" style="font-size:.8rem;"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="f-disclaimer">
+                        <i class="fas fa-lock" style="font-size:.7rem;"></i>
+                        Sin spam. Solo el aviso del próximo taller.
+                    </div>
+                </div>
+                <div class="success-box" id="final-success" style="margin-top:1rem;">
+                    <div class="s-icon">✅</div>
+                    <h3>¡Estás en la lista!</h3>
+                    <p>Te avisamos en cuanto abra el próximo taller. Revisa también tu carpeta de spam.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p style="margin-bottom:.5rem;">&copy; 2026 La Mente del Fénix — Darío Arrigazzi. Todos los derechos reservados.</p>
+            <p><a href="mailto:darioarrigazzi@lamentedelfenix.com">darioarrigazzi@lamentedelfenix.com</a></p>
+        </div>
+    </footer>
+
+    <script>
+        /* FORM SUBMIT */
+        function handleSubmit(formId, successId){
+            setTimeout(function(){
+                var f = document.getElementById(formId);
+                var s = document.getElementById(successId);
+                if(f) f.style.display = 'none';
+                if(s) s.style.display = 'block';
+            }, 1200);
+        }
+
+        /* TESTIMONIOS CAROUSEL */
+        window.addEventListener('load', function(){
+            var carousel = document.getElementById('testimonial-carousel');
+            if(!carousel) return;
+            var prevBtn = document.getElementById('prev-btn');
+            var nextBtn = document.getElementById('next-btn');
+            var images = [
+                './assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp',
+                './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp',
+                './assets/Captura 7.webp'
+            ];
+            var currentIndex = images.length - 1;
+            var slides = [];
+            var isDragging = false, startPos = 0, dragOffset = 0;
+
+            images.forEach(function(src, i){
+                var slide = document.createElement('div');
+                slide.className = 'testimonial-slide';
+                var img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Testimonio de cliente ' + (i+1);
+                img.className = 'testimonial-image';
+                img.draggable = false;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                slide.appendChild(img);
+                carousel.appendChild(slide);
+                slides.push(slide);
+            });
+
+            function update(){
+                slides.forEach(function(slide, i){
+                    var offset = i - currentIndex;
+                    var transform = 'scale(0)', opacity = '0', zIndex = '0';
+                    if(Math.abs(offset) < 2){
+                        var sign = offset > 0 ? 1 : offset < 0 ? -1 : 0;
+                        opacity = '0.5';
+                        zIndex = String(10 - Math.abs(offset));
+                        if(offset === 0){
+                            transform = 'translateX(0) translateZ(0) rotateY(0) scale(1.08)';
+                            opacity = '1';
+                        } else {
+                            transform = 'translateX('+(sign*210)+'px) translateZ(-160px) rotateY('+(-sign*42)+'deg) scale(0.82)';
+                        }
+                    }
+                    slide.style.transform = transform;
+                    slide.style.opacity = opacity;
+                    slide.style.zIndex = zIndex;
+                });
+            }
+
+            function go(dir){
+                var n = currentIndex + dir;
+                if(n >= 0 && n < slides.length){ currentIndex = n; update(); }
+            }
+
+            nextBtn.addEventListener('click', function(){ go(1); });
+            prevBtn.addEventListener('click', function(){ go(-1); });
+
+            function posX(e){ return e.type.indexOf('mouse') !== -1 ? e.pageX : e.touches[0].clientX; }
+
+            carousel.addEventListener('mousedown', function(e){ isDragging=true; startPos=posX(e); dragOffset=0; carousel.classList.add('grabbing'); });
+            carousel.addEventListener('touchstart', function(e){ isDragging=true; startPos=posX(e); dragOffset=0; }, {passive:true});
+            carousel.addEventListener('mousemove', function(e){ if(isDragging) dragOffset=posX(e)-startPos; });
+            carousel.addEventListener('touchmove', function(e){ if(isDragging) dragOffset=posX(e)-startPos; }, {passive:true});
+
+            function end(){
+                if(!isDragging) return;
+                isDragging = false;
+                carousel.classList.remove('grabbing');
+                if(dragOffset > 80) go(-1);
+                else if(dragOffset < -80) go(1);
+                dragOffset = 0;
+            }
+            carousel.addEventListener('mouseup', end);
+            carousel.addEventListener('mouseleave', end);
+            carousel.addEventListener('touchend', end, {passive:true});
+
+            update();
+            window.addEventListener('resize', update, {passive:true});
+        });
+    </script>
+
+</body>
+</html>
