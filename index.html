@@ -21,7 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros</title>
-    <meta name="description" content="El Método Fénix de Darío Arrigazzi: transformación real en 1 sesión o te devuelvo el dinero. Basado en Un Curso de Milagros, PNL y Coaching.">
+    <meta name="description" content="El Método Fénix de Darío Arrigazzi: transformación real en 1 sesión. Basado en Un Curso de Milagros, PNL y Coaching.">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="Dcg6lm7959jmy4wV5tpjHY3zMxNpZ7hxZWMuBpaVAgw">
     <meta name="author" content="Darío Arrigazzi">
@@ -29,7 +29,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.lamentedelfenix.com/">
     <meta property="og:title" content="Método Fénix | Darío Arrigazzi — Transformación en 1 sesión">
-    <meta property="og:description" content="Resultados reales en 1 sesión o te devuelvo el dinero.">
+    <meta property="og:description" content="Resultados reales en 1 sesión. Basado en Un Curso de Milagros, PNL y Coaching.">
     <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
     <meta property="og:locale" content="es_ES">
     <meta property="og:site_name" content="Mente Fénix">
@@ -61,7 +61,6 @@
         .main-nav a{color:#fbf5e2;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.5rem 1rem;border:2px solid transparent;border-radius:.25rem;transition:all .3s ease;background:rgba(0,0,0,.5)}
         .main-nav a:hover{color:#d4af37;border-color:#d4af37;background:rgba(0,0,0,.8)}
 
-        /* ── BRAND COLORS ── */
         .text-brand-pink{color:#e91e63}
         .text-brand-gold{color:#d4af37}
 
@@ -78,86 +77,21 @@
         .btn.btn-gold:hover{color:#d4af37}
         .btn:hover::before{transform:scaleX(1);transform-origin:left}
 
-        /* ── HERO INTRO — nuevo bloque de contexto rápido ── */
-        .hero-intro {
-            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-            border-bottom: 2px solid rgba(212,175,55,.25);
-            padding: 2rem 1rem 2.25rem;
-            text-align: center;
-            margin-left: -.75rem;
-            margin-right: -.75rem;
-        }
-        @media(min-width:768px){ .hero-intro { margin-left: 0; margin-right: 0; border-radius: 0 0 .5rem .5rem; padding: 2.5rem 2rem 2.75rem; } }
+        /* ── HERO INTRO ── */
+        .hero-intro{background:linear-gradient(135deg,#1a1a1a 0%,#222 100%);border-bottom:2px solid rgba(212,175,55,.25);padding:2rem 1rem 2.25rem;text-align:center;margin-left:-.75rem;margin-right:-.75rem}
+        @media(min-width:768px){.hero-intro{margin-left:0;margin-right:0;border-radius:0 0 .5rem .5rem;padding:2.5rem 2rem 2.75rem}}
+        .hero-intro-inner{max-width:52rem;margin:0 auto}
+        .kicker{display:inline-flex;align-items:center;gap:.4rem;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);border-radius:2rem;padding:.28rem .85rem;margin-bottom:1.25rem}
+        .hero-intro h1{font-size:clamp(1.6rem,5vw,2.75rem);font-weight:800;line-height:1.22;margin-bottom:1rem;color:#fbf5e2}
+        .hero-intro h1 em{font-style:normal;color:#d4af37}
+        .hero-intro .subtitle{font-size:clamp(.95rem,2.5vw,1.1rem);font-weight:500;color:rgba(251,245,226,.72);line-height:1.7;max-width:40rem;margin:0 auto 1.75rem}
+        .hero-cta{margin-top:1.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem}
+        .hero-cta-note{font-size:.82rem;color:rgba(251,245,226,.5)}
+        .hero-quote{background:#1a1a1a;border-left:3px solid #d4af37;border-radius:0 .4rem .4rem 0;padding:1rem 1.25rem;text-align:left;max-width:38rem;margin:1.75rem auto 0}
+        .hero-quote p{font-size:.92rem;font-style:italic;color:rgba(251,245,226,.85);line-height:1.65;margin-bottom:.4rem}
+        .hero-quote cite{font-size:.8rem;font-weight:700;color:#d4af37;font-style:normal}
 
-        .hero-intro-inner { max-width: 52rem; margin: 0 auto; }
-
-        /* kicker */
-        .kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem;
-            font-size: .68rem;
-            font-weight: 700;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: #d4af37;
-            border: 1px solid rgba(212,175,55,.35);
-            border-radius: 2rem;
-            padding: .28rem .85rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .hero-intro h1 {
-            font-size: clamp(1.6rem, 5vw, 2.75rem);
-            font-weight: 800;
-            line-height: 1.22;
-            margin-bottom: 1rem;
-            color: #fbf5e2;
-        }
-        .hero-intro h1 em { font-style: normal; color: #d4af37; }
-
-        .hero-intro .subtitle {
-            font-size: clamp(.95rem, 2.5vw, 1.1rem);
-            font-weight: 500;
-            color: rgba(251,245,226,.72);
-            line-height: 1.7;
-            max-width: 40rem;
-            margin: 0 auto 1.5rem;
-        }
-
-        /* garantía pill — visible desde el primer scroll */
-        .garantia-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: .6rem;
-            background: rgba(212,175,55,.1);
-            border: 1px solid rgba(212,175,55,.35);
-            border-radius: 2rem;
-            padding: .45rem 1.1rem;
-            font-size: .8rem;
-            font-weight: 700;
-            color: #d4af37;
-            margin-bottom: 1.75rem;
-        }
-        .garantia-pill i { font-size: .85rem; }
-
-        /* mini quote debajo del CTA */
-        .hero-quote {
-            background: #1a1a1a;
-            border-left: 3px solid #d4af37;
-            border-radius: 0 .4rem .4rem 0;
-            padding: 1rem 1.25rem;
-            text-align: left;
-            max-width: 38rem;
-            margin: 1.75rem auto 0;
-        }
-        .hero-quote p { font-size: .92rem; font-style: italic; color: rgba(251,245,226,.85); line-height: 1.65; margin-bottom: .4rem; }
-        .hero-quote cite { font-size: .8rem; font-weight: 700; color: #d4af37; font-style: normal; }
-
-        .hero-cta { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; }
-        .hero-cta-note { font-size: .82rem; color: rgba(251,245,226,.5); }
-
-        /* ── BIO / STORY ── */
+        /* ── BIO ── */
         .bio-section{padding:3.5rem .25rem;background-color:#2b2b2b}
         @media(min-width:768px){.bio-section{padding:5rem 1rem}}
         .sales-bio{max-width:600px;margin:0 auto;font-size:1.05rem;line-height:1.9;color:rgba(251,245,226,.9)}
@@ -176,15 +110,13 @@
         }
         .sales-bio h2{font-size:1.75rem;font-weight:800;margin-bottom:3rem;color:#fbf5e2;text-align:center}
         @media(min-width:768px){.sales-bio h2{font-size:2rem}}
-
-        /* video */
         .bio-video-wrap{position:relative;width:100%;padding-bottom:56.25%;margin-bottom:2.5rem;border-radius:.5rem;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.3);background-color:#1a1a1a}
         @media(min-width:768px){.bio-video-wrap{margin-bottom:3rem}}
         .bio-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
         .sales-highlight{color:#e91e63;font-weight:700;font-size:1.15rem;display:block;margin-bottom:2rem}
         @media(min-width:768px){.sales-highlight{font-size:1.25rem}}
 
-        /* método pillars */
+        /* método */
         .metodo-block{margin:3rem 0;padding:1.5rem 1.25rem;background-color:#1a1a1a;border-radius:.5rem;border-top:3px solid #e91e63}
         @media(min-width:768px){.metodo-block{padding:2rem}}
         .metodo-block h3{font-size:1.1rem;font-weight:800;color:#fbf5e2;margin-bottom:1.5rem;text-align:center}
@@ -205,25 +137,13 @@
         @media(min-width:768px){.price-now{font-size:1.75rem}}
         .price-future{opacity:.9;margin-top:1rem;font-size:.95rem}
 
-        /* ── GARANTÍA BANNER — movido arriba del carrusel ── */
-        .garantia-banner{background:linear-gradient(135deg,#1a1a1a 0%,#222 100%);border:2px solid #d4af37;border-radius:.75rem;padding:1.5rem 1.25rem;margin:0 auto 3rem;max-width:56rem;text-align:center;box-shadow:0 8px 30px rgba(212,175,55,.15)}
-        @media(min-width:768px){.garantia-banner{padding:2rem;margin-bottom:3.5rem}}
-        .garantia-banner .garantia-icon{font-size:2rem;margin-bottom:.5rem}
-        @media(min-width:768px){.garantia-banner .garantia-icon{font-size:2.5rem;margin-bottom:.75rem}}
-        .garantia-banner h3{font-size:1.25rem;font-weight:800;color:#d4af37;margin-bottom:.5rem;line-height:1.25}
-        @media(min-width:480px){.garantia-banner h3{font-size:1.5rem}}
-        @media(min-width:768px){.garantia-banner h3{font-size:1.875rem}}
-        .garantia-banner p{color:rgba(251,245,226,.8);font-size:.95rem;line-height:1.7;max-width:36rem;margin:0 auto}
-        .garantia-tag{display:inline-block;background-color:#d4af37;color:#1a1a1a;font-weight:800;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .75rem;border-radius:9999px;margin-bottom:.875rem}
-
-        /* ── TESTIMONIALS ── */
+        /* testimonials */
         .testimonials-section{padding:3rem .5rem;background-color:#1a1a1a;overflow-x:hidden;border-radius:.5rem;box-shadow:inset 0 2px 4px rgba(0,0,0,.3);margin:3rem 0}
         @media(min-width:768px){.testimonials-section{padding:4rem 1rem}}
         .testimonials-inner{max-width:64rem;margin:0 auto}
         .testimonials-inner h2{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#fbf5e2;line-height:1.3}
         @media(min-width:768px){.testimonials-inner h2{font-size:1.875rem}}
         .testimonials-inner .test-sub{text-align:center;font-size:.85rem;color:rgba(251,245,226,.45);margin-bottom:2rem}
-
         .carousel-wrapper{position:relative;width:100%;height:460px;display:flex;justify-content:center;align-items:center;perspective:1200px;overflow:hidden}
         @media(min-width:480px){.carousel-wrapper{height:530px}}
         @media(min-width:768px){.carousel-wrapper{height:620px}}
@@ -240,13 +160,7 @@
         .carousel-button.next{right:2%}
         @media(min-width:768px){.carousel-button.prev{left:5%}.carousel-button.next{right:5%}}
 
-        /* ── EBOOK BANNER ── */
-        .newsletter-banner{background-color:#1a1a1a;border:1px solid #d4af37;border-radius:.5rem;padding:2.5rem 1.5rem;margin:0 auto 3.5rem;max-width:56rem;text-align:center;box-shadow:0 10px 25px rgba(212,175,55,.1)}
-        @media(min-width:768px){.newsletter-banner{margin-bottom:4rem;padding:3rem 2rem}}
-        .newsletter-banner h3{font-size:1.5rem;color:#d4af37;margin-bottom:1rem;font-weight:800}
-        .newsletter-banner p{color:rgba(251,245,226,.9);margin-bottom:1.5rem;line-height:1.6;font-size:1.05rem}
-
-        /* ── SERVICES ── */
+        /* services */
         .services-section{padding:3.5rem .25rem;background-color:#2b2b2b}
         @media(min-width:768px){.services-section{padding:5rem 1rem}}
         .services-inner{max-width:72rem;margin:0 auto}
@@ -255,7 +169,6 @@
         .services-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
         @media(min-width:640px){.services-grid{gap:2rem}}
         @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
-
         .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
         .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
         .card-thumb{position:relative;width:100%;aspect-ratio:600/510;overflow:hidden;border-bottom:1px solid #444;background-color:#222;display:flex;justify-content:center;align-items:center}
@@ -302,7 +215,7 @@
         .discount-box strong{color:#fbf5e2}
         .waitlist-text{text-align:center;font-size:.9rem;margin-top:1.25rem;color:rgba(251,245,226,.8)}
 
-        /* ── FOOTER ── */
+        /* footer */
         .site-footer{margin-top:3.5rem;padding:2rem 1rem;border-top:1px solid #374151;text-align:center;background-color:#1a1a1a;border-radius:.5rem;width:100%;max-width:72rem;margin-left:auto;margin-right:auto}
         @media(min-width:768px){.site-footer{margin-top:5rem}}
         .site-footer h4{font-weight:700;font-size:1.125rem;margin-bottom:1rem;color:#fbf5e2}
@@ -328,7 +241,7 @@
         @media(min-width:480px){.footer-legal span{margin:0 .5rem}}
         .footer-copy{font-size:.8rem;color:rgba(251,245,226,.5);margin-top:1rem}
 
-        /* ── MODAL ── */
+        /* modal */
         .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;justify-content:center;align-items:center;padding:1rem;z-index:50;opacity:0;pointer-events:none;transition:opacity .3s ease}
         .modal-overlay.active{opacity:1;pointer-events:all}
         .modal-inner{position:relative;max-width:32rem;width:100%}
@@ -340,7 +253,6 @@
 <body>
 <div class="wrapper">
 
-    <!-- HEADER -->
     <header class="site-header">
         <div class="banner-wrap">
             <img src="./assets/banner.webp"
@@ -353,7 +265,6 @@
         </div>
     </header>
 
-    <!-- ── NUEVO BLOQUE HERO: contexto + garantía + CTA en el primer scroll ── -->
     <section class="hero-intro">
         <div class="hero-intro-inner">
 
@@ -372,12 +283,6 @@
                 Da igual cómo se llame lo tuyo. Relaciones que se repiten, dinero que nunca llega, ansiedad sin explicación, un malestar físico que no encuentras de dónde viene. Casi siempre tiene el mismo origen: tu inconsciente. Y eso se puede cambiar.
             </p>
 
-            <!-- garantía discreta — una sola vez, sin explicación -->
-            <div class="garantia-pill">
-                <i class="fas fa-shield-alt"></i>
-                Garantía de resultado o te devuelvo el dinero
-            </div>
-
             <div class="hero-cta">
                 <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold">
                     Quiero estar en la lista
@@ -385,7 +290,6 @@
                 <span class="hero-cta-note">Lista de espera · Te aviso en cuanto abra agenda</span>
             </div>
 
-            <!-- TESTIMONIO ANCLA justo debajo del CTA -->
             <div class="hero-quote">
                 <p>"Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre."</p>
                 <cite>— Natalia C.</cite>
@@ -396,7 +300,6 @@
 
     <main>
 
-        <!-- ── STORY / BIO ── -->
         <section class="bio-section">
             <div class="sales-bio">
                 <h2>Tu conflicto es en realidad una película que te has contado con un mal guion</h2>
@@ -463,7 +366,6 @@
                 </div>
             </div>
 
-            <!-- CARRUSEL TESTIMONIOS -->
             <div id="reseñas" class="testimonials-section">
                 <div class="testimonials-inner">
                     <h2>Lo que dicen quienes han trabajado conmigo</h2>
@@ -476,7 +378,6 @@
                 </div>
             </div>
 
-            <!-- ESCALERA PRECIOS -->
             <div class="sales-bio">
                 <div class="price-ladder">
                     <div class="price-step price-past-2">El valor de lo que hago ha crecido con sus resultados.</div>
@@ -487,7 +388,6 @@
             </div>
         </section>
 
-        <!-- SERVICIOS -->
         <section id="servicios" class="services-section">
             <div class="services-inner">
                 <h2>Opciones de Trabajo (Lista de Espera)</h2>
@@ -524,10 +424,6 @@
                                 <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 1 mes tras la sesión.</span></li>
                                 <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de la sesión</strong> (opcional).</span></li>
                             </ul>
-                            <div class="card-garantia">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Si al terminar la sesión no notas un cambio real, te devuelvo el dinero íntegro. Sin preguntas.</span>
-                            </div>
                             <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
                                 <i class="fas fa-envelope" style="margin-right:.5rem"></i>Unirme a la lista
                             </a>
@@ -601,7 +497,6 @@
 
 </div>
 
-<!-- MODAL -->
 <div id="image-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
     <div class="modal-inner">
         <img id="modal-image" src="" alt="Reseña ampliada" loading="lazy" decoding="async" width="500" height="700">
@@ -621,7 +516,6 @@ window.addEventListener('load', function(){
     document.getElementById('image-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 
-    /* Bio scroll effect */
     var bioParagraphs = document.querySelectorAll('.sales-bio p');
     var bioObserver = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
@@ -631,82 +525,63 @@ window.addEventListener('load', function(){
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
     bioParagraphs.forEach(function(p){ bioObserver.observe(p); });
 
-    /* Carousel lazy load */
     var reseñasSection = document.getElementById('reseñas');
     if(!reseñasSection) return;
     var carouselCargado = false;
     var carruselObserver = new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting && !carouselCargado){
-            carouselCargado = true;
-            iniciarCarrusel();
-            carruselObserver.disconnect();
-        }
+        if(entries[0].isIntersecting && !carouselCargado){ carouselCargado=true; iniciarCarrusel(); carruselObserver.disconnect(); }
     }, { rootMargin: '300px 0px' });
     carruselObserver.observe(reseñasSection);
 
     function iniciarCarrusel(){
-        var carousel = document.getElementById('testimonial-carousel');
+        var carousel=document.getElementById('testimonial-carousel');
         if(!carousel) return;
-        var prevBtn = document.getElementById('prev-btn');
-        var nextBtn = document.getElementById('next-btn');
-        prevBtn.style.display = 'flex';
-        nextBtn.style.display = 'flex';
-        var images = [
-            './assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp',
-            './assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp',
-            './assets/Captura 7.webp'
-        ];
-        var currentIndex = images.length - 1;
-        var slides = [];
-        var isDragging = false, startPos = 0, dragOffset = 0;
-        var fragment = document.createDocumentFragment();
-        images.forEach(function(src, i){
-            var slide = document.createElement('div');
-            slide.className = 'testimonial-slide';
-            var img = document.createElement('img');
-            img.src = src; img.alt = 'Reseña de cliente '+(i+1);
-            img.className = 'testimonial-image'; img.draggable = false;
-            img.loading = 'lazy'; img.decoding = 'async';
-            img.width = 300; img.height = 540;
+        var prevBtn=document.getElementById('prev-btn');
+        var nextBtn=document.getElementById('next-btn');
+        prevBtn.style.display='flex'; nextBtn.style.display='flex';
+        var images=['./assets/Captura 1.webp','./assets/Captura 2.webp','./assets/Captura 3.webp','./assets/Captura 4.webp','./assets/Captura 5.webp','./assets/Captura 6.webp','./assets/Captura 7.webp'];
+        var currentIndex=images.length-1, slides=[], isDragging=false, startPos=0, dragOffset=0;
+        var fragment=document.createDocumentFragment();
+        images.forEach(function(src,i){
+            var slide=document.createElement('div'); slide.className='testimonial-slide';
+            var img=document.createElement('img'); img.src=src; img.alt='Reseña de cliente '+(i+1);
+            img.className='testimonial-image'; img.draggable=false; img.loading='lazy'; img.decoding='async'; img.width=300; img.height=540;
             slide.appendChild(img); fragment.appendChild(slide); slides.push(slide);
         });
         carousel.appendChild(fragment);
         function updateCarousel(){
-            slides.forEach(function(slide, i){
-                var offset = i - currentIndex;
-                var transform='scale(0)', opacity='0', zIndex='0';
-                if(Math.abs(offset) < 2){
-                    var sign = offset>0?1:offset<0?-1:0;
-                    opacity='0.5'; zIndex=String(10-Math.abs(offset));
-                    if(offset===0){ transform='translateX(0) translateZ(0) rotateY(0) scale(1.1)'; opacity='1'; }
-                    else { transform='translateX('+(sign*220)+'px) translateZ(-180px) rotateY('+(-sign*45)+'deg) scale(0.8)'; }
+            slides.forEach(function(slide,i){
+                var offset=i-currentIndex, transform='scale(0)', opacity='0', zIndex='0';
+                if(Math.abs(offset)<2){
+                    var sign=offset>0?1:offset<0?-1:0; opacity='0.5'; zIndex=String(10-Math.abs(offset));
+                    if(offset===0){transform='translateX(0) translateZ(0) rotateY(0) scale(1.1)';opacity='1';}
+                    else{transform='translateX('+(sign*220)+'px) translateZ(-180px) rotateY('+(-sign*45)+'deg) scale(0.8)';}
                 }
                 slide.style.transform=transform; slide.style.opacity=opacity; slide.style.zIndex=zIndex;
             });
         }
-        function changeSlide(dir){ var n=currentIndex+dir; if(n>=0&&n<slides.length){ currentIndex=n; updateCarousel(); } }
-        nextBtn.addEventListener('click', function(){ changeSlide(1); });
-        prevBtn.addEventListener('click', function(){ changeSlide(-1); });
-        function posX(e){ return e.type.indexOf('mouse')!==-1 ? e.pageX : e.touches[0].clientX; }
-        carousel.addEventListener('mousedown', function(e){ isDragging=true; startPos=posX(e); dragOffset=0; carousel.classList.add('grabbing'); });
-        carousel.addEventListener('touchstart', function(e){ isDragging=true; startPos=posX(e); dragOffset=0; }, {passive:true});
-        carousel.addEventListener('mousemove', function(e){ if(isDragging) dragOffset=posX(e)-startPos; });
-        carousel.addEventListener('touchmove', function(e){ if(isDragging) dragOffset=posX(e)-startPos; }, {passive:true});
+        function changeSlide(dir){ var n=currentIndex+dir; if(n>=0&&n<slides.length){currentIndex=n;updateCarousel();} }
+        nextBtn.addEventListener('click',function(){changeSlide(1);});
+        prevBtn.addEventListener('click',function(){changeSlide(-1);});
+        function posX(e){ return e.type.indexOf('mouse')!==-1?e.pageX:e.touches[0].clientX; }
+        carousel.addEventListener('mousedown',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');});
+        carousel.addEventListener('touchstart',function(e){isDragging=true;startPos=posX(e);dragOffset=0;},{passive:true});
+        carousel.addEventListener('mousemove',function(e){if(isDragging)dragOffset=posX(e)-startPos;});
+        carousel.addEventListener('touchmove',function(e){if(isDragging)dragOffset=posX(e)-startPos;},{passive:true});
         function dragEnd(){
-            if(!isDragging) return; isDragging=false; carousel.classList.remove('grabbing');
-            if(dragOffset>80) changeSlide(-1); else if(dragOffset<-80) changeSlide(1); dragOffset=0;
+            if(!isDragging)return; isDragging=false; carousel.classList.remove('grabbing');
+            if(dragOffset>80)changeSlide(-1); else if(dragOffset<-80)changeSlide(1); dragOffset=0;
         }
-        carousel.addEventListener('mouseup', dragEnd);
-        carousel.addEventListener('mouseleave', dragEnd);
-        carousel.addEventListener('touchend', dragEnd, {passive:true});
-        slides.forEach(function(slide, i){
-            slide.addEventListener('click', function(){
-                if(Math.abs(dragOffset)<10 && i===currentIndex) openModal(slide.querySelector('img').src);
-                else if(i!==currentIndex){ currentIndex=i; updateCarousel(); }
+        carousel.addEventListener('mouseup',dragEnd); carousel.addEventListener('mouseleave',dragEnd);
+        carousel.addEventListener('touchend',dragEnd,{passive:true});
+        slides.forEach(function(slide,i){
+            slide.addEventListener('click',function(){
+                if(Math.abs(dragOffset)<10&&i===currentIndex)openModal(slide.querySelector('img').src);
+                else if(i!==currentIndex){currentIndex=i;updateCarousel();}
             });
         });
         updateCarousel();
-        window.addEventListener('resize', updateCarousel, {passive:true});
+        window.addEventListener('resize',updateCarousel,{passive:true});
     }
 });
 </script>
