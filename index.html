@@ -248,9 +248,22 @@
         .modal-inner img{width:100%;height:auto;max-height:90vh;object-fit:contain;border-radius:.5rem}
         .modal-close{position:absolute;top:-.75rem;right:-.75rem;color:#fff;background:#1f2937;border:none;border-radius:9999px;width:2rem;height:2rem;display:flex;justify-content:center;align-items:center;font-size:1.5rem;line-height:1;cursor:pointer;transition:background .2s}
         .modal-close:hover{background:#4b5563}
+
+        /* ── TOP STRIP (AÑADIDO PARA EL TALLER) ── */
+        .strip { position: sticky; top: 0; z-index: 100; background: linear-gradient(90deg, #1a1a1a 0%, #2a1a0a 50%, #1a1a1a 100%); border-bottom: 2px solid #d4af37; padding: .6rem 1rem; display: flex; align-items: center; justify-content: center; gap: .75rem; flex-wrap: wrap; font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+        .strip-label { color: rgba(251,245,226,.7); text-align: center; }
+        .strip-cta { color: #e91e63; border: 1px solid #e91e63; border-radius: 2rem; padding: .25rem .75rem; font-size: .72rem; font-weight: 800; transition: background .2s, color .2s; text-decoration: none; }
+        .strip-cta:hover { background: #e91e63; color: #fff; }
     </style>
 </head>
 <body>
+
+<!-- TOP STRIP -->
+<div class="strip" id="top-strip">
+    <span class="strip-label">🔥 Apúntate a la lista para el próximo Taller Gratuito</span>
+    <a href="./taller-optin.html" class="strip-cta">VER DETALLES</a>
+</div>
+
 <div class="wrapper">
 
     <header class="site-header">
