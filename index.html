@@ -43,8 +43,8 @@
 
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        html{scroll-behavior:smooth}
-        body{font-family:'Montserrat',Helvetica,Arial,sans-serif;background-color:#2b2b2b;color:#fbf5e2;padding:.75rem}
+        html{scroll-behavior:smooth;overflow-x:hidden}
+        body{font-family:'Montserrat',Helvetica,Arial,sans-serif;background-color:#2b2b2b;color:#fbf5e2;padding:.75rem;overflow-x:hidden}
         @media(min-width:768px){body{padding:1rem}}
         img{max-width:100%;height:auto;display:block}
         a{text-decoration:none}
@@ -246,7 +246,7 @@
         .modal-overlay.active{opacity:1;pointer-events:all}
         .modal-inner{position:relative;max-width:32rem;width:100%}
         .modal-inner img{width:100%;height:auto;max-height:90vh;object-fit:contain;border-radius:.5rem}
-        .modal-close{position:absolute;top:-.75rem;right:-.75rem;color:#fff;background:#1f2937;border:none;border-radius:9999px;width:2rem;height:2rem;display:flex;justify-content:center;align-items:center;font-size:1.5rem;line-height:1;cursor:pointer;transition:background .2s}
+        .modal-close{position:absolute;top:10px;right:10px;color:#fff;background:#1f2937;border:none;border-radius:9999px;width:2rem;height:2rem;display:flex;justify-content:center;align-items:center;font-size:1.5rem;line-height:1;cursor:pointer;transition:background .2s;z-index:10}
         .modal-close:hover{background:#4b5563}
 
         /* ── TOP STRIP (AÑADIDO PARA EL TALLER) ── */
@@ -254,14 +254,43 @@
         .strip-label { color: rgba(251,245,226,.7); text-align: center; }
         .strip-cta { color: #e91e63; border: 1px solid #e91e63; border-radius: 2rem; padding: .25rem .75rem; font-size: .72rem; font-weight: 800; transition: background .2s, color .2s; text-decoration: none; }
         .strip-cta:hover { background: #e91e63; color: #fff; }
+
+        /* ── POPUP TALLER ── */
+        .popup-box { background-color: #1a1a1a; border-top: 4px solid #e91e63; border-radius: 8px; width: 100%; max-width: 450px; position: relative; padding: 2.5rem 2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.8); max-height: 90vh; overflow-y: auto; }
+        @media(max-width: 480px) { .popup-box { padding: 2.5rem 1.25rem 1.5rem; } .popup-content h2 { font-size: 1.5rem; } }
+        .popup-content { text-align: center; }
+        .popup-kicker { display: inline-block; color: #e91e63; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .popup-content h2 { color: #d4af37; font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+        .popup-content p { font-size: 0.95rem; line-height: 1.6; color: rgba(251,245,226,.9); margin-bottom: 1.5rem; }
+        .popup-details { list-style: none; padding: 0; margin: 0 0 1.5rem 0; text-align: left; background: #222; padding: 1rem; border-left: 3px solid #d4af37; border-radius: 4px; }
+        .popup-details li { font-size: 0.9rem; margin-bottom: 0.5rem; color: rgba(251,245,226,.8); }
+        .popup-details li:last-child { margin-bottom: 0; }
+        .popup-details strong { color: #d4af37; }
     </style>
 </head>
 <body>
 
+<!-- POPUP TALLER (SE MUESTRA AL ENTRAR) -->
+<div id="taller-popup-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="popup-box">
+        <button id="taller-popup-close" class="modal-close" aria-label="Cerrar">&times;</button>
+        <div class="popup-content">
+            <span class="popup-kicker">Taller Online Gratuito</span>
+            <h2>La raíz de todo</h2>
+            <p>Descubre de dónde vienen los patrones que repites sin querer y aprende cómo funciona tu inconsciente para dejar de sabotearte en 1 sesión.</p>
+            <ul class="popup-details">
+                <li>📍 <strong>Formato:</strong> Online en directo</li>
+                <li>⏳ <strong>Duración:</strong> 2 horas (sin relleno)</li>
+            </ul>
+            <a href="./taller-gratis.html" class="btn btn-gold btn-block">👉 Apuntarme al taller</a>
+        </div>
+    </div>
+</div>
+
 <!-- TOP STRIP -->
 <div class="strip" id="top-strip">
     <span class="strip-label">🔥 Apúntate a la lista para el próximo Taller Gratuito</span>
-    <a href="./taller-optin.html" class="strip-cta">VER DETALLES</a>
+    <a href="./taller-gratis.html" class="strip-cta">VER DETALLES</a>
 </div>
 
 <div class="wrapper">
@@ -525,9 +554,48 @@ function openModal(src){ var m=document.getElementById('image-modal'); document.
 function closeModal(){ document.getElementById('image-modal').classList.remove('active'); document.body.style.overflow=''; }
 
 window.addEventListener('load', function(){
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    document.getElementById('image-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+    // === LÓGICA DEL POPUP DEL TALLER ===
+    var tallerPopup = document.getElementById('taller-popup-overlay');
+    
+    // Mostramos si no lo ha visto en esta sesión, con 1.5s de retraso
+    if (tallerPopup && !sessionStorage.getItem('tallerPopupShown')) {
+        setTimeout(function() {
+            tallerPopup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            sessionStorage.setItem('tallerPopupShown', 'true');
+        }, 1500); 
+    }
+
+    // Eventos para cerrar el popup del taller
+    var closeTallerBtn = document.getElementById('taller-popup-close');
+    if(closeTallerBtn) {
+        closeTallerBtn.addEventListener('click', function() {
+            tallerPopup.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+    if(tallerPopup) {
+        tallerPopup.addEventListener('click', function(e) {
+            if(e.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    // ===================================
+
+    // Lógica modal de imágenes existente
+    var modalClose = document.getElementById('modal-close');
+    if(modalClose) modalClose.addEventListener('click', closeModal);
+    var imageModal = document.getElementById('image-modal');
+    if(imageModal) imageModal.addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+    
+    document.addEventListener('keydown', function(e){ 
+        if(e.key==='Escape') {
+            closeModal();
+            if(tallerPopup) { tallerPopup.classList.remove('active'); document.body.style.overflow = ''; }
+        }
+    });
 
     var bioParagraphs = document.querySelectorAll('.sales-bio p');
     var bioObserver = new IntersectionObserver(function(entries){
