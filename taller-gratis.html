@@ -6,10 +6,10 @@
     <meta name="description" content="Taller gratuito con Darío Arrigazzi: entiende de dónde vienen tus bloqueos en relaciones, dinero y salud. Método Fénix.">
     <meta name="theme-color" content="#0f0d0a">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="«La raíz de todo» — Taller gratuito con Darío Arrigazzi">
+    <meta property="og:title" content="«Mente Fénix» — Taller gratuito con Darío Arrigazzi">
     <meta property="og:description" content="Entiende de dónde vienen tus bloqueos en relaciones, dinero y salud. Taller online gratuito con el Método Fénix.">
     <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
-    <title>«La raíz de todo» — Taller gratuito | Método Fénix con Darío Arrigazzi</title>
+    <title>«Mente Fénix» — Taller gratuito | Método Fénix con Darío Arrigazzi</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -147,7 +147,7 @@
         /* ── DIVIDER ── */
         .rule { width: 100%; height: 1px; background: rgba(212,175,55,.18); margin: 2.5rem 0; }
 
-        /* ── FORM BOX ── */
+        /* ── FORM BOX Y CAJAS DE ÉXITO ── */
         .form-box {
             background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
             border: 1px solid rgba(212,175,55,.35);
@@ -248,20 +248,40 @@
             gap: .4rem;
         }
 
-        /* ── SUCCESS ── */
+        /* SUCCESS MESSAGE */
         .success-box {
             background: rgba(212,175,55,.07);
             border: 1px solid rgba(212,175,55,.3);
             border-radius: .75rem;
-            padding: 2rem;
+            padding: 2rem 1.5rem;
             text-align: center;
-            display: none;
+            display: none; /* Oculto por defecto */
             max-width: 32rem;
             margin-inline: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
         }
         .success-box .s-icon { font-size: 2.5rem; margin-bottom: .75rem; }
-        .success-box h3 { font-size: 1.4rem; font-weight: 800; color: var(--gold); margin-bottom: .5rem; }
-        .success-box p { font-size: .92rem; color: rgba(251,245,226,.65); }
+        .success-box h3 { font-size: 1.5rem; font-weight: 800; color: var(--gold); margin-bottom: 1rem; }
+        .success-note {
+            background: rgba(212,175,55,.1);
+            border: 1px dashed var(--gold);
+            padding: 1.25rem;
+            border-radius: .5rem;
+            margin-bottom: 1.25rem;
+            color: var(--light);
+            font-size: .95rem;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .success-spam {
+            color: var(--pink);
+            font-weight: 700;
+            font-size: .85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+        }
 
         /* ── NARRATIVE ── */
         .narrative { padding: 3rem 0 2rem; }
@@ -552,7 +572,7 @@
     <header class="site-header">
         <div class="banner-wrap">
             <img src="https://www.lamentedelfenix.com/assets/banner.webp"
-                 alt="La raíz de todo — Taller gratuito con Darío Arrigazzi"
+                 alt="Mente Fénix — Taller gratuito con Darío Arrigazzi"
                  width="1200" height="400"
                  fetchpriority="high" loading="eager">
         </div>
@@ -569,7 +589,7 @@
                 </div>
 
                 <h1 class="headline">
-                    <em>La raíz de todo.</em>
+                    <em>Mente Fénix.</em>
                     <span class="break" style="font-style:normal; color: rgba(245,240,232,.9); font-size: 87%;">Por qué te bloqueas en el amor,<br>el dinero y tu cuerpo.</span>
                 </h1>
 
@@ -577,7 +597,7 @@
                     En 2 horas entenderás de dónde vienen los patrones que repites sin querer — en tus relaciones, tu economía o tu salud. Y lo que es más importante: verás cómo liberar las creencias inconscientes que los provocan.
                 </p>
 
-                <!-- FORM -->
+                <!-- FORMULARIO SUPERIOR CON INTEGRACIÓN MAILERLITE -->
                 <div class="form-box" id="registro">
                     <p class="f-label">Pronto habrá un nuevo taller</p>
                     <h2>Apúntate y te aviso cuando abra el próximo</h2>
@@ -586,7 +606,8 @@
                         <span><i class="fas fa-clock"></i> 2 horas</span>
                         <span><i class="fas fa-euro-sign"></i> 100% gratuito</span>
                     </div>
-                    <form id="main-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="_blank" onsubmit="handleSubmit('main-form','main-success')">
+                    <!-- Acción de Mailerlite usando target="hidden_iframe" para no abrir nueva pestaña -->
+                    <form id="main-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="hidden_iframe" onsubmit="handleSubmit('registro','main-success')">
                         <div class="input-row">
                             <input class="f-input" type="email" name="fields[email]" placeholder="tu@email.com" autocomplete="email" required aria-label="Tu email">
                             <input type="hidden" name="ml-submit" value="1">
@@ -601,10 +622,20 @@
                         Sin spam. Solo el aviso cuando abra el próximo taller.
                     </div>
                 </div>
+
+                <!-- MENSAJE DE ÉXITO SUPERIOR (Oculto por defecto) -->
                 <div class="success-box" id="main-success">
                     <div class="s-icon">✅</div>
                     <h3>¡Estás en la lista!</h3>
-                    <p>En cuanto abra el próximo taller serás el primero en saberlo. Revisa también tu carpeta de spam.</p>
+                    
+                    <div class="success-note">
+                        <i class="fas fa-calendar-alt" style="color: #d4af37; margin-right: .5rem;"></i>
+                        <strong>La fecha exacta está por confirmar</strong>, pero al estar en esta lista VIP, serás de los primeros en recibir el aviso y asegurar tu plaza en cuanto abramos inscripciones.
+                    </div>
+
+                    <p class="success-spam">
+                        <i class="fas fa-exclamation-triangle"></i> IMPORTANTE: Revisa tu carpeta de SPAM o Promociones por si acaso.
+                    </p>
                 </div>
 
             </div>
@@ -764,14 +795,16 @@
             </div>
         </section>
 
-        <!-- FINAL CTA -->
+        <!-- FINAL CTA CON MAILERLITE -->
         <section class="final-cta" id="lista">
             <div class="wrap">
                 <h2>Pronto habrá un nuevo taller.<br><em>Apúntate para recibir el aviso.</em></h2>
                 <p class="fc-sub">Solo te escribiré cuando confirme la fecha del próximo. Sin spam, sin rollos.</p>
 
-                <div class="form-box" style="max-width:32rem; margin-inline:auto;">
-                    <form id="final-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="_blank" onsubmit="handleSubmit('final-form','final-success')">
+                <!-- Caja del Formulario Final -->
+                <div class="form-box" id="registro-final" style="max-width:32rem; margin-inline:auto;">
+                    <!-- Usamos target="hidden_iframe" igual que arriba -->
+                    <form id="final-form" action="https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/subscribe" method="post" target="hidden_iframe" onsubmit="handleSubmit('registro-final','final-success')">
                         <div class="input-row">
                             <input class="f-input" type="email" name="fields[email]" placeholder="tu@email.com" autocomplete="email" required aria-label="Tu email">
                             <input type="hidden" name="ml-submit" value="1">
@@ -786,10 +819,20 @@
                         Sin spam. Solo el aviso del próximo taller.
                     </div>
                 </div>
-                <div class="success-box" id="final-success" style="margin-top:1rem;">
+
+                <!-- Mensaje Éxito Final (Oculto) -->
+                <div class="success-box" id="final-success">
                     <div class="s-icon">✅</div>
                     <h3>¡Estás en la lista!</h3>
-                    <p>Te avisamos en cuanto abra el próximo taller. Revisa también tu carpeta de spam.</p>
+                    
+                    <div class="success-note">
+                        <i class="fas fa-calendar-alt" style="color: #d4af37; margin-right: .5rem;"></i>
+                        <strong>La fecha exacta está por confirmar</strong>, pero al estar en esta lista VIP, serás de los primeros en recibir el aviso y asegurar tu plaza en cuanto abramos inscripciones.
+                    </div>
+
+                    <p class="success-spam">
+                        <i class="fas fa-exclamation-triangle"></i> IMPORTANTE: Revisa tu carpeta de SPAM o Promociones por si acaso.
+                    </p>
                 </div>
 
             </div>
@@ -804,15 +847,18 @@
         </div>
     </footer>
 
+    <!-- Iframe invisible crucial para interceptar la respuesta de Mailerlite y no salir de la página -->
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
     <script>
-        /* FORM SUBMIT */
-        function handleSubmit(formId, successId){
+        /* FORM SUBMIT (Intercambia el Formulario por la Caja de Éxito) */
+        function handleSubmit(formContainerId, successId){
             setTimeout(function(){
-                var f = document.getElementById(formId);
-                var s = document.getElementById(successId);
-                if(f) f.style.display = 'none';
-                if(s) s.style.display = 'block';
-            }, 1200);
+                var formContainer = document.getElementById(formContainerId);
+                var successBox = document.getElementById(successId);
+                if(formContainer) formContainer.style.display = 'none';
+                if(successBox) successBox.style.display = 'block';
+            }, 800); // 800ms de retraso para dar sensación de procesamiento
         }
 
         /* TESTIMONIOS CAROUSEL */
@@ -896,6 +942,9 @@
             update();
             window.addEventListener('resize', update, {passive:true});
         });
+        
+        // Script silencioso de Mailerlite por si usas Analytics de formularios
+        fetch("https://assets.mailerlite.com/jsonp/2299267/forms/186991508731200673/takel").catch(()=>console.log("Tracking ok"));
     </script>
 
 </body>
