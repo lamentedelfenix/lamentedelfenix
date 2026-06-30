@@ -161,8 +161,22 @@
         .services-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
         @media(min-width:640px){.services-grid{gap:2rem}}
         @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:1024px){.services-grid{grid-template-columns:repeat(3,1fr)}}
         .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
         .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
+
+        /* ── ACORDEÓN DE PRECIOS SOLO MÓVIL ── */
+        @media(max-width:767px){
+            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:2.5rem;}
+            .pricing-toggle-header::after{content:'\\f078';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);transition:transform .3s ease;color:inherit;font-size:.9rem;}
+            .service-card.expanded .pricing-toggle-header::after,
+            .pricing-card.premium.expanded .pricing-toggle-header::after{transform:translateY(-50%) rotate(180deg);}
+            .pricing-collapsible{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease;}
+            .service-card.expanded .pricing-collapsible,
+            .pricing-card.premium.expanded .pricing-collapsible{grid-template-rows:1fr;}
+            .pricing-collapsible-inner{overflow:hidden;min-height:0;}
+            .card-thumb{display:none;}
+        }
         .card-thumb{position:relative;width:100%;aspect-ratio:600/510;overflow:hidden;border-bottom:1px solid #444;background-color:#222;display:flex;justify-content:center;align-items:center}
         .card-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
         .card-body{padding:1.5rem;display:flex;flex-direction:column;flex-grow:1}
@@ -363,6 +377,10 @@
                 Tu vida es el resultado de esa programación oculta, y tu alma está esperando que recuerdes quién eres.
             </p>
 
+            <p style="font-weight:700;color:#d4af37;font-size:1.05rem;margin-bottom:1.5rem;">
+                Desde un problema concreto hasta una transformación completa de tu vida: tú eliges la profundidad.
+            </p>
+
             <div class="hero-cta">
                 <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold">
                     Quiero reservar mi sesión
@@ -439,34 +457,37 @@
         <section id="servicios" class="services-section">
             <div class="services-inner">
                 <h2>Opciones de Trabajo</h2>
-                <div class="services-grid" style="max-width:960px;margin:0 auto;align-items:stretch;">
+                <div class="services-grid" style="max-width:1280px;margin:0 auto;align-items:stretch;">
 
-                    <div class="service-card" style="border-color:#d4af37;">
+                    <div class="service-card" style="border-color:#d4af37;" data-pricing-card>
                         <div class="card-thumb">
                             <img src="./assets/Portada Sesion 1 a 1.webp"
                                  alt="El Método Fénix — Sesión de Transformación con Darío Arrigazzi"
                                  width="600" height="510" loading="lazy" decoding="async" style="opacity:.9;">
                         </div>
                         <div class="card-body">
-                            <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
-                            <div class="card-meta" style="color:#d4af37;">
-                                <div class="card-meta-row">
-                                    <i class="far fa-clock"></i>
-                                    <div>
-                                        <span class="card-meta-sub">Duración</span>
-                                        <span class="card-meta-price" style="opacity:1;">1h 30m</span>
+                            <div class="pricing-toggle-header" data-pricing-toggle>
+                                <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
+                                <div class="card-meta" style="color:#d4af37;">
+                                    <div class="card-meta-row">
+                                        <i class="far fa-clock"></i>
+                                        <div>
+                                            <span class="card-meta-sub">Duración</span>
+                                            <span class="card-meta-price" style="opacity:1;">1h 30m</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-meta-row">
-                                    <i class="fas fa-tag"></i>
-                                    <div>
-                                        <span class="card-meta-price">200€</span>
-                                        <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
+                                    <div class="card-meta-row">
+                                        <i class="fas fa-tag"></i>
+                                        <div>
+                                            <span class="card-meta-price">200€</span>
+                                            <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
                             <ul class="card-features">
-                                <li><i class="fas fa-search text-brand-gold"></i><span><strong>Claridad absoluta:</strong> Descubre la raíz exacta que te mantiene bloqueado hoy.</span></li>
+                                <li><i class="fas fa-search text-brand-gold"></i><span><strong>Un problema, resuelto:</strong> Trae ese conflicto concreto que te bloquea y vamos directos a su raíz.</span></li>
                                 <li><i class="fas fa-unlock-alt text-brand-gold"></i><span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span></li>
                                 <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span></li>
                                 <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 1 mes tras la sesión. Si en ese seguimiento veo que conviene una sesión adicional, te la propondré yo mismo.</span></li>
@@ -479,24 +500,72 @@
                             <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
                                 <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar sesión
                             </a>
+                            </div></div>
                         </div>
                     </div>
 
-                    <div class="pricing-card premium">
-                        <span class="premium-badge">Recomendado para cambios profundos</span>
-                        <p class="premium-title">Mentoría: Renacimiento Fénix</p>
-                        <p class="premium-subtitle">Transformación de identidad completa</p>
-                        <p class="premium-promise">Si ya te ha soprendido una sola sesión... imagínate 12 meses conmigo.</p>
-                        <div class="meta-list">
-                            <div class="meta-item">
-                                <i class="far fa-clock"></i>
-                                <div><span class="meta-sub">Duración del programa</span><span class="meta-main" style="opacity:1;">12 meses</span></div>
+                    <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
+                        <div class="card-thumb">
+                            <img src="./assets/Portada Sesion 1 a 1.webp"
+                                 alt="Acompañamiento Enfocado — Método Fénix de Darío Arrigazzi"
+                                 width="600" height="510" loading="lazy" decoding="async" style="opacity:.9;">
+                        </div>
+                        <div class="card-body">
+                            <div class="pricing-toggle-header" data-pricing-toggle>
+                                <div class="card-title-wrap"><h3>Acompañamiento Enfocado<br>3 Meses</h3></div>
+                                <div class="card-meta" style="color:#e91e63;">
+                                    <div class="card-meta-row">
+                                        <i class="far fa-clock"></i>
+                                        <div>
+                                            <span class="card-meta-sub">Duración</span>
+                                            <span class="card-meta-price" style="opacity:1;">3 meses</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-meta-row">
+                                        <i class="fas fa-tag"></i>
+                                        <div>
+                                            <span class="card-meta-price"><span style="text-decoration:line-through;opacity:.5;font-weight:400;">1.195€</span> 995€</span>
+                                            <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="meta-item">
-                                <i class="fas fa-tag"></i>
-                                <div><span class="meta-main">2.500€</span><span class="meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span></div>
+                            <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
+                            <ul class="card-features">
+                                <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, o el bloqueo que más te está pesando ahora mismo.</span></li>
+                                <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones 1:1:</strong> 2 al mes, mismo formato y duración que la Sesión 1:1 (1h30).</span></li>
+                                <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Plan de acción evolutivo:</strong> Ajustado sesión a sesión según tu avance real.</span></li>
+                                <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte continuo:</strong> Acompañamiento por WhatsApp durante los 3 meses del proceso.</span></li>
+                            </ul>
+                            <div class="discount-box">
+                                <i class="fas fa-gift"></i>
+                                <p><strong>Bono de actualización:</strong> El precio de 995€ ya incluye el descuento de tu Sesión 1:1 (200€). Si aún no la has hecho, el precio es de 1.195€.</p>
+                            </div>
+                            <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-pink btn-block">
+                                <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
+                            </a>
+                            </div></div>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card premium" data-pricing-card>
+                        <span class="premium-badge">Recomendado para cambios profundos</span>
+                        <div class="pricing-toggle-header" data-pricing-toggle>
+                            <p class="premium-title">Mentoría: Renacimiento Fénix</p>
+                            <p class="premium-subtitle">Transformación de identidad completa</p>
+                            <p class="premium-promise">Si has flipado en una sola sesión... imagínate 12 meses conmigo.</p>
+                            <div class="meta-list">
+                                <div class="meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <div><span class="meta-sub">Duración del programa</span><span class="meta-main" style="opacity:1;">12 meses</span></div>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-tag"></i>
+                                    <div><span class="meta-main">2.500€</span><span class="meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span></div>
+                                </div>
                             </div>
                         </div>
+                        <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
                         <div class="discount-box">
                             <i class="fas fa-gift"></i>
                             <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se descontará su valor (200€) del total de la mentoría.</p>
@@ -513,6 +582,7 @@
                             <i class="fas fa-arrow-right" style="margin-right:.5rem"></i>Solicitar plaza
                         </a>
                         <p class="waitlist-text">Al enviar el formulario, hablamos directamente para ver si encajamos y coordinar el inicio.</p>
+                        </div></div>
                     </div>
 
                 </div>
@@ -620,6 +690,16 @@ window.addEventListener('load', function(){
         });
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
     bioParagraphs.forEach(function(p){ bioObserver.observe(p); });
+
+    // === ACORDEÓN DE PRECIOS (SOLO MÓVIL) ===
+    var pricingToggles = document.querySelectorAll('[data-pricing-toggle]');
+    pricingToggles.forEach(function(toggle){
+        toggle.addEventListener('click', function(){
+            if(window.innerWidth > 767) return; // en desktop no hace nada, ya se ven las 3 cards
+            var card = toggle.closest('[data-pricing-card]');
+            if(card) card.classList.toggle('expanded');
+        });
+    });
 
     var reseñasSection = document.getElementById('reseñas');
     if(!reseñasSection) return;
