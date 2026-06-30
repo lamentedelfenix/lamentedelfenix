@@ -175,18 +175,31 @@
 
         /* ── ACORDEÓN DE PRECIOS MEJORADO (SOLO MÓVIL) ── */
         @media(max-width:767px){
-            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:3rem;}
+            .pricing-toggle-header{
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap: 1rem;
+                width: 100%;
+            }
             
-            /* Flecha más estética con fondo circular */
+            /* Flecha con diseño flexible, ya no absoluta */
             .pricing-toggle-arrow {
-                position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-                width: 2.25rem; height: 2.25rem; background: rgba(251,245,226,0.1); 
-                border-radius: 50%; display: flex; align-items: center; justify-content: center;
-                font-size: 1rem; transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
+                width: 2.25rem; 
+                height: 2.25rem; 
+                background: rgba(251,245,226,0.1); 
+                border-radius: 50%; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center;
+                flex-shrink: 0; /* Evita que se deforme */
+                font-size: 1rem; 
+                transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
             }
             .service-card.expanded .pricing-toggle-arrow,
             .pricing-card.premium.expanded .pricing-toggle-arrow {
-                transform: translateY(-50%) rotate(180deg);
+                transform: rotate(180deg);
                 background: #d4af37; color: #1a1a1a;
             }
             
