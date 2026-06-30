@@ -81,21 +81,16 @@
         
         .kicker{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);border-radius:2rem;padding:.35rem 1rem;margin-bottom:2rem}
         
-        /* BLOQUE 1: Separación gigante abajo */
         .hero-intro h1{font-size:clamp(1.7rem,6vw,2.75rem);font-weight:800;line-height:1.15;margin-bottom:5.5rem;color:#fbf5e2}
         .hero-intro h1 em{font-style:normal;color:#d4af37}
         
-        /* BLOQUE 2: Separación gigante abajo */
         .hero-intro .subtitle{font-size:clamp(1.1rem,3vw,1.1rem);font-weight:500;color:rgba(251,245,226,.8);line-height:1.5;max-width:40rem;margin:0 auto 6rem}
         
-        /* BLOQUE 3 (A): Frase dorada anclada al botón */
         .hero-golden-text{font-weight:700;color:#d4af37;font-size:1.1rem;margin-bottom:1.25rem;padding:0 1rem}
         
-        /* BLOQUE 3 (B): Contenedor del botón sin margen superior para estar pegado a la frase dorada */
         .hero-cta{display:flex;flex-direction:column;align-items:center;gap:.75rem}
         .hero-cta-note{font-size:.85rem;color:rgba(251,245,226,.6);font-weight: 500;}
         
-        /* BLOQUE 4: Separación gigante arriba */
         .hero-quote{background:#1a1a1a;border-left:3px solid #d4af37;border-radius:0 .4rem .4rem 0;padding:1rem 1.25rem;text-align:left;max-width:38rem;margin:6rem auto 0}
         .hero-quote p{font-size:.92rem;font-style:italic;color:rgba(251,245,226,.85);line-height:1.65;margin-bottom:.4rem}
         .hero-quote cite{font-size:.8rem;font-weight:700;color:#d4af37;font-style:normal}
@@ -184,7 +179,6 @@
                 width: 100%;
             }
             
-            /* Flecha con diseño flexible, ya no absoluta */
             .pricing-toggle-arrow {
                 width: 2.25rem; 
                 height: 2.25rem; 
@@ -193,7 +187,7 @@
                 display: flex; 
                 align-items: center; 
                 justify-content: center;
-                flex-shrink: 0; /* Evita que se deforme */
+                flex-shrink: 0; 
                 font-size: 1rem; 
                 transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
             }
@@ -203,17 +197,17 @@
                 background: #d4af37; color: #1a1a1a;
             }
             
-            /* Colores específicos para la flecha según la tarjeta */
             .service-card[style*="border-color:#e91e63"] .pricing-toggle-arrow { color: #e91e63; }
             .service-card.expanded[style*="border-color:#e91e63"] .pricing-toggle-arrow { background: #e91e63; color: #fff; }
             .service-card[style*="border-color:#d4af37"] .pricing-toggle-arrow, .pricing-card.premium .pricing-toggle-arrow { color: #d4af37; }
             
-            /* Animación 100% fluida usando CSS Grid y Wrapper */
             .pricing-collapsible {
                 display: grid;
                 grid-template-rows: 0fr;
                 opacity: 0;
-                transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease;
+                visibility: hidden;
+                pointer-events: none;
+                transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease, visibility 0.4s;
                 margin-top: 0;
             }
             .pricing-collapsible-inner {
@@ -225,17 +219,17 @@
             .pricing-card.premium.expanded .pricing-collapsible {
                 grid-template-rows: 1fr;
                 opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
                 margin-top: 1.5rem;
             }
             
-            /* Sutil resaltado del contenedor activo */
             .service-card.expanded {
                 background-color: #383838;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             }
         }
         
-        /* Asegurar que en Desktop se muestre siempre usando Grid fallback si aplica, pero aquí lo reseteamos */
         @media(min-width:768px){
             .pricing-toggle-arrow { display: none; }
             .pricing-collapsible { display: block; opacity: 1; margin-top: 0; }
@@ -553,7 +547,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Envoltura mejorada para CSS Grid Animation -->
                             <div class="pricing-collapsible">
                                 <div class="pricing-collapsible-inner">
                                     <ul class="card-features">
@@ -709,7 +702,6 @@ function openModal(src){ var m=document.getElementById('image-modal'); document.
 function closeModal(){ document.getElementById('image-modal').classList.remove('active'); document.body.style.overflow=''; }
 
 window.addEventListener('load', function(){
-    // === LÓGICA DEL POPUP DEL TALLER ===
     var tallerPopup = document.getElementById('taller-popup-overlay');
     
     if (tallerPopup && !sessionStorage.getItem('tallerPopupShown')) {
@@ -757,11 +749,10 @@ window.addEventListener('load', function(){
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
     bioParagraphs.forEach(function(p){ bioObserver.observe(p); });
 
-    // === ACORDEÓN DE PRECIOS (SOLO MÓVIL) ===
     var pricingToggles = document.querySelectorAll('[data-pricing-toggle]');
     pricingToggles.forEach(function(toggle){
         toggle.addEventListener('click', function(){
-            if(window.innerWidth > 767) return; // en desktop no hace nada
+            if(window.innerWidth > 767) return; 
             var card = toggle.closest('[data-pricing-card]');
             if(card) card.classList.toggle('expanded');
         });
@@ -828,7 +819,6 @@ window.addEventListener('load', function(){
 });
 </script>
 
-<!-- MAILERLITE SCRIPTS -->
 <script>
     function ml_webform_success_41067241() {
         var $ = window.ml_jQuery || window.jQuery;
