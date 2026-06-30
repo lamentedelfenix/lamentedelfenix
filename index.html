@@ -167,18 +167,14 @@
 
         /* ── ACORDEÓN DE PRECIOS SOLO MÓVIL ── */
         @media(max-width:767px){
-            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:2.5rem;}
-            .pricing-toggle-header::after{content:'\\f078';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);transition:transform .3s ease;color:inherit;font-size:.9rem;}
-            .service-card.expanded .pricing-toggle-header::after,
-            .pricing-card.premium.expanded .pricing-toggle-header::after{transform:translateY(-50%) rotate(180deg);}
-            .pricing-collapsible{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease;}
+            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:2.25rem;}
+            .pricing-toggle-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:1.1rem;line-height:1;transition:transform .3s ease;display:inline-block;}
+            .service-card.expanded .pricing-toggle-arrow,
+            .pricing-card.premium.expanded .pricing-toggle-arrow{transform:translateY(-50%) rotate(180deg);}
+            .pricing-collapsible{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease;}
             .service-card.expanded .pricing-collapsible,
-            .pricing-card.premium.expanded .pricing-collapsible{grid-template-rows:1fr;}
-            .pricing-collapsible-inner{overflow:hidden;min-height:0;}
-            .card-thumb{display:none;}
+            .pricing-card.premium.expanded .pricing-collapsible{max-height:2000px;opacity:1;margin-top:1rem;}
         }
-        .card-thumb{position:relative;width:100%;aspect-ratio:600/510;overflow:hidden;border-bottom:1px solid #444;background-color:#222;display:flex;justify-content:center;align-items:center}
-        .card-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
         .card-body{padding:1.5rem;display:flex;flex-direction:column;flex-grow:1}
         @media(min-width:768px){.card-body{padding:2rem}}
         .card-title-wrap{min-height:4rem;display:flex;align-items:center;justify-content:center;margin-bottom:.875rem}
@@ -460,13 +456,9 @@
                 <div class="services-grid" style="max-width:1280px;margin:0 auto;align-items:stretch;">
 
                     <div class="service-card" style="border-color:#d4af37;" data-pricing-card>
-                        <div class="card-thumb">
-                            <img src="./assets/Portada Sesion 1 a 1.webp"
-                                 alt="El Método Fénix — Sesión de Transformación con Darío Arrigazzi"
-                                 width="600" height="510" loading="lazy" decoding="async" style="opacity:.9;">
-                        </div>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
+                                <span class="pricing-toggle-arrow">▾</span>
                                 <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
                                 <div class="card-meta" style="color:#d4af37;">
                                     <div class="card-meta-row">
@@ -485,7 +477,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
+                            <div class="pricing-collapsible">
                             <ul class="card-features">
                                 <li><i class="fas fa-search text-brand-gold"></i><span><strong>Un problema, resuelto:</strong> Trae ese conflicto concreto que te bloquea y vamos directos a su raíz.</span></li>
                                 <li><i class="fas fa-unlock-alt text-brand-gold"></i><span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span></li>
@@ -500,18 +492,14 @@
                             <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
                                 <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar sesión
                             </a>
-                            </div></div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
-                        <div class="card-thumb">
-                            <img src="./assets/Portada Sesion 1 a 1.webp"
-                                 alt="Acompañamiento Enfocado — Método Fénix de Darío Arrigazzi"
-                                 width="600" height="510" loading="lazy" decoding="async" style="opacity:.9;">
-                        </div>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
+                                <span class="pricing-toggle-arrow">▾</span>
                                 <div class="card-title-wrap"><h3>Acompañamiento Enfocado<br>3 Meses</h3></div>
                                 <div class="card-meta" style="color:#e91e63;">
                                     <div class="card-meta-row">
@@ -530,7 +518,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
+                            <div class="pricing-collapsible">
                             <ul class="card-features">
                                 <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, o el bloqueo que más te está pesando ahora mismo.</span></li>
                                 <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones 1:1:</strong> 2 al mes, mismo formato y duración que la Sesión 1:1 (1h30).</span></li>
@@ -544,13 +532,14 @@
                             <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-pink btn-block">
                                 <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
                             </a>
-                            </div></div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="pricing-card premium" data-pricing-card>
                         <span class="premium-badge">Recomendado para cambios profundos</span>
                         <div class="pricing-toggle-header" data-pricing-toggle>
+                            <span class="pricing-toggle-arrow">▾</span>
                             <p class="premium-title">Mentoría: Renacimiento Fénix</p>
                             <p class="premium-subtitle">Transformación de identidad completa</p>
                             <p class="premium-promise">Si has flipado en una sola sesión... imagínate 12 meses conmigo.</p>
@@ -565,7 +554,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="pricing-collapsible"><div class="pricing-collapsible-inner">
+                        <div class="pricing-collapsible">
                         <div class="discount-box">
                             <i class="fas fa-gift"></i>
                             <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se descontará su valor (200€) del total de la mentoría.</p>
@@ -582,7 +571,7 @@
                             <i class="fas fa-arrow-right" style="margin-right:.5rem"></i>Solicitar plaza
                         </a>
                         <p class="waitlist-text">Al enviar el formulario, hablamos directamente para ver si encajamos y coordinar el inicio.</p>
-                        </div></div>
+                        </div>
                     </div>
 
                 </div>
