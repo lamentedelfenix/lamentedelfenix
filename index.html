@@ -81,15 +81,22 @@
         
         .kicker{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);border-radius:2rem;padding:.35rem 1rem;margin-bottom:2rem}
         
-        .hero-intro h1{font-size:clamp(1.7rem,6vw,2.75rem);font-weight:800;line-height:1.15;margin-bottom:2rem;color:#fbf5e2}
+        /* BLOQUE 1: Separación gigante abajo */
+        .hero-intro h1{font-size:clamp(1.7rem,6vw,2.75rem);font-weight:800;line-height:1.15;margin-bottom:5.5rem;color:#fbf5e2}
         .hero-intro h1 em{font-style:normal;color:#d4af37}
         
-        .hero-intro .subtitle{font-size:clamp(1.1rem,3vw,1.1rem);font-weight:500;color:rgba(251,245,226,.8);line-height:1.5;max-width:40rem;margin:0 auto 2.5rem}
+        /* BLOQUE 2: Separación gigante abajo */
+        .hero-intro .subtitle{font-size:clamp(1.1rem,3vw,1.1rem);font-weight:500;color:rgba(251,245,226,.8);line-height:1.5;max-width:40rem;margin:0 auto 6rem}
         
-        .hero-cta{margin-top:1.5rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+        /* BLOQUE 3 (A): Frase dorada anclada al botón */
+        .hero-golden-text{font-weight:700;color:#d4af37;font-size:1.1rem;margin-bottom:1.25rem;padding:0 1rem}
+        
+        /* BLOQUE 3 (B): Contenedor del botón sin margen superior para estar pegado a la frase dorada */
+        .hero-cta{display:flex;flex-direction:column;align-items:center;gap:.75rem}
         .hero-cta-note{font-size:.85rem;color:rgba(251,245,226,.6);font-weight: 500;}
         
-        .hero-quote{background:#1a1a1a;border-left:3px solid #d4af37;border-radius:0 .4rem .4rem 0;padding:1rem 1.25rem;text-align:left;max-width:38rem;margin:2.5rem auto 0}
+        /* BLOQUE 4: Separación gigante arriba */
+        .hero-quote{background:#1a1a1a;border-left:3px solid #d4af37;border-radius:0 .4rem .4rem 0;padding:1rem 1.25rem;text-align:left;max-width:38rem;margin:6rem auto 0}
         .hero-quote p{font-size:.92rem;font-style:italic;color:rgba(251,245,226,.85);line-height:1.65;margin-bottom:.4rem}
         .hero-quote cite{font-size:.8rem;font-weight:700;color:#d4af37;font-style:normal}
 
@@ -162,31 +169,83 @@
         @media(min-width:640px){.services-grid{gap:2rem}}
         @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
         @media(min-width:1024px){.services-grid{grid-template-columns:repeat(3,1fr)}}
-        .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
+        
+        .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease, background-color .3s ease, border-color .3s ease;}
         .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
 
-        /* ── ACORDEÓN DE PRECIOS SOLO MÓVIL ── */
+        /* ── ACORDEÓN DE PRECIOS MEJORADO (SOLO MÓVIL) ── */
         @media(max-width:767px){
-            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:2.25rem;}
-            .pricing-toggle-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:1.1rem;line-height:1;transition:transform .3s ease;display:inline-block;}
+            .pricing-toggle-header{cursor:pointer;position:relative;padding-right:3rem;}
+            
+            /* Flecha más estética con fondo circular */
+            .pricing-toggle-arrow {
+                position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+                width: 2.25rem; height: 2.25rem; background: rgba(251,245,226,0.1); 
+                border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                font-size: 1rem; transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
+            }
             .service-card.expanded .pricing-toggle-arrow,
-            .pricing-card.premium.expanded .pricing-toggle-arrow{transform:translateY(-50%) rotate(180deg);}
-            .pricing-collapsible{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease;}
+            .pricing-card.premium.expanded .pricing-toggle-arrow {
+                transform: translateY(-50%) rotate(180deg);
+                background: #d4af37; color: #1a1a1a;
+            }
+            
+            /* Colores específicos para la flecha según la tarjeta */
+            .service-card[style*="border-color:#e91e63"] .pricing-toggle-arrow { color: #e91e63; }
+            .service-card.expanded[style*="border-color:#e91e63"] .pricing-toggle-arrow { background: #e91e63; color: #fff; }
+            .service-card[style*="border-color:#d4af37"] .pricing-toggle-arrow, .pricing-card.premium .pricing-toggle-arrow { color: #d4af37; }
+            
+            /* Animación 100% fluida usando CSS Grid y Wrapper */
+            .pricing-collapsible {
+                display: grid;
+                grid-template-rows: 0fr;
+                opacity: 0;
+                transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease;
+                margin-top: 0;
+            }
+            .pricing-collapsible-inner {
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
             .service-card.expanded .pricing-collapsible,
-            .pricing-card.premium.expanded .pricing-collapsible{max-height:2000px;opacity:1;margin-top:1rem;}
+            .pricing-card.premium.expanded .pricing-collapsible {
+                grid-template-rows: 1fr;
+                opacity: 1;
+                margin-top: 1.5rem;
+            }
+            
+            /* Sutil resaltado del contenedor activo */
+            .service-card.expanded {
+                background-color: #383838;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            }
         }
-        .card-body{padding:1.5rem;display:flex;flex-direction:column;flex-grow:1}
-        @media(min-width:768px){.card-body{padding:2rem}}
-        .card-title-wrap{min-height:4rem;display:flex;align-items:center;justify-content:center;margin-bottom:.875rem}
-        @media(min-width:768px){.card-title-wrap{min-height:5rem;margin-bottom:1rem}}
+        
+        /* Asegurar que en Desktop se muestre siempre usando Grid fallback si aplica, pero aquí lo reseteamos */
+        @media(min-width:768px){
+            .pricing-toggle-arrow { display: none; }
+            .pricing-collapsible { display: block; opacity: 1; margin-top: 0; }
+            .pricing-collapsible-inner { display: flex; flex-direction: column; height: 100%; flex-grow: 1; }
+        }
+
+        .card-body{padding:2rem 1.5rem;display:flex;flex-direction:column;flex-grow:1}
+        @media(min-width:768px){.card-body{padding:2.5rem 2rem}}
+        
+        .card-title-wrap{display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+        @media(min-width:768px){.card-title-wrap{margin-bottom:2rem}}
+        
         .card-title-wrap h3{font-size:1.25rem;font-weight:700;text-align:center;line-height:1.3;color:#fbf5e2}
         @media(min-width:768px){.card-title-wrap h3{font-size:1.5rem}}
-        .card-meta{min-height:4rem;display:flex;flex-direction:column;justify-content:center;gap:.75rem;margin:0 auto 1.5rem;width:fit-content;font-weight:700}
-        @media(min-width:768px){.card-meta{min-height:5rem;margin-bottom:2rem}}
+        
+        .card-meta{display:flex;flex-direction:column;justify-content:center;gap:1rem;margin:0 auto 2rem;width:fit-content;font-weight:700}
+        @media(min-width:768px){.card-meta{margin-bottom:2.5rem}}
+        
         .card-meta-row{display:flex;align-items:center;gap:.75rem;text-align:left}
         .card-meta-row i{font-size:1.1rem;width:1.5rem;text-align:center}
         .card-meta-price{font-size:1rem;display:block;line-height:1.3}
         .card-meta-sub{font-size:.75rem;font-weight:400;color:rgba(251,245,226,.6);display:block}
+        
         .card-features{color:rgba(251,245,226,.8);flex-grow:1;margin-bottom:1.25rem;display:flex;flex-direction:column;gap:.875rem}
         @media(min-width:768px){.card-features{gap:1rem}}
         .card-features li{display:flex;align-items:flex-start;font-size:.95rem}
@@ -194,13 +253,16 @@
         .card-features li i{margin-top:.2rem;width:1.5rem;text-align:center;margin-right:.75rem;flex-shrink:0}
         .card-features li strong{color:#fbf5e2}
         
-        .pricing-card.premium{border:2px solid #d4af37;background:linear-gradient(160deg,#1e1a0e 0%,#2a2416 40%,#333 100%);box-shadow:0 20px 50px rgba(212,175,55,.2),0 0 0 1px rgba(212,175,55,.15);border-radius:1rem;padding:2rem;display:flex;flex-direction:column;position:relative;transition:transform .3s ease;flex-grow:1}
+        .pricing-card.premium{border:2px solid #d4af37;background:linear-gradient(160deg,#1e1a0e 0%,#2a2416 40%,#333 100%);box-shadow:0 20px 50px rgba(212,175,55,.2),0 0 0 1px rgba(212,175,55,.15);border-radius:1rem;padding:2rem 1.5rem;display:flex;flex-direction:column;position:relative;transition:transform .3s ease, box-shadow .3s ease, background .3s ease;flex-grow:1}
+        @media(min-width:768px){.pricing-card.premium{padding:2.5rem 2rem}}
         .pricing-card.premium:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(212,175,55,.3),0 0 0 1px rgba(212,175,55,.3)}
+        
         .premium-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#b8942b,#d4af37,#e8c94a,#d4af37,#b8942b);background-size:200% auto;animation:shimmer 3s linear infinite;color:#1a1a1a;font-size:.65rem;font-weight:800;letter-spacing:.12em;padding:.35rem 1.2rem;border-radius:0 0 .5rem .5rem;text-align:center;width:max-content;max-width:90%;line-height:1.2;text-transform:uppercase}
         @keyframes shimmer{to{background-position:200% center}}
-        .premium-title{margin-top:1.5rem;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:.25rem;color:#d4af37}
-        .premium-subtitle{text-align:center;font-size:.8rem;color:rgba(212,175,55,.6);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem}
-        .premium-promise{text-align:center;font-size:.95rem;line-height:1.4;margin-bottom:1.5rem;padding:0 .5rem 1.25rem;border-bottom:1px solid rgba(212,175,55,.2);color:rgba(251,245,226,.9)}
+        
+        .premium-title{margin-top:0;font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:.5rem;color:#d4af37}
+        .premium-subtitle{text-align:center;font-size:.8rem;color:rgba(212,175,55,.6);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2rem}
+        
         .meta-list{margin:0 auto 2rem;display:flex;flex-direction:column;gap:1rem;width:fit-content}
         .meta-item{display:flex;align-items:center;gap:.75rem;font-weight:700;color:#d4af37}
         .meta-item i{width:1.5rem;text-align:center;font-size:1.25rem}
@@ -348,7 +410,6 @@
                  alt="Banner La Mente del Fénix — Método Fénix de Darío Arrigazzi"
                  class="banner-img" width="1200" height="400"
                  fetchpriority="high" loading="eager" decoding="sync">
-            <!-- El enlace del Blog ha sido movido al footer -->
         </div>
     </header>
 
@@ -373,15 +434,17 @@
                 Tu vida es el resultado de esa programación oculta, y tu alma está esperando que recuerdes quién eres.
             </p>
 
-            <p style="font-weight:700;color:#d4af37;font-size:1.05rem;margin-bottom:1.5rem;">
-                Desde un problema concreto hasta una transformación completa de tu vida: tú eliges la profundidad.
-            </p>
+            <div class="hero-action-block">
+                <p class="hero-golden-text">
+                    Desde un problema concreto hasta una transformación completa de tu vida: tú eliges la profundidad.
+                </p>
 
-            <div class="hero-cta">
-                <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold">
-                    Quiero reservar mi sesión
-                </a>
-                <span class="hero-cta-note">Rellena el formulario y coordinamos juntos la fecha</span>
+                <div class="hero-cta">
+                    <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold">
+                        Quiero reservar mi sesión
+                    </a>
+                    <span class="hero-cta-note">Rellena el formulario y coordinamos juntos la fecha</span>
+                </div>
             </div>
 
             <div class="hero-quote">
@@ -458,7 +521,7 @@
                     <div class="service-card" style="border-color:#d4af37;" data-pricing-card>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
-                                <span class="pricing-toggle-arrow">▾</span>
+                                <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                                 <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
                                 <div class="card-meta" style="color:#d4af37;">
                                     <div class="card-meta-row">
@@ -477,21 +540,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Envoltura mejorada para CSS Grid Animation -->
                             <div class="pricing-collapsible">
-                            <ul class="card-features">
-                                <li><i class="fas fa-search text-brand-gold"></i><span><strong>Un problema, resuelto:</strong> Trae ese conflicto concreto que te bloquea y vamos directos a su raíz.</span></li>
-                                <li><i class="fas fa-unlock-alt text-brand-gold"></i><span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span></li>
-                                <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span></li>
-                                <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 1 mes tras la sesión. Si en ese seguimiento veo que conviene una sesión adicional, te la propondré yo mismo.</span></li>
-                                <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de la sesión</strong> (opcional).</span></li>
-                            </ul>
-                            <div class="discount-box">
-                                <i class="fas fa-shield-alt"></i>
-                                <p><strong>Garantía 100%:</strong> Si al terminar la sesión no estás satisfecho, te devuelvo el dinero íntegro.</p>
-                            </div>
-                            <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
-                                <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar sesión
-                            </a>
+                                <div class="pricing-collapsible-inner">
+                                    <ul class="card-features">
+                                        <li><i class="fas fa-search text-brand-gold"></i><span><strong>Un problema, resuelto:</strong> Trae ese conflicto concreto que te bloquea y vamos directos a su raíz.</span></li>
+                                        <li><i class="fas fa-unlock-alt text-brand-gold"></i><span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span></li>
+                                        <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span></li>
+                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 1 mes tras la sesión. Si en ese seguimiento veo que conviene una sesión adicional, te la propondré yo mismo.</span></li>
+                                        <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de la sesión</strong> (opcional).</span></li>
+                                    </ul>
+                                    <div class="discount-box">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <p><strong>Garantía 100%:</strong> Si al terminar la sesión no estás satisfecho, te devuelvo el dinero íntegro.</p>
+                                    </div>
+                                    <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
+                                        <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar sesión
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -499,7 +565,7 @@
                     <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
-                                <span class="pricing-toggle-arrow">▾</span>
+                                <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                                 <div class="card-title-wrap"><h3>Acompañamiento Enfocado<br>3 Meses</h3></div>
                                 <div class="card-meta" style="color:#e91e63;">
                                     <div class="card-meta-row">
@@ -519,30 +585,30 @@
                                 </div>
                             </div>
                             <div class="pricing-collapsible">
-                            <ul class="card-features">
-                                <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, o el bloqueo que más te está pesando ahora mismo.</span></li>
-                                <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones 1:1:</strong> 2 al mes, mismo formato y duración que la Sesión 1:1 (1h30).</span></li>
-                                <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Plan de acción evolutivo:</strong> Ajustado sesión a sesión según tu avance real.</span></li>
-                                <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte continuo:</strong> Acompañamiento por WhatsApp durante los 3 meses del proceso.</span></li>
-                            </ul>
-                            <div class="discount-box">
-                                <i class="fas fa-gift"></i>
-                                <p><strong>Bono de actualización:</strong> El precio de 995€ ya incluye el descuento de tu Sesión 1:1 (200€). Si aún no la has hecho, el precio es de 1.195€.</p>
-                            </div>
-                            <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-pink btn-block">
-                                <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
-                            </a>
+                                <div class="pricing-collapsible-inner">
+                                    <ul class="card-features">
+                                        <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, o el bloqueo que más te está pesando ahora mismo.</span></li>
+                                        <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones 1:1:</strong> 2 al mes, mismo formato y duración que la Sesión 1:1 (1h30).</span></li>
+                                        <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Plan de acción evolutivo:</strong> Ajustado sesión a sesión según tu avance real.</span></li>
+                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte continuo:</strong> Acompañamiento por WhatsApp durante los 3 meses del proceso.</span></li>
+                                    </ul>
+                                    <div class="discount-box">
+                                        <i class="fas fa-gift"></i>
+                                        <p><strong>Bono de actualización:</strong> El precio de 995€ ya incluye el descuento de tu Sesión 1:1 (200€). Si aún no la has hecho, el precio es de 1.195€.</p>
+                                    </div>
+                                    <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-pink btn-block">
+                                        <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="pricing-card premium" data-pricing-card>
-                        <span class="premium-badge">Recomendado para cambios profundos</span>
                         <div class="pricing-toggle-header" data-pricing-toggle>
-                            <span class="pricing-toggle-arrow">▾</span>
+                            <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                             <p class="premium-title">Mentoría: Renacimiento Fénix</p>
                             <p class="premium-subtitle">Transformación de identidad completa</p>
-                            <p class="premium-promise">Si has flipado en una sola sesión... imagínate 12 meses conmigo.</p>
                             <div class="meta-list">
                                 <div class="meta-item">
                                     <i class="far fa-clock"></i>
@@ -555,22 +621,24 @@
                             </div>
                         </div>
                         <div class="pricing-collapsible">
-                        <div class="discount-box">
-                            <i class="fas fa-gift"></i>
-                            <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se descontará su valor (200€) del total de la mentoría.</p>
-                        </div>
-                        <ul class="features-list premium-features">
-                            <li><i class="fas fa-fire-alt"></i><span><strong>Reprogramación de Identidad:</strong> Deja de "intentar cambiar" y conviértete en tu versión más magnética y segura de forma natural.</span></li>
-                            <li><i class="fas fa-link"></i><span><strong>Liberación de patrones tóxicos:</strong> Rompe definitivamente los bucles repetitivos en tus relaciones y economía.</span></li>
-                            <li><i class="fas fa-calendar-check"></i><span><strong>24 Sesiones de Alto Impacto:</strong> 2 al mes para limpiar tu inconsciente de raíz y trazar un plan de acción exacto.</span></li>
-                            <li><i class="fas fa-cogs"></i><span><strong>Ingeniería de Hábitos:</strong> Diseñaremos un sistema práctico a tu medida para instaurar nuevos hábitos sin depender de la motivación.</span></li>
-                            <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
-                            <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
-                        </ul>
-                        <a href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
-                            <i class="fas fa-arrow-right" style="margin-right:.5rem"></i>Solicitar plaza
-                        </a>
-                        <p class="waitlist-text">Al enviar el formulario, hablamos directamente para ver si encajamos y coordinar el inicio.</p>
+                            <div class="pricing-collapsible-inner">
+                                <div class="discount-box">
+                                    <i class="fas fa-gift"></i>
+                                    <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se descontará su valor (200€) del total de la mentoría.</p>
+                                </div>
+                                <ul class="features-list premium-features">
+                                    <li><i class="fas fa-fire-alt"></i><span><strong>Reprogramación de Identidad:</strong> Deja de "intentar cambiar" y conviértete en tu versión más magnética y segura de forma natural.</span></li>
+                                    <li><i class="fas fa-link"></i><span><strong>Liberación de patrones tóxicos:</strong> Rompe definitivamente los bucles repetitivos en tus relaciones y economía.</span></li>
+                                    <li><i class="fas fa-calendar-check"></i><span><strong>24 Sesiones de Alto Impacto:</strong> 2 al mes para limpiar tu inconsciente de raíz y trazar un plan de acción exacto.</span></li>
+                                    <li><i class="fas fa-cogs"></i><span><strong>Ingeniería de Hábitos:</strong> Diseñaremos un sistema práctico a tu medida para instaurar nuevos hábitos sin depender de la motivación.</span></li>
+                                    <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
+                                    <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
+                                </ul>
+                                <a href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
+                                    <i class="fas fa-arrow-right" style="margin-right:.5rem"></i>Solicitar plaza
+                                </a>
+                                <p class="waitlist-text">Al enviar el formulario, hablamos directamente para ver si encajamos y coordinar el inicio.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -631,7 +699,6 @@ window.addEventListener('load', function(){
     // === LÓGICA DEL POPUP DEL TALLER ===
     var tallerPopup = document.getElementById('taller-popup-overlay');
     
-    // Mostramos si no lo ha visto en esta sesión, con 1.5s de retraso
     if (tallerPopup && !sessionStorage.getItem('tallerPopupShown')) {
         setTimeout(function() {
             tallerPopup.classList.add('active');
@@ -640,7 +707,6 @@ window.addEventListener('load', function(){
         }, 1500); 
     }
 
-    // Eventos para cerrar el popup del taller
     var closeTallerBtn = document.getElementById('taller-popup-close');
     if(closeTallerBtn) {
         closeTallerBtn.addEventListener('click', function() {
@@ -656,9 +722,7 @@ window.addEventListener('load', function(){
             }
         });
     }
-    // ===================================
 
-    // Lógica modal de imágenes existente
     var modalClose = document.getElementById('modal-close');
     if(modalClose) modalClose.addEventListener('click', closeModal);
     var imageModal = document.getElementById('image-modal');
@@ -684,7 +748,7 @@ window.addEventListener('load', function(){
     var pricingToggles = document.querySelectorAll('[data-pricing-toggle]');
     pricingToggles.forEach(function(toggle){
         toggle.addEventListener('click', function(){
-            if(window.innerWidth > 767) return; // en desktop no hace nada, ya se ven las 3 cards
+            if(window.innerWidth > 767) return; // en desktop no hace nada
             var card = toggle.closest('[data-pricing-card]');
             if(card) card.classList.toggle('expanded');
         });
