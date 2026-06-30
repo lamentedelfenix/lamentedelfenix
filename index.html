@@ -173,13 +173,19 @@
             .pricing-toggle-header{
                 cursor:pointer;
                 display:flex;
-                align-items:center;
-                justify-content:space-between;
+                flex-direction:column;
+                align-items:stretch;
+                justify-content:flex-start;
                 gap: 1rem;
                 width: 100%;
+                position: relative;
+                padding-right: 2.75rem;
             }
             
             .pricing-toggle-arrow {
+                position: absolute;
+                top: 0;
+                right: 0;
                 width: 2.25rem; 
                 height: 2.25rem; 
                 background: rgba(251,245,226,0.1); 
