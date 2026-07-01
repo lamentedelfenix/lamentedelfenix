@@ -170,71 +170,77 @@
 
         /* ── ACORDEÓN DE PRECIOS MEJORADO (SOLO MÓVIL) ── */
         @media(max-width:767px){
-            .pricing-toggle-header{
-                cursor:pointer;
-                display:flex;
-                flex-direction:column;
-                align-items:stretch;
-                justify-content:flex-start;
-                gap: 1rem;
-                width: 100%;
-                position: relative;
-                padding-right: 2.75rem;
-            }
-            
-            .pricing-toggle-arrow {
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 2.25rem; 
-                height: 2.25rem; 
-                background: rgba(251,245,226,0.1); 
-                border-radius: 50%; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center;
-                flex-shrink: 0; 
-                font-size: 1rem; 
-                transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
-            }
-            .service-card.expanded .pricing-toggle-arrow,
-            .pricing-card.premium.expanded .pricing-toggle-arrow {
-                transform: rotate(180deg);
-                background: #d4af37; color: #1a1a1a;
-            }
-            
-            .service-card[style*="border-color:#e91e63"] .pricing-toggle-arrow { color: #e91e63; }
-            .service-card.expanded[style*="border-color:#e91e63"] .pricing-toggle-arrow { background: #e91e63; color: #fff; }
-            .service-card[style*="border-color:#d4af37"] .pricing-toggle-arrow, .pricing-card.premium .pricing-toggle-arrow { color: #d4af37; }
-            
-            .pricing-collapsible {
-                display: grid;
-                grid-template-rows: 0fr;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease, visibility 0.4s;
-                margin-top: 0;
-            }
-            .pricing-collapsible-inner {
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-            }
-            .service-card.expanded .pricing-collapsible,
-            .pricing-card.premium.expanded .pricing-collapsible {
-                grid-template-rows: 1fr;
-                opacity: 1;
-                visibility: visible;
-                pointer-events: auto;
-                margin-top: 1.5rem;
-            }
-            
-            .service-card.expanded {
-                background-color: #383838;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            }
-        }
+    .pricing-toggle-header{
+        cursor:pointer;
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap: 1rem;
+        width: 100%;
+        position: relative;
+        padding-right: 2.75rem;
+    }
+    
+    .pricing-toggle-arrow {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 2.25rem; 
+        height: 2.25rem; 
+        background: rgba(251,245,226,0.1); 
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        flex-shrink: 0; 
+        font-size: 1rem;
+        line-height: 1;
+        box-sizing: border-box;
+        transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
+    }
+
+    /* Estado expandido — combina translateY + rotate */
+    .service-card.expanded .pricing-toggle-arrow,
+    .pricing-card.premium.expanded .pricing-toggle-arrow {
+        transform: translateY(-50%) rotate(180deg);
+        background: #d4af37;
+        color: #1a1a1a;
+    }
+    
+    .service-card[style*="border-color:#e91e63"] .pricing-toggle-arrow { color: #e91e63; }
+    .service-card.expanded[style*="border-color:#e91e63"] .pricing-toggle-arrow { background: #e91e63; color: #fff; }
+    .service-card[style*="border-color:#d4af37"] .pricing-toggle-arrow, .pricing-card.premium .pricing-toggle-arrow { color: #d4af37; }
+    
+    .pricing-collapsible {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease, visibility 0.4s;
+        margin-top: 0;
+    }
+    .pricing-collapsible-inner {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    .service-card.expanded .pricing-collapsible,
+    .pricing-card.premium.expanded .pricing-collapsible {
+        grid-template-rows: 1fr;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        margin-top: 1.5rem;
+    }
+    
+    .service-card.expanded {
+        background-color: #383838;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+}
         
         @media(min-width:768px){
             .pricing-toggle-arrow { display: none; }
