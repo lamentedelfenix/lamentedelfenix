@@ -168,82 +168,72 @@
         .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease, background-color .3s ease, border-color .3s ease;}
         .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
 
-        /* ── ACORDEÓN DE PRECIOS MEJORADO (SOLO MÓVIL) ── */
+        /* ── ACORDEÓN DE PRECIOS MEJORADO (BOTÓN DE TEXTO) ── */
         @media(max-width:767px){
-    .pricing-toggle-header{
-        cursor:pointer;
-        display:flex;
-        flex-direction:column;
-        align-items:stretch;
-        justify-content:flex-start;
-        gap: 1rem;
-        width: 100%;
-        position: relative;
-        padding-right: 2.75rem;
-    }
-    
-    .pricing-toggle-arrow {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        width: 2.25rem; 
-        height: 2.25rem; 
-        background: rgba(251,245,226,0.1); 
-        border-radius: 50%; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        flex-shrink: 0; 
-        font-size: 1rem;
-        line-height: 1;
-        box-sizing: border-box;
-        transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, color .3s ease;
-    }
+            .pricing-toggle-header{
+                cursor:pointer;
+                display:flex;
+                flex-direction:column;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .toggle-text-btn {
+                display: inline-block;
+                margin: 1rem auto 0;
+                font-size: 0.8rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 0.5rem 1.25rem;
+                border-radius: 2rem;
+                transition: all 0.3s ease;
+            }
+            .service-card[style*="border-color:#d4af37"] .toggle-text-btn,
+            .pricing-card.premium .toggle-text-btn {
+                color: #d4af37;
+                border: 1px solid rgba(212,175,55,0.3);
+                background: rgba(212,175,55,0.05);
+            }
+            .service-card[style*="border-color:#e91e63"] .toggle-text-btn {
+                color: #e91e63;
+                border: 1px solid rgba(233,30,99,0.3);
+                background: rgba(233,30,99,0.05);
+            }
 
-    /* Estado expandido — combina translateY + rotate */
-    .service-card.expanded .pricing-toggle-arrow,
-    .pricing-card.premium.expanded .pricing-toggle-arrow {
-        transform: translateY(-50%) rotate(180deg);
-        background: #d4af37;
-        color: #1a1a1a;
-    }
-    
-    .service-card[style*="border-color:#e91e63"] .pricing-toggle-arrow { color: #e91e63; }
-    .service-card.expanded[style*="border-color:#e91e63"] .pricing-toggle-arrow { background: #e91e63; color: #fff; }
-    .service-card[style*="border-color:#d4af37"] .pricing-toggle-arrow, .pricing-card.premium .pricing-toggle-arrow { color: #d4af37; }
-    
-    .pricing-collapsible {
-        display: grid;
-        grid-template-rows: 0fr;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out, margin-top 0.4s ease, visibility 0.4s;
-        margin-top: 0;
-    }
-    .pricing-collapsible-inner {
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-    .service-card.expanded .pricing-collapsible,
-    .pricing-card.premium.expanded .pricing-collapsible {
-        grid-template-rows: 1fr;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        margin-top: 1.5rem;
-    }
-    
-    .service-card.expanded {
-        background-color: #383838;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    }
-}
+            .toggle-text-btn::after { content: "Ver detalles ▾"; }
+            .service-card.expanded .toggle-text-btn::after,
+            .pricing-card.premium.expanded .toggle-text-btn::after { content: "Ocultar detalles ▴"; }
+            
+            .pricing-collapsible {
+                display: grid;
+                grid-template-rows: 0fr;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: grid-template-rows 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease, visibility 0.4s;
+            }
+            .pricing-collapsible-inner {
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+            .service-card.expanded .pricing-collapsible,
+            .pricing-card.premium.expanded .pricing-collapsible {
+                grid-template-rows: 1fr;
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                margin-top: 1.5rem;
+            }
+            .service-card.expanded {
+                background-color: #383838;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            }
+        }
         
         @media(min-width:768px){
-            .pricing-toggle-arrow { display: none; }
+            .toggle-text-btn { display: none !important; }
             .pricing-collapsible { display: block; opacity: 1; margin-top: 0; }
             .pricing-collapsible-inner { display: flex; flex-direction: column; height: 100%; flex-grow: 1; }
         }
@@ -446,11 +436,12 @@
                 estás en el <em>lugar correcto</em>.
             </h1>
 
-            <p class="subtitle">
-                Tanto tú como yo nos ha pasado lo mismo.<br><br>
-                Hemos estado mirando en el lugar equivocado: en el ¿qué tengo que hacer? ¿Por qué me siento así?<br><br>
-                Pero no nos enseñaron a mirar una parte mucho más oculta, nuestra programación subconsciente.<br><br>
-                Tu vida es el resultado de esa programación oculta, y tu alma está esperando que recuerdes quién eres.
+            <p class="subtitle" style="text-align: left;">
+                Te ayudo a <strong style="color:#fbf5e2;">reprogramar tu mente</strong> para:<br><br>
+                - <strong style="color:#d4af37;">Dejar de dudar</strong> en cada decisión que tomas, aprendiendo a <strong style="color:#fbf5e2;">confiar en ti mismo/a</strong> y recuperando tu autoestima.<br><br>
+                - <strong style="color:#d4af37;">Liberar emociones reprimidas</strong> como el miedo, la culpa o la apatía, para que por fin <strong style="color:#fbf5e2;">tomes esas decisiones</strong> que llevas tiempo posponiendo.<br><br>
+                - <strong style="color:#d4af37;">Sanar y perdonar</strong> tu pasado, <strong style="color:#fbf5e2;">liberándote</strong> de una vez por todas de ese peso que cargas.<br><br>
+                Todo a través del mismo proceso que utilicé para <strong style="color:#d4af37;">transformar mi propia vida</strong>.
             </p>
 
             <div class="hero-action-block">
@@ -540,7 +531,6 @@
                     <div class="service-card" style="border-color:#d4af37;" data-pricing-card>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
-                                <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                                 <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
                                 <div class="card-meta" style="color:#d4af37;">
                                     <div class="card-meta-row">
@@ -558,6 +548,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="toggle-text-btn"></div>
                             </div>
                             <div class="pricing-collapsible">
                                 <div class="pricing-collapsible-inner">
@@ -583,7 +574,6 @@
                     <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
                         <div class="card-body">
                             <div class="pricing-toggle-header" data-pricing-toggle>
-                                <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                                 <div class="card-title-wrap"><h3>Acompañamiento Enfocado<br>3 Meses</h3></div>
                                 <div class="card-meta" style="color:#e91e63;">
                                     <div class="card-meta-row">
@@ -601,6 +591,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="toggle-text-btn"></div>
                             </div>
                             <div class="pricing-collapsible">
                                 <div class="pricing-collapsible-inner">
@@ -624,7 +615,6 @@
 
                     <div class="pricing-card premium" data-pricing-card>
                         <div class="pricing-toggle-header" data-pricing-toggle>
-                            <i class="fas fa-chevron-down pricing-toggle-arrow"></i>
                             <p class="premium-title">Mentoría: Renacimiento Fénix</p>
                             <p class="premium-subtitle">Transformación de identidad completa</p>
                             <div class="meta-list">
@@ -637,6 +627,7 @@
                                     <div><span class="meta-main">2.500€</span><span class="meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span></div>
                                 </div>
                             </div>
+                            <div class="toggle-text-btn"></div>
                         </div>
                         <div class="pricing-collapsible">
                             <div class="pricing-collapsible-inner">
