@@ -11,25 +11,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darío Arrigazzi - La Mente del Fénix</title>
-    
-    <meta name="description" content="Acompañamiento con Darío Arrigazzi para superar bloqueos, sanar traumas del pasado y transformar tu mente.">
+
+    <meta name="description" content="Acompañamiento con Darío Arrigazzi para superar bloqueos con el dinero, el amor y tu bienestar. Método Fénix: a la raíz del problema, con garantía de satisfacción.">
+
+    <!-- Open Graph / redes sociales -->
+    <meta property="og:title" content="Darío Arrigazzi - La Mente del Fénix">
+    <meta property="og:description" content="¿Bloqueos con el dinero, el amor o tu bienestar? Descubre el Método Fénix. Garantía 100%: si no quedas satisfecho, te devuelvo el dinero.">
+    <meta property="og:image" content="./assets/banner.webp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.lamentedelfenix.com">
+    <meta name="twitter:card" content="summary_large_image">
 
     <!-- Preconexión para optimizar la carga de recursos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <!-- Precargar imagen del banner -->
     <link rel="preload" fetchpriority="high" as="image" href="./assets/banner.webp" type="image/webp">
 
-    <!-- Tailwind CSS para un diseño rápido y responsivo -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fuentes e Iconos -->
+    <!-- Fuentes e iconos (solo lo que usamos, sin el framework CSS completo) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        /* Estilos personalizados adaptados al tema oscuro */
         :root {
             --bg-color: #2b2b2b;
             --bg-gradient-end: #1a1a1a;
@@ -39,13 +44,13 @@
             --dark-accent: #111111;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
+            margin: 0;
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
             background: linear-gradient(170deg, var(--bg-color) 0%, var(--bg-gradient-end) 100%);
             display: flex;
@@ -58,47 +63,87 @@
         .link-container {
             max-width: 400px;
             width: 100%;
+            text-align: center;
         }
 
-        /* Estilo para los botones de enlace, destacado en dorado */
+        img { max-width: 100%; display: block; }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- Botones --- */
         .link-button {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
             width: 100%;
-            text-align: center;
             padding: 1rem;
             border-radius: 50px;
             font-weight: 700;
+            font-size: 1rem;
             color: var(--dark-accent);
             text-decoration: none;
             background: linear-gradient(120deg, var(--brand-gold) 0%, #eebd5a 100%);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.5s ease;
         }
-
         .link-button:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); 
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
             background: linear-gradient(120deg, #eebd5a 0%, var(--brand-gold) 100%);
         }
-        
-        /* Efecto al presionar en móvil */
         .link-button:active {
-            transform: translateY(0px) scale(0.98); 
+            transform: translateY(0px) scale(0.98);
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
-        /* --- NUEVOS EFECTOS TIPO REELS --- */
-        /* 1. Entrada fluida en cascada */
+        /* Botón secundario: mismo estilo pero más discreto, para no competir con el CTA principal */
+        .link-button--secondary {
+            background: transparent;
+            color: var(--text-color);
+            border: 1.5px solid rgba(251, 245, 226, 0.35);
+            box-shadow: none;
+        }
+        .link-button--secondary:hover {
+            border-color: var(--brand-gold);
+            color: var(--brand-gold);
+            box-shadow: none;
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* --- CTA principal: destacado y con microcopy de reseñas --- */
+        .cta-wrap { position: relative; }
+        .cta-badge {
+            position: absolute;
+            top: -0.75rem;
+            right: 1rem;
+            background: var(--brand-pink);
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid #1a1a1a;
+            z-index: 1;
+        }
+        .cta-microcopy {
+            font-size: 0.75rem;
+            color: rgba(251, 245, 226, 0.65);
+            margin: 0.5rem 0 0;
+        }
+        .cta-microcopy i { color: var(--brand-gold); margin-right: 0.25rem; }
+
+        /* --- Animaciones de entrada --- */
         @keyframes slideUpFade {
-            0% { opacity: 0; transform: translateY(30px); }
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        .animate-in {
-            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+        .animate-in { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
@@ -106,15 +151,15 @@
         .delay-5 { animation-delay: 0.5s; }
         .delay-6 { animation-delay: 0.6s; }
 
-        /* 2. Reflejo de lujo en toda la pantalla */
+        /* --- Reflejo de lujo sutil (una sola vez, no infinito, para no distraer del CTA) --- */
         .luxury-glare {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 9999;
-            background: linear-gradient(125deg, rgba(255,255,255,0) 0%, rgba(212,175,55,0) 35%, rgba(212,175,55,0.06) 45%, rgba(255,255,255,0.02) 50%, rgba(212,175,55,0.06) 55%, rgba(212,175,55,0) 65%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(125deg, rgba(255,255,255,0) 0%, rgba(212,175,55,0) 35%, rgba(212,175,55,0.05) 45%, rgba(255,255,255,0.015) 50%, rgba(212,175,55,0.05) 55%, rgba(212,175,55,0) 65%, rgba(255,255,255,0) 100%);
             background-size: 200% 200%;
-            animation: glareMove 7.5s ease-in-out infinite alternate;
+            animation: glareMove 9s ease-in-out infinite alternate;
             mix-blend-mode: screen;
         }
         @keyframes glareMove {
@@ -122,71 +167,11 @@
             100% { background-position: 100% 100%; }
         }
 
-        /* 3. Aura pulsante dorada para la foto de perfil */
-        .profile-aura {
-            position: absolute;
-            top: -6px; right: -6px; bottom: -6px; left: -6px;
-            background: radial-gradient(circle, var(--brand-gold) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-            animation: auraBreathe 3s ease-in-out infinite alternate;
-            opacity: 0.4;
-        }
-        @keyframes auraBreathe {
-            0% { transform: scale(0.9); opacity: 0.1; }
-            100% { transform: scale(1.15); opacity: 0.6; }
-        }
-
-        /* Nuevo efecto eléctrico: destello agudo con núcleo blanco y borde dorado */
-        @keyframes electric-pulse {
-            0%, 100% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); }
-            5% { box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.25), 0 0 10px 2px rgba(212, 175, 55, 0.35); }
-            10% { box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 4px 1px rgba(212, 175, 55, 0.15); }
-            12% { box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.2), 0 0 8px 2px rgba(212, 175, 55, 0.25); }
-            16% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); }
-        }
-
-        .btn-electric {
-            animation: electric-pulse 4s infinite;
-        }
-
-        @keyframes text-flow {
-            to {
-                background-position: 200% center;
-            }
-        }
-
-        /* Efecto de imagen de perfil */
-        .profile-image-container {
-            position: relative;
-            width: 128px;
-            height: 128px;
-            margin: -2.5rem auto 0 auto; 
-            z-index: 10;
-        }
-        .profile-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .profile-image-container .hover-image {
-            opacity: 0;
-        }
-        .profile-image-container:hover .hover-image {
-            opacity: 1;
-        }
-        .profile-image-container:hover .default-image {
-            opacity: 0;
-        }
-        
-        /* Cita animada con dorado */
+        /* --- Cita animada --- */
         .animated-quote {
             font-style: italic;
             font-weight: 500;
+            font-size: 1rem;
             color: transparent;
             background-image: linear-gradient(90deg, var(--brand-gold), var(--brand-pink), var(--text-color), var(--brand-gold));
             background-size: 200% auto;
@@ -194,23 +179,28 @@
             background-clip: text;
             animation: text-flow 10s linear infinite;
         }
+        @keyframes text-flow { to { background-position: 200% center; } }
 
-        /* Iconos de redes sociales */
+        /* --- Redes sociales --- */
         .social-icon {
             font-size: 1.75rem;
             color: var(--text-color);
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        .social-icon:hover {
-            transform: scale(1.1);
-            color: var(--brand-pink);
-        }
-        .social-icon.email-icon:hover {
-            color: var(--brand-gold);
-        }
-        .social-icon.youtube-icon:hover {
-            color: #FF0000;
-        }
+        .social-icon:hover { transform: scale(1.1); color: var(--brand-pink); }
+        .social-icon.email-icon:hover { color: var(--brand-gold); }
+        .social-icon.youtube-icon:hover { color: #FF0000; }
+
+        /* --- Utilidades de layout mínimas (reemplazan a Tailwind) --- */
+        .stack { display: flex; flex-direction: column; gap: 1rem; }
+        .header { margin-top: 1.5rem; margin-bottom: 2rem; }
+        .kicker { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-gold); border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 2rem; padding: 0.3rem 0.9rem; }
+        .header p.headline { margin-top: 1rem; font-weight: 700; font-size: 1.15rem; line-height: 1.4; max-width: 320px; margin-left: auto; margin-right: auto; }
+        .header p.headline em { font-style: normal; color: var(--brand-gold); }
+        .quote-section { margin-top: 2rem; padding: 0 1rem; }
+        .footer { margin-top: 2rem; }
+        .footer .socials { display: flex; justify-content: center; align-items: center; gap: 1.5rem; }
+        .footer .copyright { font-size: 0.75rem; color: rgba(251, 245, 226, 0.5); margin-top: 1.5rem; }
     </style>
 </head>
 <body>
@@ -219,84 +209,64 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Reflejo de pantalla completa -->
     <div class="luxury-glare"></div>
 
-    <div class="link-container text-center">
+    <div class="link-container">
 
-        <!-- Banner -->
-        <img src="./assets/banner.webp" alt="Banner La Mente del Fénix" class="w-full h-auto rounded-lg shadow-lg animate-in" width="1200" height="400">
+        <img src="./assets/banner.webp" alt="Banner La Mente del Fénix" class="banner animate-in" width="1200" height="400">
 
-        <!-- Imagen de Perfil e Info -->
-        <header class="mb-8 animate-in delay-1">
-            <div class="profile-image-container rounded-full shadow-xl border-4 border-[#1a1a1a] overflow-hidden relative">
-                <div class="profile-aura"></div>
-                <img src="https://i.imgur.com/T6RLxgX.webp" alt="Retrato de Darío Arrigazzi" class="profile-image default-image">
-                <img src="https://i.imgur.com/XlmLArU.webp" alt="Retrato alternativo de Darío Arrigazzi" class="profile-image hover-image">
-            </div>
-            
-            <div class="pt-2"> 
-                <p class="mt-4 font-bold text-xl text-[#fbf5e2]">Resultados en 90 minutos.</p>
-                <p class="mt-2 text-sm max-w-xs mx-auto text-[#fbf5e2]/80 font-medium">
-                    O te devuelvo el dinero. A la raíz del problema, sin dar rodeos ni terapias interminables.
-                </p>
-            </div>
+        <header class="header animate-in delay-1">
+            <span class="kicker"><i class="fas fa-fire" aria-hidden="true" style="color:var(--brand-pink);font-size:0.7rem;"></i>Mentor en Desarrollo Interior</span>
+            <p class="headline">¿Bloqueos con el <em>dinero</em>, el <em>amor</em> o tu <em>bienestar</em>? Descubre el Método Fénix.</p>
         </header>
 
-        <!-- Enlaces Principales (Con Flexbox para separación) -->
-        <main class="flex flex-col gap-4 w-full">
-            
-            <!-- Link Web Principal (Prioridad #1) -->
-            <div class="animate-in delay-2 w-full relative">
-                <span class="absolute -top-3 right-4 bg-[#e91e63] text-white text-sm px-2 py-1 rounded-full shadow-lg border border-[#1a1a1a] z-10">🔥</span>
-                <a href="https://www.lamentedelfenix.com" target="_blank" class="link-button btn-electric">
-                    <i class="fas fa-fire text-xl"></i> Conoce el Método Fénix
+        <main class="stack">
+
+            <!-- CTA principal: destino de la mayor parte del tráfico, con reseñas en la propia web -->
+            <div class="cta-wrap animate-in delay-2">
+                <span class="cta-badge" aria-hidden="true">🔥</span>
+                <a href="https://www.lamentedelfenix.com" target="_blank" rel="noopener noreferrer" class="link-button">
+                    <i class="fas fa-fire" aria-hidden="true"></i> Conoce el Método Fénix
                 </a>
+                <p class="cta-microcopy"><i class="fas fa-star" aria-hidden="true"></i>Reseñas reales de quienes ya lo probaron, en la web</p>
             </div>
-            
-            <!-- Link YouTube -->
-            <div class="animate-in delay-3 w-full">
-                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" class="link-button">
-                    <i class="fab fa-youtube text-xl text-red-600"></i> Mi Canal de YouTube
+
+            <div class="animate-in delay-3">
+                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="link-button link-button--secondary">
+                    <i class="fab fa-youtube" aria-hidden="true" style="color:#FF0000"></i> Mi canal de YouTube
                 </a>
             </div>
 
-            <!-- Link eBook -->
-            <div class="animate-in delay-4 w-full">
-                <a href="https://www.lamentedelfenix.com/ebook" target="_blank" class="link-button">
-                    <i class="fas fa-book text-xl"></i> eBook Autoestima Gratis
+            <div class="animate-in delay-4">
+                <a href="https://www.lamentedelfenix.com/ebook" target="_blank" rel="noopener noreferrer" class="link-button link-button--secondary">
+                    <i class="fas fa-book" aria-hidden="true"></i> eBook autoestima gratis
                 </a>
             </div>
 
-            <!-- NUEVO Link eBook EGO -->
-            <div class="animate-in delay-5 w-full">
-                <a href="https://preview.mailerlite.io/forms/2299267/186073706573857998/share" target="_blank" class="link-button">
-                    <i class="fas fa-book text-xl"></i> eBook Ego Gratis
+            <div class="animate-in delay-5">
+                <a href="https://preview.mailerlite.io/forms/2299267/186073706573857998/share" target="_blank" rel="noopener noreferrer" class="link-button link-button--secondary">
+                    <i class="fas fa-book" aria-hidden="true"></i> eBook ego gratis
                 </a>
             </div>
         </main>
-        
-        <!-- Cita -->
-        <section class="mt-8 px-4 animate-in delay-6">
-            <p class="animated-quote text-base">
-                "Lo que das a los demás te lo das a ti mismo. Como es adentro, es afuera."
-            </p>
+
+        <section class="quote-section animate-in delay-6">
+            <p class="animated-quote">"Lo que das a los demás te lo das a ti mismo. Como es adentro, es afuera."</p>
         </section>
 
-        <!-- Redes Sociales -->
-        <footer class="mt-8 animate-in delay-6">
-            <div class="flex justify-center items-center gap-6">
-                <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" aria-label="Instagram">
-                    <i class="fab fa-instagram social-icon"></i>
+        <footer class="footer animate-in delay-6">
+            <div class="socials">
+                <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <i class="fab fa-instagram social-icon" aria-hidden="true"></i>
                 </a>
-                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" aria-label="YouTube">
-                    <i class="fab fa-youtube social-icon youtube-icon"></i>
+                <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <i class="fab fa-youtube social-icon youtube-icon" aria-hidden="true"></i>
                 </a>
-                <a href="mailto:lamentedelfenix@gmail.com" target="_blank" aria-label="Email">
-                    <i class="fas fa-envelope social-icon email-icon"></i>
+                <a href="mailto:lamentedelfenix@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope social-icon email-icon" aria-hidden="true"></i>
                 </a>
             </div>
-            <p class="text-xs text-[#fbf5e2]/50 mt-6">&copy; 2026 La Mente del Fénix</p>
+            <p class="copyright">&copy; 2026 La Mente del Fénix</p>
         </footer>
 
     </div>
