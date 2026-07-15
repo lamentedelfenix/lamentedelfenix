@@ -165,7 +165,6 @@
         .services-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
         @media(min-width:640px){.services-grid{gap:2rem}}
         @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
-        @media(min-width:1024px){.services-grid{grid-template-columns:repeat(3,1fr)}}
         
         .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease, background-color .3s ease, border-color .3s ease;}
         .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
@@ -180,7 +179,6 @@
                 text-transform: uppercase; letter-spacing: 0.05em; padding: 0.5rem 1.25rem;
                 border-radius: 2rem; transition: all 0.3s ease;
             }
-            .service-card[style*="border-color:#d4af37"] .toggle-text-btn,
             .pricing-card.premium .toggle-text-btn {
                 color: #d4af37; border: 1px solid rgba(212,175,55,0.3); background: rgba(212,175,55,0.05);
             }
@@ -477,50 +475,7 @@
         <section id="servicios" class="services-section">
             <div class="services-inner">
                 <h2>Opciones de Trabajo</h2>
-                <div class="services-grid" style="max-width:1280px;margin:0 auto;align-items:stretch;">
-
-                    <div class="service-card" style="border-color:#d4af37;" data-pricing-card>
-                        <div class="card-body">
-                            <div class="pricing-toggle-header" data-pricing-toggle>
-                                <div class="card-title-wrap"><h3>Sesión 1:1<br>Método Fénix</h3></div>
-                                <div class="card-meta" style="color:#d4af37;">
-                                    <div class="card-meta-row">
-                                        <i class="far fa-clock"></i>
-                                        <div>
-                                            <span class="card-meta-sub">Duración</span>
-                                            <span class="card-meta-price" style="opacity:1;">1h 30m</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-meta-row">
-                                        <i class="fas fa-tag"></i>
-                                        <div>
-                                            <span class="card-meta-price">200€</span>
-                                            <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-text-btn"></div>
-                            </div>
-                            <div class="pricing-collapsible">
-                                <div class="pricing-collapsible-inner">
-                                    <ul class="card-features">
-                                        <li><i class="fas fa-search text-brand-gold"></i><span><strong>Un problema, resuelto:</strong> Trae ese conflicto concreto que te bloquea y vamos directos a su raíz.</span></li>
-                                        <li><i class="fas fa-unlock-alt text-brand-gold"></i><span><strong>Liberación emocional:</strong> Suelta la culpa, el miedo y las cargas que arrastras del pasado.</span></li>
-                                        <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Enfoque total:</strong> Llévate un plan de acción y una meditación diseñada a tu medida.</span></li>
-                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1:</strong> Acompañamiento directo por WhatsApp durante 1 mes tras la sesión. Si en ese seguimiento veo que conviene una sesión adicional, te la propondré yo mismo.</span></li>
-                                        <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de la sesión</strong> (opcional).</span></li>
-                                    </ul>
-                                    <div class="discount-box">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <p><strong>Garantía 100%:</strong> Si al terminar la sesión no estás satisfecho, te devuelvo el dinero íntegro.</p>
-                                    </div>
-                                    <a href="https://forms.gle/veczPsae1ZDho32fA" target="_blank" class="btn btn-gold btn-block">
-                                        <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar sesión
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="services-grid" style="max-width:900px;margin:0 auto;align-items:stretch;">
 
                     <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
                         <div class="card-body">
@@ -537,7 +492,7 @@
                                     <div class="card-meta-row">
                                         <i class="fas fa-tag"></i>
                                         <div>
-                                            <span class="card-meta-price"><span style="text-decoration:line-through;opacity:.5;font-weight:400;">1.195€</span> 995€</span>
+                                            <span class="card-meta-price">1.195€</span>
                                             <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
                                         </div>
                                     </div>
@@ -547,14 +502,17 @@
                             <div class="pricing-collapsible">
                                 <div class="pricing-collapsible-inner">
                                     <ul class="card-features">
-                                        <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, o el bloqueo que más te está pesando ahora mismo.</span></li>
-                                        <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones 1:1:</strong> 2 al mes, mismo formato y duración que la Sesión 1:1 (1h30).</span></li>
+                                        <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área concreta:</strong> Dinero, relaciones, autoestima o el bloqueo que más te está pesando ahora mismo.</span></li>
+                                        <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>6 Sesiones profundas de 1h30:</strong> 2 al mes, yendo directos a la raíz de cada bloqueo para liberar la culpa, el miedo y las cargas del pasado.</span></li>
+                                        <li><i class="fas fa-comments text-brand-gold"></i><span><strong>+ 1 Llamada de seguimiento al mes:</strong> Una conversación más breve para ver cómo te encuentras, revisar tu evolución y ajustar el rumbo entre sesión y sesión.</span></li>
                                         <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Plan de acción evolutivo:</strong> Ajustado sesión a sesión según tu avance real.</span></li>
-                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte continuo:</strong> Acompañamiento por WhatsApp durante los 3 meses del proceso.</span></li>
+                                        <li><i class="fas fa-om text-brand-gold"></i><span><strong>Meditaciones guiadas personalizadas:</strong> Entrenamiento mental a tu medida para reforzar el trabajo entre sesiones.</span></li>
+                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1 por WhatsApp:</strong> Acompañamiento continuo durante los 3 meses completos del proceso, no solo entre sesiones.</span></li>
+                                        <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de las sesiones</strong> (opcional).</span></li>
                                     </ul>
                                     <div class="discount-box">
-                                        <i class="fas fa-gift"></i>
-                                        <p><strong>Bono de actualización:</strong> El precio de 995€ ya incluye el descuento de tu Sesión 1:1 (200€). Si aún no la has hecho, el precio es de 1.195€.</p>
+                                        <i class="fas fa-shield-alt"></i>
+                                        <p><strong>Garantía en la 1ª sesión:</strong> Si al terminar la primera sesión sientes que no es para ti, te devuelvo el dinero íntegro.</p>
                                     </div>
                                     <a href="https://forms.gle/Mgd5ffrs4Hvsomv47" target="_blank" class="btn btn-pink btn-block">
                                         <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
@@ -582,14 +540,11 @@
                         </div>
                         <div class="pricing-collapsible">
                             <div class="pricing-collapsible-inner">
-                                <div class="discount-box">
-                                    <i class="fas fa-gift"></i>
-                                    <p><strong>Bono de actualización:</strong> Si ya has realizado una Sesión 1:1, se descontará su valor (200€) del total de la mentoría.</p>
-                                </div>
                                 <ul class="features-list premium-features">
                                     <li><i class="fas fa-fire-alt"></i><span><strong>Reprogramación de Identidad:</strong> Deja de "intentar cambiar" y conviértete en tu versión más magnética y segura de forma natural.</span></li>
                                     <li><i class="fas fa-link"></i><span><strong>Liberación de patrones tóxicos:</strong> Rompe definitivamente los bucles repetitivos en tus relaciones y economía.</span></li>
                                     <li><i class="fas fa-calendar-check"></i><span><strong>24 Sesiones de Alto Impacto:</strong> 2 al mes para limpiar tu inconsciente de raíz y trazar un plan de acción exacto.</span></li>
+                                    <li><i class="fas fa-om"></i><span><strong>Meditaciones guiadas personalizadas:</strong> Entrenamiento mental a tu medida para reforzar el trabajo entre sesiones.</span></li>
                                     <li><i class="fas fa-cogs"></i><span><strong>Ingeniería de Hábitos:</strong> Diseñaremos un sistema práctico a tu medida para instaurar nuevos hábitos sin depender de la motivación.</span></li>
                                     <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
                                     <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
