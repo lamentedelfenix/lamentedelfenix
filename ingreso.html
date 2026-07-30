@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de Sesión - Método Fénix</title>
+    <title>Reserva Mentoría 3 Meses - Método Fénix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,43 +29,99 @@
         }
     </script>
     <style>
-        body { background-color: #2b2b2b; color: #fbf5e2; }
+        body { background-color: #363636; color: #fbf5e2; }
+        
+        /* Botón extraído de la web principal con efecto hover */
         .btn-gold {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
             background-color: #d4af37; 
             color: #1a1a1a; 
             font-weight: 700;
-            transition: all 0.3s ease; 
+            transition: color 0.4s ease-out; 
             border: 2px solid transparent;
         }
-        .btn-gold:hover {
-            background-color: #1a1a1a; 
-            color: #d4af37; 
-            border-color: #d4af37;
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a1a;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
+        .btn-gold:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+            border: 2px solid #d4af37;
+        }
+        .btn-gold:hover {
+            color: #d4af37; 
+        }
+
+        /* Estilos premium de la web principal */
+        .premium-card {
+            background: linear-gradient(160deg, #1e1a0e 0%, #2a2416 40%, #1a1a1a 100%);
+            box-shadow: 0 20px 50px rgba(212,175,55,0.2), 0 0 0 1px rgba(212,175,55,0.15);
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+        .premium-badge {
+            background: linear-gradient(90deg, #e91e63, #ff4081, #e91e63, #ff4081, #e91e63);
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+
         /* Custom scrollbar to match theme */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+        
+        /* Animación de pulso para la oferta */
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .animate-subtle-pulse {
+            animation: subtle-pulse 3s infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-md w-full bg-brand-darker rounded-xl shadow-2xl overflow-hidden border border-brand-gold/20">
+    <div class="max-w-md w-full premium-card rounded-xl overflow-hidden relative">
         <!-- Banner Superior -->
-        <div class="relative w-full h-32 bg-[#111] border-b border-brand-gold/30">
-            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Método Fénix Banner" class="w-full h-full object-cover object-center opacity-90">
+        <div class="relative w-full h-32 bg-[#111] border-b border-brand-gold/40">
+            <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="Método Fénix Banner" class="w-full h-full object-cover object-center">
         </div>
 
-        <div class="p-6 sm:p-8">
+        <div class="p-6 sm:p-8 relative z-10">
             <div class="text-center mb-6">
-                <h1 class="text-xl font-extrabold text-brand-light mb-1">Confirma tu plaza</h1>
-                <p class="text-brand-gold text-xs font-bold tracking-widest uppercase">Sesión 1:1 · Método Fénix</p>
+                <i class="fas fa-crown text-brand-gold text-3xl mb-4 drop-shadow-md"></i>
+                <h1 class="text-2xl font-extrabold text-brand-light mb-2">Bienvenido/a a tu transformación</h1>
+                <p class="text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">Acompañamiento Enfocado · 3 Meses</p>
+                <p class="text-sm text-brand-light/80 leading-relaxed">
+                    Enhorabuena por dar este gran paso. Estás a punto de iniciar un viaje de 3 meses que marcará un antes y un después.
+                </p>
             </div>
 
-            <!-- Importe destacado -->
-            <div class="text-center bg-[#222] rounded-lg p-4 mb-6 border-l-4 border-brand-pink shadow-inner flex flex-col justify-center items-center">
-                <span class="text-[11px] font-bold uppercase tracking-widest text-brand-light/50 mb-1">Importe a ingresar</span>
-                <span class="text-3xl font-extrabold text-brand-pink tracking-tight">200€</span>
+            <!-- Importe destacado con oferta -->
+            <div class="text-center bg-gradient-to-br from-[#222] to-[#1a1a1a] rounded-lg p-5 mb-6 border border-brand-gold/20 shadow-inner relative overflow-hidden">
+                <div class="absolute top-0 right-0 premium-badge text-white text-[9px] font-bold px-4 py-1.5 rounded-bl-lg uppercase tracking-wider shadow-md">
+                    Beca 50% Aplicada
+                </div>
+                
+                <span class="text-[11px] font-bold uppercase tracking-widest text-brand-light/50 mb-2 block mt-2">Inversión en ti</span>
+                
+                <div class="flex items-center justify-center gap-3 mb-1">
+                    <span class="text-xl text-brand-light/40 line-through font-medium">1.195€</span>
+                    <span class="text-4xl font-extrabold text-brand-gold tracking-tight drop-shadow-lg">600€</span>
+                </div>
+                <p class="text-[10px] text-brand-pink font-semibold mt-1">*Oferta especial confirmada y reservada.</p>
             </div>
 
             <!-- Datos Bancarios -->
@@ -101,9 +157,9 @@
                 </div>
 
                 <div>
-                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Concepto del ingreso</label>
-                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-white/5">
-                        <span id="conceptText" class="text-brand-light font-medium text-sm">[Tu Nombre]</span>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Concepto del ingreso (Importante)</label>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-brand-pink/30">
+                        <span id="conceptText" class="text-brand-light font-medium text-sm">Mentoría 3M - [Tu Nombre]</span>
                         <button onclick="copyToClipboard('conceptText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar Concepto">
                             <i class="far fa-copy text-lg"></i>
                         </button>
@@ -113,15 +169,31 @@
 
             <!-- Dirección del Banco (Secundaria) -->
             <div class="mt-5 text-center">
-                <p class="text-[10px] text-brand-light/40 leading-relaxed font-medium">
+                <p class="text-[10px] text-brand-light/30 leading-relaxed font-medium">
                     Banco Wise: Avenue Louise 54, Room S52<br>Brussels 1050, Belgium.
                 </p>
             </div>
 
+            <!-- Método Fénix mini pillars -->
+            <div class="flex justify-center gap-8 mt-6 pt-5 border-t border-brand-light/5">
+                <div class="text-center text-brand-light/40 flex flex-col items-center group hover:text-brand-gold transition-colors">
+                    <span class="text-base mb-1">📖</span>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">UCDM</span>
+                </div>
+                <div class="text-center text-brand-light/40 flex flex-col items-center group hover:text-brand-gold transition-colors">
+                    <span class="text-base mb-1">🧠</span>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">PNL</span>
+                </div>
+                <div class="text-center text-brand-light/40 flex flex-col items-center group hover:text-brand-gold transition-colors">
+                    <span class="text-base mb-1">🎯</span>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">Coaching</span>
+                </div>
+            </div>
+
             <!-- Acción CTA -->
-            <div class="mt-8 text-center border-t border-brand-light/10 pt-6">
-                <p class="text-xs text-brand-light/80 mb-4 font-medium">Una vez hecho el ingreso, envíame el comprobante para asegurar la reserva.</p>
-                <a href="https://wa.me/34667752916" class="w-full block text-center btn-gold py-3.5 px-6 rounded-lg text-sm tracking-wide uppercase">
+            <div class="mt-6 text-center border-t border-brand-light/10 pt-6">
+                <p class="text-xs text-brand-light/90 mb-4 font-medium">Una vez realizada la transferencia, envíame el comprobante para agendar nuestra primera sesión y comenzar.</p>
+                <a href="https://wa.me/34667752916" class="w-full block text-center btn-gold py-3.5 px-6 rounded-lg text-sm tracking-wide uppercase shadow-lg shadow-brand-gold/20">
                     <i class="fab fa-whatsapp mr-2 text-lg align-middle"></i> Enviar comprobante
                 </a>
             </div>
@@ -129,8 +201,8 @@
     </div>
 
     <!-- Notificación Flotante (Toast) -->
-    <div id="toast" class="fixed bottom-8 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-pink text-white px-6 py-3 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(233,30,99,0.4)] flex items-center gap-2">
-        <i class="fas fa-check-circle"></i> ¡Copiado!
+    <div id="toast" class="fixed bottom-8 transform translate-y-20 opacity-0 transition-all duration-300 bg-brand-gold text-brand-darker px-6 py-3 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] flex items-center gap-2 z-50">
+        <i class="fas fa-check-circle"></i> ¡Copiado al portapapeles!
     </div>
 
     <script>
@@ -145,7 +217,7 @@
 
                 setTimeout(() => {
                     toast.classList.add('translate-y-20', 'opacity-0');
-                }, 2000);
+                }, 2500);
             });
         }
     </script>
