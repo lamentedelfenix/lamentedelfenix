@@ -100,13 +100,30 @@
         </div>
 
         <div class="p-6 sm:p-8 relative z-10">
+            <!-- Temporizador de Oferta -->
+            <div class="bg-brand-pink/10 border border-brand-pink/30 rounded-lg p-3 mb-6 text-center shadow-[0_0_15px_rgba(233,30,99,0.1)]">
+                <p class="text-brand-light text-xs font-bold uppercase tracking-wider mb-1">
+                    <i class="fas fa-hourglass-half text-brand-pink mr-1"></i> Beca válida hasta este domingo
+                </p>
+                <p id="countdown" class="text-xl font-extrabold text-brand-pink font-mono tracking-widest animate-subtle-pulse">--h --m --s</p>
+            </div>
+
             <div class="text-center mb-6">
                 <i class="fas fa-crown text-brand-gold text-3xl mb-4 drop-shadow-md"></i>
                 <h1 class="text-2xl font-extrabold text-brand-light mb-2">Bienvenido/a a tu transformación</h1>
-                <p class="text-brand-gold text-xs font-bold tracking-widest uppercase mb-3">Acompañamiento Enfocado · 3 Meses</p>
                 <p class="text-sm text-brand-light/80 leading-relaxed">
-                    Enhorabuena por dar este gran paso. Estás a punto de iniciar un viaje de 3 meses que marcará un antes y un después.
+                    Enhorabuena por dar este gran paso. Selecciona tu programa para formalizar la reserva.
                 </p>
+            </div>
+
+            <!-- Selector de Planes -->
+            <div class="flex gap-2 mb-6 bg-[#1a1a1a] p-1.5 rounded-lg border border-white/5 shadow-inner">
+                <button id="btn-3m" onclick="selectPlan('3m')" class="flex-1 py-2.5 rounded-md font-bold text-sm bg-brand-gold text-brand-darker transition-all shadow-md">
+                    3 Meses
+                </button>
+                <button id="btn-12m" onclick="selectPlan('12m')" class="flex-1 py-2.5 rounded-md font-bold text-sm bg-[#222] text-brand-light/60 border border-white/5 hover:text-brand-gold transition-all">
+                    12 Meses
+                </button>
             </div>
 
             <!-- Importe destacado con oferta -->
@@ -115,13 +132,16 @@
                     Beca 50% Aplicada
                 </div>
                 
-                <span class="text-[11px] font-bold uppercase tracking-widest text-brand-light/50 mb-2 block mt-2">Inversión en ti</span>
+                <span class="text-[11px] font-bold uppercase tracking-widest text-brand-light/50 mb-2 block mt-2">Reserva tu plaza ahora (50%)</span>
                 
-                <div class="flex items-center justify-center gap-3 mb-1">
-                    <span class="text-xl text-brand-light/40 line-through font-medium">1.195€</span>
-                    <span class="text-4xl font-extrabold text-brand-gold tracking-tight drop-shadow-lg">600€</span>
+                <div class="flex items-center justify-center gap-3 mb-2">
+                    <span id="price-original" class="text-xl text-brand-light/40 line-through font-medium">1.195€</span>
+                    <span id="price-reserve" class="text-4xl font-extrabold text-brand-gold tracking-tight drop-shadow-lg">300€</span>
                 </div>
-                <p class="text-[10px] text-brand-pink font-semibold mt-1">*Oferta especial confirmada y reservada.</p>
+                
+                <p class="text-[11px] text-brand-light/90 font-medium mt-3 bg-brand-pink/20 py-2 px-3 rounded text-center border border-brand-pink/30">
+                    <i class="fas fa-info-circle text-brand-pink mr-1"></i> El otro 50% (<strong id="price-rest" class="text-brand-pink">300€</strong>) se abonará en <strong>Septiembre</strong>, independientemente de la fecha de inicio.
+                </p>
             </div>
 
             <!-- Datos Bancarios -->
@@ -158,8 +178,8 @@
 
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-brand-gold block mb-1">Concepto del ingreso (Importante)</label>
-                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-brand-pink/30">
-                        <span id="conceptText" class="text-brand-light font-medium text-sm">Mentoría 3M - [Tu Nombre]</span>
+                    <div class="flex justify-between items-center bg-[#222] p-3 rounded border border-brand-pink/40 group">
+                        <span id="conceptText" class="text-brand-light font-bold text-sm">3M - [Tu Nombre]</span>
                         <button onclick="copyToClipboard('conceptText')" class="text-brand-gold/50 hover:text-brand-gold transition-colors p-1" title="Copiar Concepto">
                             <i class="far fa-copy text-lg"></i>
                         </button>
@@ -206,6 +226,79 @@
     </div>
 
     <script>
+        // Lógica de Selección de Plan
+        const plans = {
+            '3m': {
+                original: '1.195€',
+                reserve: '300€',
+                rest: '300€',
+                concept: '3M - [Tu Nombre]'
+            },
+            '12m': {
+                original: '2.500€',
+                reserve: '625€',
+                rest: '625€',
+                concept: '12M - [Tu Nombre]'
+            }
+        };
+
+        function selectPlan(plan) {
+            // Estilos de los botones
+            document.getElementById('btn-3m').className = plan === '3m' 
+                ? 'flex-1 py-2.5 rounded-md font-bold text-sm bg-brand-gold text-brand-darker transition-all shadow-md' 
+                : 'flex-1 py-2.5 rounded-md font-bold text-sm bg-[#222] text-brand-light/60 border border-white/5 hover:text-brand-gold transition-all';
+            
+            document.getElementById('btn-12m').className = plan === '12m' 
+                ? 'flex-1 py-2.5 rounded-md font-bold text-sm bg-brand-gold text-brand-darker transition-all shadow-md' 
+                : 'flex-1 py-2.5 rounded-md font-bold text-sm bg-[#222] text-brand-light/60 border border-white/5 hover:text-brand-gold transition-all';
+
+            // Actualizar Precios y Textos
+            document.getElementById('price-original').innerText = plans[plan].original;
+            document.getElementById('price-reserve').innerText = plans[plan].reserve;
+            document.getElementById('price-rest').innerText = plans[plan].rest;
+            document.getElementById('conceptText').innerText = plans[plan].concept;
+        }
+
+        // Lógica del Temporizador (Hasta el próximo domingo a las 23:59:59)
+        function initTimer() {
+            const timerElement = document.getElementById('countdown');
+            if (!timerElement) return;
+
+            const now = new Date();
+            const daysUntilSunday = (7 - now.getDay()) % 7;
+            
+            const nextSunday = new Date(now);
+            nextSunday.setDate(now.getDate() + daysUntilSunday);
+            nextSunday.setHours(23, 59, 59, 999);
+
+            function updateTimer() {
+                const currentTime = new Date();
+                const diff = nextSunday - currentTime;
+
+                if (diff <= 0) {
+                    timerElement.innerHTML = "Oferta Finalizada";
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / 1000 / 60) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+
+                let timeString = "";
+                if (d > 0) timeString += d + "d ";
+                timeString += String(h).padStart(2, '0') + "h " + String(m).padStart(2, '0') + "m " + String(s).padStart(2, '0') + "s";
+                
+                timerElement.innerHTML = timeString;
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Inicializar el temporizador al cargar la página
+        window.addEventListener('load', initTimer);
+
         function copyToClipboard(elementId) {
             const text = document.getElementById(elementId).innerText;
             navigator.clipboard.writeText(text).then(() => {
