@@ -97,7 +97,7 @@
         .hero-quote p{font-size:.92rem;font-style:italic;color:rgba(251,245,226,.85);line-height:1.65;margin-bottom:.4rem}
         .hero-quote cite{font-size:.8rem;font-weight:700;color:#d4af37;font-style:normal}
 
-        /* ── BIO ── */
+        /* ── BIO & HISTORIA ── */
         .bio-section{padding:3.5rem .25rem;background-color:#363636}
         @media(min-width:768px){.bio-section{padding:5rem 1rem}}
         .sales-bio{max-width:600px;margin:0 auto;font-size:1.05rem;line-height:1.9;color:rgba(251,245,226,.9)}
@@ -120,6 +120,67 @@
         @media(min-width:768px){.sales-bio h2{font-size:2rem}}
         .sales-highlight{color:#e91e63;font-weight:700;font-size:1.15rem;display:block;margin-bottom:2.5rem}
         @media(min-width:768px){.sales-highlight{font-size:1.25rem}}
+
+        /* ── ACORDEÓN HISTORIA ── */
+        .historia-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #222;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(212,175,55,0.3);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .historia-toggle:hover {
+            background-color: #2a2a2a;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.15);
+        }
+        .historia-toggle h2 {
+            margin-bottom: 0 !important;
+            font-size: 1.25rem !important;
+            color: #d4af37 !important;
+            text-align: left;
+        }
+        @media(min-width:768px){
+            .historia-toggle h2 { font-size: 1.5rem !important; }
+        }
+        .toggle-icon {
+            font-size: 1.25rem;
+            color: #d4af37;
+            transition: transform 0.4s ease;
+        }
+        #historia-section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .historia-collapsible {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            visibility: hidden;
+            transition: grid-template-rows 0.5s ease, opacity 0.4s ease, visibility 0.5s;
+        }
+        .historia-collapsible-inner {
+            overflow: hidden;
+            padding-top: 0;
+        }
+        #historia-section.expanded .historia-collapsible {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            visibility: visible;
+        }
+        #historia-section.expanded .historia-collapsible-inner {
+            padding-top: 2rem;
+        }
+        .btn-close-wrap {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            padding-top: 2rem;
+            border-top: 1px dashed rgba(251,245,226,.2);
+        }
 
         /* método */
         .metodo-block{margin:3rem 0;padding:1.5rem 1.25rem;background-color:#1a1a1a;border-radius:.5rem;border-top:3px solid #e91e63}
@@ -267,51 +328,6 @@
         .strip-cta { color: #d4af37; border: 1px solid #d4af37; border-radius: 2rem; padding: .2rem .75rem; font-size: .7rem; font-weight: 800; transition: background .2s, color .2s; text-decoration: none; flex-shrink: 0; background: rgba(212,175,55,.1); }
         .strip-cta:hover { background: #d4af37; color: #1a1a1a; }
 
-        /* ── NUEVA SECCIÓN: TALLER EN EL FOOTER ── */
-        .footer-workshop-banner {
-            background: linear-gradient(135deg, #1f1f1f 0%, #151515 100%);
-            border-top: 2px solid #e91e63;
-            border-bottom: 2px solid #e91e63;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
-            margin-top: 4rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .footer-workshop-inner {
-            max-width: 50rem;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.25rem;
-        }
-        .fw-text-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-        .fw-kicker {
-            color: #d4af37;
-            font-weight: 800;
-            font-size: 1.2rem;
-            line-height: 1.3;
-        }
-        .fw-desc {
-            color: rgba(251,245,226,0.85);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        @media(min-width: 768px){
-            .footer-workshop-inner {
-                flex-direction: row;
-                justify-content: space-between;
-                text-align: left;
-            }
-            .fw-kicker { font-size: 1.3rem; }
-            .fw-desc { font-size: 1rem; }
-        }
-
         /* footer general */
         .site-footer{margin-top:2rem;padding:3rem 1rem;border-top:1px solid #374151;text-align:center;background-color:#1a1a1a;border-radius:.5rem;width:100%;max-width:72rem;margin-left:auto;margin-right:auto}
         @media(min-width:768px){.site-footer{margin-top:3rem}}
@@ -394,7 +410,7 @@
                 <!-- GANCHO DE VENTA PRINCIPAL: LLAMADA DE ENCAJE -->
                 <div class="hero-cta">
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-gold">
-                        Reserva tu Llamada de Encaje
+                        Reserva tu Llamada
                     </a>
                     <span class="hero-cta-note">Elige el día y la hora que mejor te venga. Hablamos por teléfono sobre tu situación, resolvemos tus dudas y vemos juntos si mis servicios son lo que necesitas ahora mismo.</span>
                 </div>
@@ -433,39 +449,54 @@
                 </div>
             </div>
 
-            <!-- HISTORIA -->
-            <div class="sales-bio">
-                <h2>Conoce mi Historia</h2>
+            <!-- HISTORIA DESPLEGABLE -->
+            <div class="sales-bio" id="historia-section">
+                
+                <div class="historia-toggle" id="historia-toggle" role="button" aria-expanded="false">
+                    <h2>¿Quieres conocer mi historia?</h2>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                
+                <div class="historia-collapsible" id="historia-collapsible">
+                    <div class="historia-collapsible-inner">
+                        <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
+                        <p>Mi padre la <span class="keyword">maltrataba</span> brutalmente.</p>
+                        <p>Yo lo veía todo y no podía hacer nada.</p>
+                        <p>Sentía mucha <span class="keyword">impotencia</span>, y de ahí nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
+                        <p>Pero aquí viene lo gordo... y seguramente no te lo esperas...</p>
+                        <p>Mi padre era terapeuta. Y de los mejores que he conocido nunca.</p>
+                        <p>No, no es <span class="keyword">broma</span>.</p>
+                        <p>Venían a verle de todas partes: ricos, famosos, médicos, jueces.</p>
+                        <p>Fuera de casa la gente lo adoraba.</p>
+                        <p>Como padre y como marido, un <span class="keyword">monstruo</span>.</p>
+                        <p>Como te puedes imaginar... esa contradicción me <span class="keyword">obsesionó</span>:</p>
+                        <p><strong>¿Por qué su mente funcionaba así?</strong></p>
+                        <p>Y de ahí nació mi interés por la psicología humanista.</p>
+                        <p>Y siendo brutalmente honesto: gran parte de mi habilidad para ayudarte hoy la aprendí de él.</p>
+                        <p>Pero el verdadero giro no fue solo entenderlo, sino <span class="keyword">perdonarlo</span>. Hoy, aquel "monstruo" es para mí un maestro que me enseñó el camino de vuelta a la paz.</p>
+                        <p>Ese perdón real, sin juicios, es la pieza final de mi propia sanación y la prueba de que <span class="keyword">tú también puedes liberarte</span>, sin importar lo que hayas vivido.</p>
+                        <p>Y con 30 años dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro aún seguía <span class="keyword">hecho una mierda</span>.</p>
+                        <p>Lo dejé todo para sanar de verdad y poder dedicarme a lo que siempre me había apasionado: ayudar a la gente.</p>
+                        <p>Me formé en Coaching, PNL, David R. Hawkins y otras disciplinas. Hasta que di con la clave:</p>
+                        <p class="sales-highlight">Un Curso de Milagros.</p>
+                        <p>Ese libro no solo me cambió la vida a mí. Se convirtió en el núcleo de todo lo que voy a hacer contigo.</p>
 
-                <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
-                <p>Mi padre la <span class="keyword">maltrataba</span> brutalmente.</p>
-                <p>Yo lo veía todo y no podía hacer nada.</p>
-                <p>Sentía mucha <span class="keyword">impotencia</span>, y de ahí nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
-                <p>Pero aquí viene lo gordo... y seguramente no te lo esperas...</p>
-                <p>Mi padre era terapeuta. Y de los mejores que he conocido nunca.</p>
-                <p>No, no es <span class="keyword">broma</span>.</p>
-                <p>Venían a verle de todas partes: ricos, famosos, médicos, jueces.</p>
-                <p>Fuera de casa la gente lo adoraba.</p>
-                <p>Como padre y como marido, un <span class="keyword">monstruo</span>.</p>
-                <p>Como te puedes imaginar... esa contradicción me <span class="keyword">obsesionó</span>:</p>
-                <p><strong>¿Por qué su mente funcionaba así?</strong></p>
-                <p>Y de ahí nació mi interés por la psicología humanista.</p>
-                <p>Y siendo brutalmente honesto: gran parte de mi habilidad para ayudarte hoy la aprendí de él.</p>
-                <p>Pero el verdadero giro no fue solo entenderlo, sino <span class="keyword">perdonarlo</span>. Hoy, aquel "monstruo" es para mí un maestro que me enseñó el camino de vuelta a la paz.</p>
-                <p>Ese perdón real, sin juicios, es la pieza final de mi propia sanación y la prueba de que <span class="keyword">tú también puedes liberarte</span>, sin importar lo que hayas vivido.</p>
-                <p>Y con 30 años dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro aún seguía <span class="keyword">hecho una mierda</span>.</p>
-                <p>Lo dejé todo para sanar de verdad y poder dedicarme a lo que siempre me había apasionado: ayudar a la gente.</p>
-                <p>Me formé en Coaching, PNL, David R. Hawkins y otras disciplinas. Hasta que di con la clave:</p>
-                <p class="sales-highlight">Un Curso de Milagros.</p>
-                <p>Ese libro no solo me cambió la vida a mí. Se convirtió en el núcleo de todo lo que voy a hacer contigo.</p>
+                        <div class="metodo-block">
+                            <h3>¿En qué se basa el Método Fénix?</h3>
+                            <div class="metodo-pillars">
+                                <div class="metodo-pillar"><div class="pillar-icon">📖</div><span class="pillar-name">UCDM</span><span class="pillar-desc">La raíz de todo.</span></div>
+                                <div class="metodo-pillar"><div class="pillar-icon">🧠</div><span class="pillar-name">PNL</span><span class="pillar-desc">Reprogramación.</span></div>
+                                <div class="metodo-pillar"><div class="pillar-icon">🔑</div><span class="pillar-name">Identidad</span><span class="pillar-desc">Quién eres hoy.</span></div>
+                                <div class="metodo-pillar"><div class="pillar-icon">🎯</div><span class="pillar-name">Coaching</span><span class="pillar-desc">Acción medible.</span></div>
+                            </div>
+                        </div>
 
-                <div class="metodo-block">
-                    <h3>¿En qué se basa el Método Fénix?</h3>
-                    <div class="metodo-pillars">
-                        <div class="metodo-pillar"><div class="pillar-icon">📖</div><span class="pillar-name">UCDM</span><span class="pillar-desc">La raíz de todo.</span></div>
-                        <div class="metodo-pillar"><div class="pillar-icon">🧠</div><span class="pillar-name">PNL</span><span class="pillar-desc">Reprogramación.</span></div>
-                        <div class="metodo-pillar"><div class="pillar-icon">🔑</div><span class="pillar-name">Identidad</span><span class="pillar-desc">Quién eres hoy.</span></div>
-                        <div class="metodo-pillar"><div class="pillar-icon">🎯</div><span class="pillar-name">Coaching</span><span class="pillar-desc">Acción medible.</span></div>
+                        <!-- Botón para volver a cerrar la historia -->
+                        <div class="btn-close-wrap">
+                            <button class="btn btn-sm btn-gold btn-close-historia">
+                                <i class="fas fa-chevron-up" style="margin-right: 0.5rem;"></i>Ocultar historia
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -515,9 +546,10 @@
                                         <i class="fas fa-shield-alt"></i>
                                         <p><strong>Mi compromiso contigo:</strong> Si al llegar al final de los 3 meses necesitas un poco más de recorrido para consolidar tu transformación, extiendo el acompañamiento el tiempo que haga falta, sin coste adicional.</p>
                                     </div>
-                                    <a href="https://forms.gle/Mgd5ffrs4Hvsomv47" target="_blank" class="btn btn-pink btn-block">
-                                        <i class="fas fa-envelope" style="margin-right:.5rem"></i>Solicitar plaza
+                                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-pink btn-block">
+                                        <i class="fas fa-phone" style="margin-right:.5rem"></i>Reservar llamada
                                     </a>
+                                    <p class="waitlist-text">En esta llamada gratuita nos conocemos, analizamos tu situación y valoramos juntos si este es el paso correcto para ti.</p>
                                 </div>
                             </div>
                         </div>
@@ -548,31 +580,19 @@
                                     <li><i class="fas fa-comments"></i><span><strong>+ 1 Llamada de seguimiento al mes (12 en total):</strong> Una conversación adicional al mes para ver cómo te encuentras, revisar tu evolución y ajustar el rumbo de forma constante.</span></li>
                                     <li><i class="fas fa-om"></i><span><strong>Meditaciones guiadas personalizadas:</strong> Entrenamiento mental a tu medida para reforzar el trabajo entre sesiones.</span></li>
                                     <li><i class="fas fa-cogs"></i><span><strong>Ingeniería de Hábitos:</strong> Diseñaremos un sistema práctico a tu medida para instaurar nuevos hábitos sin depender de la motivación.</span></li>
-                                    <li><i class="fab fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
+                                    <li><i class="fas fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
                                     <li><i class="fas fa-video"></i><span><strong>Grabación de las sesiones</strong> (opcional).</span></li>
                                     <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
                                 </ul>
-                                <a href="https://forms.gle/iemP6ZtZDJtxfjv1A" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
-                                    <i class="fas fa-arrow-right" style="margin-right:.5rem"></i>Solicitar plaza
+                                <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
+                                    <i class="fas fa-phone" style="margin-right:.5rem"></i>Reservar llamada
                                 </a>
-                                <p class="waitlist-text">Al enviar el formulario, hablamos directamente para ver si encajamos y coordinar el inicio.</p>
+                                <p class="waitlist-text">En esta llamada gratuita nos conocemos, analizamos tu situación y valoramos juntos si este es el paso correcto para ti.</p>
                             </div>
                         </div>
                     </div>
 
                 </div>
-            </div>
-        </section>
-
-        <!-- NUEVO CONTENEDOR DEL TALLER GRATUITO EN EL FOOTER -->
-        <section class="footer-workshop-banner">
-            <div class="footer-workshop-inner">
-                <div class="fw-text-wrap">
-                    <span class="fw-kicker">🔥 Próximo Taller Online Gratuito: Mente Fénix</span>
-                    <p class="fw-desc">Descubre de dónde vienen tus patrones inconscientes y libérate de ellos.</p>
-                </div>
-                <!-- Marcador de ID #taller-gratis para que el usuario pueda enlazar su propio formulario en el futuro -->
-                <a href="#taller-gratis" class="btn btn-pink btn-sm">Apuntarme al Taller</a>
             </div>
         </section>
 
@@ -639,6 +659,7 @@ window.addEventListener('load', function(){
         }
     });
 
+    /* Observer para los párrafos de la historia */
     var bioParagraphs = document.querySelectorAll('.sales-bio p');
     var bioObserver = new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
@@ -648,6 +669,29 @@ window.addEventListener('load', function(){
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
     bioParagraphs.forEach(function(p){ bioObserver.observe(p); });
 
+    /* Lógica para desplegar/plegar la historia */
+    var historiaToggle = document.getElementById('historia-toggle');
+    var historiaSection = document.getElementById('historia-section');
+    var btnCloseHistoria = document.querySelector('.btn-close-historia');
+
+    function toggleHistoria() {
+        var isExpanded = historiaSection.classList.toggle('expanded');
+        historiaToggle.setAttribute('aria-expanded', isExpanded);
+        
+        // Si se cierra, hacer scroll suave de vuelta al botón para que no se pierdan
+        if(!isExpanded) {
+            historiaToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    if(historiaToggle) {
+        historiaToggle.addEventListener('click', toggleHistoria);
+    }
+    if(btnCloseHistoria) {
+        btnCloseHistoria.addEventListener('click', toggleHistoria);
+    }
+
+    /* Lógica para los precios en móvil */
     var pricingToggles = document.querySelectorAll('[data-pricing-toggle]');
     pricingToggles.forEach(function(toggle){
         toggle.addEventListener('click', function(){
@@ -657,6 +701,7 @@ window.addEventListener('load', function(){
         });
     });
 
+    /* Carrusel */
     var reseñasSection = document.getElementById('reseñas');
     if(!reseñasSection) return;
     var carouselCargado = false;
