@@ -201,6 +201,47 @@
         .testimonials-inner h2{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#fbf5e2;line-height:1.3}
         @media(min-width:768px){.testimonials-inner h2{font-size:1.875rem}}
         .testimonials-inner .test-sub{text-align:center;font-size:.85rem;color:rgba(251,245,226,.45);margin-bottom:2rem}
+        
+        /* ── VIDEO GRID PARA RESEÑAS (FORMATO REEL/VERTICAL) ── */
+        .video-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            margin-bottom: 3.5rem;
+            padding: 0 0.5rem;
+        }
+        @media(min-width: 768px) {
+            .video-grid {
+                flex-direction: row;
+                justify-content: center;
+                gap: 3rem;
+                padding: 0 1rem;
+            }
+        }
+        .video-responsive-reel {
+            position: relative;
+            width: 100%;
+            max-width: 320px; /* Ancho máximo para que parezca un móvil */
+            aspect-ratio: 9 / 16; /* Proporción vertical */
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 2px solid rgba(212,175,55,0.3);
+            background-color: #000;
+        }
+        @supports not (aspect-ratio: 9 / 16) {
+            .video-responsive-reel { height: 0; padding-bottom: 177.77%; }
+        }
+        .video-responsive-reel iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
         .carousel-wrapper{position:relative;width:100%;height:460px;display:flex;justify-content:center;align-items:center;perspective:1200px;overflow:hidden}
         @media(min-width:480px){.carousel-wrapper{height:530px}}
         @media(min-width:768px){.carousel-wrapper{height:620px}}
@@ -437,7 +478,29 @@
             <div id="reseñas" class="testimonials-section" style="margin-top: 0; margin-bottom: 5rem;">
                 <div class="testimonials-inner">
                     <h2>Lo que dicen quienes han trabajado conmigo</h2>
-                    <p class="test-sub">Capturas reales. Arrastra o usa las flechas para ver más.</p>
+                    <p class="test-sub">Descubre cómo el Método Fénix ha transformado sus vidas.</p>
+
+                    <!-- NUEVA SECCIÓN DE VÍDEOS DE RESEÑAS (FORMATO REEL) -->
+                    <div class="video-grid">
+                        <!-- VÍDEO 1 -->
+                        <div class="video-responsive-reel">
+                            <iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" 
+                                    title="Testimonio de Ryan - Método Fénix" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                        <!-- VÍDEO 2 -->
+                        <div class="video-responsive-reel">
+                            <iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" 
+                                    title="Testimonio de Marta - Método Fénix" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <p class="test-sub">Más capturas reales. Arrastra o usa las flechas para ver más.</p>
                     <div class="carousel-wrapper">
                         <div id="testimonial-carousel" class="testimonial-carousel"></div>
                         <button id="prev-btn" class="carousel-button prev" aria-label="Anterior testimonio" style="display:none;">&#10094;</button>
@@ -501,94 +564,42 @@
         </section>
 
         <section id="servicios" class="services-section">
-            <div class="services-inner">
-                <h2>Opciones de Trabajo</h2>
-                <div class="services-grid" style="max-width:900px;margin:0 auto;align-items:stretch;">
-
-                    <div class="service-card" style="border-color:#e91e63;" data-pricing-card>
-                        <div class="card-body">
-                            <div class="pricing-toggle-header" data-pricing-toggle>
-                                <div class="card-title-wrap"><h3>Acompañamiento Enfocado<br>3 Meses</h3></div>
-                                <div class="card-meta" style="color:#e91e63;">
-                                    <div class="card-meta-row">
-                                        <i class="far fa-clock"></i>
-                                        <div>
-                                            <span class="card-meta-sub">Duración</span>
-                                            <span class="card-meta-price" style="opacity:1;">3 meses</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-meta-row">
-                                        <i class="fas fa-tag"></i>
-                                        <div>
-                                            <span class="card-meta-price">1.195€</span>
-                                            <span class="card-meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-text-btn"></div>
-                            </div>
-                            <div class="pricing-collapsible">
-                                <div class="pricing-collapsible-inner">
-                                    <ul class="card-features">
-                                        <li><i class="fas fa-bullseye text-brand-gold"></i><span><strong>Foco en un área de vida concreta:</strong> Dinero, relaciones, autoestima o el bloqueo que más te está pesando ahora mismo.</span></li>
-                                        <li><i class="fas fa-calendar-check text-brand-gold"></i><span><strong>9 Sesiones profundas de 1h30:</strong> 3 al mes, yendo directos a la raíz de cada bloqueo para liberar la culpa, el miedo y las cargas del pasado. Además de diseñar un plan de hábitos y acciones para reafirmar los cambios.</span></li>
-                                        <li><i class="fas fa-comments text-brand-gold"></i><span><strong>+ 1 Llamada de seguimiento al mes:</strong> Una conversación más breve para ver cómo te encuentras, revisar tu evolución y ajustar el rumbo entre sesión y sesión.</span></li>
-                                        <li><i class="fas fa-clipboard-check text-brand-gold"></i><span><strong>Plan de acción evolutivo:</strong> Ajustado sesión a sesión según tu avance real.</span></li>
-                                        <li><i class="fas fa-cogs text-brand-gold"></i><span><strong>Ingeniería de Hábitos y Cambio de Identidad:</strong> Definiremos la vida que quieres, en quién debes convertirte para lograrla, y anclaremos las acciones y hábitos exactos que sostienen a esa nueva versión de ti.</span></li>
-                                        <li><i class="fas fa-om text-brand-gold"></i><span><strong>Meditaciones guiadas personalizadas:</strong> Entrenamiento mental a tu medida para reforzar el trabajo entre sesiones.</span></li>
-                                        <li><i class="fab fa-whatsapp text-brand-gold"></i><span><strong>Soporte 1 a 1 por WhatsApp:</strong> Acompañamiento continuo durante los 3 meses completos del proceso, no solo entre sesiones.</span></li>
-                                        <li><i class="fas fa-video text-brand-gold"></i><span><strong>Grabación de las sesiones</strong> (opcional).</span></li>
-                                    </ul>
-                                    <div class="discount-box">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <p><strong>Mi compromiso contigo:</strong> Si al llegar al final de los 3 meses necesitas un poco más de recorrido para consolidar tu transformación, extiendo el acompañamiento el tiempo que haga falta, sin coste adicional.</p>
-                                    </div>
-                                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-pink btn-block">
-                                        <i class="fas fa-phone" style="margin-right:.5rem"></i>Reservar llamada
-                                    </a>
-                                    <p class="waitlist-text">En esta llamada gratuita nos conocemos, analizamos tu situación y valoramos juntos si este es el paso correcto para ti.</p>
-                                </div>
-                            </div>
+            <div class="services-inner" style="max-width: 48rem;">
+                <h2>Cómo trabajaremos juntos</h2>
+                <p style="text-align:center; color:rgba(251,245,226,.8); line-height: 1.6; margin-bottom: 2.5rem; font-size: 1.05rem;">
+                    Mis procesos de acompañamiento son <strong>1 a 1, confidenciales y completamente personalizados</strong>. No es un curso online genérico que compras y te olvidas. Es un trabajo profundo de reprogramación de varios meses de duración donde estaré contigo codo con codo.
+                </p>
+                
+                <ul style="list-style: none; padding: 0; margin-bottom: 3.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #d4af37;">
+                        <i class="fas fa-calendar-check" style="color: #d4af37; font-size: 1.5rem; margin-top: 0.2rem;"></i>
+                        <div>
+                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Sesiones Profundas</strong>
+                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">Nos reuniremos en sesiones de alto impacto para ir directo a la raíz de tus bloqueos, combinando la profundidad de Un Curso de Milagros con la eficacia de la PNL y el Coaching estratégico.</span>
                         </div>
-                    </div>
-
-                    <div class="pricing-card premium" data-pricing-card>
-                        <div class="pricing-toggle-header" data-pricing-toggle>
-                            <p class="premium-title">Mentoría: Renacimiento Fénix</p>
-                            <p class="premium-subtitle">Transformación de identidad completa</p>
-                            <div class="meta-list">
-                                <div class="meta-item">
-                                    <i class="far fa-clock"></i>
-                                    <div><span class="meta-sub">Duración del programa</span><span class="meta-main" style="opacity:1;">12 meses</span></div>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-tag"></i>
-                                    <div><span class="meta-main">2.500€</span><span class="meta-sub" style="color:#e91e63;font-weight:bold;">Plazas abiertas</span></div>
-                                </div>
-                            </div>
-                            <div class="toggle-text-btn"></div>
+                    </li>
+                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #e91e63;">
+                        <i class="fab fa-whatsapp" style="color: #e91e63; font-size: 1.5rem; margin-top: 0.2rem;"></i>
+                        <div>
+                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Soporte Anti-sabotaje</strong>
+                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">El verdadero cambio ocurre entre sesión y sesión. Tendrás acceso a mí directamente para que no vuelvas a caer en tus viejos patrones de siempre.</span>
                         </div>
-                        <div class="pricing-collapsible">
-                            <div class="pricing-collapsible-inner">
-                                <ul class="features-list premium-features">
-                                    <li><i class="fas fa-fire-alt"></i><span><strong>Reprogramación de Identidad:</strong> Deja de "intentar cambiar" y conviértete en tu versión más magnética y segura de forma natural.</span></li>
-                                    <li><i class="fas fa-link"></i><span><strong>Liberación de patrones tóxicos:</strong> Rompe definitivamente los bucles repetitivos en tus relaciones y economía.</span></li>
-                                    <li><i class="fas fa-calendar-check"></i><span><strong>36 Sesiones de Alto Impacto (3 al mes):</strong> Para limpiar tu inconsciente de raíz y trazar un plan de acción exacto, manteniendo la intensidad necesaria para el cambio.</span></li>
-                                    <li><i class="fas fa-comments"></i><span><strong>+ 1 Llamada de seguimiento al mes (12 en total):</strong> Una conversación adicional al mes para ver cómo te encuentras, revisar tu evolución y ajustar el rumbo de forma constante.</span></li>
-                                    <li><i class="fas fa-om"></i><span><strong>Meditaciones guiadas personalizadas:</strong> Entrenamiento mental a tu medida para reforzar el trabajo entre sesiones.</span></li>
-                                    <li><i class="fas fa-cogs"></i><span><strong>Ingeniería de Hábitos:</strong> Diseñaremos un sistema práctico a tu medida para instaurar nuevos hábitos sin depender de la motivación.</span></li>
-                                    <li><i class="fas fa-whatsapp"></i><span><strong>Soporte Anti-sabotaje (Diario):</strong> Acompañamiento continuo por WhatsApp para evitar que vuelvas a tus viejos hábitos en momentos críticos.</span></li>
-                                    <li><i class="fas fa-video"></i><span><strong>Grabación de las sesiones</strong> (opcional).</span></li>
-                                    <li><i class="fas fa-dove"></i><span><strong>Paz Mental Inquebrantable:</strong> Herramientas prácticas para mantener tu centro en medio de cualquier tormenta.</span></li>
-                                </ul>
-                                <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-pink btn-block" style="margin-top:auto;">
-                                    <i class="fas fa-phone" style="margin-right:.5rem"></i>Reservar llamada
-                                </a>
-                                <p class="waitlist-text">En esta llamada gratuita nos conocemos, analizamos tu situación y valoramos juntos si este es el paso correcto para ti.</p>
-                            </div>
+                    </li>
+                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #d4af37;">
+                        <i class="fas fa-cogs" style="color: #d4af37; font-size: 1.5rem; margin-top: 0.2rem;"></i>
+                        <div>
+                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Plan de Acción a Medida</strong>
+                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">No solo limpiamos la mente. Consolidaremos tu nueva identidad a través de hábitos claros, retos semanales y ejercicios prácticos para casa que garanticen una transformación real y medible.</span>
                         </div>
-                    </div>
+                    </li>
+                </ul>
 
+                <div style="background: linear-gradient(160deg,#1e1a0e 0%,#2a2416 100%); border: 1px solid rgba(212,175,55,0.3); padding: 2.5rem 1.5rem; border-radius: 0.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <h3 style="color: #d4af37; margin-bottom: 1rem; font-size: 1.4rem; font-weight: 800;">¿Listo/a para dar el paso?</h3>
+                    <p style="color: rgba(251,245,226,.8); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">Reserva tu <strong>Llamada de Valoración gratuita</strong>. Hablaremos con calma sobre tu situación actual, veremos exactamente qué te está atascando y te diré de forma honesta si mi acompañamiento es lo que necesitas para salir de ahí.</p>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-gold btn-block">
+                        <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>Agendar mi Llamada
+                    </a>
                 </div>
             </div>
         </section>
