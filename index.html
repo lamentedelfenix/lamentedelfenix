@@ -201,10 +201,15 @@
         @media(min-width:768px){.testimonials-inner h2{font-size:1.875rem}}
         .testimonials-inner .test-sub{text-align:center;font-size:.85rem;color:rgba(251,245,226,.45);margin-bottom:2rem}
         
-        /* ── CAROUSEL GENERAL Y VÍDEOS ── */
-        .video-slide iframe { width: 100%; height: 100%; border: 2px solid rgba(212,175,55,0.3); border-radius: 1rem; background-color: #000; }
-        .video-overlay { position: absolute; inset: 0; z-index: 10; cursor: pointer; }
+        /* ── CARRUSEL DE VÍDEOS (Estilo Instagram Native Scroll) ── */
+        .video-scroll-container { width: 100%; margin-bottom: 4rem; position: relative; }
+        .video-snap-carousel { display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 1rem; scrollbar-width: none; -ms-overflow-style: none; }
+        .video-snap-carousel::-webkit-scrollbar { display: none; }
+        .video-snap-slide { flex: 0 0 80vw; max-width: 320px; aspect-ratio: 9 / 16; scroll-snap-align: center; border-radius: 1rem; overflow: hidden; background-color: #000; border: 2px solid rgba(212,175,55,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .video-snap-slide iframe { width: 100%; height: 100%; border: none; display: block; }
+        @media(min-width: 768px) { .video-snap-carousel { justify-content: center; } }
 
+        /* ── CAROUSEL GENERAL Y CAPTURAS ── */
         .carousel-wrapper{position:relative;width:100%;height:460px;display:flex;justify-content:center;align-items:center;perspective:1200px;overflow:hidden}
         @media(min-width:480px){.carousel-wrapper{height:530px}}
         @media(min-width:768px){.carousel-wrapper{height:620px}}
@@ -362,11 +367,19 @@
                     <h2>Lo que dicen quienes han trabajado conmigo</h2>
                     <p class="test-sub">Descubre cómo el Método Fénix ha transformado sus vidas.</p>
 
-                    <!-- CAROUSEL DE VÍDEOS -->
-                    <div class="carousel-wrapper" style="margin-bottom: 4rem;">
-                        <div id="video-carousel" class="testimonial-carousel"></div>
-                        <button id="prev-video-btn" class="carousel-button prev" aria-label="Anterior vídeo" style="display:none;">&#10094;</button>
-                        <button id="next-video-btn" class="carousel-button next" aria-label="Siguiente vídeo" style="display:none;">&#10095;</button>
+                    <!-- CAROUSEL DE VÍDEOS (NATIVO ESTILO INSTAGRAM) -->
+                    <div class="video-scroll-container">
+                        <div class="video-snap-carousel">
+                            <div class="video-snap-slide">
+                                <iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="video-snap-slide">
+                                <iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <div class="video-snap-slide">
+                                <iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
                     </div>
 
                     <p class="test-sub">Más capturas reales. Arrastra o usa las flechas para ver más.</p>
@@ -583,88 +596,11 @@ window.addEventListener('load', function(){
     var carruselObserver = new IntersectionObserver(function(entries){
         if(entries[0].isIntersecting && !carouselCargado){ 
             carouselCargado=true; 
-            iniciarCarruselVideos();
             iniciarCarrusel(); 
             carruselObserver.disconnect(); 
         }
     }, { rootMargin: '300px 0px' });
     carruselObserver.observe(reseñasSection);
-
-    function iniciarCarruselVideos(){
-        var carousel=document.getElementById('video-carousel');
-        if(!carousel) return;
-        var prevBtn=document.getElementById('prev-video-btn');
-        var nextBtn=document.getElementById('next-video-btn');
-        if(prevBtn) prevBtn.style.display='flex'; 
-        if(nextBtn) nextBtn.style.display='flex';
-        
-        var videos=['iBStROsIr2s', 'nES2IuiHWGk', 'ZD7JmoxYowE'];
-        var currentIndex=1, slides=[], isDragging=false, startPos=0, dragOffset=0;
-        var fragment=document.createDocumentFragment();
-        
-        videos.forEach(function(id,i){
-            var slide=document.createElement('div'); slide.className='testimonial-slide video-slide';
-            
-            var iframe = document.createElement('iframe');
-            iframe.src = 'https://www.youtube.com/embed/' + id + '?rel=0';
-            iframe.title = 'Testimonio Método Fénix';
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            iframe.allowFullscreen = true;
-            
-            var overlay = document.createElement('div');
-            overlay.className = 'video-overlay';
-            
-            slide.appendChild(iframe);
-            slide.appendChild(overlay);
-            fragment.appendChild(slide);
-            slides.push(slide);
-        });
-        carousel.appendChild(fragment);
-
-        function updateCarousel(){
-            slides.forEach(function(slide,i){
-                var offset=i-currentIndex, transform='scale(0)', opacity='0', zIndex='0';
-                var overlay = slide.querySelector('.video-overlay');
-                if(Math.abs(offset)<2){
-                    var sign=offset>0?1:offset<0?-1:0; opacity='0.5'; zIndex=String(10-Math.abs(offset));
-                    if(offset===0){
-                        transform='translateX(0) translateZ(0) rotateY(0) scale(1.1)';
-                        opacity='1';
-                        if(overlay) overlay.style.display = 'none'; // Desbloquear iframe central para darle play
-                    } else{
-                        transform='translateX('+(sign*220)+'px) translateZ(-180px) rotateY('+(-sign*45)+'deg) scale(0.8)';
-                        if(overlay) overlay.style.display = 'block'; // Bloquear inactivos para permitir clic/arrastre
-                    }
-                }
-                slide.style.transform=transform; slide.style.opacity=opacity; slide.style.zIndex=zIndex;
-            });
-        }
-
-        function changeSlide(dir){ var n=currentIndex+dir; if(n>=0&&n<slides.length){currentIndex=n;updateCarousel();} }
-        nextBtn.addEventListener('click',function(){changeSlide(1);});
-        prevBtn.addEventListener('click',function(){changeSlide(-1);});
-        
-        function posX(e){ return e.type.indexOf('mouse')!==-1?e.pageX:e.touches[0].clientX; }
-        carousel.addEventListener('mousedown',function(e){isDragging=true;startPos=posX(e);dragOffset=0;carousel.classList.add('grabbing');});
-        carousel.addEventListener('touchstart',function(e){isDragging=true;startPos=posX(e);dragOffset=0;},{passive:true});
-        carousel.addEventListener('mousemove',function(e){if(isDragging)dragOffset=posX(e)-startPos;});
-        carousel.addEventListener('touchmove',function(e){if(isDragging)dragOffset=posX(e)-startPos;},{passive:true});
-        function dragEnd(){
-            if(!isDragging)return; isDragging=false; carousel.classList.remove('grabbing');
-            if(dragOffset>80)changeSlide(-1); else if(dragOffset<-80)changeSlide(1); dragOffset=0;
-        }
-        carousel.addEventListener('mouseup',dragEnd); carousel.addEventListener('mouseleave',dragEnd);
-        carousel.addEventListener('touchend',dragEnd,{passive:true});
-        
-        slides.forEach(function(slide,i){
-            slide.addEventListener('click',function(){
-                if(i!==currentIndex){currentIndex=i;updateCarousel();}
-            });
-        });
-        
-        updateCarousel();
-        window.addEventListener('resize',updateCarousel,{passive:true});
-    }
 
     function iniciarCarrusel(){
         var carousel=document.getElementById('testimonial-carousel');
