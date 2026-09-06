@@ -86,19 +86,19 @@
         .profile-pic-container {
             display: flex;
             justify-content: center;
-            margin-top: -2.5rem; /* Reducido para que no tape el texto del banner en móvil */
-            margin-bottom: 1.5rem;
+            margin-top: 0; /* Quitamos el margen negativo para que no pise el banner */
+            margin-bottom: 2rem;
             position: relative;
             z-index: 10;
         }
         @media(min-width:768px){
             .profile-pic-container {
-                margin-top: -5.5rem; /* Ajustado también en ordenador para mantener el equilibrio */
+                margin-top: 1rem; /* Añadimos un poco de espacio extra arriba en ordenador */
             }
         }
         .profile-pic {
-            width: 220px; /* Tamaño aumentado considerablemente en móvil */
-            height: 220px; /* Tamaño aumentado considerablemente en móvil */
+            width: 280px; /* Tamaño mucho más grande en móvil */
+            height: 280px; 
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #d4af37; /* Perímetro dorado */
@@ -107,8 +107,8 @@
         }
         @media(min-width:768px){
             .profile-pic {
-                width: 260px; /* Aumentado proporcionalmente en escritorio */
-                height: 260px;
+                width: 340px; /* Tamaño mucho más grande en escritorio */
+                height: 340px;
                 border: 5px solid #d4af37;
             }
         }
