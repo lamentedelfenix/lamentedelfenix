@@ -82,6 +82,37 @@
         @media(min-width:768px){.hero-intro{margin-left:0;margin-right:0;border-radius:0 0 .5rem .5rem;padding:2.5rem 2rem 2.75rem}}
         .hero-intro-inner{max-width:52rem;margin:0 auto}
         
+        /* ── PROFILE PIC ── */
+        .profile-pic-container {
+            display: flex;
+            justify-content: center;
+            margin-top: -5rem; /* Superpone la foto con el banner superior */
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media(min-width:768px){
+            .profile-pic-container {
+                margin-top: -6.5rem;
+            }
+        }
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #d4af37; /* Perímetro dorado */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.4);
+            background-color: #1a1a1a;
+        }
+        @media(min-width:768px){
+            .profile-pic {
+                width: 160px;
+                height: 160px;
+                border: 5px solid #d4af37;
+            }
+        }
+        
         .kicker{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);border-radius:2rem;padding:.35rem 1rem;margin-bottom:2rem}
         
         .hero-intro h1{font-size:clamp(1.7rem,6vw,2.75rem);font-weight:800;line-height:1.15;margin-bottom:3.5rem;color:#fbf5e2}
@@ -313,6 +344,12 @@
 
     <section class="hero-intro">
         <div class="hero-intro-inner">
+
+            <!-- NUEVA FOTO DE PERFIL -->
+            <div class="profile-pic-container">
+                <!-- Se utiliza %20 para sustituir el espacio en la ruta de forma segura para la web -->
+                <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi - Mentor en Desarrollo Interior" class="profile-pic">
+            </div>
 
             <div class="kicker">
                 <i class="fas fa-fire" style="color:#e91e63;font-size:.8rem;"></i>
