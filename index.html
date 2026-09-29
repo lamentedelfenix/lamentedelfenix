@@ -35,643 +35,406 @@
     <meta property="og:site_name" content="Mente Fénix">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
-    
+
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap">
 
     <style>
+        :root{
+            --bg:#1b1a18; --bg-2:#131210; --line:rgba(243,236,217,.14);
+            --cream:#f3ecd9; --muted:rgba(243,236,217,.68);
+            --gold:#d4af37; --rose:#e91e63;
+            --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+            --sans:'Montserrat',Helvetica,Arial,sans-serif;
+        }
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{scroll-behavior:smooth;overflow-x:hidden}
-        body{font-family:'Montserrat',Helvetica,Arial,sans-serif;background-color:#363636;color:#fbf5e2;padding:.75rem;overflow-x:hidden}
-        @media(min-width:768px){body{padding:1rem}}
+        body{font-family:var(--sans);background:var(--bg);color:var(--cream);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
         img{max-width:100%;height:auto;display:block}
-        a{text-decoration:none}
+        a{color:inherit;text-decoration:none}
         ul{list-style:none}
-        .wrapper{max-width:72rem;margin:0 auto}
+        :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
-        /* ── HEADER ── */
-        .site-header{text-align:center;margin-bottom:0;margin-left:-.75rem;margin-right:-.75rem}
-        @media(min-width:768px){.site-header{margin-left:0;margin-right:0}}
-        .banner-wrap{width:100%;aspect-ratio:1200/460;overflow:hidden;background-color:#1a1a1a;display:flex;justify-content:center;align-items:center;position:relative;margin-top:0.5rem;}
-        @media(min-width:768px){.banner-wrap{aspect-ratio:1200/400;border-radius:.5rem;box-shadow:0 10px 25px rgba(0,0,0,.4);margin-top:0;}}
-        .banner-img{width:100%;height:100%;object-fit:cover;display:block}
+        .container{width:min(100% - 2.5rem,68rem);margin-inline:auto}
+        .narrow{width:min(100% - 2.5rem,40rem);margin-inline:auto}
+        section{padding:4.5rem 0}
+        @media(min-width:768px){section{padding:7rem 0}}
+        .alt{background:var(--bg-2)}
 
-        .text-brand-pink{color:#e91e63}
-        .text-brand-gold{color:#d4af37}
+        h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.12;letter-spacing:-.01em}
+        h2{font-size:clamp(2rem,5vw,3.1rem);margin-bottom:1rem}
+        h3{font-size:1.5rem}
+        .lead{color:var(--muted);font-size:1.02rem;max-width:36rem}
+        .center{text-align:center}
+        .center .lead{margin-inline:auto}
+        .rule{width:3.5rem;height:2px;background:linear-gradient(90deg,var(--gold) 0 72%,var(--rose) 72% 100%);margin:1.5rem 0}
+        .center .rule{margin-inline:auto}
 
-        /* ── BUTTONS ── */
-        .btn{display:inline-block;position:relative;z-index:1;overflow:hidden;transition:color .4s ease-out;border:2px solid transparent;border-radius:.5rem;font-weight:700;padding:.875rem 1.75rem;font-size:1rem;cursor:pointer;text-align:center;font-family:inherit;line-height:1.3;text-decoration:none}
-        @media(min-width:768px){.btn{font-size:1.125rem;padding:.75rem 2rem}}
-        .btn-sm{padding: .6rem 1.25rem; font-size: .95rem;}
-        @media(min-width:768px){.btn-sm{padding: .6rem 1.5rem; font-size: 1rem;}}
-        .btn-pink{background-color:#e91e63;color:#fff}
-        .btn-gold{background-color:#d4af37;color:#1a1a1a}
-        .btn-block{width:100%;display:block}
-        .btn::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:#1a1a1a;z-index:-1;transform:scaleX(0);transform-origin:right;transition:transform .4s cubic-bezier(.45,.05,.55,.95)}
-        .btn.btn-pink:hover::before{border:2px solid #e91e63}
-        .btn.btn-gold:hover::before{border:2px solid #d4af37}
-        .btn.btn-pink:hover{color:#e91e63}
-        .btn.btn-gold:hover{color:#d4af37}
-        .btn:hover::before{transform:scaleX(1);transform-origin:left}
+        /* botones */
+        .btn{display:inline-block;font-family:var(--sans);font-size:.95rem;font-weight:600;letter-spacing:.02em;padding:1rem 2.25rem;border-radius:2rem;border:1px solid var(--gold);cursor:pointer;transition:background .3s,color .3s}
+        .btn-gold{background:var(--gold);color:#1b1a18}
+        .btn-gold:hover{background:transparent;color:var(--rose);border-color:var(--rose)}
+        .btn-ghost{color:var(--gold);padding:.6rem 1.4rem;font-size:.85rem}
+        .btn-ghost:hover{background:var(--gold);color:#1b1a18}
 
-        /* ── HERO INTRO ── */
-        .hero-intro{background:linear-gradient(135deg,#1a1a1a 0%,#222 100%);border-bottom:2px solid rgba(212,175,55,.25);padding:2.5rem 1rem 3rem;text-align:center;margin-left:-.75rem;margin-right:-.75rem}
-        @media(min-width:768px){.hero-intro{margin-left:0;margin-right:0;border-radius:0 0 .5rem .5rem;padding:2.5rem 2rem 2.75rem}}
-        .hero-intro-inner{max-width:52rem;margin:0 auto}
-        
-        /* ── PROFILE PIC ── */
-        .profile-pic-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 0; /* Quitamos el margen negativo para que no pise el banner */
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 10;
-        }
+        /* banner */
+        .banner{width:100%;aspect-ratio:1200/460;background:#131210;border-bottom:1px solid var(--line)}
+        .banner img{width:100%;height:100%;object-fit:cover}
+        @media(min-width:768px){.banner{aspect-ratio:1200/400;max-height:26rem}}
+
+        /* antes y ahora */
+        .then-now{margin-top:3rem;border-top:1px solid var(--line)}
+        .tn-head,.tn-row{display:grid;gap:.6rem}
+        .tn-head{display:none}
+        .tn-row{padding:1.75rem 0;border-bottom:1px solid var(--line)}
+        .tn-then{font-size:.95rem;color:var(--muted)}
+        .tn-now{font-family:var(--serif);font-size:1.5rem;line-height:1.25}
+        .tn-then::before,.tn-now::before{display:block;font-family:var(--sans);font-size:.78rem;color:var(--gold);margin-bottom:.2rem}
+        .tn-then::before{content:'Antes';color:var(--rose)}
+        .tn-now::before{content:'Ahora'}
         @media(min-width:768px){
-            .profile-pic-container {
-                margin-top: 1rem; /* Añadimos un poco de espacio extra arriba en ordenador */
-            }
+            .tn-head{display:grid;grid-template-columns:1fr 1.2fr;gap:3rem;padding:1.25rem 0;border-bottom:1px solid var(--line);font-size:.85rem;color:var(--gold)}
+            .tn-head span:first-child{color:var(--rose)}
+            .tn-row{grid-template-columns:1fr 1.2fr;gap:3rem;align-items:baseline}
+            .tn-then::before,.tn-now::before{display:none}
+            .tn-then{font-size:1.02rem}
+            .tn-now{font-size:1.65rem}
         }
-        .profile-pic {
-            width: 280px; /* Tamaño mucho más grande en móvil */
-            height: 280px; 
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #d4af37; /* Perímetro dorado */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.4);
-            background-color: #1a1a1a;
-        }
-        @media(min-width:768px){
-            .profile-pic {
-                width: 340px; /* Tamaño mucho más grande en escritorio */
-                height: 340px;
-                border: 5px solid #d4af37;
-            }
-        }
-        
-        .kicker{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4af37;border:1px solid rgba(212,175,55,.35);border-radius:2rem;padding:.35rem 1rem;margin-bottom:2rem}
-        
-        .hero-intro h1{font-size:clamp(1.7rem,6vw,2.75rem);font-weight:800;line-height:1.15;margin-bottom:3.5rem;color:#fbf5e2}
-        .hero-intro h1 em{font-style:normal;color:#d4af37}
-        
-        .hero-intro .subtitle{font-size:clamp(1.05rem,3vw,1.1rem);font-weight:500;color:rgba(251,245,226,.8);line-height:1.6;max-width:40rem;margin:0 auto 4.5rem}
-        
-        .hero-golden-text{font-weight:700;color:#d4af37;font-size:1.1rem;margin-bottom:1.25rem;padding:0 1rem}
-        
-        .hero-cta{display:flex;flex-direction:column;align-items:center;gap:.75rem}
-        
-        .hero-quote{background:#1a1a1a;border-left:3px solid #d4af37;border-radius:0 .4rem .4rem 0;padding:1rem 1.25rem;text-align:left;max-width:38rem;margin:6rem auto 0}
-        .hero-quote p{font-size:.92rem;font-style:italic;color:rgba(251,245,226,.85);line-height:1.65;margin-bottom:.4rem}
-        .hero-quote cite{font-size:.8rem;font-weight:700;color:#d4af37;font-style:normal}
+        .tn-close{margin-top:2.5rem;font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--cream)}
 
-        /* ── BIO & HISTORIA ── */
-        .bio-section{padding:3.5rem .25rem;background-color:#363636}
-        @media(min-width:768px){.bio-section{padding:5rem 1rem}}
-        .sales-bio{max-width:600px;margin:0 auto;font-size:1.05rem;line-height:1.9;color:rgba(251,245,226,.9)}
-        @media(min-width:768px){.sales-bio{font-size:1.125rem}}
-        
-        .sales-bio p{margin-bottom:2.5rem}
-        @media(max-width:480px){.sales-bio p{margin-bottom:3.5rem;font-size:1.1rem;line-height:1.8}}
-        
-        .keyword{font-weight:800;color:rgba(212,175,55,.9);transition:all .4s ease}
-        @media(max-width:767px){
-            .sales-bio p{transition:color .4s ease,text-shadow .4s ease}
-            .sales-bio p:not(.lit-up){color:rgba(251,245,226,.25)}
-            .sales-bio p:not(.lit-up) .keyword{color:inherit;text-shadow:none}
-            .sales-bio p.lit-up{color:#e2c77a;text-shadow:0 0 10px rgba(212,175,55,.2)}
-            .sales-bio p.lit-up .keyword{color:#d4af37;text-shadow:0 0 15px rgba(212,175,55,.8)}
-            .sales-bio p.sales-highlight:not(.lit-up){color:rgba(233,30,99,.25)}
-            .sales-bio p.sales-highlight.lit-up{color:#e91e63;text-shadow:0 0 10px rgba(233,30,99,.3)}
-        }
-        
-        .sales-bio h2{font-size:1.75rem;font-weight:800;margin-bottom:3rem;color:#fbf5e2;text-align:center}
-        @media(min-width:768px){.sales-bio h2{font-size:2rem}}
-        .sales-highlight{color:#e91e63;font-weight:700;font-size:1.15rem;display:block;margin-bottom:2.5rem}
-        @media(min-width:768px){.sales-highlight{font-size:1.25rem}}
+        /* hero */
+        .hero{padding:3rem 0 4.5rem;background:radial-gradient(50% 55% at 88% 30%,rgba(233,30,99,.12),transparent 70%)}
+        @media(min-width:900px){.hero{padding:5rem 0 7rem}}
+        .hero-grid{display:grid;gap:3rem;align-items:center}
+        @media(min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr;gap:5rem}}
+        .hero h1{font-size:clamp(2.4rem,7vw,4.2rem);margin-bottom:1.5rem}
+        .hero .lead{font-size:1.1rem;margin-bottom:2.25rem}
+        .role{font-size:.9rem;color:var(--gold);margin-bottom:1.25rem}
+        .portrait{justify-self:center;width:min(100%,22rem);aspect-ratio:3/4;border-radius:999px 999px .5rem .5rem;overflow:hidden;border:1px solid var(--gold);padding:.6rem}
+        .portrait img{width:100%;height:100%;object-fit:cover;border-radius:999px 999px .3rem .3rem}
+        .fit{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted);max-width:36rem}
+        .fit em{display:block;margin-top:.35rem;font-size:.85rem;opacity:.85}
 
-        /* ── ACORDEÓN HISTORIA ── */
-        .historia-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #222;
-            padding: 1.25rem 1.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid rgba(212,175,55,0.3);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 1rem;
-        }
-        .historia-toggle:hover {
-            background-color: #2a2a2a;
-            box-shadow: 0 4px 15px rgba(212,175,55,0.15);
-        }
-        .historia-toggle h2 {
-            margin-bottom: 0 !important;
-            font-size: 1.25rem !important;
-            color: #d4af37 !important;
-            text-align: left;
-        }
-        @media(min-width:768px){
-            .historia-toggle h2 { font-size: 1.5rem !important; }
-        }
-        .toggle-icon {
-            font-size: 1.25rem;
-            color: #d4af37;
-            transition: transform 0.4s ease;
-        }
-        #historia-section.expanded .toggle-icon {
-            transform: rotate(180deg);
-        }
-        .historia-collapsible {
-            display: grid;
-            grid-template-rows: 0fr;
-            opacity: 0;
-            visibility: hidden;
-            transition: grid-template-rows 0.5s ease, opacity 0.4s ease, visibility 0.5s;
-        }
-        .historia-collapsible-inner {
-            overflow: hidden;
-            padding-top: 0;
-        }
-        #historia-section.expanded .historia-collapsible {
-            grid-template-rows: 1fr;
-            opacity: 1;
-            visibility: visible;
-        }
-        #historia-section.expanded .historia-collapsible-inner {
-            padding-top: 2rem;
-        }
-        .btn-close-wrap {
-            text-align: center;
-            margin-top: 1rem;
-            margin-bottom: 2rem;
-            padding-top: 2rem;
-            border-top: 1px dashed rgba(251,245,226,.2);
-        }
+        /* de A a B */
+        .ab{display:grid;gap:3rem;margin-top:3.5rem}
+        @media(min-width:768px){.ab{grid-template-columns:1fr 1fr;gap:5rem}}
+        .ab h3{font-size:1.7rem;padding-bottom:1rem;margin-bottom:1.25rem;border-bottom:1px solid var(--line)}
+        .ab li{position:relative;padding:.7rem 0 .7rem 2rem;color:var(--muted);font-size:.98rem}
+        .ab li::before{position:absolute;left:0;top:.7rem;font-weight:600}
+        .ab .from li::before{content:'✕';color:var(--rose)}
+        .ab .to li::before{content:'✓';color:var(--gold)}
+        .ab .to li{color:var(--cream)}
+
+        /* historia */
+        .story{margin-top:3.5rem;position:relative;padding-left:2rem;border-left:1px solid var(--gold)}
+        .step{position:relative;padding-bottom:3rem}
+        .step:last-child{padding-bottom:0}
+        .step::before{content:'';position:absolute;left:calc(-2rem - 5px);top:.6rem;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+        .step:first-child::before{background:var(--rose)}
+        .step:first-child small{color:var(--rose)}
+        .step small{display:block;font-size:.85rem;color:var(--gold);margin-bottom:.4rem}
+        .step h3{margin-bottom:.75rem}
+        .step p{color:var(--muted);margin-bottom:.75rem}
+        .step p:last-child{margin-bottom:0}
+        .step strong{color:var(--cream);font-weight:500}
 
         /* método */
-        .metodo-block{margin:3rem 0;padding:1.5rem 1.25rem;background-color:#1a1a1a;border-radius:.5rem;border-top:3px solid #e91e63}
-        @media(min-width:768px){.metodo-block{padding:2rem}}
-        .metodo-block h3{font-size:1.1rem;font-weight:800;color:#fbf5e2;margin-bottom:1.5rem;text-align:center}
-        @media(min-width:768px){.metodo-block h3{font-size:1.25rem}}
-        .metodo-pillars{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-        @media(min-width:600px){.metodo-pillars{grid-template-columns:repeat(4,1fr);gap:.75rem}}
-        .metodo-pillar{text-align:center;padding:.875rem .5rem;background-color:#222;border-radius:.375rem}
-        .metodo-pillar .pillar-icon{font-size:1.5rem;margin-bottom:.5rem}
-        .metodo-pillar .pillar-name{font-weight:700;color:#d4af37;font-size:.85rem;display:block;line-height:1.3}
-        .metodo-pillar .pillar-desc{font-size:.75rem;color:rgba(251,245,226,.55);display:block;margin-top:.25rem;line-height:1.4}
+        .pillars{display:grid;grid-template-columns:1fr 1fr;margin-top:3rem;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+        @media(min-width:768px){.pillars{grid-template-columns:repeat(4,1fr)}}
+        .pillar{padding:1.75rem 1.25rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+        .pillar b{display:block;font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--gold)}
+        .pillar span{font-size:.85rem;color:var(--muted)}
 
-        /* testimonials */
-        .testimonials-section{padding:3rem .5rem;background-color:#1a1a1a;overflow-x:hidden;border-radius:.5rem;box-shadow:inset 0 2px 4px rgba(0,0,0,.3);margin:3rem 0}
-        @media(min-width:768px){.testimonials-section{padding:4rem 1rem}}
-        .testimonials-inner{max-width:64rem;margin:0 auto}
-        .testimonials-inner h2{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#fbf5e2;line-height:1.3}
-        @media(min-width:768px){.testimonials-inner h2{font-size:1.875rem}}
-        .testimonials-inner .test-sub{text-align:center;font-size:.85rem;color:rgba(251,245,226,.45);margin-bottom:2rem}
-        
-        /* ── CARRUSEL DE VÍDEOS (Estilo Instagram Native Scroll) ── */
-        .video-scroll-container { width: 100%; margin-bottom: 4rem; position: relative; }
-        .video-snap-carousel { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 1rem; scrollbar-width: none; -ms-overflow-style: none; scroll-padding-left: 1rem; }
-        .video-snap-carousel::-webkit-scrollbar { display: none; }
-        .video-snap-slide { flex: 0 0 72vw; max-width: 320px; aspect-ratio: 9 / 16; scroll-snap-align: start; border-radius: 1rem; overflow: hidden; background-color: #000; border: 2px solid rgba(212,175,55,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .video-snap-slide iframe { width: 100%; height: 100%; border: none; display: block; }
-        @media(min-width: 768px) { .video-snap-carousel { justify-content: center; gap: 1.5rem; } .video-snap-slide { flex: 0 0 320px; scroll-snap-align: center; } }
+        /* testimonios */
+        .snap{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.5rem 1.25rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+        .snap::-webkit-scrollbar{display:none}
+        .videos{margin-top:3rem}
+        .video{flex:0 0 72vw;max-width:19rem;aspect-ratio:9/16;scroll-snap-align:center;border-radius:.75rem;overflow:hidden;background:#000;border:1px solid var(--line)}
+        .video iframe{width:100%;height:100%;border:0;display:block}
+        .v-marta{order:-1}
+        @media(min-width:768px){.videos{justify-content:center}.v-marta{order:0}}
+        .shots{margin-top:1rem}
+        .shot{flex:0 0 13rem;height:24rem;scroll-snap-align:center}
+        @media(min-width:768px){.shot{flex-basis:16rem;height:29rem}}
+        .shot img{width:100%;height:100%;object-fit:contain;cursor:zoom-in;border-radius:.4rem}
+        .quote{max-width:38rem;margin:0 auto 3.5rem;text-align:center}
+        .quote p{font-family:var(--serif);font-size:clamp(1.4rem,3.5vw,1.9rem);line-height:1.35;font-style:italic}
+        .quote cite{display:block;margin-top:1rem;font-style:normal;font-size:.85rem;color:var(--gold)}
 
-        @keyframes hint-swipe { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+        /* trabajo juntos */
+        .work{margin-top:3rem;border-top:1px solid var(--line)}
+        .work-item{display:grid;gap:.5rem;padding:2rem 0;border-bottom:1px solid var(--line)}
+        @media(min-width:768px){.work-item{grid-template-columns:16rem 1fr;gap:3rem}}
+        .work-item p{color:var(--muted);font-size:.98rem}
+        .guarantee{margin-top:2.5rem;padding:1.5rem 1.75rem;border-left:2px solid var(--gold);background:rgba(212,175,55,.06);font-size:.95rem;color:var(--muted)}
+        .guarantee strong{color:var(--cream);font-weight:600}
 
-        /* Orden de los vídeos (Marta primero en móvil) */
-        .vid-ryan { order: 1; }
-        .vid-marta { order: 2; }
-        .vid-natalia { order: 3; }
-        @media(max-width: 767px) {
-            .vid-marta { order: -1; }
-        }
+        /* cta final */
+        .final{text-align:center}
+        .final h2{max-width:36rem;margin-inline:auto}
 
-        /* ── CARRUSEL FOTOS (Nativo Scroll) ── */
-        .photo-scroll-container { width: 100%; margin-bottom: 2rem; position: relative; overflow-x: hidden; }
-        .photo-snap-carousel { display: flex; gap: 2rem; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 1rem 1.5rem 4rem 1.5rem; scrollbar-width: none; -ms-overflow-style: none; }
-        .photo-snap-carousel::-webkit-scrollbar { display: none; }
-        .photo-snap-slide { flex: 0 0 200px; height: 380px; scroll-snap-align: center; display: flex; justify-content: center; align-items: center; -webkit-box-reflect: below 5px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250,250,250,0.15))); }
-        @media(min-width: 480px){ .photo-snap-slide { flex: 0 0 240px; height: 450px; } }
-        @media(min-width: 768px){ .photo-snap-slide { flex: 0 0 300px; height: 540px; } }
-        .photo-snap-slide img { width: 100%; height: 100%; object-fit: contain; border-radius: 0.5rem; cursor: pointer; transition: transform 0.3s; }
-        .photo-snap-slide img:hover { transform: scale(1.02); }
+        /* footer */
+        footer{background:var(--bg-2);border-top:1px solid var(--line);padding:3.5rem 0 2.5rem;text-align:center;font-size:.9rem}
+        .contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2rem;margin-bottom:2rem}
+        .contacts a{color:var(--muted);transition:color .3s}
+        .contacts a:hover{color:var(--rose)}
+        .legal{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.5rem;font-size:.8rem;color:rgba(243,236,217,.5);margin-bottom:1.5rem}
+        .legal a:hover{color:var(--cream)}
+        .copy{font-size:.78rem;color:rgba(243,236,217,.4)}
 
-        /* services */
-        .services-section{padding:3.5rem .25rem;background-color:#363636}
-        @media(min-width:768px){.services-section{padding:5rem 1rem}}
-        .services-inner{max-width:72rem;margin:0 auto}
-        .services-inner h2{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:2rem;color:#fbf5e2;line-height:1.3}
-        @media(min-width:768px){.services-inner h2{font-size:1.875rem;margin-bottom:3rem}}
-        .services-grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
-        @media(min-width:640px){.services-grid{gap:2rem}}
-        @media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
-        
-        .service-card{background-color:#333;border:1px solid #444;border-radius:.5rem;display:flex;flex-direction:column;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease, background-color .3s ease, border-color .3s ease;}
-        .service-card:hover{transform:translateY(-8px);box-shadow:0 15px 25px rgba(0,0,0,.5)}
-
-        /* modal genérico para imágenes */
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;justify-content:center;align-items:center;padding:1rem;z-index:50;opacity:0;pointer-events:none;transition:opacity .3s ease}
-        .modal-overlay.active{opacity:1;pointer-events:all}
+        /* modal */
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s}
+        .modal.active{opacity:1;pointer-events:all}
         .modal-inner{position:relative;max-width:32rem;width:100%}
-        .modal-inner img{width:100%;height:auto;max-height:90vh;object-fit:contain;border-radius:.5rem}
-        .modal-close{position:absolute;top:10px;right:10px;color:#fff;background:#1f2937;border:none;border-radius:9999px;width:2rem;height:2rem;display:flex;justify-content:center;align-items:center;font-size:1.5rem;line-height:1;cursor:pointer;transition:background .2s;z-index:10}
-        .modal-close:hover{background:#4b5563}
-
-        /* ── TOP STRIP ── */
-        .strip { position: sticky; top: 0; z-index: 100; background: linear-gradient(90deg, #1a1a1a 0%, #2a1a0a 50%, #1a1a1a 100%); border-bottom: 2px solid #d4af37; padding: .6rem .75rem; display: flex; align-items: center; justify-content: center; gap: .75rem; flex-wrap: nowrap; font-size: .75rem; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
-        .strip-label { color: rgba(251,245,226,.9); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .strip-cta { color: #d4af37; border: 1px solid #d4af37; border-radius: 2rem; padding: .2rem .75rem; font-size: .7rem; font-weight: 800; transition: background .2s, color .2s; text-decoration: none; flex-shrink: 0; background: rgba(212,175,55,.1); }
-        .strip-cta:hover { background: #d4af37; color: #1a1a1a; }
-
-        /* footer general */
-        .site-footer{margin-top:2rem;padding:3rem 1rem;border-top:1px solid #374151;text-align:center;background-color:#1a1a1a;border-radius:.5rem;width:100%;max-width:72rem;margin-left:auto;margin-right:auto}
-        @media(min-width:768px){.site-footer{margin-top:3rem}}
-        .site-footer h4{font-weight:700;font-size:1.125rem;margin-bottom:1.5rem;color:#fbf5e2}
-        .footer-contacts{display:flex;flex-direction:column;flex-wrap:wrap;justify-content:center;align-items:center;gap:1.5rem}
-        @media(min-width:640px){.footer-contacts{flex-direction:row;gap:2rem}}
-        .contact-link{position:relative;text-decoration:none;padding-bottom:5px;display:flex;align-items:center;gap:.5rem}
-        .contact-link>*{transition:color .4s ease}
-        .contact-link::after{content:'';position:absolute;width:100%;height:2px;bottom:0;left:0;background-color:#e91e63;transform:scaleX(0);transform-origin:bottom right;transition:transform .4s ease-out}
-        .contact-link:hover::after{transform:scaleX(1);transform-origin:bottom left}
-        
-        .contact-link:hover>i,.contact-link:hover>span{color:#e91e63}
-        .contact-link.email-link:hover>i,.contact-link.email-link:hover>span{color:#d4af37}
-        .contact-link.email-link::after{background-color:#d4af37}
-        .contact-link.youtube-link:hover>i,.contact-link.youtube-link:hover>span{color:#FF0000}
-        .contact-link.youtube-link::after{background-color:#FF0000}
-        .contact-link-insta{color:#ec4899}
-        .contact-link-yt{color:#ef4444}
-        .contact-link-email{color:rgba(251,245,226,.8)}
-        .footer-contact-icon{font-size:1.5rem}
-        
-        .footer-nav { margin-top: 2rem; display: flex; justify-content: center; }
-        .footer-nav a { display: inline-flex; align-items: center; gap: 0.5rem; color: #d4af37; font-weight: 700; border: 1px solid rgba(212,175,55,0.3); padding: 0.5rem 1.5rem; border-radius: 2rem; transition: all 0.3s; }
-        .footer-nav a:hover { background: rgba(212,175,55,0.1); border-color: #d4af37; }
-
-        .footer-legal{font-size:.8rem;color:rgba(251,245,226,.6);margin-top:2.5rem;line-height:2; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;}
-        .footer-legal a{color:rgba(251,245,226,.6);text-decoration:none}
-        .footer-legal a:hover{text-decoration:underline;color:#fbf5e2}
-        .footer-legal span{display: none;}
-        @media(min-width:480px){.footer-legal span{display: inline; margin:0 .5rem}}
-        .footer-copy{font-size:.8rem;color:rgba(251,245,226,.5);margin-top:1.5rem}
-
+        .modal img{width:100%;max-height:90vh;object-fit:contain;border-radius:.5rem}
+        .modal button{position:absolute;top:.5rem;right:.5rem;width:2.25rem;height:2.25rem;border-radius:50%;border:0;background:#000a;color:#fff;font-size:1.5rem;line-height:1;cursor:pointer}
     </style>
 </head>
 <body>
 
-<!-- TOP STRIP ORIENTADO A LA LLAMADA DE ENCAJE -->
-<div class="strip" id="top-strip">
-    <span class="strip-label">📞 ¿Encajamos? Resuelve tus dudas en una llamada conmigo</span>
-    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="strip-cta">RESERVAR GRATIS</a>
-</div>
+<header class="banner">
+    <img src="./assets/banner.webp" alt="La Mente del Fénix — Método Fénix de Darío Arrigazzi" width="1200" height="400" fetchpriority="high" decoding="sync">
+</header>
 
-<div class="wrapper">
+<main id="top">
 
-    <header class="site-header">
-        <div class="banner-wrap">
-            <img src="./assets/banner.webp"
-                 alt="Banner La Mente del Fénix — Método Fénix de Darío Arrigazzi"
-                 class="banner-img" width="1200" height="400"
-                 fetchpriority="high" loading="eager" decoding="sync">
-        </div>
-    </header>
-
-    <section class="hero-intro">
-        <div class="hero-intro-inner">
-
-            <!-- NUEVA FOTO DE PERFIL -->
-            <div class="profile-pic-container">
-                <!-- Se utiliza %20 para sustituir el espacio en la ruta de forma segura para la web -->
-                <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi - Mentor en Desarrollo Interior" class="profile-pic">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <p class="role">Darío Arrigazzi · Mentor en desarrollo interior</p>
+                <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
+                <p class="lead">Un acompañamiento individual para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
+                <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
+                <p class="fit">Para personas espirituales con compromiso real que quieren integrar la espiritualidad en su vida.
+                    <em>Entiendo a Dios como esa consciencia de unidad que nos conecta, libre de religiones y dogmas.</em></p>
             </div>
-
-            <div class="kicker">
-                <i class="fas fa-fire" style="color:#e91e63;font-size:.8rem;"></i>
-                Mentor en Desarrollo Interior
+            <div class="portrait">
+                <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior" width="600" height="800">
             </div>
-
-            <h1>
-                Pasa de vivir con el corazón encogido a recuperar tu <em>paz, claridad y poder personal</em>.
-            </h1>
-
-            <p class="subtitle" style="text-align: left; max-width: 44rem; margin: 0 auto 3rem;">
-                Un acompañamiento individual y profundo para desactivar de raíz las culpas, la parálisis y las heridas inconscientes que frenan tu vida.<br><br>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.35rem, 2vw, 1rem); margin-bottom: 2rem; text-align: left; align-items: stretch;">
-                    
-                    <!-- Columna A -->
-                    <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(233, 30, 99, 0.25); border-radius: 0.5rem; padding: clamp(0.75rem, 2vw, 1.25rem); display: flex; flex-direction: column;">
-                        <strong style="color: #e91e63; display: block; font-size: clamp(0.85rem, 3vw, 0.95rem); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center; border-bottom: 1px dashed rgba(233,30,99,0.3); padding-bottom: 0.5rem;">Punto A (De dónde partes)</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: clamp(0.75rem, 2.5vw, 0.9rem); line-height: 1.5; color: rgba(251,245,226,.85); flex-grow: 1;">
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-times" style="color:#e91e63; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Parálisis por el miedo constante a fallar.</span></li>
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-times" style="color:#e91e63; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Profunda desmotivación y dudas sobre tu propio valor.</span></li>
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-times" style="color:#e91e63; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Sentimiento de culpa recurrente.</span></li>
-                            <li style="display: flex; gap: 0.5rem; align-items: flex-start;"><i class="fas fa-times" style="color:#e91e63; margin-top:0.2rem; flex-shrink: 0;"></i> <span>La frustración diaria de vivir a la defensiva, arrastrando un peso que no te deja avanzar.</span></li>
-                        </ul>
-                    </div>
-
-                    <!-- Columna B -->
-                    <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 0.5rem; padding: clamp(0.75rem, 2vw, 1.25rem); display: flex; flex-direction: column;">
-                        <strong style="color: #10b981; display: block; font-size: clamp(0.85rem, 3vw, 0.95rem); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; text-align: center; border-bottom: 1px dashed rgba(16,185,129,0.3); padding-bottom: 0.5rem;">Punto B (A dónde llegas)</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: clamp(0.75rem, 2.5vw, 0.9rem); line-height: 1.5; color: rgba(251,245,226,.85); flex-grow: 1;">
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-check" style="color:#10b981; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Seguridad interior innegociable.</span></li>
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-check" style="color:#10b981; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Acallar por fin la rumiación mental.</span></li>
-                            <li style="display: flex; gap: 0.5rem; margin-bottom: 0.85rem; align-items: flex-start;"><i class="fas fa-check" style="color:#10b981; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Sanar tus vínculos y relacionarte sin juicios.</span></li>
-                            <li style="display: flex; gap: 0.5rem; align-items: flex-start;"><i class="fas fa-check" style="color:#10b981; margin-top:0.2rem; flex-shrink: 0;"></i> <span>Quitarte ese peso de encima para sostener tus decisiones y proyectos.</span></li>
-                        </ul>
-                    </div>
-
-                </div>
-
-                <span style="display: block; font-size: 0.95rem; color: rgba(251,245,226,.75); text-align: center; border-top: 1px dashed rgba(212,175,55,0.25); padding-top: 1rem;">
-                    <i class="fas fa-check" style="color:#d4af37; margin-right: 0.3rem;"></i> Para personas espirituales con compromiso real que integran el trabajo de la <strong>espiritualidad en su vida</strong> <em>(entendiendo a Dios como esa consciencia de unidad que nos conecta, libre de religiones y dogmas)</em>.
-                </span>
-            </p>
-
-            <div class="hero-action-block">
-                <!-- GANCHO DE VENTA PRINCIPAL: LLAMADA DE ENCAJE -->
-                <div class="hero-cta">
-                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-gold">
-                        Reserva tu Llamada Gratuita
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-quote">
-                <p>"Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre."</p>
-                <cite>— Natalia C.</cite>
-            </div>
-
         </div>
     </section>
 
-    <main>
-
-        <section class="bio-section">
-            
-            <!-- TRANSICIÓN Y RESEÑAS -->
-            <div class="sales-bio" style="margin-bottom: 0;">
-                <p style="text-align:center;margin-bottom:1rem;font-size:1.15rem;">Así se ve una transformación real.</p>
-                <p style="text-align:center;font-weight:700;font-size:1.25rem;margin-bottom:.5rem;">No te lo digo yo.</p>
-                <div style="text-align:center;font-size:2.5rem;color:#d4af37;margin-bottom:2rem;">
-                    <i class="fas fa-hand-point-down"></i>
+    <!-- DE A a B -->
+    <section class="alt">
+        <div class="container">
+            <div class="center">
+                <h2>Lo que vas a conseguir</h2>
+                <div class="rule"></div>
+                <p class="lead">El recorrido que hacemos juntos, de dónde partes a dónde llegas.</p>
+            </div>
+            <div class="ab">
+                <div class="from">
+                    <h3>Dónde estás hoy</h3>
+                    <ul>
+                        <li>Parálisis por el miedo constante a fallar.</li>
+                        <li>Desmotivación y dudas sobre tu propio valor.</li>
+                        <li>Sentimiento de culpa recurrente.</li>
+                        <li>Vivir a la defensiva, arrastrando un peso que no te deja avanzar.</li>
+                    </ul>
+                </div>
+                <div class="to">
+                    <h3>Adónde llegas</h3>
+                    <ul>
+                        <li>Una seguridad interior innegociable.</li>
+                        <li>Silencio en la rumiación mental.</li>
+                        <li>Vínculos sanos, sin juicios.</li>
+                        <li>Fuerza para sostener tus decisiones y proyectos.</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="reseñas" class="testimonials-section" style="margin-top: 0; margin-bottom: 5rem;">
-                <div class="testimonials-inner">
-                    <h2>Lo que dicen quienes han trabajado conmigo</h2>
-                    
-                    <p class="test-sub" style="display:flex; justify-content:center; align-items:center; gap:0.5rem; width:fit-content; margin: 0 auto 2rem; background: rgba(212,175,55,0.1); padding: 0.4rem 1.25rem; border-radius: 2rem; border: 1px solid rgba(212,175,55,0.3); color: #d4af37;">
-                        Desliza para ver más <i class="fas fa-arrow-right" style="animation: hint-swipe 1.5s infinite;"></i>
-                    </p>
+    <!-- HISTORIA -->
+    <section id="historia">
+        <div class="narrow">
+            <h2>Yo también pasé por aquí</h2>
+            <div class="rule"></div>
+            <p class="lead">Mi historia explica por qué hago este trabajo.</p>
 
-                    <!-- CAROUSEL DE VÍDEOS (NATIVO ESTILO INSTAGRAM) -->
-                    <div class="video-scroll-container">
-                        <div class="video-snap-carousel">
-                            <div class="video-snap-slide vid-ryan">
-                                <iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="video-snap-slide vid-marta">
-                                <iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="video-snap-slide vid-natalia">
-                                <iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia - Método Fénix" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- CAROUSEL FOTOS (NATIVO SCROLL) -->
-                    <div class="photo-scroll-container">
-                        <div class="photo-snap-carousel">
-                            <div class="photo-snap-slide"><img src="./assets/Captura 7.webp" alt="Reseña de cliente 7" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 6.webp" alt="Reseña de cliente 6" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 1.webp" alt="Reseña de cliente 1" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 2.webp" alt="Reseña de cliente 2" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 3.webp" alt="Reseña de cliente 3" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 4.webp" alt="Reseña de cliente 4" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                            <div class="photo-snap-slide"><img src="./assets/Captura 5.webp" alt="Reseña de cliente 5" onclick="openModal(this.src)" loading="lazy" decoding="async"></div>
-                        </div>
-                    </div>
-
+            <div class="story">
+                <div class="step">
+                    <small>Infancia</small>
+                    <h3>No pude salvar a mi madre</h3>
+                    <p>Mi padre la maltrataba brutalmente. Yo lo veía todo y no podía hacer nada. De esa impotencia nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
+                </div>
+                <div class="step">
+                    <small>La paradoja</small>
+                    <h3>Un terapeuta admirado por todos</h3>
+                    <p>Mi padre era terapeuta, y de los mejores que he conocido. Le visitaban ricos, famosos, médicos y jueces. Fuera de casa la gente lo adoraba; como padre y como marido, fue un monstruo.</p>
+                    <p>Esa contradicción me obsesionó: <strong>¿por qué su mente funcionaba así?</strong> De ahí nació mi interés por la psicología humanista.</p>
+                </div>
+                <div class="step">
+                    <small>El giro</small>
+                    <h3>Perdonarlo</h3>
+                    <p>El verdadero cambio no fue entenderlo, sino perdonarlo. Hoy aquel «monstruo» es un maestro que me enseñó el camino de vuelta a la paz. Ese perdón, sin juicios, es la pieza final de mi sanación y la prueba de que <strong>tú también puedes liberarte</strong>, sin importar lo que hayas vivido.</p>
+                </div>
+                <div class="step">
+                    <small>A los 30 años</small>
+                    <h3>Lo dejé todo para sanar</h3>
+                    <p>Dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro seguía roto. Me formé en Coaching, PNL y en el trabajo de David R. Hawkins, hasta dar con la clave: <strong>Un Curso de Milagros</strong>.</p>
+                    <p>Ese libro no solo cambió mi vida. Es el núcleo de todo lo que haré contigo.</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- HISTORIA DESPLEGABLE -->
-            <div class="sales-bio" id="historia-section">
-                
-                <div class="historia-toggle" id="historia-toggle" role="button" aria-expanded="false">
-                    <h2>¿Quieres conocer mi historia?</h2>
-                    <i class="fas fa-chevron-down toggle-icon"></i>
+    <!-- ANTES Y AHORA -->
+    <section class="alt">
+        <div class="container">
+            <div class="center">
+                <h2>Lo que viví y lo que hoy te ayudo a vivir</h2>
+                <div class="rule"></div>
+                <p class="lead">No te acompaño desde la teoría. Estos son los miedos que yo tenía y en qué se han convertido.</p>
+            </div>
+            <div class="then-now">
+                <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
+                <div class="tn-row">
+                    <p class="tn-then">Miedo a mostrarme y exponerme.</p>
+                    <p class="tn-now">Grabo vídeos en YouTube sin ningún problema.</p>
                 </div>
-                
-                <div class="historia-collapsible" id="historia-collapsible">
-                    <div class="historia-collapsible-inner">
-                        <p>Verás..., cuando era pequeño, no pude salvar a mi madre.</p>
-                        <p>Mi padre la <span class="keyword">maltrataba</span> brutalmente.</p>
-                        <p>Yo lo veía todo y no podía hacer nada.</p>
-                        <p>Sentía mucha <span class="keyword">impotencia</span>, y de ahí nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
-                        <p>Pero aquí viene lo gordo... y seguramente no te lo esperas...</p>
-                        <p>Mi padre era terapeuta. Y de los mejores que he conocido nunca.</p>
-                        <p>No, no es <span class="keyword">broma</span>.</p>
-                        <p>Venían a verle de todas partes: ricos, famosos, médicos, jueces.</p>
-                        <p>Fuera de casa la gente lo adoraba.</p>
-                        <p>Como padre y como marido, un <span class="keyword">monstruo</span>.</p>
-                        <p>Como te puedes imaginar... esa contradicción me <span class="keyword">obsesionó</span>:</p>
-                        <p><strong>¿Por qué su mente funcionaba así?</strong></p>
-                        <p>Y de ahí nació mi interés por la psicología humanista.</p>
-                        
-                        <p>Y siendo brutalmente honesto: gran parte de mi habilidad para ayudarte hoy la aprendí de él.</p>
-                        <p>Pero el verdadero giro no fue solo entenderlo, sino <span class="keyword">perdonarlo</span>. Hoy, aquel "monstruo" es para mí un maestro que me enseñó el camino de vuelta a la paz.</p>
-                        <p>Ese perdón real, sin juicios, es la pieza final de mi propia sanación y la prueba de que <span class="keyword">tú también puedes liberarte</span>, sin importar lo que hayas vivido.</p>
-                        <p>Y con 30 años dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro aún seguía <span class="keyword">hecho una mierda</span>.</p>
-                        <p>Lo dejé todo para sanar de verdad y poder dedicarme a lo que siempre me había apasionado: ayudar a la gente.</p>
-                        <p>Me formé en Coaching, PNL, David R. Hawkins y otras disciplinas. Hasta que di con la clave:</p>
-                        <p class="sales-highlight">Un Curso de Milagros.</p>
-                        <p>Ese libro no solo me cambió la vida a mí. Se convirtió en el núcleo de todo lo que voy a hacer contigo.</p>
-
-                        <div class="metodo-block">
-                            <h3>¿En qué se basa el Método Fénix?</h3>
-                            <div class="metodo-pillars">
-                                <div class="metodo-pillar"><div class="pillar-icon">📖</div><span class="pillar-name">UCDM</span><span class="pillar-desc">La raíz de todo.</span></div>
-                                <div class="metodo-pillar"><div class="pillar-icon">🧠</div><span class="pillar-name">PNL</span><span class="pillar-desc">Reprogramación.</span></div>
-                                <div class="metodo-pillar"><div class="pillar-icon">🔑</div><span class="pillar-name">Identidad</span><span class="pillar-desc">Quién eres hoy.</span></div>
-                                <div class="metodo-pillar"><div class="pillar-icon">🎯</div><span class="pillar-name">Coaching</span><span class="pillar-desc">Acción medible.</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Botón para volver a cerrar la historia -->
-                        <div class="btn-close-wrap">
-                            <button class="btn btn-sm btn-gold btn-close-historia">
-                                <i class="fas fa-chevron-up" style="margin-right: 0.5rem;"></i>Ocultar historia
-                            </button>
-                        </div>
-                    </div>
+                <div class="tn-row">
+                    <p class="tn-then">Miedo a expresar lo que siento.</p>
+                    <p class="tn-now">Digo lo que pienso y lo que siento con naturalidad.</p>
+                </div>
+                <div class="tn-row">
+                    <p class="tn-then">Miedo a los conflictos.</p>
+                    <p class="tn-now">Puedo ser franco con quien quiera.</p>
+                </div>
+                <div class="tn-row">
+                    <p class="tn-then">Me sentía incapaz e insuficiente.</p>
+                    <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
                 </div>
             </div>
+            <p class="tn-close center">Es el mismo camino que recorro contigo.</p>
+        </div>
+    </section>
 
-        </section>
+    <!-- MÉTODO -->
+    <section>
+        <div class="container center">
+            <h2>En qué se basa el Método Fénix</h2>
+            <div class="rule"></div>
+            <p class="lead">Cuatro pilares que trabajan a la vez: entender, reprogramar, asentar y actuar.</p>
+            <div class="pillars">
+                <div class="pillar"><b>UCDM</b><span>La raíz de todo</span></div>
+                <div class="pillar"><b>PNL</b><span>Reprogramación</span></div>
+                <div class="pillar"><b>Identidad</b><span>Quién eres hoy</span></div>
+                <div class="pillar"><b>Coaching</b><span>Acción medible</span></div>
+            </div>
+        </div>
+    </section>
 
-        <section id="servicios" class="services-section">
-            <div class="services-inner" style="max-width: 48rem;">
+    <!-- TESTIMONIOS -->
+    <section id="testimonios" class="alt">
+        <div class="container center">
+            <h2>Lo que dicen quienes han trabajado conmigo</h2>
+            <div class="rule"></div>
+        </div>
+        <div class="container">
+            <blockquote class="quote">
+                <p>«Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre.»</p>
+                <cite>Natalia C.</cite>
+            </blockquote>
+        </div>
+
+        <div class="snap videos" aria-label="Testimonios en vídeo">
+            <div class="video v-ryan"><iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-marta"><iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-natalia"><iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="snap shots" aria-label="Reseñas de clientes">
+            <div class="shot"><img src="./assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
+        </div>
+    </section>
+
+    <!-- CÓMO TRABAJAMOS -->
+    <section id="trabajo">
+        <div class="container">
+            <div class="center">
                 <h2>Cómo trabajaremos juntos</h2>
-                
-                <!-- BLOQUE FORMATO, TIEMPO Y COMPROMISO -->
-                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(212,175,55,0.25); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 2.5rem; text-align: left;">
-                    <p style="margin-bottom: 0.75rem; font-size: 1.05rem; color: #fbf5e2;">
-                        <strong>Acompañamiento 1 a 1 de 3 meses de duración</strong>
-                    </p>
-                    <p style="margin-bottom: 0.75rem; font-size: 0.95rem; color: rgba(251,245,226,0.85); line-height: 1.6;">
-                        No es un curso pregrabado ni consejos superficiales: es una inmersión directa para desmontar los patrones ocultos que dirigen tu vida y asentar una nueva identidad firme y en paz.
-                    </p>
-                    <p style="margin-bottom: 0; font-size: 0.95rem; color: #d4af37; line-height: 1.6; border-top: 1px dashed rgba(212,175,55,0.2); padding-top: 0.75rem;">
-                        ⏱️ <strong>Garantía de compromiso:</strong> Mi foco no son las horas sueltas, sino tu transformación real. Si mantienes tu compromiso pero tus bloqueos requieren más tiempo para disolverse de raíz, <strong>seguimos trabajando juntos sin coste adicional</strong>.
-                    </p>
-                </div>
-                
-                <ul style="list-style: none; padding: 0; margin-bottom: 3.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
-                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #d4af37;">
-                        <i class="fas fa-calendar-check" style="color: #d4af37; font-size: 1.5rem; margin-top: 0.2rem;"></i>
-                        <div>
-                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Sesiones Profundas y Reveladoras</strong>
-                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">Iremos tan a la raíz que descubrirás patrones inconscientes, creencias y condicionamientos ocultos que han estado dirigiendo tu vida en la sombra. Descubrirás el verdadero origen de tus bloqueos, que rara vez es el que tú crees. Todo ello combinando la filosofía de Un Curso de Milagros con la eficacia de la PNL y el Coaching.</span>
-                        </div>
-                    </li>
-                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #e91e63;">
-                        <i class="fab fa-whatsapp" style="color: #e91e63; font-size: 1.5rem; margin-top: 0.2rem;"></i>
-                        <div>
-                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Soporte Estratégico vía WhatsApp</strong>
-                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">El verdadero cambio ocurre entre sesiones. Tendrás acceso a mí de lunes a viernes para resolver dudas de tus ejercicios o ajustar tu plan.</span>
-                        </div>
-                    </li>
-                    <li style="display: flex; gap: 1.25rem; align-items: flex-start; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0.5rem; border-left: 3px solid #d4af37;">
-                        <i class="fas fa-cogs" style="color: #d4af37; font-size: 1.5rem; margin-top: 0.2rem;"></i>
-                        <div>
-                            <strong style="color: #fbf5e2; font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Plan de Acción a Medida</strong>
-                            <span style="color: rgba(251,245,226,.7); font-size: 0.95rem; line-height: 1.5; display: block;">No solo limpiamos la mente. Consolidaremos tu nueva identidad a través de hábitos claros, retos semanales y ejercicios prácticos para casa que garanticen una transformación real y medible.</span>
-                        </div>
-                    </li>
-                </ul>
+                <div class="rule"></div>
+                <p class="lead">Acompañamiento 1 a 1 durante 3 meses. No es un curso pregrabado ni consejos superficiales: es una inmersión directa para desmontar los patrones que dirigen tu vida y asentar una identidad firme y en paz.</p>
+            </div>
 
-                <div style="background: linear-gradient(160deg,#1e1a0e 0%,#2a2416 100%); border: 1px solid rgba(212,175,55,0.3); padding: 2.5rem 1.5rem; border-radius: 0.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" class="btn btn-gold btn-block">
-                        <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>Reserva tu Llamada de Valoración Gratuita
-                    </a>
+            <div class="work">
+                <div class="work-item">
+                    <h3>Sesiones profundas</h3>
+                    <p>Vamos a la raíz para descubrir los patrones, creencias y condicionamientos ocultos que dirigen tu vida en la sombra. El origen de tus bloqueos rara vez es el que crees. Combino Un Curso de Milagros con la eficacia de la PNL y el Coaching.</p>
+                </div>
+                <div class="work-item">
+                    <h3>Soporte por WhatsApp</h3>
+                    <p>El cambio ocurre entre sesiones. Tienes acceso a mí de lunes a viernes para resolver dudas de tus ejercicios o ajustar tu plan.</p>
+                </div>
+                <div class="work-item">
+                    <h3>Plan de acción a medida</h3>
+                    <p>No solo limpiamos la mente: consolidamos tu nueva identidad con hábitos claros, retos semanales y ejercicios prácticos para casa, con resultados medibles.</p>
                 </div>
             </div>
-        </section>
 
-    </main>
-
-    <footer class="site-footer">
-        <h4>Contacta conmigo</h4>
-        <div class="footer-contacts">
-            <a href="mailto:darioarrigazzi@lamentedelfenix.com" target="_blank" class="contact-link email-link contact-link-email">
-                <i class="fas fa-envelope footer-contact-icon"></i>
-                <span>darioarrigazzi@lamentedelfenix.com</span>
-            </a>
-            <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer" class="contact-link contact-link-insta">
-                <i class="fab fa-instagram footer-contact-icon"></i>
-                <span>@darioarrigazzi</span>
-            </a>
-            <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" class="contact-link youtube-link contact-link-yt">
-                <i class="fab fa-youtube footer-contact-icon"></i>
-                <span>Canal de YouTube</span>
-            </a>
+            <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso pero tus bloqueos necesitan más tiempo para disolverse de raíz, seguimos trabajando juntos sin coste adicional.</p>
         </div>
-        
-        <div class="footer-nav">
-            <a href="./blog.html"><i class="fas fa-pen-nib"></i> Ir al Blog Fénix</a>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="final alt">
+        <div class="container">
+            <h2>Cuéntame tu situación y vemos si encajamos</h2>
+            <div class="rule"></div>
+            <p class="lead" style="margin-bottom:2.25rem">Reserva una llamada de valoración gratuita y resuelve tus dudas conmigo.</p>
+            <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
         </div>
+    </section>
 
-        <div class="footer-legal">
-            <a href="./privacidad.html">Política de Privacidad</a><span>&middot;</span>
-            <a href="./terminos.html">Términos del Servicio</a><span>&middot;</span>
-            <a href="./aviso-legal.html">Aviso Legal</a><span>&middot;</span>
-            <a href="./cookies.html">Política de Cookies</a><span>&middot;</span>
-            <a href="https://www.lamentedelfenix.com/ebook.html"><i class="fas fa-book" style="margin-right:.3rem;color:#d4af37;"></i>eBook gratuito</a>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="contacts">
+            <a href="mailto:darioarrigazzi@lamentedelfenix.com">darioarrigazzi@lamentedelfenix.com</a>
+            <a href="https://www.instagram.com/darioarrigazzi/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="./blog.html">Blog Fénix</a>
+            <a href="https://www.lamentedelfenix.com/ebook.html">eBook gratuito</a>
         </div>
-        <p class="footer-copy">&copy; 2026 La Mente del Fénix — Darío Arrigazzi · Método Fénix. Todos los derechos reservados.</p>
-    </footer>
+        <nav class="legal" aria-label="Legal">
+            <a href="./privacidad.html">Política de privacidad</a>
+            <a href="./terminos.html">Términos del servicio</a>
+            <a href="./aviso-legal.html">Aviso legal</a>
+            <a href="./cookies.html">Política de cookies</a>
+        </nav>
+        <p class="copy">&copy; 2026 La Mente del Fénix — Darío Arrigazzi. Todos los derechos reservados.</p>
+    </div>
+</footer>
 
-</div>
-
-<!-- Modal para imágenes -->
-<div id="image-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+<div id="image-modal" class="modal" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
     <div class="modal-inner">
-        <img id="modal-image" src="" alt="Reseña ampliada" loading="lazy" decoding="async" width="500" height="700">
-        <button id="modal-close" class="modal-close" aria-label="Cerrar imagen">&times;</button>
+        <img id="modal-image" src="" alt="Reseña ampliada">
+        <button id="modal-close" aria-label="Cerrar imagen">&times;</button>
     </div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></noscript>
-
 <script>
-function openModal(src){ var m=document.getElementById('image-modal'); document.getElementById('modal-image').src=src; m.classList.add('active'); document.body.style.overflow='hidden'; }
-function closeModal(){ document.getElementById('image-modal').classList.remove('active'); document.body.style.overflow=''; }
-
-window.addEventListener('load', function(){
-    
-    var modalClose = document.getElementById('modal-close');
-    if(modalClose) modalClose.addEventListener('click', closeModal);
-    var imageModal = document.getElementById('image-modal');
-    if(imageModal) imageModal.addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-    
-    document.addEventListener('keydown', function(e){ 
-        if(e.key==='Escape') {
-            closeModal();
-        }
-    });
-
-    /* Observer para los párrafos de la historia */
-    var bioParagraphs = document.querySelectorAll('.sales-bio p');
-    var bioObserver = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-            if(entry.isIntersecting) entry.target.classList.add('lit-up');
-            else entry.target.classList.remove('lit-up');
-        });
-    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
-    bioParagraphs.forEach(function(p){ bioObserver.observe(p); });
-
-    /* Lógica para desplegar/plegar la historia */
-    var historiaToggle = document.getElementById('historia-toggle');
-    var historiaSection = document.getElementById('historia-section');
-    var btnCloseHistoria = document.querySelector('.btn-close-historia');
-
-    function toggleHistoria() {
-        var isExpanded = historiaSection.classList.toggle('expanded');
-        historiaToggle.setAttribute('aria-expanded', isExpanded);
-        
-        // Si se cierra, hacer scroll suave de vuelta al botón para que no se pierdan
-        if(!isExpanded) {
-            historiaToggle.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-
-    if(historiaToggle) {
-        historiaToggle.addEventListener('click', toggleHistoria);
-    }
-    if(btnCloseHistoria) {
-        btnCloseHistoria.addEventListener('click', toggleHistoria);
-    }
-
-    /* Lógica para los precios en móvil */
-    var pricingToggles = document.querySelectorAll('[data-pricing-toggle]');
-    pricingToggles.forEach(function(toggle){
-        toggle.addEventListener('click', function(){
-            if(window.innerWidth > 767) return; 
-            var card = toggle.closest('[data-pricing-card]');
-            if(card) card.classList.toggle('expanded');
-        });
-    });
-});
+(function(){
+    var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
+    function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
+    function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
+    document.querySelectorAll('.shot img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    document.getElementById('modal-close').addEventListener('click',close);
+    modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
 </script>
 
 </body>
