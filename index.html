@@ -19,6 +19,7 @@
     </script>
 
     <meta charset="UTF-8">
+    <script>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros</title>
     <meta name="description" content="El Método Fénix de Darío Arrigazzi: transformación real a través de un proceso guiado. Basado en Un Curso de Milagros, PNL y Coaching.">
@@ -117,7 +118,8 @@
         .portrait img{width:100%;height:100%;object-fit:cover;border-radius:999px 999px .3rem .3rem}
 
         /* historia */
-        .story{margin-top:3.5rem;position:relative;padding-left:2rem;border-left:1px solid var(--gold)}
+        .story{margin-top:3.5rem;position:relative;padding-left:2rem}
+        .story::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--gold);transform-origin:top}
         .step{position:relative;padding-bottom:3rem}
         .step:last-child{padding-bottom:0}
         .step::before{content:'';position:absolute;left:calc(-2rem - 5px);top:.6rem;width:9px;height:9px;border-radius:50%;background:var(--gold)}
@@ -172,6 +174,49 @@
         .method-title{margin-top:4.5rem;text-align:center}
         .method-title + .pillars{margin-top:1.75rem}
         .pillar span{display:block;line-height:1.5}
+
+        /* movimiento */
+        @media(prefers-reduced-motion:no-preference){
+            @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+            @keyframes arch{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+            .hero .role,.hero h1,.hero .lead,.hero .for,.hero .btn,.hero .call-note{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+            .hero .role{animation-delay:.1s}.hero h1{animation-delay:.25s}.hero .lead{animation-delay:.45s}
+            .hero .for{animation-delay:.6s}.hero .btn{animation-delay:.75s}.hero .call-note{animation-delay:.9s}
+            .portrait{animation:arch 1.4s cubic-bezier(.65,0,.25,1) .2s both}
+        }
+        .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+        .js .reveal.in{opacity:1;transform:none}
+        .js .rule{transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.7,.2,1) .15s}
+        .js .center .rule{transform-origin:center}
+        .js .rule.in{transform:scaleX(1)}
+        .js .story::before{transform:scaleY(var(--p,0))}
+        .js .step{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+        .js .step.in{opacity:1;transform:none}
+        .js .step::before{transform:scale(0);transition:transform .6s cubic-bezier(.3,1.6,.5,1) .25s}
+        .js .step.in::before{transform:scale(1)}
+        .js .tn-then,.js .tn-now{opacity:0;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+        .js .tn-now{transform:translateX(-16px);transition-delay:.4s}
+        .js .tn-row.in .tn-then{opacity:1}
+        .js .tn-row.in .tn-now{opacity:1;transform:none}
+
+        /* reseñas en cascada (escritorio) */
+        @media(min-width:768px){
+            .shots{display:block;columns:4;column-gap:1.25rem;width:min(100% - 2.5rem,68rem);margin:2.5rem auto 0;padding:0;overflow:visible}
+            .shot{display:block;height:auto;margin-bottom:1.25rem;break-inside:avoid}
+            .shot img{height:auto;object-fit:initial;border:1px solid var(--line);border-radius:.5rem}
+            .js .shot{opacity:0;transform:translateY(-44px) rotate(-1.5deg);transition:opacity .8s ease,transform 1s cubic-bezier(.3,1.25,.5,1)}
+            .js .shot.in{opacity:1;transform:none}
+        }
+
+        /* preguntas frecuentes */
+        .faq{margin-top:3rem;border-top:1px solid var(--line)}
+        .faq details{border-bottom:1px solid var(--line)}
+        .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;padding:1.4rem 0;font-family:var(--serif);font-size:1.45rem;line-height:1.25;transition:color .3s}
+        .faq summary::-webkit-details-marker{display:none}
+        .faq summary::after{content:'+';color:var(--gold);font-family:var(--sans);font-size:1.5rem;font-weight:400;transition:transform .3s}
+        .faq summary:hover{color:var(--gold)}
+        .faq details[open] summary::after{transform:rotate(45deg)}
+        .faq details p{padding:0 2.5rem 1.5rem 0;color:var(--muted);font-size:.98rem}
 
         /* footer */
         footer{background:var(--bg-2);border-top:1px solid var(--line);padding:3.5rem 0 2.5rem;text-align:center;font-size:.9rem}
@@ -337,7 +382,7 @@
                 </div>
                 <div class="work-item">
                     <h3>Plan de acción a medida</h3>
-                    <p>No solo limpiamos la mente: consolidamos tu nueva identidad con hábitos claros, retos semanales y ejercicios prácticos para casa, con resultados medibles.</p>
+                    <p>No solo limpiamos la mente: consolidamos tu nueva identidad con hábitos claros, meditaciones guiadas, retos para pasar a la acción y ejercicios prácticos para casa, con seguimiento medible.</p>
                 </div>
             </div>
 
@@ -353,8 +398,34 @@
         </div>
     </section>
 
+    <!-- PREGUNTAS FRECUENTES -->
+    <section id="preguntas">
+        <div class="narrow">
+            <h2 class="center">Preguntas frecuentes</h2>
+            <div class="rule"></div>
+            <div class="faq">
+                <details>
+                    <summary>¿Cuántas sesiones incluye?</summary>
+                    <p>Normalmente son unas 9 a lo largo de los 3 meses, aunque es una cifra aproximada: según cómo avance tu proceso pueden ser más.</p>
+                </details>
+                <details>
+                    <summary>¿Qué incluye el acompañamiento?</summary>
+                    <p>Sesiones individuales, soporte por WhatsApp de lunes a viernes, meditaciones guiadas, retos para pasar a la acción y ejercicios prácticos para casa, entre otros recursos.</p>
+                </details>
+                <details>
+                    <summary>¿Es un trabajo religioso?</summary>
+                    <p>No. Trabajo desde la espiritualidad, entendiendo a Dios como esa consciencia de unidad que nos conecta, libre de religiones y dogmas.</p>
+                </details>
+                <details>
+                    <summary>¿Cuánto cuesta?</summary>
+                    <p>En la llamada gratuita te cuento el precio y resuelvo cualquier duda que tengas.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA FINAL -->
-    <section class="final">
+    <section class="final alt">
         <div class="container">
             <h2>Cuéntame tu situación y vemos si encajamos</h2>
             <div class="rule"></div>
@@ -390,6 +461,35 @@
         <button id="modal-close" aria-label="Cerrar imagen">&times;</button>
     </div>
 </div>
+
+<script>
+(function(){
+    var root=document.documentElement;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
+
+    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.method-title,.pillar,.work-item,.guarantee,.faq details,.cta-band .container,.final .container').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('.pillar').forEach(function(el,i){el.style.transitionDelay=(i*110)+'ms';});
+    document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
+
+    var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+    document.querySelectorAll('.reveal,.rule,.step,.tn-row,.shot').forEach(function(el){io.observe(el);});
+
+    var story=document.querySelector('.story'), ticking=false;
+    function progress(){
+        var r=story.getBoundingClientRect();
+        var p=(window.innerHeight*.6-r.top)/r.height;
+        story.style.setProperty('--p',Math.max(0,Math.min(1,p)));
+        ticking=false;
+    }
+    if(story){
+        window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(progress); } },{passive:true});
+        window.addEventListener('resize',progress);
+        progress();
+    }
+})();
+</script>
 
 <script>
 (function(){
