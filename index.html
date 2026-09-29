@@ -83,7 +83,7 @@
         /* banner */
         .banner{width:100%;aspect-ratio:1200/460;background:#131210;border-bottom:1px solid var(--line)}
         .banner img{width:100%;height:100%;object-fit:cover}
-        @media(min-width:768px){.banner{aspect-ratio:auto;width:min(100% - 2.5rem,72rem);margin:1.25rem auto 0;border:1px solid var(--line);border-radius:.5rem;overflow:hidden}.banner img{height:auto}}
+        @media(min-width:768px){.banner{width:min(100% - 2.5rem,72rem);margin:1.25rem auto 0;border:1px solid var(--line);border-radius:.5rem;overflow:hidden}}
 
         /* antes y ahora */
         .then-now{margin-top:3rem;border-top:1px solid var(--line)}
@@ -111,12 +111,10 @@
         .hero-grid{display:grid;gap:3rem;align-items:center}
         @media(min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr;gap:5rem}}
         .hero h1{font-size:clamp(2.4rem,7vw,4.2rem);margin-bottom:1.5rem}
-        .hero .lead{font-size:1.1rem;margin-bottom:2.25rem}
+        .hero .lead{font-size:1.1rem;margin-bottom:1.5rem}
         .role{font-size:.9rem;color:var(--gold);margin-bottom:1.25rem}
         .portrait{justify-self:center;width:min(100%,22rem);aspect-ratio:3/4;border-radius:999px 999px .5rem .5rem;overflow:hidden;border:1px solid var(--gold);padding:.6rem}
         .portrait img{width:100%;height:100%;object-fit:cover;border-radius:999px 999px .3rem .3rem}
-        .fit{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted);max-width:36rem}
-        .fit em{display:block;margin-top:.35rem;font-size:.85rem;opacity:.85}
 
         /* historia */
         .story{margin-top:3.5rem;position:relative;padding-left:2rem;border-left:1px solid var(--gold)}
@@ -135,7 +133,7 @@
         .pillars{display:grid;grid-template-columns:1fr 1fr;margin-top:3rem;border-top:1px solid var(--line);border-left:1px solid var(--line)}
         @media(min-width:768px){.pillars{grid-template-columns:repeat(4,1fr)}}
         .pillar{padding:1.75rem 1.25rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
-        .pillar b{display:block;font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--gold)}
+        .pillar b{display:block;font-family:var(--serif);font-size:1.35rem;line-height:1.2;font-weight:600;color:var(--gold);margin-bottom:.4rem}
         .pillar span{font-size:.85rem;color:var(--muted)}
 
         /* testimonios */
@@ -166,6 +164,15 @@
         .final{text-align:center}
         .final h2{max-width:36rem;margin-inline:auto}
 
+        /* nuevos bloques */
+        .for{font-family:var(--serif);font-style:italic;font-size:1.3rem;line-height:1.35;margin-bottom:2rem;max-width:32rem}
+        .call-note{margin-top:1.1rem;font-size:.85rem;color:var(--muted);max-width:28rem}
+        .cta-band{padding:3.5rem 0}
+        .cta-text{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:1.5rem}
+        .method-title{margin-top:4.5rem;text-align:center}
+        .method-title + .pillars{margin-top:1.75rem}
+        .pillar span{display:block;line-height:1.5}
+
         /* footer */
         footer{background:var(--bg-2);border-top:1px solid var(--line);padding:3.5rem 0 2.5rem;text-align:center;font-size:.9rem}
         .contacts{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2rem;margin-bottom:2rem}
@@ -190,21 +197,58 @@
 </header>
 
 <main id="top">
-
     <!-- HERO -->
     <section class="hero">
         <div class="container hero-grid">
             <div>
                 <p class="role">Darío Arrigazzi · Mentor en desarrollo interior</p>
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
-                <p class="lead">Un acompañamiento individual para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
+                <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
+                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida y no saben cómo avanzar.</p>
                 <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
-                <p class="fit">Para personas espirituales con compromiso real que quieren integrar la espiritualidad en su vida.
-                    <em>Entiendo a Dios como esa consciencia de unidad que nos conecta, libre de religiones y dogmas.</em></p>
+                <p class="call-note">En la llamada te doy pistas de dónde puede venir tu problema, resuelvo tus dudas y te cuento el precio.</p>
             </div>
             <div class="portrait">
                 <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior" width="600" height="800">
             </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonios" class="alt">
+        <div class="container center">
+            <h2>Lo que dicen quienes han trabajado conmigo</h2>
+            <div class="rule"></div>
+        </div>
+        <div class="container">
+            <blockquote class="quote">
+                <p>«Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre.»</p>
+                <cite>Natalia C.</cite>
+            </blockquote>
+        </div>
+
+        <div class="snap videos" aria-label="Testimonios en vídeo">
+            <div class="video v-ryan"><iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-marta"><iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-natalia"><iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="snap shots" aria-label="Reseñas de clientes">
+            <div class="shot"><img src="./assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="./assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
+        </div>
+    </section>
+
+    <!-- LLAMADA INTERMEDIA -->
+    <section class="cta-band">
+        <div class="container center">
+            <p class="cta-text">Si algo de esto te suena, hablemos.</p>
+            <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
         </div>
     </section>
 
@@ -248,7 +292,7 @@
             <div class="center">
                 <h2>Mi antes y mi ahora</h2>
                 <div class="rule"></div>
-                <p class="lead">Un ejemplo de mi propio camino. Cada persona y cada proceso son distintos: no es una promesa, es lo que yo he vivido.</p>
+                <p class="lead">Los miedos con los que yo cargaba y lo que hoy trabajo con las personas a las que acompaño.</p>
             </div>
             <div class="then-now">
                 <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
@@ -269,52 +313,7 @@
                     <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
                 </div>
             </div>
-            <p class="tn-close center">Cada proceso es único. Este fue el mío.</p>
-        </div>
-    </section>
-
-    <!-- MÉTODO -->
-    <section class="alt">
-        <div class="container center">
-            <h2>En qué se basa el Método Fénix</h2>
-            <div class="rule"></div>
-            <p class="lead">Cuatro pilares que trabajan a la vez: entender, reprogramar, asentar y actuar.</p>
-            <div class="pillars">
-                <div class="pillar"><b>UCDM</b><span>La raíz de todo</span></div>
-                <div class="pillar"><b>PNL</b><span>Reprogramación</span></div>
-                <div class="pillar"><b>Identidad</b><span>Quién eres hoy</span></div>
-                <div class="pillar"><b>Coaching</b><span>Acción medible</span></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TESTIMONIOS -->
-    <section id="testimonios">
-        <div class="container center">
-            <h2>Lo que dicen quienes han trabajado conmigo</h2>
-            <div class="rule"></div>
-        </div>
-        <div class="container">
-            <blockquote class="quote">
-                <p>«Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre.»</p>
-                <cite>Natalia C.</cite>
-            </blockquote>
-        </div>
-
-        <div class="snap videos" aria-label="Testimonios en vídeo">
-            <div class="video v-ryan"><iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-            <div class="video v-marta"><iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-            <div class="video v-natalia"><iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-        </div>
-
-        <div class="snap shots" aria-label="Reseñas de clientes">
-            <div class="shot"><img src="./assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
+            <p class="tn-close center">Es el camino que hoy recorro con quienes acompaño.</p>
         </div>
     </section>
 
@@ -340,6 +339,14 @@
                     <h3>Plan de acción a medida</h3>
                     <p>No solo limpiamos la mente: consolidamos tu nueva identidad con hábitos claros, retos semanales y ejercicios prácticos para casa, con resultados medibles.</p>
                 </div>
+            </div>
+
+                        <h3 class="method-title">En qué se basa el Método Fénix</h3>
+            <div class="pillars">
+                <div class="pillar"><b>Un Curso de Milagros</b><span>La base espiritual de todo el trabajo.</span></div>
+                <div class="pillar"><b>PNL</b><span>Herramientas para reprogramar patrones.</span></div>
+                <div class="pillar"><b>Identidad</b><span>Consolidar quién eres hoy.</span></div>
+                <div class="pillar"><b>Coaching</b><span>Acción y seguimiento medibles.</span></div>
             </div>
 
             <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso pero tus bloqueos necesitan más tiempo para disolverse de raíz, seguimos trabajando juntos sin coste adicional.</p>
