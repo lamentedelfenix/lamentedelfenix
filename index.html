@@ -83,7 +83,7 @@
         /* banner */
         .banner{width:100%;aspect-ratio:1200/460;background:#131210;border-bottom:1px solid var(--line)}
         .banner img{width:100%;height:100%;object-fit:cover}
-        @media(min-width:768px){.banner{aspect-ratio:1200/400;max-height:26rem}}
+        @media(min-width:768px){.banner{aspect-ratio:auto;width:min(100% - 2.5rem,72rem);margin:1.25rem auto 0;border:1px solid var(--line);border-radius:.5rem;overflow:hidden}.banner img{height:auto}}
 
         /* antes y ahora */
         .then-now{margin-top:3rem;border-top:1px solid var(--line)}
@@ -117,16 +117,6 @@
         .portrait img{width:100%;height:100%;object-fit:cover;border-radius:999px 999px .3rem .3rem}
         .fit{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted);max-width:36rem}
         .fit em{display:block;margin-top:.35rem;font-size:.85rem;opacity:.85}
-
-        /* de A a B */
-        .ab{display:grid;gap:3rem;margin-top:3.5rem}
-        @media(min-width:768px){.ab{grid-template-columns:1fr 1fr;gap:5rem}}
-        .ab h3{font-size:1.7rem;padding-bottom:1rem;margin-bottom:1.25rem;border-bottom:1px solid var(--line)}
-        .ab li{position:relative;padding:.7rem 0 .7rem 2rem;color:var(--muted);font-size:.98rem}
-        .ab li::before{position:absolute;left:0;top:.7rem;font-weight:600}
-        .ab .from li::before{content:'✕';color:var(--rose)}
-        .ab .to li::before{content:'✓';color:var(--gold)}
-        .ab .to li{color:var(--cream)}
 
         /* historia */
         .story{margin-top:3.5rem;position:relative;padding-left:2rem;border-left:1px solid var(--gold)}
@@ -218,39 +208,8 @@
         </div>
     </section>
 
-    <!-- DE A a B -->
-    <section class="alt">
-        <div class="container">
-            <div class="center">
-                <h2>Lo que vas a conseguir</h2>
-                <div class="rule"></div>
-                <p class="lead">El recorrido que hacemos juntos, de dónde partes a dónde llegas.</p>
-            </div>
-            <div class="ab">
-                <div class="from">
-                    <h3>Dónde estás hoy</h3>
-                    <ul>
-                        <li>Parálisis por el miedo constante a fallar.</li>
-                        <li>Desmotivación y dudas sobre tu propio valor.</li>
-                        <li>Sentimiento de culpa recurrente.</li>
-                        <li>Vivir a la defensiva, arrastrando un peso que no te deja avanzar.</li>
-                    </ul>
-                </div>
-                <div class="to">
-                    <h3>Adónde llegas</h3>
-                    <ul>
-                        <li>Una seguridad interior innegociable.</li>
-                        <li>Silencio en la rumiación mental.</li>
-                        <li>Vínculos sanos, sin juicios.</li>
-                        <li>Fuerza para sostener tus decisiones y proyectos.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- HISTORIA -->
-    <section id="historia">
+    <section id="historia" class="alt">
         <div class="narrow">
             <h2>Yo también pasé por aquí</h2>
             <div class="rule"></div>
@@ -284,12 +243,12 @@
     </section>
 
     <!-- ANTES Y AHORA -->
-    <section class="alt">
+    <section>
         <div class="container">
             <div class="center">
-                <h2>Lo que viví y lo que hoy te ayudo a vivir</h2>
+                <h2>Mi antes y mi ahora</h2>
                 <div class="rule"></div>
-                <p class="lead">No te acompaño desde la teoría. Estos son los miedos que yo tenía y en qué se han convertido.</p>
+                <p class="lead">Un ejemplo de mi propio camino. Cada persona y cada proceso son distintos: no es una promesa, es lo que yo he vivido.</p>
             </div>
             <div class="then-now">
                 <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
@@ -310,12 +269,12 @@
                     <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
                 </div>
             </div>
-            <p class="tn-close center">Es el mismo camino que recorro contigo.</p>
+            <p class="tn-close center">Cada proceso es único. Este fue el mío.</p>
         </div>
     </section>
 
     <!-- MÉTODO -->
-    <section>
+    <section class="alt">
         <div class="container center">
             <h2>En qué se basa el Método Fénix</h2>
             <div class="rule"></div>
@@ -330,7 +289,7 @@
     </section>
 
     <!-- TESTIMONIOS -->
-    <section id="testimonios" class="alt">
+    <section id="testimonios">
         <div class="container center">
             <h2>Lo que dicen quienes han trabajado conmigo</h2>
             <div class="rule"></div>
@@ -360,7 +319,7 @@
     </section>
 
     <!-- CÓMO TRABAJAMOS -->
-    <section id="trabajo">
+    <section id="trabajo" class="alt">
         <div class="container">
             <div class="center">
                 <h2>Cómo trabajaremos juntos</h2>
@@ -388,7 +347,7 @@
     </section>
 
     <!-- CTA FINAL -->
-    <section class="final alt">
+    <section class="final">
         <div class="container">
             <h2>Cuéntame tu situación y vemos si encajamos</h2>
             <div class="rule"></div>
