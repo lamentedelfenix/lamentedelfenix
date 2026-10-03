@@ -147,7 +147,6 @@
         .collage figure:first-child{grid-row:span 2}
         .collage figure img{display:block;width:100%;height:100%;object-fit:cover;border:0;border-radius:0;box-shadow:none;filter:none;cursor:zoom-in}
         .collage figure:not(:first-child) img{aspect-ratio:1}
-        .collage figure.link img{cursor:pointer}
         .collage figcaption{position:absolute;left:0;right:0;bottom:0;margin:0;padding:1.6rem .7rem .55rem;background:linear-gradient(transparent,rgba(0,0,0,.78));font-size:.72rem;line-height:1.35;color:var(--cream)}
         @media(max-width:560px){
             .collage{grid-template-columns:1fr 1fr}
@@ -336,8 +335,8 @@
                     <p>Dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro seguía roto. Me formé en Coaching, PNL y en el trabajo de David R. Hawkins, hasta dar con la clave: <strong>Un Curso de Milagros</strong>.</p>
                     <p>Ese libro no solo cambió mi vida. Es el núcleo de todo lo que haré contigo.</p>
                     <div class="collage">
+                        <figure><img src="./assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
                         <figure><img src="./assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
-                        <figure class="link"><a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" aria-label="Ver mi canal de YouTube"><img src="./assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"></a><figcaption>Mi canal de YouTube</figcaption></figure>
                         <figure><img src="./assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async"><figcaption>Sesiones 1 a 1</figcaption></figure>
                     </div>
                 </div>
@@ -475,7 +474,7 @@
     var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
     function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
     function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
-    document.querySelectorAll('.shot img,.step figure:not(.link) img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    document.querySelectorAll('.shot img,.step figure img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
     document.getElementById('modal-close').addEventListener('click',close);
     modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
