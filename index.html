@@ -131,6 +131,14 @@
         .step p:last-child{margin-bottom:0}
         .step strong{color:var(--cream);font-weight:500}
 
+        .step figure{margin-top:.75rem}
+        .step figure img{border-radius:.35rem;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.35);filter:sepia(.15);cursor:zoom-in}
+        .photos{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;align-items:center;margin-top:.75rem}
+        .photos figure{margin-top:0}
+        .photos figure:nth-child(odd){transform:rotate(-1.2deg)}
+        .photos figure:nth-child(even){transform:rotate(1.2deg)}
+        .step figure.single img{max-height:28rem;width:auto}
+
         /* testimonios */
         .snap{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.5rem 1.25rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
         .snap::-webkit-scrollbar{display:none}
@@ -289,11 +297,16 @@
                     <small>Infancia</small>
                     <h3>No pude salvar a mi madre</h3>
                     <p>Mi padre la maltrataba brutalmente. Yo lo veía todo y no podía hacer nada. De esa impotencia nació un fuerte deseo de aliviar el sufrimiento de los demás.</p>
+                    <div class="photos">
+                        <figure><img src="./assets/mama%20y%20familia.webp" alt="Mi madre, mis hermanos y yo, de pequeños" loading="lazy" decoding="async"></figure>
+                        <figure><img src="./assets/Yo%20peque%C3%B1o.webp" alt="Yo, de pequeño" loading="lazy" decoding="async"></figure>
+                    </div>
                 </div>
                 <div class="step">
                     <small>La paradoja</small>
                     <h3>Un terapeuta admirado por todos</h3>
                     <p>Mi padre era terapeuta, y de los mejores que he conocido. Le visitaban ricos, famosos, médicos y jueces. Fuera de casa la gente lo adoraba; como padre y como marido, fue un monstruo.</p>
+                    <figure class="single"><img src="./assets/Papa%20identidad%20tapada%20y%20mama.png" alt="Mi padre, con los ojos tapados, junto a mi madre, de jóvenes y bien vestidos" loading="lazy" decoding="async"></figure>
                     <p>Esa contradicción me obsesionó: <strong>¿por qué su mente funcionaba así?</strong> De ahí nació mi interés por la psicología humanista.</p>
                 </div>
                 <div class="step">
@@ -413,7 +426,7 @@
     var root=document.documentElement;
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
 
-    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.work-item,.guarantee,.cta-band .container,.final .container').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.work-item,.guarantee,.cta-band .container,.final .container').forEach(function(el){el.classList.add('reveal');});
     document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
 
     var io=new IntersectionObserver(function(entries){
@@ -441,7 +454,7 @@
     var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
     function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
     function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
-    document.querySelectorAll('.shot img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    document.querySelectorAll('.shot img,.step figure img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
     document.getElementById('modal-close').addEventListener('click',close);
     modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
