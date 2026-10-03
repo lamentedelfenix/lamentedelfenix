@@ -140,10 +140,20 @@
         .step figure.single img{max-height:28rem;width:auto}
 
         .step figure.now img{filter:none}
-        .duo{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start;max-width:48rem;margin:3rem auto 0}
-        .duo figure img{width:100%;border-radius:.4rem;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.35);cursor:zoom-in}
-        .duo figcaption{margin-top:.7rem;font-size:.8rem;line-height:1.5;color:var(--muted);text-align:center}
-        @media(max-width:600px){.duo{grid-template-columns:1fr}}
+        .step figcaption{margin-top:.6rem;font-size:.8rem;color:var(--muted)}
+
+        .collage{display:grid;grid-template-columns:2fr 1fr;gap:.6rem;margin-top:1.5rem}
+        .collage figure{position:relative;margin:0;overflow:hidden;border-radius:.4rem;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+        .collage figure:first-child{grid-row:span 2}
+        .collage figure img{display:block;width:100%;height:100%;object-fit:cover;border:0;border-radius:0;box-shadow:none;filter:none;cursor:zoom-in}
+        .collage figure:not(:first-child) img{aspect-ratio:1}
+        .collage figure.link img{cursor:pointer}
+        .collage figcaption{position:absolute;left:0;right:0;bottom:0;margin:0;padding:1.6rem .7rem .55rem;background:linear-gradient(transparent,rgba(0,0,0,.78));font-size:.72rem;line-height:1.35;color:var(--cream)}
+        @media(max-width:560px){
+            .collage{grid-template-columns:1fr 1fr}
+            .collage figure:first-child{grid-column:span 2;grid-row:auto}
+            .collage figure:first-child img{aspect-ratio:4/3}
+        }
 
         /* testimonios */
         .snap{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.5rem 1.25rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -325,7 +335,11 @@
                     <h3>Lo dejé todo para sanar</h3>
                     <p>Dejé mi puesto de Director de Operaciones en el Grupo Lovenature Superfoods porque por dentro seguía roto. Me formé en Coaching, PNL y en el trabajo de David R. Hawkins, hasta dar con la clave: <strong>Un Curso de Milagros</strong>.</p>
                     <p>Ese libro no solo cambió mi vida. Es el núcleo de todo lo que haré contigo.</p>
-                    <figure class="single now"><img src="./assets/yo-sofa.webp" alt="Yo, hoy, hablando a cámara en mi salón, con libros sobre la mesa, entre ellos Un Curso de Milagros" loading="lazy" decoding="async"></figure>
+                    <div class="collage">
+                        <figure><img src="./assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
+                        <figure class="link"><a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer" aria-label="Ver mi canal de YouTube"><img src="./assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"></a><figcaption>Mi canal de YouTube</figcaption></figure>
+                        <figure><img src="./assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async"><figcaption>Sesiones 1 a 1</figcaption></figure>
+                    </div>
                 </div>
             </div>
         </div>
@@ -386,18 +400,7 @@
                 </div>
             </div>
 
-                        <div class="duo">
-                <figure>
-                    <img src="./assets/retiro-charla.webp" alt="Yo dando una charla en un retiro La mente del Fénix" loading="lazy" decoding="async">
-                    <figcaption>Retiro La mente del Fénix, hace unos años</figcaption>
-                </figure>
-                <figure>
-                    <img src="./assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async">
-                    <figcaption>Sesión 1 a 1 por videollamada · rostro difuminado por privacidad</figcaption>
-                </figure>
-            </div>
-
-            <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso pero tus bloqueos necesitan más tiempo para disolverse de raíz, seguimos trabajando juntos sin coste adicional.</p>
+                        <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso pero tus bloqueos necesitan más tiempo para disolverse de raíz, seguimos trabajando juntos sin coste adicional.</p>
         </div>
     </section>
 
@@ -444,7 +447,7 @@
     var root=document.documentElement;
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
 
-    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.duo img,.work-item,.guarantee,.cta-band .container,.final .container').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.work-item,.guarantee,.cta-band .container,.final .container').forEach(function(el){el.classList.add('reveal');});
     document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
 
     var io=new IntersectionObserver(function(entries){
@@ -472,7 +475,7 @@
     var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
     function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
     function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
-    document.querySelectorAll('.shot img,.step figure img,.duo img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    document.querySelectorAll('.shot img,.step figure:not(.link) img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
     document.getElementById('modal-close').addEventListener('click',close);
     modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
