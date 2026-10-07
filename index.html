@@ -178,8 +178,7 @@
             .path:last-child{padding-right:0}
         }
 
-        .more-link{display:inline-block;margin-top:1.1rem;font-size:.85rem;color:var(--gold);border-bottom:1px solid rgba(212,175,55,.4);transition:color .3s,border-color .3s}
-        .more-link:hover{color:var(--rose);border-color:var(--rose)}
+        .hero .more-link{margin-top:0}
         button.btn-ghost{background:transparent}
         .shot.extra{display:none}
         .shots.open .shot.extra{display:block}
@@ -208,7 +207,6 @@
 
         /* nuevos bloques */
         .for{font-family:var(--serif);font-style:italic;font-size:1.3rem;line-height:1.35;margin-bottom:2rem;max-width:32rem}
-        .call-note{margin-top:1.1rem;font-size:.85rem;color:var(--muted);max-width:28rem}
         .cta-band{padding:3.5rem 0}
         .cta-text{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:1.5rem}
 
@@ -216,9 +214,9 @@
         @media(prefers-reduced-motion:no-preference){
             @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
             @keyframes arch{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
-            .hero .role,.hero h1,.hero .lead,.hero .for,.hero .btn,.hero .call-note,.hero .more-link{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+            .hero .role,.hero h1,.hero .lead,.hero .for,.hero .more-link{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
             .hero .role{animation-delay:1.2s}.hero h1{animation-delay:.25s}.hero .lead{animation-delay:.45s}
-            .hero .for{animation-delay:.6s}.hero .btn{animation-delay:.75s}.hero .call-note{animation-delay:.9s}.hero .more-link{animation-delay:1.05s}
+            .hero .for{animation-delay:.6s}.hero .more-link{animation-delay:.8s}
             .portrait{animation:arch 1.4s cubic-bezier(.65,0,.25,1) .2s both}
         }
         .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -276,9 +274,7 @@
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
                 <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
                 <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida y no saben cómo avanzar.</p>
-                <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
-                <p class="call-note">En la llamada te doy pistas de dónde puede venir tu problema, resuelvo tus dudas y te cuento el precio.</p>
-                <a href="#empezar" class="more-link">Ver cómo trabajo y cómo empezar ↓</a>
+                <a href="#empezar" class="btn btn-gold more-link">Ver cómo trabajo y cómo empezar ↓</a>
             </div>
             <div class="portrait-wrap">
                 <div class="portrait">
