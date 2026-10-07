@@ -113,8 +113,9 @@
         @media(min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr;gap:5rem}}
         .hero h1{font-size:clamp(2.4rem,7vw,4.2rem);margin-bottom:1.5rem}
         .hero .lead{font-size:1.1rem;margin-bottom:1.5rem}
-        .role{font-size:.9rem;color:var(--gold);margin-bottom:1.25rem}
-        .portrait{justify-self:center;width:min(100%,22rem);aspect-ratio:3/4;border-radius:999px 999px .5rem .5rem;overflow:hidden;border:1px solid var(--gold);padding:.6rem}
+        .role{font-size:.8rem;color:var(--gold);margin-top:1rem}
+        .portrait-wrap{justify-self:center;width:min(100%,22rem);text-align:center}
+        .portrait{width:100%;aspect-ratio:3/4;border-radius:999px 999px .5rem .5rem;overflow:hidden;border:1px solid var(--gold);padding:.6rem}
         .portrait img{width:100%;height:100%;object-fit:cover;border-radius:999px 999px .3rem .3rem}
 
         /* historia */
@@ -184,6 +185,8 @@
         .shots.open .shot.extra{display:block}
         .more-wrap{margin-top:1.5rem;text-align:center}
 
+        .paths + .guarantee{max-width:48rem;margin:3rem auto 0}
+
         /* testimonios */
         .snap{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.5rem 1.25rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
         .snap::-webkit-scrollbar{display:none}
@@ -200,11 +203,6 @@
         .quote p{font-family:var(--serif);font-size:clamp(1.4rem,3.5vw,1.9rem);line-height:1.35;font-style:italic}
         .quote cite{display:block;margin-top:1rem;font-style:normal;font-size:.85rem;color:var(--gold)}
 
-        /* trabajo juntos */
-        .work{margin-top:3rem;border-top:1px solid var(--line)}
-        .work-item{display:grid;gap:.5rem;padding:2rem 0;border-bottom:1px solid var(--line)}
-        @media(min-width:768px){.work-item{grid-template-columns:16rem 1fr;gap:3rem}}
-        .work-item p{color:var(--muted);font-size:.98rem}
         .guarantee{margin-top:2.5rem;padding:1.5rem 1.75rem;border-left:2px solid var(--gold);background:rgba(212,175,55,.06);font-size:.95rem;color:var(--muted)}
         .guarantee strong{color:var(--cream);font-weight:600}
 
@@ -219,7 +217,7 @@
             @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
             @keyframes arch{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
             .hero .role,.hero h1,.hero .lead,.hero .for,.hero .btn,.hero .call-note,.hero .more-link{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
-            .hero .role{animation-delay:.1s}.hero h1{animation-delay:.25s}.hero .lead{animation-delay:.45s}
+            .hero .role{animation-delay:1.2s}.hero h1{animation-delay:.25s}.hero .lead{animation-delay:.45s}
             .hero .for{animation-delay:.6s}.hero .btn{animation-delay:.75s}.hero .call-note{animation-delay:.9s}.hero .more-link{animation-delay:1.05s}
             .portrait{animation:arch 1.4s cubic-bezier(.65,0,.25,1) .2s both}
         }
@@ -275,7 +273,6 @@
     <section class="hero">
         <div class="container hero-grid">
             <div>
-                <p class="role">Darío Arrigazzi · Mentor en desarrollo interior</p>
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
                 <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
                 <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida y no saben cómo avanzar.</p>
@@ -283,8 +280,11 @@
                 <p class="call-note">En la llamada te doy pistas de dónde puede venir tu problema, resuelvo tus dudas y te cuento el precio.</p>
                 <a href="#empezar" class="more-link">Ver cómo trabajo y cómo empezar ↓</a>
             </div>
-            <div class="portrait">
-                <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior" width="600" height="800">
+            <div class="portrait-wrap">
+                <div class="portrait">
+                    <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior" width="600" height="800">
+                </div>
+                <p class="role">Darío Arrigazzi · Mentor en desarrollo interior</p>
             </div>
         </div>
     </section>
@@ -405,36 +405,8 @@
         </div>
     </section>
 
-    <!-- CÓMO TRABAJAMOS -->
-    <section id="trabajo" class="alt">
-        <div class="container">
-            <div class="center">
-                <h2>Cómo trabajaremos juntos</h2>
-                <div class="rule"></div>
-                <p class="lead">Acompañamiento 1 a 1: 3 meses para trabajar un área de tu vida o 1 año para trabajar varias. No es un curso pregrabado: es una inmersión directa para desmontar los patrones que dirigen tu vida.</p>
-            </div>
-
-            <div class="work">
-                <div class="work-item">
-                    <h3>Sesiones profundas</h3>
-                    <p>Vamos a la raíz para descubrir los patrones y creencias ocultos que dirigen tu vida, combinando Un Curso de Milagros, PNL y Coaching.</p>
-                </div>
-                <div class="work-item">
-                    <h3>Soporte por WhatsApp</h3>
-                    <p>Acceso a mí de lunes a viernes para resolver dudas de tus ejercicios o ajustar tu plan.</p>
-                </div>
-                <div class="work-item">
-                    <h3>Plan de acción a medida</h3>
-                    <p>Hábitos claros, meditaciones guiadas, retos para pasar a la acción y ejercicios prácticos para casa.</p>
-                </div>
-            </div>
-
-                        <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso (asistes a las sesiones y haces los ejercicios) y al terminar los 3 meses aún queda trabajo en el área que elegiste, añadimos 2 sesiones sin coste.</p>
-        </div>
-    </section>
-
     <!-- ELIGE CÓMO EMPEZAR -->
-    <section id="empezar">
+    <section id="empezar" class="alt">
         <div class="container">
             <div class="center">
                 <h2>Elige cómo empezar</h2>
@@ -477,10 +449,17 @@
                     <small>Para trabajarlo a fondo</small>
                     <h3>Acompañamiento 1 a 1</h3>
                     <p class="price">3 meses · 1 año</p>
-                    <p>Un proceso individual de 3 meses para trabajar un área de tu vida, o de 1 año para trabajar varias. En la llamada gratuita te cuento el detalle y el precio.</p>
+                    <p>No es un curso pregrabado: es un proceso individual de 3 meses para trabajar un área de tu vida, o de 1 año para trabajar varias. En la llamada gratuita te cuento el detalle y el precio.</p>
+                    <ul class="includes">
+                        <li>Sesiones individuales con Un Curso de Milagros, PNL y Coaching</li>
+                        <li>Plan de acción con hábitos, meditaciones guiadas y retos</li>
+                        <li>Soporte por WhatsApp de lunes a viernes</li>
+                    </ul>
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
                 </div>
             </div>
+
+            <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso (asistes a las sesiones y haces los ejercicios) y al terminar los 3 meses aún queda trabajo en el área que elegiste, añadimos 2 sesiones sin coste.</p>
         </div>
     </section>
 
@@ -517,7 +496,7 @@
     var root=document.documentElement;
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
 
-    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.path,.work-item,.guarantee,.cta-band .container').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.path,.guarantee,.cta-band .container').forEach(function(el){el.classList.add('reveal');});
     document.querySelectorAll('.path').forEach(function(el,i){el.style.transitionDelay=(i*120)+'ms';});
     document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
 
