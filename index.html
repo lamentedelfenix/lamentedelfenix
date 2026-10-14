@@ -61,8 +61,8 @@
 
         .container{width:min(100% - 2.5rem,68rem);margin-inline:auto}
         .narrow{width:min(100% - 2.5rem,40rem);margin-inline:auto}
-        section{padding:4.5rem 0}
-        @media(min-width:768px){section{padding:7rem 0}}
+        section{padding:3.5rem 0}
+        @media(min-width:768px){section{padding:5rem 0}}
         .alt{background:var(--bg-2)}
 
         h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.12;letter-spacing:-.01em}
@@ -185,8 +185,6 @@
         .more-wrap{margin-top:1.5rem;text-align:center}
         @media(max-width:767px){.shot.extra{display:block}.more-wrap{display:none}}
 
-        .paths + .guarantee{max-width:48rem;margin:3rem auto 0}
-
         /* testimonios */
         .snap{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.5rem 1.25rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
         .snap::-webkit-scrollbar{display:none}
@@ -203,13 +201,14 @@
         .quote p{font-family:var(--serif);font-size:clamp(1.4rem,3.5vw,1.9rem);line-height:1.35;font-style:italic}
         .quote cite{display:block;margin-top:1rem;font-style:normal;font-size:.85rem;color:var(--gold)}
 
-        .guarantee{margin-top:2.5rem;padding:1.5rem 1.75rem;border-left:2px solid var(--gold);background:rgba(212,175,55,.06);font-size:.95rem;color:var(--muted)}
-        .guarantee strong{color:var(--cream);font-weight:600}
-
-        /* nuevos bloques */
+        /* nuevos bloques y emprendedores compacto */
         .for{font-family:var(--serif);font-style:italic;font-size:1.3rem;line-height:1.35;margin-bottom:2rem;max-width:32rem}
-        .cta-band{padding:3.5rem 0}
-        .cta-text{font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:1.5rem}
+        .ent-box{margin-top:3.5rem;padding:2rem 1.75rem;border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:.5rem;background:rgba(243,236,217,.02)}
+        @media(min-width:768px){.ent-box{padding:2.25rem 2.75rem}}
+        .eyebrow{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;font-weight:500}
+        .ent-box h3{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.75rem;color:var(--cream)}
+        .ent-box p{color:var(--muted);font-size:.96rem;max-width:52rem}
+        .ent-box strong{color:var(--cream);font-weight:500}
 
         /* movimiento */
         @media(prefers-reduced-motion:no-preference){
@@ -274,7 +273,7 @@
             <div>
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
                 <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
-                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida y no saben cómo avanzar.</p>
+                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida —y también para emprendedores cuyo proyecto frena donde empiezan sus propios bloqueos internos—.</p>
                 <a href="#empezar" class="btn btn-gold more-link">Ver cómo trabajo y cómo empezar ↓</a>
             </div>
             <div class="portrait-wrap">
@@ -319,16 +318,8 @@
         </div>
     </section>
 
-    <!-- LLAMADA INTERMEDIA -->
-    <section class="cta-band">
-        <div class="container center">
-            <p class="cta-text">Si algo de esto te suena, hablemos.</p>
-            <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
-        </div>
-    </section>
-
     <!-- HISTORIA -->
-    <section id="historia" class="alt">
+    <section id="historia">
         <div class="narrow">
             <h2>Yo también pasé por aquí</h2>
             <div class="rule"></div>
@@ -359,7 +350,7 @@
                 <div class="step">
                     <small>A los 30 años</small>
                     <h3>Lo dejé todo para sanar</h3>
-                    <p>Era Director de Operaciones en el Grupo Lovenature Superfoods. Y por dentro seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a lo que siempre me había apasionado: ayudar a las personas.</p>
+                    <p>Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods. Viví desde dentro la exigencia de liderar un negocio mientras, por dentro, seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a ayudar a las personas.</p>
                     <p>Me formé en Coaching, PNL y en el trabajo de David R. Hawkins, hasta dar con la clave: <strong>Un Curso de Milagros</strong>. Ese libro no solo cambió mi vida: es la base de mi forma de acompañar.</p>
                     <div class="collage">
                         <figure><img src="./assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
@@ -371,8 +362,8 @@
         </div>
     </section>
 
-    <!-- ANTES Y AHORA -->
-    <section>
+    <!-- ANTES Y AHORA + EMPRENDEDORES -->
+    <section id="emprendedores" class="alt">
         <div class="container">
             <div class="center">
                 <h2>Mi antes y mi ahora</h2>
@@ -398,12 +389,17 @@
                     <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
                 </div>
             </div>
-            <p class="tn-close center">Es el camino que hoy recorro con quienes acompaño.</p>
+
+            <div class="ent-box">
+                <span class="eyebrow">También para emprendedores</span>
+                <h3>«Un emprendimiento solo prospera al nivel en que se entrena la mente de quien lo lleva»</h3>
+                <p>Por mi etapa como empresario sé que cuando un proyecto se estanca casi nunca falta estrategia: <strong>lo frenan exactamente estos mismos bloqueos inconscientes</strong> (el miedo a exponerte y vender, el miedo al conflicto al poner límites o el techo de merecimiento). Por eso aplico las mismas herramientas profundas tanto para resolver cualquier bloqueo personal como para entrenar tu mente si estás al frente de un negocio.</p>
+            </div>
         </div>
     </section>
 
     <!-- ELIGE CÓMO EMPEZAR -->
-    <section id="empezar" class="alt">
+    <section id="empezar">
         <div class="container">
             <div class="center">
                 <h2>Elige cómo empezar</h2>
@@ -443,10 +439,10 @@
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
                 </div>
                 <div class="path">
-                    <small>Para trabajarlo a fondo</small>
+                    <small>Para trabajarlo a fondo · 3 meses o 1 año</small>
                     <h3>Acompañamiento 1 a 1</h3>
-                    <p class="price">3 meses · 1 año</p>
-                    <p>No es un curso pregrabado: es un proceso individual de 3 meses para trabajar un área de tu vida, o de 1 año para trabajar varias. En la llamada gratuita te cuento el detalle y el precio.</p>
+                    <p class="price">Desde 1.000 €</p>
+                    <p>Un proceso individual de 3 meses (desde 1.000 €) para transformar un bloqueo concreto, o de 1 año para un trabajo integral (personal o para emprendedores). En la llamada gratuita vemos tu caso.</p>
                     <ul class="includes">
                         <li>Sesiones individuales con Un Curso de Milagros, PNL y Coaching</li>
                         <li>Plan de acción con hábitos, meditaciones guiadas y retos</li>
@@ -455,8 +451,6 @@
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
                 </div>
             </div>
-
-            <p class="guarantee"><strong>Garantía de compromiso.</strong> Mi foco no son las horas sueltas, sino tu transformación. Si mantienes tu compromiso (asistes a las sesiones y haces los ejercicios) y al terminar los 3 meses aún queda trabajo en el área que elegiste, añadimos 2 sesiones sin coste.</p>
         </div>
     </section>
 
@@ -493,7 +487,7 @@
     var root=document.documentElement;
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
 
-    document.querySelectorAll('section:not(.final):not(.cta-band) h2,section:not(.hero):not(.final) .lead,.quote,.videos,.tn-head,.tn-close,.step figure img,.path,.guarantee,.cta-band .container').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('section h2,section:not(.hero) .lead,.quote,.videos,.tn-head,.ent-box,.step figure img,.path').forEach(function(el){el.classList.add('reveal');});
     document.querySelectorAll('.path').forEach(function(el,i){el.style.transitionDelay=(i*120)+'ms';});
     document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
 
