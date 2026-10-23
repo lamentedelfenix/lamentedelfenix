@@ -21,8 +21,8 @@
     <meta charset="UTF-8">
     <script>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Método Fénix para Emprendedores | Darío Arrigazzi — Mentalidad, PNL y UCDM</title>
-    <meta name="description" content="Mentoría para emprendedores y transformación personal con Darío Arrigazzi. Desbloquea tu mente y tu proyecto con PNL, Coaching y Un Curso de Milagros.">
+    <title>Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros</title>
+    <meta name="description" content="El Método Fénix de Darío Arrigazzi: transformación real a través de un proceso guiado. Basado en Un Curso de Milagros, PNL y Coaching.">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="Dcg6lm7959jmy4wV5tpjHY3zMxNpZ7hxZWMuBpaVAgw">
     <meta name="author" content="Darío Arrigazzi">
@@ -1484,8 +1484,7 @@
         }
     </style>
 </head>
-<!-- En index.html puedes poner data-mode="personal" y en emprendedores.html dejar data-mode="emprendedores" -->
-<body data-mode="emprendedores">
+<body data-mode="personal">
 
 <header class="banner">
     <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="La Mente del Fénix — Método Fénix de Darío Arrigazzi" width="1200" height="400" fetchpriority="high" decoding="sync">
@@ -1495,13 +1494,13 @@
 <nav class="mode-switcher-bar" aria-label="Selecciona tu enfoque">
     <span class="mode-switcher-label">¿Qué buscas hoy?</span>
     <div class="mode-tabs" role="tablist">
-        <button type="button" class="mode-tab active" data-set-mode="emprendedores" role="tab" aria-selected="true">
-            <span class="dot"></span>
-            <span>Mentoría para Emprendedores</span>
-        </button>
-        <button type="button" class="mode-tab" data-set-mode="personal" role="tab" aria-selected="false">
+        <button type="button" class="mode-tab active" data-set-mode="personal" role="tab" aria-selected="true">
             <span class="dot"></span>
             <span>Transformación Personal</span>
+        </button>
+        <button type="button" class="mode-tab" data-set-mode="emprendedores" role="tab" aria-selected="false">
+            <span class="dot"></span>
+            <span>Mentoría para Emprendedores</span>
         </button>
     </div>
 </nav>
@@ -1870,7 +1869,7 @@
     };
 
     function setMode(mode, scrollTop, updateUrl) {
-        if (mode !== 'emprendedores' && mode !== 'personal') mode = 'emprendedores';
+        if (mode !== 'emprendedores' && mode !== 'personal') mode = 'personal';
         body.setAttribute('data-mode', mode);
         if (titles[mode]) document.title = titles[mode];
 
