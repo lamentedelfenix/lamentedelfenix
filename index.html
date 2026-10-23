@@ -21,15 +21,15 @@
     <meta charset="UTF-8">
     <script>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros</title>
-    <meta name="description" content="El Método Fénix de Darío Arrigazzi: transformación real a través de un proceso guiado. Basado en Un Curso de Milagros, PNL y Coaching.">
+    <title>Método Fénix para Emprendedores | Darío Arrigazzi — Mentalidad, PNL y UCDM</title>
+    <meta name="description" content="Mentoría para emprendedores y transformación personal con Darío Arrigazzi. Desbloquea tu mente y tu proyecto con PNL, Coaching y Un Curso de Milagros.">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="Dcg6lm7959jmy4wV5tpjHY3zMxNpZ7hxZWMuBpaVAgw">
     <meta name="author" content="Darío Arrigazzi">
     <link rel="canonical" href="https://www.lamentedelfenix.com/">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.lamentedelfenix.com/">
-    <meta property="og:title" content="Método Fénix | Darío Arrigazzi — Transformación Real y Guiada">
+    <meta property="og:title" content="Método Fénix | Darío Arrigazzi — Transformación Real y Mentoría para Emprendedores">
     <meta property="og:description" content="Resultados reales a través de un proceso de acompañamiento. Basado en Un Curso de Milagros, PNL y Coaching.">
     <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
     <meta property="og:locale" content="es_ES">
@@ -40,7 +40,7 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="./assets/banner.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="https://www.lamentedelfenix.com/assets/banner.webp" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap">
 
     <style>
@@ -109,6 +109,22 @@
             outline-offset: 3px;
         }
 
+        /* Lógica de visibilidad por modo (Emprendedores vs Personal) */
+        body[data-mode="emprendedores"] [data-view="personal"] {
+            display: none !important;
+        }
+        body[data-mode="personal"] [data-view="emprendedores"] {
+            display: none !important;
+        }
+
+        @keyframes fadeMode {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mode-animate {
+            animation: fadeMode 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
         /* Layout & Containers */
         .container {
             width: min(100% - 2.25rem, 68rem);
@@ -135,6 +151,107 @@
             background: linear-gradient(180deg, var(--bg-2) 0%, #12110f 100%);
             border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
+        }
+
+        /* Selector Superior de Perfil */
+        .mode-switcher-bar {
+            position: sticky;
+            top: 0.65rem;
+            z-index: 60;
+            width: min(100% - 1.5rem, 46rem);
+            margin: 1.15rem auto 0;
+            padding: 0.45rem;
+            background: rgba(18, 17, 15, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--line-gold);
+            border-radius: 999px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .mode-switcher-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--gold-light);
+            font-weight: 600;
+            padding-top: 0.15rem;
+        }
+
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            gap: 0.35rem;
+        }
+
+        .mode-tab {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.65rem 0.85rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .mode-tab:hover {
+            color: var(--cream);
+            background: rgba(243, 236, 217, 0.05);
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 65%, #b89222 100%);
+            color: #141311;
+            box-shadow: 0 6px 20px -4px rgba(212, 175, 55, 0.45);
+        }
+
+        .mode-tab .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        .mode-tab.active .dot {
+            opacity: 1;
+            background: #141311;
+        }
+
+        @media (min-width: 640px) {
+            .mode-switcher-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0.4rem 0.45rem 0.4rem 1.25rem;
+            }
+            .mode-switcher-label {
+                padding-top: 0;
+                white-space: nowrap;
+            }
+            .mode-tabs {
+                width: auto;
+                min-width: 28rem;
+            }
+            .mode-tab {
+                font-size: 0.83rem;
+                padding: 0.65rem 1.2rem;
+            }
         }
 
         /* Typography */
@@ -271,14 +388,14 @@
 
         /* Hero */
         .hero {
-            padding: 2.5rem 0 4.5rem;
+            padding: 2rem 0 4.5rem;
             background: 
                 radial-gradient(65% 55% at 50% 18%, rgba(212, 175, 55, 0.09), transparent 70%),
                 radial-gradient(50% 55% at 88% 35%, rgba(233, 30, 99, 0.1), transparent 70%);
         }
 
         @media (min-width: 900px) {
-            .hero { padding: 4.5rem 0 6.5rem; }
+            .hero { padding: 3.5rem 0 6.5rem; }
         }
 
         .hero-grid {
@@ -294,10 +411,26 @@
             }
         }
 
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.11);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.1rem;
+            font-weight: 600;
+        }
+
         .hero h1 {
-            font-size: clamp(2.45rem, 8.2vw, 4.3rem);
+            font-size: clamp(2.35rem, 7.6vw, 4.1rem);
             margin-bottom: 1.25rem;
-            line-height: 1.06;
+            line-height: 1.07;
             text-wrap: balance;
         }
 
@@ -312,13 +445,34 @@
             font-style: italic;
             font-size: clamp(1.22rem, 3.6vw, 1.38rem);
             line-height: 1.38;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
             max-width: 34rem;
             padding: 1rem 1.25rem;
             background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, rgba(243, 236, 217, 0.015) 100%);
             border-left: 2px solid var(--gold);
             border-radius: 0 0.65rem 0.65rem 0;
             color: var(--cream);
+        }
+
+        .pillars-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pillar-tag {
+            font-size: 0.76rem;
+            color: var(--cream);
+            background: rgba(243, 236, 217, 0.04);
+            border: 1px solid var(--line);
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+        }
+
+        .pillar-tag strong {
+            color: var(--gold-light);
+            font-weight: 600;
         }
 
         .hero .more-link {
@@ -370,7 +524,7 @@
             z-index: 2;
             display: inline-block;
             font-size: 0.78rem;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
             color: var(--gold-light);
             margin-top: -1rem;
             padding: 0.45rem 1.15rem;
@@ -383,7 +537,7 @@
         /* Testimonios */
         .quote {
             position: relative;
-            max-width: 40rem;
+            max-width: 42rem;
             margin: 1rem auto 3rem;
             padding: 2.25rem 1.5rem 1.85rem;
             text-align: center;
@@ -878,7 +1032,7 @@
         }
 
         .tn-then::before {
-            content: 'Antes';
+            content: 'Bloqueo antes';
             color: #ff6090;
             background: rgba(233, 30, 99, 0.12);
             border: 1px solid rgba(233, 30, 99, 0.28);
@@ -886,7 +1040,7 @@
         }
 
         .tn-now::before {
-            content: 'Ahora';
+            content: 'Resultado ahora';
             color: var(--gold-light);
             background: rgba(212, 175, 55, 0.12);
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -937,7 +1091,7 @@
             }
         }
 
-        /* Bloque Emprendedores */
+        /* Bloque Destacado (Filosofía / Cambio de Rama) */
         .ent-box {
             margin-top: 3rem;
             padding: 2rem 1.5rem;
@@ -982,6 +1136,11 @@
             color: var(--muted);
             font-size: 0.96rem;
             max-width: 54rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ent-box p:last-child {
+            margin-bottom: 0;
         }
 
         .ent-box strong {
@@ -1008,7 +1167,7 @@
             transition: transform 0.35s ease, border-color 0.35s ease;
         }
 
-        .path:last-child {
+        .path.featured {
             background: 
                 radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.12), transparent 55%),
                 linear-gradient(165deg, rgba(212, 175, 55, 0.07) 0%, rgba(243, 236, 217, 0.02) 100%);
@@ -1151,11 +1310,11 @@
             .hero .role, .hero h1, .hero .lead, .hero .for, .hero .more-link {
                 animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
             }
-            .hero h1 { animation-delay: 0.2s; }
-            .hero .lead { animation-delay: 0.38s; }
-            .hero .for { animation-delay: 0.52s; }
-            .hero .more-link { animation-delay: 0.68s; }
-            .hero .role { animation-delay: 1s; }
+            .hero h1 { animation-delay: 0.15s; }
+            .hero .lead { animation-delay: 0.3s; }
+            .hero .for { animation-delay: 0.45s; }
+            .hero .more-link { animation-delay: 0.6s; }
+            .hero .role { animation-delay: 0.85s; }
             .portrait { animation: arch 1.3s cubic-bezier(0.65, 0, 0.25, 1) 0.15s both; }
         }
 
@@ -1206,25 +1365,6 @@
 
         .js .step.in::before {
             transform: scale(1);
-        }
-
-        .js .tn-then, .js .tn-now {
-            opacity: 0;
-            transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.2, 0.7, 0.2, 1);
-        }
-
-        .js .tn-now {
-            transform: translateX(-12px);
-            transition-delay: 0.25s;
-        }
-
-        .js .tn-row.in .tn-then {
-            opacity: 1;
-        }
-
-        .js .tn-row.in .tn-now {
-            opacity: 1;
-            transform: none;
         }
 
         /* Footer */
@@ -1344,27 +1484,61 @@
         }
     </style>
 </head>
-<body>
+<!-- En index.html puedes poner data-mode="personal" y en emprendedores.html dejar data-mode="emprendedores" -->
+<body data-mode="emprendedores">
 
 <header class="banner">
-    <img src="./assets/banner.webp" alt="La Mente del Fénix — Método Fénix de Darío Arrigazzi" width="1200" height="400" fetchpriority="high" decoding="sync">
+    <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="La Mente del Fénix — Método Fénix de Darío Arrigazzi" width="1200" height="400" fetchpriority="high" decoding="sync">
 </header>
+
+<!-- SELECTOR DE PERFIL INTEGRADO -->
+<nav class="mode-switcher-bar" aria-label="Selecciona tu enfoque">
+    <span class="mode-switcher-label">¿Qué buscas hoy?</span>
+    <div class="mode-tabs" role="tablist">
+        <button type="button" class="mode-tab active" data-set-mode="emprendedores" role="tab" aria-selected="true">
+            <span class="dot"></span>
+            <span>Mentoría para Emprendedores</span>
+        </button>
+        <button type="button" class="mode-tab" data-set-mode="personal" role="tab" aria-selected="false">
+            <span class="dot"></span>
+            <span>Transformación Personal</span>
+        </button>
+    </div>
+</nav>
 
 <main id="top">
     <!-- HERO -->
     <section class="hero">
         <div class="container hero-grid">
-            <div>
+            <!-- VERSIÓN EMPRENDEDORES -->
+            <div data-view="emprendedores" class="mode-animate">
+                <span class="hero-eyebrow">Mentoría de Mentalidad · PNL · Espiritualidad Aplicada</span>
+                <h1>Un negocio solo prospera al nivel en que se entrena la mente de quien lo lidera.</h1>
+                <p class="lead">Un acompañamiento individual que une Coaching, PNL y <em>Un Curso de Milagros</em> para desactivar de raíz el miedo a exponerte y vender, el síndrome del impostor y el techo inconsciente de merecimiento que hoy frenan tu proyecto.</p>
+                <p class="for">«Cuando un emprendimiento se estanca casi nunca falta estrategia: lo frenan tus propios bloqueos internos al liderar, poner límites o cobrar lo que vale tu trabajo.»</p>
+                <div class="pillars-row">
+                    <span class="pillar-tag"><strong>Ex Director de Operaciones</strong> · Visión empresarial</span>
+                    <span class="pillar-tag"><strong>PNL y Coaching</strong> · Reprogramación inconsciente</span>
+                    <span class="pillar-tag"><strong>UCDM y Hawkins</strong> · Liderar en paz</span>
+                </div>
+                <a href="#empezar" class="btn btn-gold more-link">Ver mentoría para emprendedores ↓</a>
+            </div>
+
+            <!-- VERSIÓN PERSONAL (Original) -->
+            <div data-view="personal" class="mode-animate">
+                <span class="hero-eyebrow">Acompañamiento Individual · PNL · Un Curso de Milagros</span>
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
-                <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida.</p>
-                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida —y también para emprendedores cuyo proyecto frena donde empiezan sus propios bloqueos internos—.</p>
+                <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida, tus relaciones y tu economía.</p>
+                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida —y buscan sanar conflictos emocionales, familiares o de valoración personal desde la raíz—.</p>
                 <a href="#empezar" class="btn btn-gold more-link">Ver cómo trabajo y cómo empezar ↓</a>
             </div>
+
             <div class="portrait-wrap">
                 <div class="portrait">
-                    <img src="./assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior" width="600" height="800">
+                    <img src="https://www.lamentedelfenix.com/assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior y emprendedores" width="600" height="800">
                 </div>
-                <p class="role">Darío Arrigazzi · Mentor en desarrollo interior</p>
+                <p class="role" data-view="emprendedores">Darío Arrigazzi · Mentor de Emprendedores</p>
+                <p class="role" data-view="personal">Darío Arrigazzi · Mentor en desarrollo interior</p>
             </div>
         </div>
     </section>
@@ -1372,8 +1546,10 @@
     <!-- TESTIMONIOS -->
     <section id="testimonios" class="alt">
         <div class="container center">
-            <h2>Lo que dicen quienes han trabajado conmigo</h2>
+            <h2 data-view="emprendedores">Lo que ocurre cuando desbloqueas la raíz</h2>
+            <h2 data-view="personal">Lo que dicen quienes han trabajado conmigo</h2>
             <div class="rule"></div>
+            <p class="lead" data-view="emprendedores">Cuando liberas la parálisis, la desmotivación y la falta de valor interno, tu capacidad de tomar acción y liderar tu proyecto se transforma por completo.</p>
         </div>
         <div class="container">
             <blockquote class="quote">
@@ -1389,13 +1565,13 @@
         </div>
 
         <div class="snap shots" aria-label="Reseñas de clientes">
-            <div class="shot"><img src="./assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
-            <div class="shot"><img src="./assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
-            <div class="shot extra"><img src="./assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
-            <div class="shot extra"><img src="./assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
-            <div class="shot extra"><img src="./assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
         </div>
         <div class="container more-wrap">
             <button type="button" id="more-reviews" class="btn btn-ghost" aria-expanded="false">Ver más reseñas</button>
@@ -1405,79 +1581,133 @@
     <!-- HISTORIA -->
     <section id="historia">
         <div class="narrow">
-            <h2>Yo también pasé por aquí</h2>
+            <h2 data-view="emprendedores">Sé lo que es liderar un negocio sin paz por dentro</h2>
+            <h2 data-view="personal">Yo también pasé por aquí</h2>
             <div class="rule"></div>
-            <p class="lead">Mi historia explica por qué hago este trabajo.</p>
+            <p class="lead" data-view="emprendedores">Conozco la exigencia empresarial desde dentro y también la raíz emocional que sabotea tus resultados.</p>
+            <p class="lead" data-view="personal">Mi historia explica por qué hago este trabajo.</p>
 
             <div class="story">
+                <!-- En Emprendedores ponemos primero su autoridad empresarial o conectamos su historia directamente con el liderazgo -->
+                <div class="step" data-view="emprendedores">
+                    <small>Mi etapa empresarial</small>
+                    <h3>Empresario y Director de Operaciones</h3>
+                    <p>Antes de dedicarme a acompañar a otros, fui empresario y <strong>Director de Operaciones en el Grupo Lovenature Superfoods</strong>. Viví en primera persona la presión de tomar decisiones, liderar equipos y sostener un negocio cuando, por dentro, cargas con miedos inconscientes y falta de paz.</p>
+                    <p>Ahí comprendí algo que ningún máster de negocios enseña: <strong>da igual cuántas estrategias apliques si tu mente inconsciente sigue programada en el miedo al conflicto, la insuficiencia o la culpa</strong>.</p>
+                </div>
+
                 <div class="step">
-                    <small>Infancia</small>
+                    <small>Infancia · El origen</small>
                     <h3>Lo que viví en casa</h3>
                     <p>Cuando era niño, mi padre maltrataba a mi madre. Yo lo veía todo y no podía hacer nada. Aquella impotencia lo cambió todo: desde entonces quise aliviar el sufrimiento de los demás.</p>
                     <div class="photos">
-                        <figure><img src="./assets/mama%20y%20familia.webp" alt="Mi madre, mis hermanos y yo, de pequeños" loading="lazy" decoding="async"></figure>
-                        <figure><img src="./assets/Yo%20peque%C3%B1o.webp" alt="Yo, de pequeño" loading="lazy" decoding="async"></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/mama%20y%20familia.webp" alt="Mi madre, mis hermanos y yo, de pequeños" loading="lazy" decoding="async"></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/Yo%20peque%C3%B1o.webp" alt="Yo, de pequeño" loading="lazy" decoding="async"></figure>
                     </div>
                 </div>
+
                 <div class="step">
                     <small>La paradoja</small>
                     <h3>Una contradicción que necesitaba entender</h3>
                     <p>Mi padre era terapeuta. Y de los mejores que he conocido. Venía gente de todas partes a verlo y fuera de casa lo admiraban. Dentro, era otra persona.</p>
-                    <figure class="single"><img src="./assets/Papa%20identidad%20tapada%20y%20mama.png" alt="Mi padre, con los ojos tapados, junto a mi madre, de jóvenes y bien vestidos" loading="lazy" decoding="async"></figure>
-                    <p>Esa contradicción me persiguió durante años: <strong>¿cómo podía alguien que ayudaba a tantos tratar así a los suyos?</strong> De ahí nació mi interés por la psicología humanista.</p>
+                    <figure class="single"><img src="https://www.lamentedelfenix.com/assets/Papa%20identidad%20tapada%20y%20mama.png" alt="Mi padre, con los ojos tapados, junto a mi madre, de jóvenes y bien vestidos" loading="lazy" decoding="async"></figure>
+                    <p>Esa contradicción me persiguió durante años: <strong>¿cómo podía alguien que ayudaba a tantos tratar así a los suyos?</strong> De ahí nació mi interés por comprender cómo funciona realmente la mente humana.</p>
                 </div>
+
                 <div class="step">
                     <small>El giro</small>
-                    <h3>Perdonar</h3>
-                    <p>Entenderlo no me liberó. Perdonarlo, sí. Hoy veo a mi padre como un maestro que me enseñó el camino de vuelta a la paz. Ese perdón, sin juicios, fue la pieza final de mi sanación y me enseñó que <strong>liberarse es posible</strong>, sin importar lo vivido.</p>
+                    <h3>Perdonar para recuperar el poder</h3>
+                    <p>Entenderlo intelectualmente no me liberó. Perdonarlo, sí. Hoy veo a mi padre como un maestro que me enseñó el camino de vuelta a la paz. Ese perdón, sin juicios, fue la pieza final de mi sanación y me demostró que <strong>desactivar cualquier bloqueo de raíz es posible</strong>, sin importar lo vivido.</p>
                 </div>
+
                 <div class="step">
-                    <small>A los 30 años</small>
-                    <h3>Lo dejé todo para sanar</h3>
-                    <p>Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods. Viví desde dentro la exigencia de liderar un negocio mientras, por dentro, seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a ayudar a las personas.</p>
-                    <p>Me formé en Coaching, PNL y en el trabajo de David R. Hawkins, hasta dar con la clave: <strong>Un Curso de Milagros</strong>. Ese libro no solo cambió mi vida: es la base de mi forma de acompañar.</p>
+                    <small>A los 30 años · El Método Fénix</small>
+                    <h3 data-view="emprendedores">Unir espiritualidad profunda, PNL y resultados</h3>
+                    <h3 data-view="personal">Lo dejé todo para sanar</h3>
+                    <p data-view="personal">Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods. Viví desde dentro la exigencia de liderar un negocio mientras, por dentro, seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a ayudar a las personas.</p>
+                    <p data-view="emprendedores">A los 30 años decidí dejar mi puesto directivo para sanar a fondo y crear un puente entre el mundo del desarrollo interior y las personas que quieren avanzar de verdad en su vida y en sus proyectos.</p>
+                    <p>Me formé en <strong>Coaching, PNL y en el trabajo de David R. Hawkins</strong>, hasta dar con la clave maestra: <strong>Un Curso de Milagros</strong>. Hoy integro todas estas herramientas para que no tengas que elegir entre prosperar fuera y estar en paz dentro.</p>
                     <div class="collage">
-                        <figure><img src="./assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
-                        <figure><img src="./assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
-                        <figure><img src="./assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async"><figcaption>Sesiones 1 a 1</figcaption></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async"><figcaption>Sesiones 1 a 1</figcaption></figure>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ANTES Y AHORA + EMPRENDEDORES -->
+    <!-- ANTES Y AHORA (ADAPTADO SEGÚN MODO) -->
     <section id="emprendedores" class="alt">
         <div class="container">
-            <div class="center">
-                <h2>Mi antes y mi ahora</h2>
-                <div class="rule"></div>
-                <p class="lead">Los miedos con los que yo cargaba y lo que hoy trabajo con las personas a las que acompaño.</p>
-            </div>
-            <div class="then-now">
-                <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
-                <div class="tn-row">
-                    <p class="tn-then">Miedo a mostrarme y exponerme.</p>
-                    <p class="tn-now">Grabo vídeos en YouTube sin ningún problema.</p>
+            <!-- CABECERA Y TABLA: VERSIÓN EMPRENDEDORES -->
+            <div data-view="emprendedores" class="mode-animate">
+                <div class="center">
+                    <h2>Los bloqueos que frenan tu emprendimiento</h2>
+                    <div class="rule"></div>
+                    <p class="lead">Los miedos inconscientes que yo mismo superé y que hoy reprogramamos en la mentoría para que tu negocio avance sin autosabotaje.</p>
                 </div>
-                <div class="tn-row">
-                    <p class="tn-then">Miedo a expresar lo que siento.</p>
-                    <p class="tn-now">Digo lo que pienso y lo que siento con naturalidad.</p>
+                <div class="then-now">
+                    <div class="tn-head"><span>Cuando el bloqueo dirige tu negocio</span><span>Cuando entrenas tu mente conmigo</span></div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a mostrarte en redes, exponer tu mensaje o vender sin sentir que incomodas.</p>
+                        <p class="tn-now">Comunicas tu valor en vídeo y en público con total naturalidad y vendes desde el servicio.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Síndrome del impostor, sentirte insuficiente y techo inconsciente con el dinero.</p>
+                        <p class="tn-now">Reconoces tu autoridad, cobras en paz lo que vale tu trabajo y sostienes mayor facturación.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo al conflicto al negociar, liderar colaboradores o poner límites a clientes difíciles.</p>
+                        <p class="tn-now">Tomas decisiones firmes, pones límites claros sin culpa y lideras con serenidad.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Emprender desde el sacrificio, la autoexigencia extrema y la ansiedad constante.</p>
+                        <p class="tn-now">Escalas tu proyecto desde la paz interior, la claridad mental y la confianza (UCDM + PNL).</p>
+                    </div>
                 </div>
-                <div class="tn-row">
-                    <p class="tn-then">Miedo a los conflictos.</p>
-                    <p class="tn-now">Puedo ser franco con quien quiera.</p>
-                </div>
-                <div class="tn-row">
-                    <p class="tn-then">Me sentía incapaz e insuficiente.</p>
-                    <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
+
+                <div class="ent-box">
+                    <span class="eyebrow">¿Buscas un enfoque 100 % personal?</span>
+                    <h3>«Las mismas heridas que bloquean un negocio son las que afectan tus relaciones y tu paz»</h3>
+                    <p>Si hoy no tienes un negocio o tu prioridad principal es sanar conflictos emocionales, relaciones de pareja o familiares, superar la culpa o recuperar tu autoestima personal, puedes cambiar a la versión de <strong>Transformación Personal</strong>.</p>
+                    <button type="button" class="btn btn-ghost" data-set-mode="personal">Cambiar a la versión Personal →</button>
                 </div>
             </div>
 
-            <div class="ent-box">
-                <span class="eyebrow">También para emprendedores</span>
-                <h3>«Un emprendimiento solo prospera al nivel en que se entrena la mente de quien lo lleva»</h3>
-                <p>Por mi etapa como empresario sé que cuando un proyecto se estanca casi nunca falta estrategia: <strong>lo frenan exactamente estos mismos bloqueos inconscientes</strong> (el miedo a exponerte y vender, el miedo al conflicto al poner límites o el techo de merecimiento). Por eso aplico las mismas herramientas profundas tanto para resolver cualquier bloqueo personal como para entrenar tu mente si estás al frente de un negocio.</p>
+            <!-- CABECERA Y TABLA: VERSIÓN PERSONAL (Original) -->
+            <div data-view="personal" class="mode-animate">
+                <div class="center">
+                    <h2>Mi antes y mi ahora</h2>
+                    <div class="rule"></div>
+                    <p class="lead">Los miedos con los que yo cargaba y lo que hoy trabajo con las personas a las que acompaño.</p>
+                </div>
+                <div class="then-now">
+                    <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a mostrarme y exponerme.</p>
+                        <p class="tn-now">Grabo vídeos en YouTube sin ningún problema.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a expresar lo que siento.</p>
+                        <p class="tn-now">Digo lo que pienso y lo que siento con naturalidad.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a los conflictos.</p>
+                        <p class="tn-now">Puedo ser franco con quien quiera.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Me sentía incapaz e insuficiente.</p>
+                        <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
+                    </div>
+                </div>
+
+                <div class="ent-box">
+                    <span class="eyebrow">También para emprendedores</span>
+                    <h3>«Un emprendimiento solo prospera al nivel en que se entrena la mente de quien lo lleva»</h3>
+                    <p>Por mi etapa como empresario sé que cuando un proyecto se estanca casi nunca falta estrategia: <strong>lo frenan exactamente estos mismos bloqueos inconscientes</strong> (el miedo a exponerte y vender, el miedo al conflicto al poner límites o el techo de merecimiento).</p>
+                    <button type="button" class="btn btn-ghost" data-set-mode="emprendedores">Ver versión para Emprendedores →</button>
+                </div>
             </div>
         </div>
     </section>
@@ -1486,11 +1716,67 @@
     <section id="empezar">
         <div class="container">
             <div class="center">
-                <h2>Elige cómo empezar</h2>
+                <h2 data-view="emprendedores">Elige cómo entrenar tu mente y tu proyecto</h2>
+                <h2 data-view="personal">Elige cómo empezar</h2>
                 <div class="rule"></div>
-                <p class="lead">Cada persona está en un punto distinto. Estas son las formas de trabajar conmigo.</p>
+                <p class="lead" data-view="emprendedores">Tres niveles de profundidad para desbloquear tu liderazgo y hacer crecer tu emprendimiento desde la paz interior.</p>
+                <p class="lead" data-view="personal">Cada persona está en un punto distinto. Estas son las formas de trabajar conmigo.</p>
             </div>
-            <div class="paths">
+
+            <!-- TARJETAS: VERSIÓN EMPRENDEDORES -->
+            <div class="paths mode-animate" data-view="emprendedores">
+                <div class="path">
+                    <small>Entrenamiento continuo · próximamente</small>
+                    <h3>Membresía Fénix</h3>
+                    <p class="price">55 € al mes</p>
+                    <p>Un espacio de entrenamiento mental y espiritual para mantener la claridad, trabajar tu autoestima y sostener tu energía mientras construyes tu camino, en comunidad.</p>
+                    <ul class="includes">
+                        <li>Comunidad de apoyo para compartir avances y dudas</li>
+                        <li>3 directos al mes conmigo, con grabación para verlos cuando quieras</li>
+                        <li>Aula con meditaciones guiadas, PNL y ejercicios prácticos</li>
+                        <li>Calendario de directos y conexión con otros miembros</li>
+                        <li>Acceso desde el móvil</li>
+                    </ul>
+                    <p class="wait-note">Sé de los primeros en entrar, con descuento.</p>
+                    <div class="waitlist">
+                        <button type="button" class="btn btn-ghost" disabled aria-disabled="true">Apúntate a la lista de espera</button>
+                        <span class="soon-tag">Muy pronto</span>
+                    </div>
+                </div>
+
+                <div class="path">
+                    <small>Diagnóstico de bloqueos</small>
+                    <h3>Sesión de inicio</h3>
+                    <p class="price">200 €</p>
+                    <p>Para detectar exactamente qué creencia inconsciente (exposición, ventas, autoridad o dinero) está frenando hoy tu negocio. Si continúas en la mentoría, los 200 € se descuentan.</p>
+                    <ul class="includes">
+                        <li>Sesión individual intensiva (aprox. 1 h 30 min)</li>
+                        <li>Mapa escrito de los bloqueos y creencias inconscientes detectadas</li>
+                        <li>Meditación de reprogramación hecha a medida</li>
+                        <li>Sesión corta de seguimiento a las 2 semanas</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
+                </div>
+
+                <div class="path featured">
+                    <small>Transformación profunda · 3 meses o 1 año</small>
+                    <h3>Mentoría 1 a 1 Emprendedores</h3>
+                    <p class="price">Desde 1.000 €</p>
+                    <p>Un proceso individual de 3 meses (para desbloquear un área clave de tu negocio) o de 1 año para acompañar de forma integral tu mentalidad, tu liderazgo y tu paz interior. En la llamada gratuita vemos tu caso.</p>
+                    <ul class="includes">
+                        <li>Sesiones 1 a 1 con PNL, Coaching y UCDM para disolver de raíz el autosabotaje y el techo de merecimiento</li>
+                        <li>Trabajo directo sobre visibilidad, ventas sin culpa, límites y toma de decisiones</li>
+                        <li>Grabación de todas las sesiones y resumen escrito de claves</li>
+                        <li>Meditaciones guiadas a medida para reprogramar tu inconsciente</li>
+                        <li>Plan de acción personalizado con hábitos y retos de negocio</li>
+                        <li>Soporte directo por WhatsApp de lunes a viernes</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
+                </div>
+            </div>
+
+            <!-- TARJETAS: VERSIÓN PERSONAL (Original) -->
+            <div class="paths mode-animate" data-view="personal">
                 <div class="path">
                     <small>Por tu cuenta · próximamente</small>
                     <h3>Membresía</h3>
@@ -1509,6 +1795,7 @@
                         <span class="soon-tag">Muy pronto</span>
                     </div>
                 </div>
+
                 <div class="path">
                     <small>Para conocernos</small>
                     <h3>Sesión de inicio</h3>
@@ -1522,7 +1809,8 @@
                     </ul>
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
                 </div>
-                <div class="path">
+
+                <div class="path featured">
                     <small>Para trabajarlo a fondo · 3 meses o 1 año</small>
                     <h3>Acompañamiento 1 a 1</h3>
                     <p class="price">Desde 1.000 €</p>
@@ -1550,15 +1838,15 @@
             <a href="mailto:darioarrigazzi@lamentedelfenix.com">darioarrigazzi@lamentedelfenix.com</a>
             <a href="https://www.instagram.com/soydarioarrigazzi/" target="_blank" rel="noopener noreferrer">Instagram</a>
             <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="./blog.html">Blog Fénix</a>
+            <a href="https://www.lamentedelfenix.com/blog.html">Blog Fénix</a>
             <a href="https://www.lamentedelfenix.com/ebook.html">eBook gratuito</a>
         </div>
         <nav class="legal" aria-label="Legal">
-            <a href="./privacidad.html">Política de privacidad</a>
-            <a href="./terminos.html">Términos del servicio</a>
-            <a href="./aviso-legal.html">Aviso legal</a>
-            <a href="./cookies.html">Política de cookies</a>
-        </nav>
+            <a href="https://www.lamentedelfenix.com/privacidad.html">Política de privacidad</a>
+            <a href="https://www.lamentedelfenix.com/terminos.html">Términos del servicio</a>
+            <a href="https://www.lamentedelfenix.com/aviso-legal.html">Aviso legal</a>
+            <a href="https://www.lamentedelfenix.com/cookies.html">Política de cookies</a>
+        </div>
         <p class="copy">&copy; 2026 La Mente del Fénix — Darío Arrigazzi. Todos los derechos reservados.</p>
     </div>
 </footer>
@@ -1570,18 +1858,78 @@
     </div>
 </div>
 
+<!-- Script de cambio de modo: detecta automáticamente si estás en index.html o en emprendedores.html -->
+<script>
+(function(){
+    var body = document.body;
+    var tabs = document.querySelectorAll('.mode-tab');
+    var triggers = document.querySelectorAll('[data-set-mode]');
+    var titles = {
+        emprendedores: 'Método Fénix para Emprendedores | Darío Arrigazzi — Mentalidad, PNL y UCDM',
+        personal: 'Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros'
+    };
+
+    function setMode(mode, scrollTop, updateUrl) {
+        if (mode !== 'emprendedores' && mode !== 'personal') mode = 'emprendedores';
+        body.setAttribute('data-mode', mode);
+        if (titles[mode]) document.title = titles[mode];
+
+        tabs.forEach(function(tab) {
+            var isAct = tab.getAttribute('data-set-mode') === mode;
+            tab.classList.toggle('active', isAct);
+            tab.setAttribute('aria-selected', isAct ? 'true' : 'false');
+        });
+
+        if (updateUrl) {
+            try {
+                var url = new URL(window.location);
+                url.searchParams.set('modo', mode);
+                window.history.replaceState({}, '', url);
+            } catch(e) {}
+        }
+
+        if (scrollTop) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    triggers.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var targetMode = btn.getAttribute('data-set-mode');
+            var isBottomBtn = !btn.classList.contains('mode-tab');
+            setMode(targetMode, isBottomBtn, true);
+        });
+    });
+
+    // 1. Si la URL tiene ?modo=personal o ?modo=emprendedores, tiene prioridad
+    var params = new URLSearchParams(window.location.search);
+    var urlMode = params.get('modo');
+    var path = window.location.pathname.toLowerCase();
+
+    if (urlMode === 'personal' || urlMode === 'emprendedores') {
+        setMode(urlMode, false, false);
+    } else if (path.indexOf('emprendedores') !== -1) {
+        // 2. Si el archivo es emprendedores.html, abre directamente en Emprendedores
+        setMode('emprendedores', false, false);
+    } else if (window.location.hostname.indexOf('lamentedelfenix') !== -1 || path.indexOf('index.html') !== -1) {
+        // 3. Si es la portada principal (index.html en tu dominio), abre en Personal por defecto
+        setMode('personal', false, false);
+    }
+})();
+</script>
+
 <script>
 (function(){
     var root=document.documentElement;
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
 
     document.querySelectorAll('section h2,section:not(.hero) .lead,.quote,.videos,.tn-head,.ent-box,.step figure img,.path').forEach(function(el){el.classList.add('reveal');});
-    document.querySelectorAll('.path').forEach(function(el,i){el.style.transitionDelay=(i*120)+'ms';});
+    document.querySelectorAll('.path').forEach(function(el,i){el.style.transitionDelay=((i%3)*120)+'ms';});
     document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
 
     var io=new IntersectionObserver(function(entries){
         entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+    },{threshold:.12,rootMargin:'0px 0px -4% 0px'});
     document.querySelectorAll('.reveal,.rule,.step,.tn-row,.shot').forEach(function(el){io.observe(el);});
 
     var story=document.querySelector('.story'), ticking=false;
