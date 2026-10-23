@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var gtmLoaded = false;
+            function loadGTM() {
+                if (gtmLoaded) return;
+                gtmLoaded = true;
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-TBXH5FP6');
+            }
+            ['scroll','mousemove','touchstart'].forEach(function(e){ window.addEventListener(e, loadGTM, {passive:true, once:true}); });
+            setTimeout(loadGTM, 3500);
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <script>document.documentElement.classList.add('js')</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método Fénix para Emprendedores | Darío Arrigazzi — Mentalidad, PNL y UCDM</title>
+    <meta name="description" content="Mentoría para emprendedores y transformación personal con Darío Arrigazzi. Desbloquea tu mente y tu proyecto con PNL, Coaching y Un Curso de Milagros.">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="Dcg6lm7959jmy4wV5tpjHY3zMxNpZ7hxZWMuBpaVAgw">
+    <meta name="author" content="Darío Arrigazzi">
+    <link rel="canonical" href="https://www.lamentedelfenix.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.lamentedelfenix.com/">
+    <meta property="og:title" content="Método Fénix | Darío Arrigazzi — Transformación Real y Mentoría para Emprendedores">
+    <meta property="og:description" content="Resultados reales a través de un proceso de acompañamiento. Basado en Un Curso de Milagros, PNL y Coaching.">
+    <meta property="og:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:site_name" content="Mente Fénix">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://www.lamentedelfenix.com/assets/banner.webp">
+
+    <link rel="icon" type="image/png" href="https://i.imgur.com/3qJIRc5.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="https://www.lamentedelfenix.com/assets/banner.webp" type="image/webp" fetchpriority="high">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap">
+
+    <style>
+        :root {
+            --bg: #161513;
+            --bg-2: #0f0e0c;
+            --surface: rgba(243, 236, 217, 0.035);
+            --surface-hover: rgba(243, 236, 217, 0.06);
+            --line: rgba(243, 236, 217, 0.11);
+            --line-gold: rgba(212, 175, 55, 0.28);
+            --cream: #f5efe0;
+            --muted: rgba(245, 239, 224, 0.72);
+            --gold: #d4af37;
+            --gold-light: #e6c65a;
+            --rose: #e91e63;
+            --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --sans: 'Montserrat', Helvetica, Arial, sans-serif;
+            --radius: 1rem;
+            --shadow-lg: 0 22px 48px -12px rgba(0, 0, 0, 0.65);
+            --shadow-gold: 0 12px 32px -8px rgba(212, 175, 55, 0.28);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-color: var(--bg-2);
+        }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 0%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 20%, rgba(233, 30, 99, 0.05) 0%, transparent 50%);
+            color: var(--cream);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 3px;
+        }
+
+        /* Lógica de visibilidad por modo (Emprendedores vs Personal) */
+        body[data-mode="emprendedores"] [data-view="personal"] {
+            display: none !important;
+        }
+        body[data-mode="personal"] [data-view="emprendedores"] {
+            display: none !important;
+        }
+
+        @keyframes fadeMode {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mode-animate {
+            animation: fadeMode 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        /* Layout & Containers */
+        .container {
+            width: min(100% - 2.25rem, 68rem);
+            margin-inline: auto;
+        }
+
+        .narrow {
+            width: min(100% - 2.25rem, 42rem);
+            margin-inline: auto;
+        }
+
+        section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .container { width: min(100% - 3rem, 68rem); }
+            .narrow { width: min(100% - 3rem, 42rem); }
+            section { padding: 6rem 0; }
+        }
+
+        .alt {
+            background: linear-gradient(180deg, var(--bg-2) 0%, #12110f 100%);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        /* Selector Superior de Perfil */
+        .mode-switcher-bar {
+            position: sticky;
+            top: 0.65rem;
+            z-index: 60;
+            width: min(100% - 1.5rem, 46rem);
+            margin: 1.15rem auto 0;
+            padding: 0.45rem;
+            background: rgba(18, 17, 15, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--line-gold);
+            border-radius: 999px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .mode-switcher-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--gold-light);
+            font-weight: 600;
+            padding-top: 0.15rem;
+        }
+
+        .mode-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            gap: 0.35rem;
+        }
+
+        .mode-tab {
+            appearance: none;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.65rem 0.85rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .mode-tab:hover {
+            color: var(--cream);
+            background: rgba(243, 236, 217, 0.05);
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 65%, #b89222 100%);
+            color: #141311;
+            box-shadow: 0 6px 20px -4px rgba(212, 175, 55, 0.45);
+        }
+
+        .mode-tab .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        .mode-tab.active .dot {
+            opacity: 1;
+            background: #141311;
+        }
+
+        @media (min-width: 640px) {
+            .mode-switcher-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0.4rem 0.45rem 0.4rem 1.25rem;
+            }
+            .mode-switcher-label {
+                padding-top: 0;
+                white-space: nowrap;
+            }
+            .mode-tabs {
+                width: auto;
+                min-width: 28rem;
+            }
+            .mode-tab {
+                font-size: 0.83rem;
+                padding: 0.65rem 1.2rem;
+            }
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--serif);
+            font-weight: 500;
+            line-height: 1.12;
+            letter-spacing: -0.01em;
+            color: var(--cream);
+        }
+
+        h2 {
+            font-size: clamp(2.15rem, 6vw, 3.25rem);
+            margin-bottom: 0.85rem;
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 4vw, 1.75rem);
+        }
+
+        .lead {
+            color: var(--muted);
+            font-size: clamp(0.98rem, 2.5vw, 1.08rem);
+            max-width: 36rem;
+            line-height: 1.65;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .center .lead {
+            margin-inline: auto;
+        }
+
+        .rule {
+            width: 4rem;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 65%, var(--rose) 100%);
+            margin: 1.25rem 0 1.5rem;
+            border-radius: 2px;
+        }
+
+        .center .rule {
+            margin-inline: auto;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--sans);
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            padding: 1.05rem 2rem;
+            border-radius: 999px;
+            border: 1px solid var(--gold);
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 65%, #b89222 100%);
+            color: #141311;
+            border-color: transparent;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .btn-gold:hover {
+            background: transparent;
+            color: var(--gold-light);
+            border-color: var(--gold-light);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.45);
+            padding: 0.85rem 1.6rem;
+            font-size: 0.88rem;
+        }
+
+        .btn-ghost:hover {
+            background: var(--gold);
+            color: #141311;
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
+            transform: translateY(-2px);
+        }
+
+        /* Banner */
+        .banner {
+            width: calc(100% - 1.5rem);
+            margin: 0.75rem auto 0;
+            aspect-ratio: 1200 / 460;
+            background: var(--bg-2);
+            border: 1px solid var(--line-gold);
+            border-radius: 0.85rem;
+            overflow: hidden;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+            position: relative;
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
+            pointer-events: none;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (min-width: 768px) {
+            .banner {
+                width: min(100% - 3rem, 72rem);
+                margin: 1.5rem auto 0;
+                border-radius: 1rem;
+            }
+        }
+
+        /* Hero */
+        .hero {
+            padding: 2rem 0 4.5rem;
+            background: 
+                radial-gradient(65% 55% at 50% 18%, rgba(212, 175, 55, 0.09), transparent 70%),
+                radial-gradient(50% 55% at 88% 35%, rgba(233, 30, 99, 0.1), transparent 70%);
+        }
+
+        @media (min-width: 900px) {
+            .hero { padding: 3.5rem 0 6.5rem; }
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 2.75rem;
+            align-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 4.5rem;
+            }
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.11);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1.1rem;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.35rem, 7.6vw, 4.1rem);
+            margin-bottom: 1.25rem;
+            line-height: 1.07;
+            text-wrap: balance;
+        }
+
+        .hero .lead {
+            font-size: clamp(1.02rem, 2.8vw, 1.14rem);
+            margin-bottom: 1.4rem;
+            color: rgba(245, 239, 224, 0.82);
+        }
+
+        .for {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: clamp(1.22rem, 3.6vw, 1.38rem);
+            line-height: 1.38;
+            margin-bottom: 1.75rem;
+            max-width: 34rem;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, rgba(243, 236, 217, 0.015) 100%);
+            border-left: 2px solid var(--gold);
+            border-radius: 0 0.65rem 0.65rem 0;
+            color: var(--cream);
+        }
+
+        .pillars-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pillar-tag {
+            font-size: 0.76rem;
+            color: var(--cream);
+            background: rgba(243, 236, 217, 0.04);
+            border: 1px solid var(--line);
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+        }
+
+        .pillar-tag strong {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        .hero .more-link {
+            width: 100%;
+        }
+
+        @media (min-width: 560px) {
+            .hero .more-link { width: auto; }
+        }
+
+        .portrait-wrap {
+            justify-self: center;
+            width: min(100%, 21rem);
+            text-align: center;
+            position: relative;
+        }
+
+        .portrait-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -8%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, transparent 68%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .portrait {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 999px 999px 1rem 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            padding: 0.55rem;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.12), rgba(19, 18, 16, 0.9));
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(243, 236, 217, 0.05);
+        }
+
+        .portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 999px 999px 0.65rem 0.65rem;
+        }
+
+        .role {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+            color: var(--gold-light);
+            margin-top: -1rem;
+            padding: 0.45rem 1.15rem;
+            background: #181715;
+            border: 1px solid var(--line-gold);
+            border-radius: 999px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Testimonios */
+        .quote {
+            position: relative;
+            max-width: 42rem;
+            margin: 1rem auto 3rem;
+            padding: 2.25rem 1.5rem 1.85rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(243, 236, 217, 0.04) 0%, rgba(243, 236, 217, 0.015) 100%);
+            border: 1px solid var(--line);
+            border-top: 1px solid var(--line-gold);
+            border-radius: var(--radius);
+            box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.45);
+        }
+
+        .quote::before {
+            content: '“';
+            position: absolute;
+            top: -1.4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--serif);
+            font-size: 3.4rem;
+            line-height: 1;
+            color: var(--gold);
+            background: var(--bg-2);
+            padding: 0 0.6rem;
+            border-radius: 50%;
+        }
+
+        @media (min-width: 768px) {
+            .quote { padding: 2.75rem 3rem 2.25rem; }
+        }
+
+        .quote p {
+            font-family: var(--serif);
+            font-size: clamp(1.38rem, 3.8vw, 1.85rem);
+            line-height: 1.38;
+            font-style: italic;
+            color: var(--cream);
+        }
+
+        .quote cite {
+            display: inline-block;
+            margin-top: 1.15rem;
+            font-style: normal;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .quote cite::before {
+            content: '— ';
+        }
+
+        /* Carousels (Mobile-First Fluidity) */
+        .snap {
+            display: flex;
+            gap: 1.1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding-inline: 1.25rem;
+            padding: 0.5rem 1.25rem 1.75rem;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .snap::-webkit-scrollbar {
+            display: none;
+        }
+
+        .videos {
+            margin-top: 2rem;
+        }
+
+        .video {
+            flex: 0 0 74vw;
+            max-width: 18.5rem;
+            aspect-ratio: 9 / 16;
+            scroll-snap-align: center;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.6);
+            transition: transform 0.35s ease, border-color 0.35s ease;
+        }
+
+        .video:hover {
+            border-color: var(--gold);
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .v-marta {
+            order: -1;
+        }
+
+        @media (min-width: 768px) {
+            .videos {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .v-marta { order: 0; }
+        }
+
+        .shots {
+            margin-top: 1.25rem;
+            align-items: center;
+        }
+
+        .shot {
+            flex: 0 0 76vw;
+            max-width: 17.5rem;
+            height: 24.5rem;
+            scroll-snap-align: center;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--line);
+            border-radius: 0.9rem;
+            padding: 0.65rem;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .shot:hover {
+            border-color: var(--line-gold);
+        }
+
+        .shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: zoom-in;
+            border-radius: 0.5rem;
+        }
+
+        .shot.extra {
+            display: none;
+        }
+
+        .shots.open .shot.extra {
+            display: block;
+        }
+
+        .more-wrap {
+            margin-top: 1.75rem;
+            text-align: center;
+        }
+
+        @media (max-width: 767px) {
+            .shot.extra { display: block; }
+            .more-wrap { display: none; }
+        }
+
+        /* Reseñas en cascada (Escritorio) */
+        @media (min-width: 768px) {
+            .shots {
+                display: block;
+                columns: 4;
+                column-gap: 1.25rem;
+                width: min(100% - 3rem, 68rem);
+                margin: 2.75rem auto 0;
+                padding: 0;
+                overflow: visible;
+            }
+            .shot {
+                display: block;
+                width: 100%;
+                max-width: none;
+                height: auto;
+                margin-bottom: 1.25rem;
+                break-inside: avoid;
+                padding: 0.45rem;
+                background: rgba(243, 236, 217, 0.02);
+            }
+            .shot img {
+                height: auto;
+                object-fit: initial;
+                border-radius: 0.55rem;
+            }
+            .js .shot {
+                opacity: 0;
+                transform: translateY(-32px);
+                transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease;
+            }
+            .js .shot.in {
+                opacity: 1;
+                transform: none;
+            }
+            .js .shot.in:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* Historia (Timeline Editorial) */
+        .story {
+            margin-top: 3rem;
+            position: relative;
+            padding-left: 1.65rem;
+        }
+
+        @media (min-width: 640px) {
+            .story { padding-left: 2.5rem; }
+        }
+
+        .story::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            bottom: 0;
+            width: 1px;
+            background: rgba(212, 175, 55, 0.16);
+            z-index: 0;
+        }
+
+        .story::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            bottom: 0;
+            width: 1.5px;
+            background: linear-gradient(180deg, var(--rose) 0%, var(--gold) 25%, var(--gold-light) 100%);
+            transform-origin: top;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.45);
+        }
+
+        .step {
+            position: relative;
+            margin-bottom: 2.25rem;
+            padding: 1.5rem 1.35rem;
+            background: linear-gradient(145deg, rgba(243, 236, 217, 0.035) 0%, rgba(243, 236, 217, 0.01) 100%);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (min-width: 640px) {
+            .step {
+                padding: 2rem 2.25rem;
+                margin-bottom: 2.75rem;
+            }
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            left: calc(-1.65rem - 5.5px);
+            top: 1.75rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px rgba(212, 175, 55, 0.35);
+            z-index: 2;
+        }
+
+        @media (min-width: 640px) {
+            .step::before {
+                left: calc(-2.5rem - 5.5px);
+                top: 2.2rem;
+            }
+        }
+
+        .step:first-child::before {
+            background: var(--rose);
+            box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px rgba(233, 30, 99, 0.4);
+        }
+
+        .step small {
+            display: inline-block;
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            margin-bottom: 0.65rem;
+        }
+
+        .step:first-child small {
+            color: #ff6090;
+            background: rgba(233, 30, 99, 0.1);
+            border-color: rgba(233, 30, 99, 0.3);
+        }
+
+        .step h3 {
+            margin-bottom: 0.75rem;
+            font-size: clamp(1.5rem, 4.2vw, 1.85rem);
+        }
+
+        .step p {
+            color: var(--muted);
+            margin-bottom: 0.9rem;
+            font-size: 0.96rem;
+        }
+
+        .step p:last-child {
+            margin-bottom: 0;
+        }
+
+        .step strong {
+            color: var(--cream);
+            font-weight: 600;
+        }
+
+        .step figure {
+            margin-top: 1.15rem;
+        }
+
+        .step figure img {
+            border-radius: 0.6rem;
+            border: 1px solid rgba(243, 236, 217, 0.16);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+            filter: sepia(0.12) contrast(1.02);
+            cursor: zoom-in;
+            transition: transform 0.35s ease, filter 0.35s ease;
+        }
+
+        .step figure img:hover {
+            filter: sepia(0);
+        }
+
+        .photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            align-items: center;
+            margin-top: 1.25rem;
+        }
+
+        .photos figure {
+            margin-top: 0;
+        }
+
+        .photos figure:nth-child(odd) {
+            transform: rotate(-1.2deg);
+        }
+
+        .photos figure:nth-child(even) {
+            transform: rotate(1.2deg);
+        }
+
+        .step figure.single {
+            margin: 1.25rem 0;
+        }
+
+        .step figure.single img {
+            max-height: 26rem;
+            width: auto;
+            margin-inline: auto;
+        }
+
+        .step figure.now img {
+            filter: none;
+        }
+
+        .step figcaption {
+            margin-top: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .collage {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0.65rem;
+            margin-top: 1.5rem;
+        }
+
+        .collage figure {
+            position: relative;
+            margin: 0;
+            overflow: hidden;
+            border-radius: 0.65rem;
+            border: 1px solid var(--line);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .collage figure:first-child {
+            grid-row: span 2;
+        }
+
+        .collage figure img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            filter: none;
+            cursor: zoom-in;
+            transition: transform 0.5s ease;
+        }
+
+        .collage figure:hover img {
+            transform: scale(1.03);
+        }
+
+        .collage figure:not(:first-child) img {
+            aspect-ratio: 1;
+        }
+
+        .collage figcaption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 1.8rem 0.75rem 0.6rem;
+            background: linear-gradient(transparent, rgba(15, 14, 12, 0.88));
+            font-size: 0.74rem;
+            font-weight: 500;
+            line-height: 1.35;
+            color: var(--cream);
+            pointer-events: none;
+        }
+
+        @media (max-width: 560px) {
+            .collage {
+                grid-template-columns: 1fr 1fr;
+            }
+            .collage figure:first-child {
+                grid-column: span 2;
+                grid-row: auto;
+            }
+            .collage figure:first-child img {
+                aspect-ratio: 16 / 10;
+            }
+        }
+
+        /* Antes y Ahora */
+        .then-now {
+            margin-top: 2.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .tn-head {
+            display: none;
+        }
+
+        .tn-row {
+            display: grid;
+            gap: 0.9rem;
+            padding: 1.4rem 1.35rem;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 0.9rem;
+            box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.35);
+            position: relative;
+        }
+
+        .tn-then {
+            font-size: 0.94rem;
+            color: var(--muted);
+            padding-bottom: 0.85rem;
+            border-bottom: 1px dashed rgba(243, 236, 217, 0.1);
+        }
+
+        .tn-now {
+            font-family: var(--serif);
+            font-size: 1.45rem;
+            line-height: 1.25;
+            color: var(--cream);
+        }
+
+        .tn-then::before,
+        .tn-now::before {
+            display: inline-block;
+            font-family: var(--sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            margin-bottom: 0.45rem;
+        }
+
+        .tn-then::before {
+            content: 'Bloqueo antes';
+            color: #ff6090;
+            background: rgba(233, 30, 99, 0.12);
+            border: 1px solid rgba(233, 30, 99, 0.28);
+            display: table;
+        }
+
+        .tn-now::before {
+            content: 'Resultado ahora';
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: table;
+        }
+
+        @media (min-width: 768px) {
+            .then-now {
+                margin-top: 3rem;
+                gap: 0.85rem;
+            }
+            .tn-head {
+                display: grid;
+                grid-template-columns: 1fr 1.25fr;
+                gap: 3rem;
+                padding: 0 1.75rem 0.5rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--gold);
+            }
+            .tn-head span:first-child {
+                color: #ff6090;
+            }
+            .tn-row {
+                grid-template-columns: 1fr 1.25fr;
+                gap: 3rem;
+                align-items: center;
+                padding: 1.5rem 1.75rem;
+                transition: border-color 0.3s ease, background 0.3s ease;
+            }
+            .tn-row:hover {
+                border-color: var(--line-gold);
+                background: var(--surface-hover);
+            }
+            .tn-then {
+                font-size: 1rem;
+                padding-bottom: 0;
+                border-bottom: 0;
+            }
+            .tn-now {
+                font-size: 1.6rem;
+            }
+            .tn-then::before,
+            .tn-now::before {
+                display: none;
+            }
+        }
+
+        /* Bloque Destacado (Filosofía / Cambio de Rama) */
+        .ent-box {
+            margin-top: 3rem;
+            padding: 2rem 1.5rem;
+            border: 1px solid var(--line-gold);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius);
+            background: 
+                radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.1), transparent 55%),
+                linear-gradient(145deg, rgba(243, 236, 217, 0.04) 0%, rgba(243, 236, 217, 0.015) 100%);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (min-width: 768px) {
+            .ent-box {
+                margin-top: 3.5rem;
+                padding: 2.5rem 3rem;
+            }
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.74rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 0.85rem;
+            font-weight: 600;
+        }
+
+        .ent-box h3 {
+            font-size: clamp(1.45rem, 3.5vw, 2.05rem);
+            margin-bottom: 0.9rem;
+            color: var(--cream);
+            line-height: 1.22;
+        }
+
+        .ent-box p {
+            color: var(--muted);
+            font-size: 0.96rem;
+            max-width: 54rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .ent-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .ent-box strong {
+            color: var(--cream);
+            font-weight: 600;
+        }
+
+        /* Elige cómo empezar (Tarjetas de Programas) */
+        .paths {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2.75rem;
+        }
+
+        .path {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(165deg, rgba(243, 236, 217, 0.045) 0%, rgba(243, 236, 217, 0.015) 100%);
+            border: 1px solid var(--line);
+            border-radius: 1.15rem;
+            box-shadow: 0 18px 40px -15px rgba(0, 0, 0, 0.55);
+            position: relative;
+            transition: transform 0.35s ease, border-color 0.35s ease;
+        }
+
+        .path.featured {
+            background: 
+                radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.12), transparent 55%),
+                linear-gradient(165deg, rgba(212, 175, 55, 0.07) 0%, rgba(243, 236, 217, 0.02) 100%);
+            border-color: rgba(212, 175, 55, 0.45);
+            box-shadow: 0 22px 48px -12px rgba(0, 0, 0, 0.7), 0 0 28px -10px rgba(212, 175, 55, 0.2);
+        }
+
+        .path small {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .path h3 {
+            font-size: 2rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .path .price,
+        .path p.price {
+            font-family: var(--serif);
+            font-size: 1.85rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--gold-light);
+            margin-bottom: 1.15rem;
+            padding-bottom: 1.15rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .path p {
+            color: var(--muted);
+            font-size: 0.94rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .includes {
+            list-style: none;
+            margin: 0 0 2rem;
+        }
+
+        .includes li {
+            position: relative;
+            padding: 0.4rem 0 0.4rem 1.75rem;
+            font-size: 0.91rem;
+            line-height: 1.55;
+            color: rgba(245, 239, 224, 0.82);
+        }
+
+        .includes li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0.42rem;
+            width: 1.15rem;
+            height: 1.15rem;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.14);
+            color: var(--gold-light);
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .path .btn {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .wait-note {
+            margin-bottom: 1rem !important;
+            font-size: 0.9rem !important;
+            color: var(--cream) !important;
+            font-weight: 500;
+        }
+
+        .waitlist {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .waitlist .btn {
+            width: 100%;
+        }
+
+        .btn[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: var(--line);
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+        }
+
+        .soon-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #ff6090;
+            background: rgba(233, 30, 99, 0.1);
+            border: 1px solid rgba(233, 30, 99, 0.4);
+            border-radius: 2rem;
+            padding: 0.25rem 0.85rem;
+            margin-inline: auto;
+        }
+
+        @media (min-width: 900px) {
+            .paths {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+                align-items: stretch;
+            }
+            .path {
+                padding: 2.25rem 1.85rem;
+            }
+            .path:hover {
+                transform: translateY(-4px);
+                border-color: rgba(212, 175, 55, 0.4);
+            }
+        }
+
+        /* Animaciones y Movimiento */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes rise {
+                from { opacity: 0; transform: translateY(22px); }
+                to { opacity: 1; transform: none; }
+            }
+            @keyframes arch {
+                from { clip-path: inset(100% 0 0 0); }
+                to { clip-path: inset(0); }
+            }
+            .hero .role, .hero h1, .hero .lead, .hero .for, .hero .more-link {
+                animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+            }
+            .hero h1 { animation-delay: 0.15s; }
+            .hero .lead { animation-delay: 0.3s; }
+            .hero .for { animation-delay: 0.45s; }
+            .hero .more-link { animation-delay: 0.6s; }
+            .hero .role { animation-delay: 0.85s; }
+            .portrait { animation: arch 1.3s cubic-bezier(0.65, 0, 0.25, 1) 0.15s both; }
+        }
+
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.85s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .js .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        .js .rule {
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s;
+        }
+
+        .js .center .rule {
+            transform-origin: center;
+        }
+
+        .js .rule.in {
+            transform: scaleX(1);
+        }
+
+        .js .story::before {
+            transform: scaleY(var(--p, 0));
+        }
+
+        .js .step {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .js .step.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        .js .step::before {
+            transform: scale(0);
+            transition: transform 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) 0.2s;
+        }
+
+        .js .step.in::before {
+            transform: scale(1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-2);
+            border-top: 1px solid var(--line);
+            padding: 3.5rem 0 2.75rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.65rem 0.85rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .contacts a {
+            color: var(--cream);
+            font-size: 0.85rem;
+            padding: 0.55rem 1.1rem;
+            background: rgba(243, 236, 217, 0.035);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .contacts a:hover {
+            color: var(--gold-light);
+            border-color: var(--line-gold);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        .legal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem 1.5rem;
+            font-size: 0.8rem;
+            color: rgba(243, 236, 217, 0.5);
+            margin-bottom: 1.5rem;
+        }
+
+        .legal a {
+            transition: color 0.25s ease;
+        }
+
+        .legal a:hover {
+            color: var(--cream);
+        }
+
+        .copy {
+            font-size: 0.76rem;
+            color: rgba(243, 236, 217, 0.38);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 9, 8, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-inner {
+            position: relative;
+            max-width: 32rem;
+            width: 100%;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .modal.active .modal-inner {
+            transform: scale(1);
+        }
+
+        .modal img {
+            width: 100%;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 0.75rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal button {
+            position: absolute;
+            top: 0.65rem;
+            right: 0.65rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(15, 14, 12, 0.85);
+            color: #fff;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<!-- En index.html puedes poner data-mode="personal" y en emprendedores.html dejar data-mode="emprendedores" -->
+<body data-mode="emprendedores">
+
+<header class="banner">
+    <img src="https://www.lamentedelfenix.com/assets/banner.webp" alt="La Mente del Fénix — Método Fénix de Darío Arrigazzi" width="1200" height="400" fetchpriority="high" decoding="sync">
+</header>
+
+<!-- SELECTOR DE PERFIL INTEGRADO -->
+<nav class="mode-switcher-bar" aria-label="Selecciona tu enfoque">
+    <span class="mode-switcher-label">¿Qué buscas hoy?</span>
+    <div class="mode-tabs" role="tablist">
+        <button type="button" class="mode-tab active" data-set-mode="emprendedores" role="tab" aria-selected="true">
+            <span class="dot"></span>
+            <span>Mentoría para Emprendedores</span>
+        </button>
+        <button type="button" class="mode-tab" data-set-mode="personal" role="tab" aria-selected="false">
+            <span class="dot"></span>
+            <span>Transformación Personal</span>
+        </button>
+    </div>
+</nav>
+
+<main id="top">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <!-- VERSIÓN EMPRENDEDORES -->
+            <div data-view="emprendedores" class="mode-animate">
+                <span class="hero-eyebrow">Mentoría de Mentalidad · PNL · Espiritualidad Aplicada</span>
+                <h1>Un negocio solo prospera al nivel en que se entrena la mente de quien lo lidera.</h1>
+                <p class="lead">Un acompañamiento individual que une Coaching, PNL y <em>Un Curso de Milagros</em> para desactivar de raíz el miedo a exponerte y vender, el síndrome del impostor y el techo inconsciente de merecimiento que hoy frenan tu proyecto.</p>
+                <p class="for">«Cuando un emprendimiento se estanca casi nunca falta estrategia: lo frenan tus propios bloqueos internos al liderar, poner límites o cobrar lo que vale tu trabajo.»</p>
+                <div class="pillars-row">
+                    <span class="pillar-tag"><strong>Ex Director de Operaciones</strong> · Visión empresarial</span>
+                    <span class="pillar-tag"><strong>PNL y Coaching</strong> · Reprogramación inconsciente</span>
+                    <span class="pillar-tag"><strong>UCDM y Hawkins</strong> · Liderar en paz</span>
+                </div>
+                <a href="#empezar" class="btn btn-gold more-link">Ver mentoría para emprendedores ↓</a>
+            </div>
+
+            <!-- VERSIÓN PERSONAL (Original) -->
+            <div data-view="personal" class="mode-animate">
+                <span class="hero-eyebrow">Acompañamiento Individual · PNL · Un Curso de Milagros</span>
+                <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
+                <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida, tus relaciones y tu economía.</p>
+                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida —y buscan sanar conflictos emocionales, familiares o de valoración personal desde la raíz—.</p>
+                <a href="#empezar" class="btn btn-gold more-link">Ver cómo trabajo y cómo empezar ↓</a>
+            </div>
+
+            <div class="portrait-wrap">
+                <div class="portrait">
+                    <img src="https://www.lamentedelfenix.com/assets/dario%20perfil.webp" alt="Darío Arrigazzi, mentor en desarrollo interior y emprendedores" width="600" height="800">
+                </div>
+                <p class="role" data-view="emprendedores">Darío Arrigazzi · Mentor de Emprendedores</p>
+                <p class="role" data-view="personal">Darío Arrigazzi · Mentor en desarrollo interior</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonios" class="alt">
+        <div class="container center">
+            <h2 data-view="emprendedores">Lo que ocurre cuando desbloqueas la raíz</h2>
+            <h2 data-view="personal">Lo que dicen quienes han trabajado conmigo</h2>
+            <div class="rule"></div>
+            <p class="lead" data-view="emprendedores">Cuando liberas la parálisis, la desmotivación y la falta de valor interno, tu capacidad de tomar acción y liderar tu proyecto se transforma por completo.</p>
+        </div>
+        <div class="container">
+            <blockquote class="quote">
+                <p>«Sentí como si me hubiera quitado un peso de encima. La desmotivación y la parálisis desaparecieron. Nunca hubiese pensado que todo procedía de la falta de valor por mi padre.»</p>
+                <cite>Natalia C.</cite>
+            </blockquote>
+        </div>
+
+        <div class="snap videos" aria-label="Testimonios en vídeo">
+            <div class="video v-ryan"><iframe src="https://www.youtube.com/embed/iBStROsIr2s?rel=0" title="Testimonio de Ryan" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-marta"><iframe src="https://www.youtube.com/embed/nES2IuiHWGk?rel=0" title="Testimonio de Marta" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+            <div class="video v-natalia"><iframe src="https://www.youtube.com/embed/ZD7JmoxYowE?rel=0" title="Testimonio de Natalia" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        </div>
+
+        <div class="snap shots" aria-label="Reseñas de clientes">
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 7.webp" alt="Reseña de cliente 7" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 6.webp" alt="Reseña de cliente 6" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 1.webp" alt="Reseña de cliente 1" loading="lazy" decoding="async"></div>
+            <div class="shot"><img src="https://www.lamentedelfenix.com/assets/Captura 2.webp" alt="Reseña de cliente 2" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 3.webp" alt="Reseña de cliente 3" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 4.webp" alt="Reseña de cliente 4" loading="lazy" decoding="async"></div>
+            <div class="shot extra"><img src="https://www.lamentedelfenix.com/assets/Captura 5.webp" alt="Reseña de cliente 5" loading="lazy" decoding="async"></div>
+        </div>
+        <div class="container more-wrap">
+            <button type="button" id="more-reviews" class="btn btn-ghost" aria-expanded="false">Ver más reseñas</button>
+        </div>
+    </section>
+
+    <!-- HISTORIA -->
+    <section id="historia">
+        <div class="narrow">
+            <h2 data-view="emprendedores">Sé lo que es liderar un negocio sin paz por dentro</h2>
+            <h2 data-view="personal">Yo también pasé por aquí</h2>
+            <div class="rule"></div>
+            <p class="lead" data-view="emprendedores">Conozco la exigencia empresarial desde dentro y también la raíz emocional que sabotea tus resultados.</p>
+            <p class="lead" data-view="personal">Mi historia explica por qué hago este trabajo.</p>
+
+            <div class="story">
+                <!-- En Emprendedores ponemos primero su autoridad empresarial o conectamos su historia directamente con el liderazgo -->
+                <div class="step" data-view="emprendedores">
+                    <small>Mi etapa empresarial</small>
+                    <h3>Empresario y Director de Operaciones</h3>
+                    <p>Antes de dedicarme a acompañar a otros, fui empresario y <strong>Director de Operaciones en el Grupo Lovenature Superfoods</strong>. Viví en primera persona la presión de tomar decisiones, liderar equipos y sostener un negocio cuando, por dentro, cargas con miedos inconscientes y falta de paz.</p>
+                    <p>Ahí comprendí algo que ningún máster de negocios enseña: <strong>da igual cuántas estrategias apliques si tu mente inconsciente sigue programada en el miedo al conflicto, la insuficiencia o la culpa</strong>.</p>
+                </div>
+
+                <div class="step">
+                    <small>Infancia · El origen</small>
+                    <h3>Lo que viví en casa</h3>
+                    <p>Cuando era niño, mi padre maltrataba a mi madre. Yo lo veía todo y no podía hacer nada. Aquella impotencia lo cambió todo: desde entonces quise aliviar el sufrimiento de los demás.</p>
+                    <div class="photos">
+                        <figure><img src="https://www.lamentedelfenix.com/assets/mama%20y%20familia.webp" alt="Mi madre, mis hermanos y yo, de pequeños" loading="lazy" decoding="async"></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/Yo%20peque%C3%B1o.webp" alt="Yo, de pequeño" loading="lazy" decoding="async"></figure>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <small>La paradoja</small>
+                    <h3>Una contradicción que necesitaba entender</h3>
+                    <p>Mi padre era terapeuta. Y de los mejores que he conocido. Venía gente de todas partes a verlo y fuera de casa lo admiraban. Dentro, era otra persona.</p>
+                    <figure class="single"><img src="https://www.lamentedelfenix.com/assets/Papa%20identidad%20tapada%20y%20mama.png" alt="Mi padre, con los ojos tapados, junto a mi madre, de jóvenes y bien vestidos" loading="lazy" decoding="async"></figure>
+                    <p>Esa contradicción me persiguió durante años: <strong>¿cómo podía alguien que ayudaba a tantos tratar así a los suyos?</strong> De ahí nació mi interés por comprender cómo funciona realmente la mente humana.</p>
+                </div>
+
+                <div class="step">
+                    <small>El giro</small>
+                    <h3>Perdonar para recuperar el poder</h3>
+                    <p>Entenderlo intelectualmente no me liberó. Perdonarlo, sí. Hoy veo a mi padre como un maestro que me enseñó el camino de vuelta a la paz. Ese perdón, sin juicios, fue la pieza final de mi sanación y me demostró que <strong>desactivar cualquier bloqueo de raíz es posible</strong>, sin importar lo vivido.</p>
+                </div>
+
+                <div class="step">
+                    <small>A los 30 años · El Método Fénix</small>
+                    <h3 data-view="emprendedores">Unir espiritualidad profunda, PNL y resultados</h3>
+                    <h3 data-view="personal">Lo dejé todo para sanar</h3>
+                    <p data-view="personal">Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods. Viví desde dentro la exigencia de liderar un negocio mientras, por dentro, seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a ayudar a las personas.</p>
+                    <p data-view="emprendedores">A los 30 años decidí dejar mi puesto directivo para sanar a fondo y crear un puente entre el mundo del desarrollo interior y las personas que quieren avanzar de verdad en su vida y en sus proyectos.</p>
+                    <p>Me formé en <strong>Coaching, PNL y en el trabajo de David R. Hawkins</strong>, hasta dar con la clave maestra: <strong>Un Curso de Milagros</strong>. Hoy integro todas estas herramientas para que no tengas que elegir entre prosperar fuera y estar en paz dentro.</p>
+                    <div class="collage">
+                        <figure><img src="https://www.lamentedelfenix.com/assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
+                        <figure><img src="https://www.lamentedelfenix.com/assets/sesion-1-a-1.webp" alt="Sesión 1 a 1 por videollamada, con el rostro de la persona difuminado" loading="lazy" decoding="async"><figcaption>Sesiones 1 a 1</figcaption></figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANTES Y AHORA (ADAPTADO SEGÚN MODO) -->
+    <section id="emprendedores" class="alt">
+        <div class="container">
+            <!-- CABECERA Y TABLA: VERSIÓN EMPRENDEDORES -->
+            <div data-view="emprendedores" class="mode-animate">
+                <div class="center">
+                    <h2>Los bloqueos que frenan tu emprendimiento</h2>
+                    <div class="rule"></div>
+                    <p class="lead">Los miedos inconscientes que yo mismo superé y que hoy reprogramamos en la mentoría para que tu negocio avance sin autosabotaje.</p>
+                </div>
+                <div class="then-now">
+                    <div class="tn-head"><span>Cuando el bloqueo dirige tu negocio</span><span>Cuando entrenas tu mente conmigo</span></div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a mostrarte en redes, exponer tu mensaje o vender sin sentir que incomodas.</p>
+                        <p class="tn-now">Comunicas tu valor en vídeo y en público con total naturalidad y vendes desde el servicio.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Síndrome del impostor, sentirte insuficiente y techo inconsciente con el dinero.</p>
+                        <p class="tn-now">Reconoces tu autoridad, cobras en paz lo que vale tu trabajo y sostienes mayor facturación.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo al conflicto al negociar, liderar colaboradores o poner límites a clientes difíciles.</p>
+                        <p class="tn-now">Tomas decisiones firmes, pones límites claros sin culpa y lideras con serenidad.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Emprender desde el sacrificio, la autoexigencia extrema y la ansiedad constante.</p>
+                        <p class="tn-now">Escalas tu proyecto desde la paz interior, la claridad mental y la confianza (UCDM + PNL).</p>
+                    </div>
+                </div>
+
+                <div class="ent-box">
+                    <span class="eyebrow">¿Buscas un enfoque 100 % personal?</span>
+                    <h3>«Las mismas heridas que bloquean un negocio son las que afectan tus relaciones y tu paz»</h3>
+                    <p>Si hoy no tienes un negocio o tu prioridad principal es sanar conflictos emocionales, relaciones de pareja o familiares, superar la culpa o recuperar tu autoestima personal, puedes cambiar a la versión de <strong>Transformación Personal</strong>.</p>
+                    <button type="button" class="btn btn-ghost" data-set-mode="personal">Cambiar a la versión Personal →</button>
+                </div>
+            </div>
+
+            <!-- CABECERA Y TABLA: VERSIÓN PERSONAL (Original) -->
+            <div data-view="personal" class="mode-animate">
+                <div class="center">
+                    <h2>Mi antes y mi ahora</h2>
+                    <div class="rule"></div>
+                    <p class="lead">Los miedos con los que yo cargaba y lo que hoy trabajo con las personas a las que acompaño.</p>
+                </div>
+                <div class="then-now">
+                    <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a mostrarme y exponerme.</p>
+                        <p class="tn-now">Grabo vídeos en YouTube sin ningún problema.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a expresar lo que siento.</p>
+                        <p class="tn-now">Digo lo que pienso y lo que siento con naturalidad.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Miedo a los conflictos.</p>
+                        <p class="tn-now">Puedo ser franco con quien quiera.</p>
+                    </div>
+                    <div class="tn-row">
+                        <p class="tn-then">Me sentía incapaz e insuficiente.</p>
+                        <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
+                    </div>
+                </div>
+
+                <div class="ent-box">
+                    <span class="eyebrow">También para emprendedores</span>
+                    <h3>«Un emprendimiento solo prospera al nivel en que se entrena la mente de quien lo lleva»</h3>
+                    <p>Por mi etapa como empresario sé que cuando un proyecto se estanca casi nunca falta estrategia: <strong>lo frenan exactamente estos mismos bloqueos inconscientes</strong> (el miedo a exponerte y vender, el miedo al conflicto al poner límites o el techo de merecimiento).</p>
+                    <button type="button" class="btn btn-ghost" data-set-mode="emprendedores">Ver versión para Emprendedores →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ELIGE CÓMO EMPEZAR -->
+    <section id="empezar">
+        <div class="container">
+            <div class="center">
+                <h2 data-view="emprendedores">Elige cómo entrenar tu mente y tu proyecto</h2>
+                <h2 data-view="personal">Elige cómo empezar</h2>
+                <div class="rule"></div>
+                <p class="lead" data-view="emprendedores">Tres niveles de profundidad para desbloquear tu liderazgo y hacer crecer tu emprendimiento desde la paz interior.</p>
+                <p class="lead" data-view="personal">Cada persona está en un punto distinto. Estas son las formas de trabajar conmigo.</p>
+            </div>
+
+            <!-- TARJETAS: VERSIÓN EMPRENDEDORES -->
+            <div class="paths mode-animate" data-view="emprendedores">
+                <div class="path">
+                    <small>Entrenamiento continuo · próximamente</small>
+                    <h3>Membresía Fénix</h3>
+                    <p class="price">55 € al mes</p>
+                    <p>Un espacio de entrenamiento mental y espiritual para mantener la claridad, trabajar tu autoestima y sostener tu energía mientras construyes tu camino, en comunidad.</p>
+                    <ul class="includes">
+                        <li>Comunidad de apoyo para compartir avances y dudas</li>
+                        <li>3 directos al mes conmigo, con grabación para verlos cuando quieras</li>
+                        <li>Aula con meditaciones guiadas, PNL y ejercicios prácticos</li>
+                        <li>Calendario de directos y conexión con otros miembros</li>
+                        <li>Acceso desde el móvil</li>
+                    </ul>
+                    <p class="wait-note">Sé de los primeros en entrar, con descuento.</p>
+                    <div class="waitlist">
+                        <button type="button" class="btn btn-ghost" disabled aria-disabled="true">Apúntate a la lista de espera</button>
+                        <span class="soon-tag">Muy pronto</span>
+                    </div>
+                </div>
+
+                <div class="path">
+                    <small>Diagnóstico de bloqueos</small>
+                    <h3>Sesión de inicio</h3>
+                    <p class="price">200 €</p>
+                    <p>Para detectar exactamente qué creencia inconsciente (exposición, ventas, autoridad o dinero) está frenando hoy tu negocio. Si continúas en la mentoría, los 200 € se descuentan.</p>
+                    <ul class="includes">
+                        <li>Sesión individual intensiva (aprox. 1 h 30 min)</li>
+                        <li>Mapa escrito de los bloqueos y creencias inconscientes detectadas</li>
+                        <li>Meditación de reprogramación hecha a medida</li>
+                        <li>Sesión corta de seguimiento a las 2 semanas</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
+                </div>
+
+                <div class="path featured">
+                    <small>Transformación profunda · 3 meses o 1 año</small>
+                    <h3>Mentoría 1 a 1 Emprendedores</h3>
+                    <p class="price">Desde 1.000 €</p>
+                    <p>Un proceso individual de 3 meses (para desbloquear un área clave de tu negocio) o de 1 año para acompañar de forma integral tu mentalidad, tu liderazgo y tu paz interior. En la llamada gratuita vemos tu caso.</p>
+                    <ul class="includes">
+                        <li>Sesiones 1 a 1 con PNL, Coaching y UCDM para disolver de raíz el autosabotaje y el techo de merecimiento</li>
+                        <li>Trabajo directo sobre visibilidad, ventas sin culpa, límites y toma de decisiones</li>
+                        <li>Grabación de todas las sesiones y resumen escrito de claves</li>
+                        <li>Meditaciones guiadas a medida para reprogramar tu inconsciente</li>
+                        <li>Plan de acción personalizado con hábitos y retos de negocio</li>
+                        <li>Soporte directo por WhatsApp de lunes a viernes</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
+                </div>
+            </div>
+
+            <!-- TARJETAS: VERSIÓN PERSONAL (Original) -->
+            <div class="paths mode-animate" data-view="personal">
+                <div class="path">
+                    <small>Por tu cuenta · próximamente</small>
+                    <h3>Membresía</h3>
+                    <p class="price">55 € al mes</p>
+                    <p>Una membresía de autoconocimiento para quienes se sienten estancados y no saben por dónde empezar: una guía para empezar a desbloquear tu vida y trabajar tu autoestima, acompañado por una comunidad.</p>
+                    <ul class="includes">
+                        <li>Comunidad de apoyo para compartir avances y dudas</li>
+                        <li>3 directos al mes conmigo, con grabación para verlos cuando quieras</li>
+                        <li>Aula con meditaciones guiadas y ejercicios</li>
+                        <li>Calendario de directos y mensajes con otros miembros</li>
+                        <li>Acceso desde el móvil</li>
+                    </ul>
+                    <p class="wait-note">Sé de los primeros en entrar, con descuento.</p>
+                    <div class="waitlist">
+                        <button type="button" class="btn btn-ghost" disabled aria-disabled="true">Apúntate a la lista de espera</button>
+                        <span class="soon-tag">Muy pronto</span>
+                    </div>
+                </div>
+
+                <div class="path">
+                    <small>Para conocernos</small>
+                    <h3>Sesión de inicio</h3>
+                    <p class="price">200 €</p>
+                    <p>Para ver de dónde viene lo que te bloquea. Si continúas, los 200 € se descuentan del programa.</p>
+                    <ul class="includes">
+                        <li>Sesión individual (aprox. 1 h 30 min)</li>
+                        <li>Meditación hecha a medida</li>
+                        <li>Resumen escrito de las creencias inconscientes detectadas</li>
+                        <li>Sesión de seguimiento corta a las 2 semanas</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
+                </div>
+
+                <div class="path featured">
+                    <small>Para trabajarlo a fondo · 3 meses o 1 año</small>
+                    <h3>Acompañamiento 1 a 1</h3>
+                    <p class="price">Desde 1.000 €</p>
+                    <p>Un proceso individual de 3 meses (desde 1.000 €) para transformar un área concreta de tu vida, o de 1 año para un trabajo integral (personal o para emprendedores). En la llamada gratuita vemos tu caso.</p>
+                    <ul class="includes">
+                        <li>Sesiones individuales para detectar y disolver el origen de tu bloqueo, no solo los síntomas</li>
+                        <li>Grabación de todas las sesiones para que puedas volver a ellas</li>
+                        <li>Meditaciones guiadas a medida para tu proceso</li>
+                        <li>Plan de acción personalizado con hábitos y retos</li>
+                        <li>Resumen escrito de las claves de cada sesión</li>
+                        <li>Seguimiento de tu progreso y sesión final de cierre</li>
+                        <li>Soporte por WhatsApp de lunes a viernes</li>
+                    </ul>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <div class="contacts">
+            <a href="mailto:darioarrigazzi@lamentedelfenix.com">darioarrigazzi@lamentedelfenix.com</a>
+            <a href="https://www.instagram.com/soydarioarrigazzi/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.youtube.com/channel/UC55t1Y4iGWWcXO_iU2QC-jA" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://www.lamentedelfenix.com/blog.html">Blog Fénix</a>
+            <a href="https://www.lamentedelfenix.com/ebook.html">eBook gratuito</a>
+        </div>
+        <nav class="legal" aria-label="Legal">
+            <a href="https://www.lamentedelfenix.com/privacidad.html">Política de privacidad</a>
+            <a href="https://www.lamentedelfenix.com/terminos.html">Términos del servicio</a>
+            <a href="https://www.lamentedelfenix.com/aviso-legal.html">Aviso legal</a>
+            <a href="https://www.lamentedelfenix.com/cookies.html">Política de cookies</a>
+        </div>
+        <p class="copy">&copy; 2026 La Mente del Fénix — Darío Arrigazzi. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<div id="image-modal" class="modal" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+    <div class="modal-inner">
+        <img id="modal-image" src="" alt="Reseña ampliada">
+        <button id="modal-close" aria-label="Cerrar imagen">&times;</button>
+    </div>
+</div>
+
+<!-- Script de cambio de modo: detecta automáticamente si estás en index.html o en emprendedores.html -->
+<script>
+(function(){
+    var body = document.body;
+    var tabs = document.querySelectorAll('.mode-tab');
+    var triggers = document.querySelectorAll('[data-set-mode]');
+    var titles = {
+        emprendedores: 'Método Fénix para Emprendedores | Darío Arrigazzi — Mentalidad, PNL y UCDM',
+        personal: 'Método Fénix | Darío Arrigazzi — Transformación Personal con Un Curso de Milagros'
+    };
+
+    function setMode(mode, scrollTop, updateUrl) {
+        if (mode !== 'emprendedores' && mode !== 'personal') mode = 'emprendedores';
+        body.setAttribute('data-mode', mode);
+        if (titles[mode]) document.title = titles[mode];
+
+        tabs.forEach(function(tab) {
+            var isAct = tab.getAttribute('data-set-mode') === mode;
+            tab.classList.toggle('active', isAct);
+            tab.setAttribute('aria-selected', isAct ? 'true' : 'false');
+        });
+
+        if (updateUrl) {
+            try {
+                var url = new URL(window.location);
+                url.searchParams.set('modo', mode);
+                window.history.replaceState({}, '', url);
+            } catch(e) {}
+        }
+
+        if (scrollTop) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    triggers.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var targetMode = btn.getAttribute('data-set-mode');
+            var isBottomBtn = !btn.classList.contains('mode-tab');
+            setMode(targetMode, isBottomBtn, true);
+        });
+    });
+
+    // 1. Si la URL tiene ?modo=personal o ?modo=emprendedores, tiene prioridad
+    var params = new URLSearchParams(window.location.search);
+    var urlMode = params.get('modo');
+    var path = window.location.pathname.toLowerCase();
+
+    if (urlMode === 'personal' || urlMode === 'emprendedores') {
+        setMode(urlMode, false, false);
+    } else if (path.indexOf('emprendedores') !== -1) {
+        // 2. Si el archivo es emprendedores.html, abre directamente en Emprendedores
+        setMode('emprendedores', false, false);
+    } else if (window.location.hostname.indexOf('lamentedelfenix') !== -1 || path.indexOf('index.html') !== -1) {
+        // 3. Si es la portada principal (index.html en tu dominio), abre en Personal por defecto
+        setMode('personal', false, false);
+    }
+})();
+</script>
+
+<script>
+(function(){
+    var root=document.documentElement;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){root.classList.remove('js');return;}
+
+    document.querySelectorAll('section h2,section:not(.hero) .lead,.quote,.videos,.tn-head,.ent-box,.step figure img,.path').forEach(function(el){el.classList.add('reveal');});
+    document.querySelectorAll('.path').forEach(function(el,i){el.style.transitionDelay=((i%3)*120)+'ms';});
+    document.querySelectorAll('.shot').forEach(function(el,i){el.style.transitionDelay=((i%4)*140)+'ms';});
+
+    var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12,rootMargin:'0px 0px -4% 0px'});
+    document.querySelectorAll('.reveal,.rule,.step,.tn-row,.shot').forEach(function(el){io.observe(el);});
+
+    var story=document.querySelector('.story'), ticking=false;
+    function progress(){
+        var r=story.getBoundingClientRect();
+        var p=(window.innerHeight*.6-r.top)/r.height;
+        story.style.setProperty('--p',Math.max(0,Math.min(1,p)));
+        ticking=false;
+    }
+    if(story){
+        window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(progress); } },{passive:true});
+        window.addEventListener('resize',progress);
+        progress();
+    }
+})();
+</script>
+
+<script>
+(function(){
+    var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
+    function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
+    function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
+    document.querySelectorAll('.shot img,.step figure img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    var more=document.getElementById('more-reviews'), shots=document.querySelector('.shots');
+    if(more&&shots){
+        more.addEventListener('click',function(){
+            var open=shots.classList.toggle('open');
+            more.setAttribute('aria-expanded',open);
+            more.textContent=open?'Ver menos reseñas':'Ver más reseñas';
+            if(!open) more.scrollIntoView({behavior:'smooth',block:'center'});
+        });
+    }
+    document.getElementById('modal-close').addEventListener('click',close);
+    modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+
+</body>
+</html>
