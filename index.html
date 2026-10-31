@@ -1093,8 +1093,8 @@
 
         /* Bloque Destacado (Filosofía / Cambio de Rama) */
         .ent-box {
-            margin-top: 3rem;
-            padding: 2rem 1.5rem;
+            margin-top: 2.25rem;
+            padding: 1.35rem 1.5rem;
             border: 1px solid var(--line-gold);
             border-left: 3px solid var(--gold);
             border-radius: var(--radius);
@@ -1102,45 +1102,60 @@
                 radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.1), transparent 55%),
                 linear-gradient(145deg, rgba(243, 236, 217, 0.04) 0%, rgba(243, 236, 217, 0.015) 100%);
             box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
         }
 
         @media (min-width: 768px) {
             .ent-box {
-                margin-top: 3.5rem;
-                padding: 2.5rem 3rem;
+                margin-top: 2.75rem;
+                padding: 1.6rem 2.25rem;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 2rem;
             }
         }
 
         .eyebrow {
             display: inline-block;
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--gold-light);
             background: rgba(212, 175, 55, 0.12);
             border: 1px solid rgba(212, 175, 55, 0.28);
-            padding: 0.25rem 0.75rem;
+            padding: 0.2rem 0.65rem;
             border-radius: 999px;
-            margin-bottom: 0.85rem;
+            margin-bottom: 0.45rem;
             font-weight: 600;
         }
 
         .ent-box h3 {
-            font-size: clamp(1.45rem, 3.5vw, 2.05rem);
-            margin-bottom: 0.9rem;
+            font-size: clamp(1.3rem, 3vw, 1.65rem);
+            margin-bottom: 0.25rem;
             color: var(--cream);
             line-height: 1.22;
         }
 
         .ent-box p {
             color: var(--muted);
-            font-size: 0.96rem;
-            max-width: 54rem;
-            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            max-width: 38rem;
+            margin-bottom: 0;
         }
 
-        .ent-box p:last-child {
-            margin-bottom: 0;
+        .ent-box .btn {
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .ent-box .btn {
+                width: auto;
+            }
         }
 
         .ent-box strong {
@@ -1514,12 +1529,12 @@
     <!-- HERO -->
     <section class="hero">
         <div class="container hero-grid">
-            <!-- VERSIÓN EMPRENDEDORES (ACTUALIZADA: Mente + Estrategia Empresarial) -->
+            <!-- VERSIÓN EMPRENDEDORES (ÁGIL Y DIRECTA) -->
             <div data-view="emprendedores" class="mode-animate">
                 <span class="hero-eyebrow">Mentoría de Negocio y Mentalidad · Estrategia · PNL · UCDM</span>
                 <h1>Un negocio solo prospera al nivel de la mente y la estrategia de quien lo lidera.</h1>
-                <p class="lead">Un acompañamiento individual donde uno mi experiencia como <strong>exempresario y Director de Operaciones</strong> con PNL, Coaching y <em>Un Curso de Milagros</em>: desactivamos tus bloqueos inconscientes al vender o liderar mientras trazamos ideas, foco y estrategias reales para hacer crecer tu proyecto.</p>
-                <p class="for">«La estrategia sin paz interior te quema; la mentalidad sin dirección empresarial no factura. Aquí trabajamos las dos: desbloqueamos tu mente y ordenamos tu negocio.»</p>
+                <p class="lead">Uno mi experiencia como <strong>exempresario y Director de Operaciones</strong> con PNL y <em>Un Curso de Milagros</em> para desactivar tus bloqueos al vender y darte estrategia real para escalar tu proyecto.</p>
+                <p class="for">«La estrategia sin paz interior te quema; la mentalidad sin dirección no factura. Aquí trabajamos las dos.»</p>
                 <div class="pillars-row">
                     <span class="pillar-tag"><strong>Exempresario y Dir. de Operaciones</strong> · Consejo, ideas y estrategia</span>
                     <span class="pillar-tag"><strong>PNL y Coaching</strong> · Reprogramación inconsciente</span>
@@ -1528,12 +1543,12 @@
                 <a href="#empezar" class="btn btn-gold more-link">Ver mentoría para emprendedores ↓</a>
             </div>
 
-            <!-- VERSIÓN PERSONAL -->
+            <!-- VERSIÓN PERSONAL (ÁGIL Y DIRECTA) -->
             <div data-view="personal" class="mode-animate">
                 <span class="hero-eyebrow">Acompañamiento Individual · PNL · Un Curso de Milagros</span>
                 <h1>Recupera tu paz, tu claridad y tu poder personal.</h1>
-                <p class="lead">Un acompañamiento individual, con una mirada también espiritual, para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que frenan tu vida, tus relaciones y tu bienestar.</p>
-                <p class="for">Para personas que se sienten perdidas o bloqueadas en su vida —y buscan sanar conflictos emocionales, familiares o de valoración personal desde la raíz—.</p>
+                <p class="lead">Acompañamiento individual con PNL y <em>Un Curso de Milagros</em> para desactivar de raíz la culpa, la parálisis y las heridas inconscientes que hoy frenan tu vida y tus relaciones.</p>
+                <p class="for">Para quienes buscan sanar bloqueos emocionales, familiares o de autoestima desde el origen.</p>
                 <a href="#empezar" class="btn btn-gold more-link">Ver cómo trabajo y cómo empezar ↓</a>
             </div>
 
@@ -1550,10 +1565,9 @@
     <!-- TESTIMONIOS -->
     <section id="testimonios" class="alt">
         <div class="container center">
-            <h2 data-view="emprendedores">Lo que ocurre cuando desbloqueas la raíz y ordenas tu rumbo</h2>
+            <h2 data-view="emprendedores">Lo que ocurre cuando desbloqueas la raíz</h2>
             <h2 data-view="personal">Lo que dicen quienes han trabajado conmigo</h2>
             <div class="rule"></div>
-            <p class="lead" data-view="emprendedores">Cuando liberas la parálisis y la falta de valor interno —y los acompañas de dirección clara—, tu capacidad de tomar decisiones y liderar tu proyecto se transforma por completo.</p>
         </div>
         <div class="container">
             <blockquote class="quote">
@@ -1582,55 +1596,42 @@
         </div>
     </section>
 
-    <!-- HISTORIA -->
+    <!-- HISTORIA (CONDENSADA EN 3 PASOS DE LECTURA RÁPIDA) -->
     <section id="historia">
         <div class="narrow">
-            <h2 data-view="emprendedores">Sé lo que es dirigir una empresa por fuera y buscar paz por dentro</h2>
+            <h2 data-view="emprendedores">Sé lo que es dirigir un negocio sin paz dentro</h2>
             <h2 data-view="personal">Yo también pasé por aquí</h2>
             <div class="rule"></div>
-            <p class="lead" data-view="emprendedores">Conozco la operativa, las ventas y la exigencia empresarial desde dentro, y también la raíz emocional que sabotea tus decisiones.</p>
-            <p class="lead" data-view="personal">Mi historia explica por qué hago este trabajo.</p>
+            <p class="lead">Mi historia en 1 minuto.</p>
 
             <div class="story">
-                <!-- Etapa empresarial reforzada en modo Emprendedores -->
+                <!-- Paso Empresarial (Solo Emprendedores) -->
                 <div class="step" data-view="emprendedores">
-                    <small>Mi experiencia real en los negocios</small>
+                    <small>Mi base empresarial</small>
                     <h3>Exempresario y Director de Operaciones</h3>
-                    <p>Vengo de una familia de emprendedores —mis padres y mis dos hermanos lo son y lo han sido siempre—, así que he respirado este mundo desde niño. Antes de dedicarme a acompañar a otros, fui empresario y <strong>Director de Operaciones en el Grupo Lovenature Superfoods</strong>: sé lo que implica estructurar un negocio, tomar decisiones bajo presión, liderar equipos y hacer que los números salgan.</p>
-                    <p>Por eso hoy no te hablo desde la teoría: en mis mentorías <strong>me siento contigo tanto a desbloquear tu mente inconsciente como a darte consejo estratégico, ideas de negocio y claridad operativa</strong> desde mi experiencia real en la empresa.</p>
+                    <p>Vengo de una familia de emprendedores (mis padres y mis dos hermanos lo son) y fui empresario y <strong>Director de Operaciones en el Grupo Lovenature Superfoods</strong>. Sé lo que es liderar equipos y tomar decisiones bajo presión.</p>
+                    <p>Por eso hoy <strong>no solo reprogramamos tu mente: me siento contigo a darte consejo estratégico, ideas y claridad operativa</strong> para tu negocio.</p>
                 </div>
 
+                <!-- Infancia + Paradoja fusionadas -->
                 <div class="step">
-                    <small>Infancia · El origen</small>
+                    <small>El origen y la paradoja</small>
                     <h3>Lo que viví en casa</h3>
-                    <p>Cuando era niño, mi padre maltrataba a mi madre. Yo lo veía todo y no podía hacer nada. Aquella impotencia lo cambió todo: desde entonces quise aliviar el sufrimiento de los demás.</p>
+                    <p>De niño vi cómo mi padre maltrataba a mi madre. La gran contradicción es que fuera de casa él era un terapeuta admirado por todos. Preguntarme <strong>cómo alguien que ayudaba a tantos podía actuar así en casa</strong> despertó mi obsesión por comprender la mente humana y aliviar el sufrimiento.</p>
                     <div class="photos">
                         <figure><img src="https://www.lamentedelfenix.com/assets/mama%20y%20familia.webp" alt="Mi madre, mis hermanos y yo, de pequeños" loading="lazy" decoding="async"></figure>
                         <figure><img src="https://www.lamentedelfenix.com/assets/Yo%20peque%C3%B1o.webp" alt="Yo, de pequeño" loading="lazy" decoding="async"></figure>
                     </div>
                 </div>
 
+                <!-- El Giro + Método Fénix fusionados -->
                 <div class="step">
-                    <small>La paradoja</small>
-                    <h3>Una contradicción que necesitaba entender</h3>
-                    <p>Mi padre era terapeuta. Y de los mejores que he conocido. Venía gente de todas partes a verlo y fuera de casa lo admiraban. Dentro, era otra persona.</p>
-                    <figure class="single"><img src="https://www.lamentedelfenix.com/assets/Papa%20identidad%20tapada%20y%20mama.png" alt="Mi padre, con los ojos tapados, junto a mi madre, de jóvenes y bien vestidos" loading="lazy" decoding="async"></figure>
-                    <p>Esa contradicción me persiguió durante años: <strong>¿cómo podía alguien que ayudaba a tantos tratar así a los suyos?</strong> De ahí nació mi interés por comprender cómo funciona realmente la mente humana.</p>
-                </div>
-
-                <div class="step">
-                    <small>El giro</small>
-                    <h3>Perdonar para recuperar el poder</h3>
-                    <p>Entenderlo intelectualmente no me liberó. Perdonarlo, sí. Hoy veo a mi padre como un maestro que me enseñó el camino de vuelta a la paz. Ese perdón, sin juicios, fue la pieza final de mi sanación y me demostró que <strong>desactivar cualquier bloqueo de raíz es posible</strong>, sin importar lo vivido.</p>
-                </div>
-
-                <div class="step">
-                    <small>A los 30 años · El Método Fénix</small>
-                    <h3 data-view="emprendedores">Unir visión empresarial, PNL y paz interior</h3>
-                    <h3 data-view="personal">Lo dejé todo para sanar</h3>
-                    <p data-view="personal">Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods. Viví desde dentro la exigencia de liderar un negocio mientras, por dentro, seguía sin estar en paz. Lo dejé todo para sanar y dedicarme a ayudar a las personas.</p>
-                    <p data-view="emprendedores">A los 30 años decidí cerrar mi etapa corporativa para unir los dos mundos que habían marcado mi vida: <strong>la estrategia empresarial práctica y la reprogramación profunda de la mente</strong>.</p>
-                    <p>Me formé en <strong>Coaching, PNL y en el trabajo de David R. Hawkins</strong>, hasta dar con la clave maestra: <strong>Un Curso de Milagros</strong>. Hoy integro todas estas herramientas para que no tengas que elegir entre prosperar fuera y estar en paz dentro.</p>
+                    <small>El giro · El Método Fénix</small>
+                    <h3 data-view="emprendedores">Perdonar y unir empresa con paz interior</h3>
+                    <h3 data-view="personal">Lo dejé todo para sanar de raíz</h3>
+                    <p data-view="personal">Fui empresario y Director de Operaciones en el Grupo Lovenature Superfoods, pero por dentro seguía sin paz. A los 30 años lo dejé todo: logré perdonar a mi padre sin juicios y comprobé que <strong>cualquier bloqueo se puede desactivar de raíz</strong>.</p>
+                    <p data-view="emprendedores">Entender a mi padre no me liberó; perdonarlo sin juicios, sí. A los 30 años dejé mi puesto directivo para unir mis dos mundos: <strong>la estrategia empresarial y la sanación profunda</strong>.</p>
+                    <p>Hoy integro <strong>Coaching, PNL, David R. Hawkins y Un Curso de Milagros</strong> para que avances en tu vida y en tu proyecto desde la paz interior.</p>
                     <div class="collage">
                         <figure><img src="https://www.lamentedelfenix.com/assets/yo-sofa.webp" alt="Yo, hablando a cámara en mi canal de YouTube, con libros sobre la mesa" loading="lazy" decoding="async"><figcaption>Mi canal de YouTube</figcaption></figure>
                         <figure><img src="https://www.lamentedelfenix.com/assets/retiro-charla.webp" alt="Yo dando una charla en uno de mis retiros La mente del Fénix" loading="lazy" decoding="async"><figcaption>Retiro, a los 31 años</figcaption></figure>
@@ -1641,107 +1642,101 @@
         </div>
     </section>
 
-    <!-- ANTES Y AHORA (ADAPTADO SEGÚN MODO) -->
+    <!-- ANTES Y AHORA (FRASES ESCANEABLES) -->
     <section id="emprendedores" class="alt">
         <div class="container">
-            <!-- CABECERA Y TABLA: VERSIÓN EMPRENDEDORES -->
+            <!-- VERSIÓN EMPRENDEDORES -->
             <div data-view="emprendedores" class="mode-animate">
                 <div class="center">
-                    <h2>Lo que desbloqueamos en tu mente y en tu negocio</h2>
+                    <h2>Qué cambia en tu mente y en tu negocio</h2>
                     <div class="rule"></div>
-                    <p class="lead">Combinamos reprogramación inconsciente con consejo estratégico real para eliminar el autosabotaje y destrabar el crecimiento de tu proyecto.</p>
                 </div>
                 <div class="then-now">
-                    <div class="tn-head"><span>Cuando el bloqueo y la falta de foco dirigen tu negocio</span><span>Cuando entrenas tu mente y tu estrategia conmigo</span></div>
+                    <div class="tn-head"><span>Con bloqueos y sin foco</span><span>Con el Método Fénix</span></div>
                     <div class="tn-row">
-                        <p class="tn-then">Miedo a mostrarte en redes, exponer tu mensaje o vender sintiendo que persigues o incomodas.</p>
-                        <p class="tn-now">Comunicas tu propuesta de valor con autoridad, defines tu oferta y vendes desde el servicio.</p>
+                        <p class="tn-then">Miedo a exponerte en redes o sentir que incomodas al vender.</p>
+                        <p class="tn-now">Comunicas con autoridad, defines tu oferta y vendes desde el servicio.</p>
                     </div>
                     <div class="tn-row">
-                        <p class="tn-then">Síndrome del impostor, dudas con tus precios y techo inconsciente con la facturación.</p>
-                        <p class="tn-now">Reconoces tu valor, estructuras precios rentables y sostienes mayor facturación en paz.</p>
+                        <p class="tn-then">Síndrome del impostor, dudas con tus precios y techo de facturación.</p>
+                        <p class="tn-now">Reconoces tu valor, cobras precios rentables y sostienes más ingresos.</p>
                     </div>
                     <div class="tn-row">
-                        <p class="tn-then">Soledad del emprendedor: bloqueo al tomar decisiones operativas, liderar o poner límites.</p>
-                        <p class="tn-now">Cuentas con el consejo directo de un exempresario para ordenar ideas, negociar y poner límites sin culpa.</p>
+                        <p class="tn-then">Soledad al tomar decisiones, liderar o poner límites.</p>
+                        <p class="tn-now">Consejo directo de exempresario para ordenar ideas y poner límites sin culpa.</p>
                     </div>
                     <div class="tn-row">
-                        <p class="tn-then">Emprender desde el sacrificio, apagando fuegos cada día con autoexigencia y ansiedad.</p>
-                        <p class="tn-now">Escalas tu negocio con foco estratégico, claridad mental y paz interior (Estrategia + PNL + UCDM).</p>
+                        <p class="tn-then">Apagar fuegos cada día con sacrificio y ansiedad.</p>
+                        <p class="tn-now">Escalas con foco estratégico y paz interior (Negocio + PNL + UCDM).</p>
                     </div>
                 </div>
 
                 <div class="ent-box">
-                    <span class="eyebrow">¿Buscas un enfoque 100 % personal y emocional?</span>
-                    <h3>«Las mismas heridas que bloquean un negocio son las que afectan tus relaciones y tu paz»</h3>
-                    <p>Si hoy no tienes un proyecto propio o tu prioridad es sanar conflictos emocionales, familiares, superar la culpa o recuperar tu autoestima personal (con condiciones adaptadas a procesos personales), cambia a la versión de <strong>Transformación Personal</strong>.</p>
-                    <button type="button" class="btn btn-ghost" data-set-mode="personal">Ver versión y tarifas de Transformación Personal →</button>
+                    <div>
+                        <span class="eyebrow">¿Buscas un enfoque 100 % personal?</span>
+                        <h3>Sanación emocional, relaciones y autoestima</h3>
+                        <p>Si tu prioridad hoy no es un negocio sino recuperar tu paz interior, mira mis programas personales.</p>
+                    </div>
+                    <button type="button" class="btn btn-ghost" data-set-mode="personal">Ver versión Personal →</button>
                 </div>
             </div>
 
-            <!-- CABECERA Y TABLA: VERSIÓN PERSONAL -->
+            <!-- VERSIÓN PERSONAL -->
             <div data-view="personal" class="mode-animate">
                 <div class="center">
                     <h2>Mi antes y mi ahora</h2>
                     <div class="rule"></div>
-                    <p class="lead">Los miedos con los que yo cargaba y lo que hoy trabajo con las personas a las que acompaño.</p>
                 </div>
                 <div class="then-now">
                     <div class="tn-head"><span>Mi yo de antes</span><span>Mi yo de ahora</span></div>
                     <div class="tn-row">
                         <p class="tn-then">Miedo a mostrarme y exponerme.</p>
-                        <p class="tn-now">Grabo vídeos en YouTube sin ningún problema.</p>
+                        <p class="tn-now">Grabo vídeos en YouTube con total naturalidad.</p>
                     </div>
                     <div class="tn-row">
-                        <p class="tn-then">Miedo a expresar lo que siento.</p>
-                        <p class="tn-now">Digo lo que pienso y lo que siento con naturalidad.</p>
-                    </div>
-                    <div class="tn-row">
-                        <p class="tn-then">Miedo a los conflictos.</p>
-                        <p class="tn-now">Puedo ser franco con quien quiera.</p>
+                        <p class="tn-then">Miedo a expresar lo que siento y a los conflictos.</p>
+                        <p class="tn-now">Digo lo que pienso con calma y pongo límites sin culpa.</p>
                     </div>
                     <div class="tn-row">
                         <p class="tn-then">Me sentía incapaz e insuficiente.</p>
-                        <p class="tn-now">Tengo una gran autoestima, aporto lo mejor de mí a los demás y les ayudo.</p>
+                        <p class="tn-now">Vivo en paz conmigo y aporto lo mejor de mí a los demás.</p>
                     </div>
                 </div>
 
                 <div class="ent-box">
-                    <span class="eyebrow">¿Tienes un negocio o proyecto propio?</span>
-                    <h3>«Un emprendimiento solo prospera al nivel de la mente y la estrategia de quien lo lidera»</h3>
-                    <p>Si eres emprendedor o empresario, tengo una línea de mentoría específica donde uno el <strong>desbloqueo mental (PNL y UCDM) con mi asesoramiento estratégico como exempresario y Director de Operaciones</strong> para ayudarte con ideas, ventas, límites y dirección de negocio.</p>
-                    <button type="button" class="btn btn-ghost" data-set-mode="emprendedores">Ver Mentoría para Emprendedores →</button>
+                    <div>
+                        <span class="eyebrow">¿Tienes un negocio o proyecto?</span>
+                        <h3>Mentoría de Mentalidad + Estrategia Empresarial</h3>
+                        <p>Uno PNL y UCDM con mi asesoramiento como exempresario para desbloquear y escalar tu negocio.</p>
+                    </div>
+                    <button type="button" class="btn btn-ghost" data-set-mode="emprendedores">Ver versión Emprendedores →</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ELIGE CÓMO EMPEZAR (PRECIOS Y OFERTAS DIFERENCIADAS) -->
+    <!-- ELIGE CÓMO EMPEZAR (TEXTOS COMPACTOS AL GRANO) -->
     <section id="empezar">
         <div class="container">
             <div class="center">
-                <h2 data-view="emprendedores">Elige cómo impulsar tu mente y tu negocio</h2>
-                <h2 data-view="personal">Elige cómo empezar tu transformación</h2>
+                <h2 data-view="emprendedores">Elige cómo impulsar tu negocio</h2>
+                <h2 data-view="personal">Elige cómo empezar</h2>
                 <div class="rule"></div>
-                <p class="lead" data-view="emprendedores">Tres niveles de acompañamiento donde unimos reprogramación mental profunda y visión empresarial práctica.</p>
-                <p class="lead" data-view="personal">He ajustado mis programas personales para que puedas dar el paso según el momento en el que te encuentres hoy.</p>
             </div>
 
-            <!-- TARJETAS: VERSIÓN EMPRENDEDORES (Precios Superiores + Asesoría Empresarial) -->
+            <!-- TARJETAS: VERSIÓN EMPRENDEDORES -->
             <div class="paths mode-animate" data-view="emprendedores">
                 <div class="path">
-                    <small>Entrenamiento continuo · próximamente</small>
+                    <small>Comunidad · próximamente</small>
                     <h3>Membresía Fénix</h3>
-                    <p class="price">55 € al mes</p>
-                    <p>Un espacio de entrenamiento mental y espiritual para mantener la claridad, trabajar tu autoestima y sostener tu energía mientras construyes tu camino, en comunidad.</p>
+                    <p class="price">55 € / mes</p>
+                    <p>Entrenamiento continuo en comunidad para sostener tu claridad y energía.</p>
                     <ul class="includes">
-                        <li>Comunidad de apoyo para compartir avances y dudas</li>
-                        <li>3 directos al mes conmigo, con grabación para verlos cuando quieras</li>
-                        <li>Aula con meditaciones guiadas, PNL y ejercicios prácticos</li>
-                        <li>Calendario de directos y conexión con otros miembros</li>
-                        <li>Acceso desde el móvil</li>
+                        <li>3 directos al mes conmigo (quedan grabados)</li>
+                        <li>Aula con meditaciones, PNL y ejercicios</li>
+                        <li>Comunidad de apoyo desde el móvil</li>
                     </ul>
-                    <p class="wait-note">Sé de los primeros en entrar, con descuento de fundador.</p>
+                    <p class="wait-note">Entra antes que nadie con descuento de fundador.</p>
                     <div class="waitlist">
                         <a href="https://forms.gle/aCEpJjFa19YQSB62A" target="_blank" rel="noopener" class="btn btn-ghost">Apúntate a la lista de espera</a>
                         <span class="soon-tag">Apertura muy pronto</span>
@@ -1749,58 +1744,56 @@
                 </div>
 
                 <div class="path">
-                    <small>Auditoría de Mentalidad + Negocio</small>
+                    <small>Auditoría Mente + Negocio</small>
                     <h3>Pack de Inicio</h3>
                     <p class="price">
                         250 €
-                        <span class="price-sub">Descontables si entras a la Mentoría 1 a 1</span>
+                        <span class="price-sub">Se descuentan si pasas a la Mentoría 1 a 1</span>
                     </p>
-                    <p>Un pack intensivo de diagnóstico para radiografiar tanto el bloqueo inconsciente que te frena (ventas, exposición, síndrome del impostor) como el cuello de botella estratégico de tu proyecto.</p>
+                    <p>Detectamos el bloqueo inconsciente y el cuello de botella estratégico que hoy frenan tu proyecto.</p>
                     <ul class="includes">
-                        <li><strong>Sesión 1 a 1 de diagnóstico y asesoría</strong> (aprox. 1 h 30 min)</li>
+                        <li><strong>Sesión 1 a 1 intensiva</strong> (1 h 30 min)</li>
                         <li><strong>Sesión de refuerzo</strong> a las 2 semanas</li>
-                        <li><strong>Consejo empresarial directo:</strong> ideas, enfoque comercial y resolución de dudas operativas</li>
-                        <li>Mapa escrito de bloqueos inconscientes detectados + hoja de ruta de acción</li>
-                        <li>Meditación de reprogramación con PNL hecha a medida</li>
+                        <li><strong>Consejo empresarial:</strong> ideas, ventas y operativa</li>
+                        <li>Mapa escrito de bloqueos + hoja de ruta</li>
+                        <li>Meditación de reprogramación a medida</li>
                     </ul>
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Agendar llamada de valoración</a>
                 </div>
 
                 <div class="path featured">
-                    <small>Mentalidad + Asesoría Empresarial · 3 meses o 1 año</small>
+                    <small>Transformación profunda · 3 meses o 1 año</small>
                     <h3>Mentoría 1 a 1 Emprendedores</h3>
                     <p class="price">
                         Desde 1.350 €
                         <span class="price-sub">O 3 cuotas de 450 € / mes · Proceso de 3 meses</span>
                     </p>
-                    <p>El acompañamiento estrella: tendrás en mí a tu mentor de mentalidad y a un exempresario y Director de Operaciones a tu lado para desbloquear tu mente y escalar tu proyecto con estrategia y en paz.</p>
+                    <p>Tu mentor de mentalidad y ex Director de Operaciones mano a mano contigo para escalar tu negocio en paz.</p>
                     <ul class="includes">
-                        <li><strong>12 sesiones individuales (1 por semana)</strong> de mentoría profunda y estrategia</li>
-                        <li><strong>Asesoramiento empresarial continuo:</strong> negocio, validación de ideas, precios, ventas y operativa</li>
-                        <li><strong>Reprogramación profunda (PNL, Coaching y UCDM)</strong> para eliminar el autosabotaje y el techo de merecimiento</li>
-                        <li>Plan de acción personalizado con objetivos de negocio y retos semanales</li>
-                        <li>Grabación de todas las sesiones, resúmenes escritos y meditaciones a medida</li>
-                        <li><strong>Soporte directo por WhatsApp</strong> de lunes a viernes para decisiones del día a día</li>
+                        <li><strong>12 sesiones 1 a 1 (1 por semana)</strong></li>
+                        <li><strong>Asesoría de negocio:</strong> estrategia, ideas, precios y ventas</li>
+                        <li><strong>Reprogramación (PNL + UCDM)</strong> contra el autosabotaje</li>
+                        <li>Plan de acción, grabaciones y resúmenes</li>
+                        <li>Meditaciones a medida según tu avance</li>
+                        <li><strong>Soporte por WhatsApp</strong> de lunes a viernes</li>
                     </ul>
-                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada estratégica gratuita</a>
+                    <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
                 </div>
             </div>
 
-            <!-- TARJETAS: VERSIÓN PERSONAL (Precios más accesibles, 100% enfocado en sanación interior) -->
+            <!-- TARJETAS: VERSIÓN PERSONAL -->
             <div class="paths mode-animate" data-view="personal">
                 <div class="path">
                     <small>Por tu cuenta · próximamente</small>
                     <h3>Membresía Fénix</h3>
-                    <p class="price">55 € al mes</p>
-                    <p>Una membresía de autoconocimiento para quienes se sienten estancados y quieren empezar a desbloquear su vida y trabajar su autoestima, acompañados por una comunidad.</p>
+                    <p class="price">55 € / mes</p>
+                    <p>Autoconocimiento en comunidad para empezar a desbloquear tu vida y tu autoestima.</p>
                     <ul class="includes">
-                        <li>Comunidad de apoyo para compartir avances y dudas</li>
-                        <li>3 directos al mes conmigo, con grabación para verlos cuando quieras</li>
-                        <li>Aula con meditaciones guiadas y ejercicios prácticos</li>
-                        <li>Calendario de directos y mensajes con otros miembros</li>
-                        <li>Acceso desde el móvil</li>
+                        <li>3 directos al mes conmigo (quedan grabados)</li>
+                        <li>Aula con meditaciones guiadas y ejercicios</li>
+                        <li>Comunidad de apoyo desde el móvil</li>
                     </ul>
-                    <p class="wait-note">Sé de los primeros en entrar, con descuento de fundador.</p>
+                    <p class="wait-note">Entra antes que nadie con descuento de fundador.</p>
                     <div class="waitlist">
                         <a href="https://forms.gle/aCEpJjFa19YQSB62A" target="_blank" rel="noopener" class="btn btn-ghost">Apúntate a la lista de espera</a>
                         <span class="soon-tag">Apertura muy pronto</span>
@@ -1812,14 +1805,14 @@
                     <h3>Pack de Inicio</h3>
                     <p class="price">
                         150 €
-                        <span class="price-sub">Se descuentan íntegros si continúas en el programa</span>
+                        <span class="price-sub">Se descuentan si pasas al programa de 3 meses</span>
                     </p>
-                    <p>Ideal para conocernos, encontrar la raíz inconsciente de lo que hoy te quita la paz y llevarte claridad y herramientas prácticas desde el primer día.</p>
+                    <p>Localizamos la raíz inconsciente de tu bloqueo y te llevas herramientas prácticas desde el primer día.</p>
                     <ul class="includes">
-                        <li>Sesión individual profunda (aprox. 1 h 30 min)</li>
-                        <li>Sesión de refuerzo a las 2 semanas</li>
-                        <li>Resumen escrito de las creencias y bloqueos inconscientes detectados</li>
-                        <li>Meditación de reprogramación hecha a medida para ti</li>
+                        <li><strong>Sesión individual profunda</strong> (1 h 30 min)</li>
+                        <li><strong>Sesión de refuerzo</strong> a las 2 semanas</li>
+                        <li>Resumen escrito de bloqueos detectados</li>
+                        <li>Meditación de reprogramación a medida</li>
                     </ul>
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-ghost">Llamada para ver si encajamos</a>
                 </div>
@@ -1831,14 +1824,13 @@
                         960 €
                         <span class="price-sub">O 3 cuotas de 320 € / mes · Proceso de 3 meses</span>
                     </p>
-                    <p>Un proceso individual mano a mano conmigo para desactivar de raíz la culpa, sanar heridas emocionales o familiares y recuperar tu autoestima y tu paz interior. En la llamada gratuita vemos tu caso.</p>
+                    <p>Un proceso mano a mano conmigo para desactivar la culpa, sanar heridas emocionales y recuperar tu paz interior.</p>
                     <ul class="includes">
-                        <li><strong>12 sesiones individuales (1 por semana)</strong> para disolver el origen de tu bloqueo, no solo los síntomas</li>
-                        <li>Grabación de todas las sesiones para que puedas volver a ellas siempre que lo necesites</li>
-                        <li>Meditaciones guiadas creadas a medida según tu evolución</li>
-                        <li>Plan de acción personalizado con hábitos y ejercicios cotidianos</li>
-                        <li>Resumen escrito con las claves de cada sesión y sesión final de cierre</li>
-                        <li>Soporte cercano por WhatsApp de lunes a viernes para acompañarte entre sesiones</li>
+                        <li><strong>12 sesiones 1 a 1 (1 por semana)</strong></li>
+                        <li>Meditaciones guiadas hechas a medida</li>
+                        <li>Plan de acción con hábitos y ejercicios</li>
+                        <li>Grabación y resumen clave de cada sesión</li>
+                        <li><strong>Soporte por WhatsApp</strong> de lunes a viernes</li>
                     </ul>
                     <a href="https://calendar.app.google/CvpRg23khwY3wmrY8" target="_blank" rel="noopener" class="btn btn-gold">Reserva tu llamada gratuita</a>
                 </div>
