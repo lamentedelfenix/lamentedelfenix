@@ -913,6 +913,57 @@
             color: var(--muted);
         }
 
+        /* Insignia / Logo corporativo en la historia */
+        .step .company-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin-top: 1.35rem;
+            padding-top: 1.15rem;
+            border-top: 1px solid var(--line);
+        }
+
+        @media (min-width: 520px) {
+            .step .company-badge {
+                flex-direction: row;
+                align-items: center;
+                gap: 1.1rem;
+            }
+        }
+
+        .step .company-badge img {
+            background: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.55rem;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            max-width: 11.5rem;
+            height: auto;
+            filter: none;
+            cursor: default;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        .step .company-badge img:hover {
+            transform: none;
+        }
+
+        .step .company-badge figcaption {
+            margin-top: 0;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: var(--muted);
+        }
+
+        .step .company-badge figcaption strong {
+            display: block;
+            color: var(--gold-light);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.1rem;
+        }
+
         .collage {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -1625,6 +1676,13 @@
                     <p>Con esa base emprendedora familiar, construí mi camino en el mundo de los negocios y llegué a ser <strong>empresario y Director de Operaciones en el Grupo Lovenature Superfoods</strong>, liderando equipos y tomando decisiones bajo presión cada día.</p>
                     <p data-view="emprendedores">Sin embargo, descubrí en mi propia piel que <strong>la estrategia sin paz interior te quema</strong>. A pesar de los resultados, cargaba con autoexigencia, miedo a exponerme y una sensación constante de tener que apagar fuegos.</p>
                     <p data-view="personal">Pero aunque hacia fuera todo parecía funcionar, <strong>por dentro no tenía paz</strong>: sentía miedo a mostrarme tal como era, me costaba expresar lo que sentía o poner límites, y arrastraba una profunda sensación de insuficiencia.</p>
+                    <figure class="company-badge">
+                        <img src="https://www.lamentedelfenix.com/assets/Logo%20Lovenature.webp" alt="Logo de Lovenature Superfoods" width="220" height="110" loading="lazy" decoding="async">
+                        <figcaption>
+                            <strong>Etapa Directiva · Grupo Lovenature Superfoods</strong>
+                            Empresario y Director de Operaciones
+                        </figcaption>
+                    </figure>
                 </div>
 
                 <!-- PASO 3: El Giro + Método Fénix -->
@@ -1963,7 +2021,7 @@
     var modal=document.getElementById('image-modal'), big=document.getElementById('modal-image');
     function open(src){ big.src=src; modal.classList.add('active'); document.body.style.overflow='hidden'; }
     function close(){ modal.classList.remove('active'); document.body.style.overflow=''; }
-    document.querySelectorAll('.shot img,.step figure img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
+    document.querySelectorAll('.shot img,.step figure:not(.company-badge) img').forEach(function(img){ img.addEventListener('click',function(){ open(img.src); }); });
     var more=document.getElementById('more-reviews'), shots=document.querySelector('.shots');
     if(more&&shots){
         more.addEventListener('click',function(){
